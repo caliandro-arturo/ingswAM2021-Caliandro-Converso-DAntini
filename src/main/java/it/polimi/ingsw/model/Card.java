@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 /**
- *  this abstract class is the base for all the card that are present in the project
+ *  this abstract class is the base for all the cards that are present in the project
  */
 public abstract class Card {
     private int victoryPoints;
