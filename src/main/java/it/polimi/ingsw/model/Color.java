@@ -4,27 +4,34 @@ package it.polimi.ingsw.model;
  * This enumeration contains all the colors used by marbles and cards
  */
 public enum Color {
+    GREEN {
+        @Override
+        void action(Player player) {
+            /*only for cards*/
+        }
+    },
     BLUE {
         @Override
         void action(Player player) {
             player.getBoard().addResource(Resource.SHIELD);
         }
     },
-    GREEN {
-        void action(Player player) {
-            /*only for cards*/
-        };
-    },
-    GREY {
+    YELLOW {
         @Override
         void action(Player player) {
-            player.getBoard().addResource(Resource.STONE);
+            player.getBoard().addResource(Resource.COIN);
         }
     },
     PURPLE {
         @Override
         void action(Player player) {
             player.getBoard().addResource(Resource.SERF);
+        }
+    },
+    GREY {
+        @Override
+        void action(Player player) {
+            player.getBoard().addResource(Resource.STONE);
         }
     },
     RED {
@@ -42,12 +49,6 @@ public enum Color {
                 2. one leaderCard with WhiteMarbleConversion -> return resource;
                 3. two leaderCards //          //            -> ask the player which leader to use
              */
-        }
-    },
-    YELLOW {
-        @Override
-        void action(Player player) {
-            player.getBoard().addResource(Resource.COIN);
         }
     };
     abstract void action(Player player);

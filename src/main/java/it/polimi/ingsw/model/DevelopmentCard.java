@@ -22,4 +22,10 @@ public class DevelopmentCard extends Card{
         this.cost = cost;
         this.productionPower = productionPower;
     }
+    public Color getColor(){
+        return color;
+    }
+    public int getLevel(){
+        return level;
+    }
 }
