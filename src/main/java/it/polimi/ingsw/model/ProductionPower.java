@@ -15,12 +15,12 @@ public class ProductionPower implements Production{
 
 
     @Override
-    public UtilityProductionAndCost[] startProduction( PersonalBoard board) {
+    public UtilityProductionAndCost[] startProduction( Player player) {
                 /*
         Ask the player where they want to take the cost
          */
         for (int i=0; i<cost.length; i++) {
-            board.getPersonalBox().getResourceMap().remove(cost[i].getResource(),cost[i].getQuantity());
+            player.getBoard().getPersonalBox().getResourceMap().remove(cost[i].getResource(),cost[i].getQuantity());
         }
         return production;
     }
