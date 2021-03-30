@@ -11,4 +11,12 @@ public class UtilityProductionAndCost {
         this.quantity = quantity;
         this.resource = resource;
     }
+
+    public Resource getResource(){
+        return resource;
+    }
+
+    public int getQuantity(){
+        return quantity;
+    }
 }

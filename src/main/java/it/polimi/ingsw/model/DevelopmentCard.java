@@ -13,7 +13,7 @@ public class DevelopmentCard extends Card{
     private int level;
     private Color color;
     private UtilityProductionAndCost[] cost;
-    private ProductionPower productionPower;
+    private Production productionPower;
 
     public DevelopmentCard(int victoryPoints, int level, Color color, UtilityProductionAndCost[] cost, ProductionPower productionPower){
         super(victoryPoints);
@@ -27,5 +27,11 @@ public class DevelopmentCard extends Card{
     }
     public int getLevel(){
         return level;
+    }
+    public UtilityProductionAndCost[] getCost(){
+        return cost;
+    }
+    public Production getProduction(){
+        return productionPower;
     }
 }

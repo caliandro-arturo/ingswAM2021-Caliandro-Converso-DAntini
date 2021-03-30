@@ -19,6 +19,16 @@ public class DevelopmentPlace {
 
     }
 
+    public DevelopmentCard getLevel1Card() {
+        return level1Card;
+    }
 
+    public DevelopmentCard getLevel2Card() {
+        return level2Card;
+    }
+
+    public DevelopmentCard getLevel3Card() {
+        return level3Card;
+    }
 }
 

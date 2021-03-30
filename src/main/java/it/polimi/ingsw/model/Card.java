@@ -14,7 +14,7 @@ public abstract class Card {
      *
      * @return the points of the card
      */
-    public int returnScore(){
+    public int getVictoryPoints(){
         return victoryPoints;
     }
 }

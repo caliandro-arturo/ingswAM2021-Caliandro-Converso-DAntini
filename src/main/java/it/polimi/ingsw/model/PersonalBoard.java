@@ -23,6 +23,10 @@ public class PersonalBoard {
 
     }
 
+    public Strongbox getPersonalBox() {
+        return personalBox;
+    }
+
     public WarehouseStore[] getStore() {
 
         return store;
