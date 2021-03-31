@@ -5,5 +5,6 @@ public interface Production {
     /**
      * standard operation for the production in the game
      */
-    public UtilityProductionAndCost[] startProduction(Player player);
+    public UtilityProductionAndCost[] startProduction(PersonalBoard board);
+
 }

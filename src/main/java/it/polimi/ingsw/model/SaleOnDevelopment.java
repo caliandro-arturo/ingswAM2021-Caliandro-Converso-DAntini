@@ -10,4 +10,9 @@ public class SaleOnDevelopment implements LeaderPower{
     public SaleOnDevelopment(Resource resource){
         this.resource = resource;
     }
+
+    @Override
+    public void getPower() {
+
+    }
 }

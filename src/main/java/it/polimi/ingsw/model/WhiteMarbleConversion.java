@@ -7,4 +7,8 @@ public class WhiteMarbleConversion implements LeaderPower{
         return color;
     }
 
+    @Override
+    public void getPower() {
+
+    }
 }

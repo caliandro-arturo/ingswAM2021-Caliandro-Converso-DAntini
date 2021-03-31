@@ -4,8 +4,8 @@ package it.polimi.ingsw.model;
  * Basic type of production power
  */
 public class ProductionPower implements Production{
-    private UtilityProductionAndCost[] cost;
-    private UtilityProductionAndCost[] production;
+    private final UtilityProductionAndCost[] cost;
+    private final UtilityProductionAndCost[] production;
 
 
     public ProductionPower(UtilityProductionAndCost[] cost, UtilityProductionAndCost[] production){
@@ -15,14 +15,27 @@ public class ProductionPower implements Production{
 
 
     @Override
-    public UtilityProductionAndCost[] startProduction( Player player) {
-                /*
-        Ask the player where they want to take the cost
-         */
-        for (int i=0; i<cost.length; i++) {
-            player.getBoard().getPersonalBox().getResourceMap().remove(cost[i].getResource(),cost[i].getQuantity());
-        }
+    public UtilityProductionAndCost[] startProduction(PersonalBoard board) {
+        manageCost(cost,board);
         return production;
+    }
+
+    public void manageCost(UtilityProductionAndCost[] cost ,PersonalBoard board) {
+        for(int i=0;i< cost.length;i++) {
+            if (askPlayerWhatDeposit(board)) {
+                board.getPersonalBox().getResourceMap().remove(cost[i].getResource(), 1);
+            } else {
+                //board.getStore()
+            }
+        }
+    }
+
+    private boolean askPlayerWhatDeposit(PersonalBoard board){
+        return true;
+    }
+
+    private Resource askPlayerResourceType(){
+        return null;
     }
 
     public UtilityProductionAndCost[] getCost(){

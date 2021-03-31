@@ -12,4 +12,9 @@ public class SpecialWarehouse implements LeaderPower{
         extraResource.setResource(resource);
         extraResource.setQuantity(quantity);
     }
+
+    @Override
+    public void getPower() {
+
+    }
 }
