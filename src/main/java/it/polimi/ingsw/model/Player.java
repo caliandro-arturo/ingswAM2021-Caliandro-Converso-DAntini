@@ -3,13 +3,15 @@ package it.polimi.ingsw.model;
 /**
  * this class implements all the methods used by a player
  */
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
     private String username;
     private PersonalBoard board;
     private LeaderCard[] leaderCard;
-
+    private ArrayList<Color> whiteAlt = new ArrayList<>();
+    private ArrayList<Resource> sale = new ArrayList<>();
 
     public void setBoard(PersonalBoard board) {
         this.board = board;
@@ -25,6 +27,18 @@ public class Player {
 
     public String getUsername() {
         return username;
+    }
+
+    public ArrayList<Color> getWhiteAlt() { return whiteAlt; }
+
+    public ArrayList<Resource> getSale() { return sale; }
+
+    public void addWhiteAlt(Color color) {
+        whiteAlt.add(color);
+    }
+
+    public void addSale(Resource resource) {
+        sale.add(resource);
     }
 
     /**

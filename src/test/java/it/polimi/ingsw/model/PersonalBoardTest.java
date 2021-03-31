@@ -28,7 +28,15 @@ class PersonalBoardTest {
         assertEquals((board.getStore()[2]).getSize(),3);
         assertEquals((board.getPersonalPath()).getPosition(), 0);
         assertEquals((board.getPersonalPath()).getScoreCard(), 0);
-        //test hashmap
+        assertEquals(board.getPersonalBox().getResourceMap().size(),4);
+        assertTrue(board.getPersonalBox().getResourceMap().containsKey(Resource.SHIELD));
+        assertTrue(board.getPersonalBox().getResourceMap().containsKey(Resource.COIN));
+        assertTrue(board.getPersonalBox().getResourceMap().containsKey(Resource.SERF));
+        assertTrue(board.getPersonalBox().getResourceMap().containsKey(Resource.STONE));
+
+
+
+
     }
 
 }

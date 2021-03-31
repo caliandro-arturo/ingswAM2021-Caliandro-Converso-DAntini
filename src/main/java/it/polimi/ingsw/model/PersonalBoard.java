@@ -11,26 +11,18 @@ import java.util.HashMap;
 public class PersonalBoard {
 
     private WarehouseStore[] store = new WarehouseStore[3];
-    private final FaithTrack personalPath = new FaithTrack();
-    private final Strongbox personalBox = new Strongbox();
-    private final DevelopmentPlace[] personalDevelopmentSpace = new DevelopmentPlace[3];
+    private FaithTrack personalPath = new FaithTrack();
+    private Strongbox personalBox = new Strongbox();
+    private DevelopmentPlace[] personalDevelopmentSpace = new DevelopmentPlace[3];
     private LeaderCard[] leaderCards = new LeaderCard[2];
     //boardProduction
 
 
-    public void setStore(WarehouseStore[] store) {
-        this.store = store;
+    public void setStore(WarehouseStore[] store) { this.store = store; }
 
-    }
+    public Strongbox getPersonalBox() { return personalBox;    }
 
-    public Strongbox getPersonalBox() {
-        return personalBox;
-    }
-
-    public WarehouseStore[] getStore() {
-
-        return store;
-    }
+    public WarehouseStore[] getStore() { return store;    }
 
     public FaithTrack getPersonalPath() {
         return personalPath;
@@ -62,9 +54,8 @@ public class PersonalBoard {
      */
 
     public void addResource(Resource resource){
-        int i;
 
-        for(i=0; i<3;i++){
+        for(int i=0; i<3;i++){
 
             if(store[i].getResource()== resource || store[i].getResource()==null){
 
@@ -80,6 +71,17 @@ public class PersonalBoard {
         }
     }
 
+    //TODO fare eccezione nel caso in cui la risorsa non c'è
+    public void removeResource(Resource resource) {
+
+        for (int i = 0; i < 3; i++) {
+
+            if (store[i].getResource() == resource) {
+                store[i].setQuantity(store[i].getQuantity() - 1);
+            }
+
+        }
+    }
     /**
      * this method is called from addResource when it's not possible to add more resources to the Warehouse store
      * @param resource
