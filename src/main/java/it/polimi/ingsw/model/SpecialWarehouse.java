@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+/**
+ * power tha add a extra Warehouse of a resource large 2 spaces
+ */
 public class SpecialWarehouse implements LeaderPower{
     private WarehouseStore extraResource;
 

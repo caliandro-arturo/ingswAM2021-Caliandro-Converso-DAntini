@@ -10,10 +10,10 @@ package it.polimi.ingsw.model;
  *
  */
 public class DevelopmentCard extends Card{
-    private int level;
-    private Color color;
-    private UtilityProductionAndCost[] cost;
-    private Production productionPower;
+    private final int level;
+    private final Color color;
+    private final UtilityProductionAndCost[] cost;
+    private final Production productionPower;
 
     public DevelopmentCard(int victoryPoints, int level, Color color, UtilityProductionAndCost[] cost, ProductionPower productionPower){
         super(victoryPoints);

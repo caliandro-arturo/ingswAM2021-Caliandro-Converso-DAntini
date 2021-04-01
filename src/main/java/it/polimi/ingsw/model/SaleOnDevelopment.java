@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model;
 
+/**
+ * power that make a discout on the development card
+ */
 public class SaleOnDevelopment implements LeaderPower{
-    private Resource resource;
+    private final Resource resource;
 
     public Resource getResource() {
         return resource;

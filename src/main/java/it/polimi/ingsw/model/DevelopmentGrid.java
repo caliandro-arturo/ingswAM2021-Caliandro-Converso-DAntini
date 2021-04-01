@@ -3,9 +3,6 @@ package it.polimi.ingsw.model;
 public class DevelopmentGrid {
     private Deck[][] developmentGrid;
 
-    /*
-    TODO make an exception to signal wrong color
-     */
     public DevelopmentGrid(DevelopmentCard[] cards){
         developmentGrid = new Deck[3][4];
         for (int i =0; i < 3; i++){
@@ -54,8 +51,12 @@ public class DevelopmentGrid {
             }
         }
     }
-    /*
-    TODO make an exception to signal not enough resources
+
+    /**
+     * take the card from the grid and return to the player
+     * @param color color ask by the player
+     * @param level level ask by the player
+     * @return the card choosen
      */
     public Card buyCard(Color color,int level){
         if(color == Color.GREEN) {
@@ -68,6 +69,11 @@ public class DevelopmentGrid {
             return developmentGrid[level - 1][3].getDeck().pop();
         }
     }
+
+    /**
+     * singleplayer action of lorenzo
+     * @param color action's color
+     */
     public void removeCard(Color color){
         int i = 0;
         int j = 2;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 public class ResourceCost implements Requirements{
-    private UtilityProductionAndCost cost;
+    private final UtilityProductionAndCost cost;
 
     public ResourceCost(UtilityProductionAndCost cost){
         this.cost = cost;

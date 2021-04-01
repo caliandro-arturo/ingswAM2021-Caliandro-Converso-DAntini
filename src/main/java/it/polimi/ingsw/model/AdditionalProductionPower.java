@@ -1,5 +1,10 @@
 package it.polimi.ingsw.model;
 
+import java.util.Scanner;
+
+/**
+ * Power of the leader that add a possible production
+ */
 public class AdditionalProductionPower  implements LeaderPower,Production{
 
     private Resource cost;
@@ -33,23 +38,58 @@ public class AdditionalProductionPower  implements LeaderPower,Production{
         player.getBoard().getProductionList().add(this);
     }
 
-    /*
-    TODO create an exception for resource not found
+    /**
+     * remove the cost of a Production
+     * @param board player's board
      */
-
-    private void manageCost(PersonalBoard board) {
-        if(askPlayerWhatDeposit(board)){
-            board.getPersonalBox().getResourceMap().remove(cost,1);
-        } else {
-            //board.getStore()
+    private void manageCost(PersonalBoard board){
+        for (int i = 0; i<2; i++){
+            System.out.println("Cost" + cost);
+            if (askPlayerWhereTakeResource()) {
+                board.getPersonalBox().removeResource(cost);
+            } else {
+                board.removeResource(cost);
+            }
         }
     }
 
-    private boolean askPlayerWhatDeposit(PersonalBoard board){
-        return true;
+    /**
+     * ask the player from where he want to take the resource
+     * @return true if from the strongbox and false if is from the warehouse
+     */
+    private boolean askPlayerWhereTakeResource(){
+        System.out.println("Where you want to take the resource ?");
+        Scanner scanner = new Scanner(System.in);
+        String whatStore = scanner.nextLine();
+        if (whatStore.equals("strongbox")){
+            return true;
+        } else if (whatStore.equals("warehouse")){
+            return false;
+        } else {
+            System.out.println("Error, please write again");
+            return askPlayerWhereTakeResource();
+        }
     }
 
+    /**
+     * ask the player what type of resource he want to use for a special production
+     * @return type of resource chosen
+     */
     private Resource askPlayerResourceType(){
-        return null;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Chose a Resource");
+        String whatResource = scanner.nextLine();
+        if (whatResource.equals("coin")){
+            return Resource.COIN;
+        } else if (whatResource.equals("stone")){
+            return Resource.STONE;
+        } else if (whatResource.equals("serf")){
+            return Resource.SERF;
+        } else if (whatResource.equals("shield")){
+            return Resource.SHIELD;
+        } else {
+            System.out.println("Error, please write again");
+            return askPlayerResourceType();
+        }
     }
 }
