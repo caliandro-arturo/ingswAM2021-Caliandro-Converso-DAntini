@@ -25,7 +25,12 @@ public class AdditionalProductionPower  implements LeaderPower,Production{
 
     @Override
     public void getPower() {
+        System.out.println("add an additional production of a FAITH point and a chose resource for the cost of" +getCost());
+    }
 
+    @Override
+    public void activatePower(Player player) {
+        player.getBoard().getProductionList().add(this);
     }
 
     /*

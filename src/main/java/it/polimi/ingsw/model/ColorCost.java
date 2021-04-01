@@ -12,6 +12,13 @@ public class ColorCost implements Requirements{
      */
     @Override
     public void checkRequirements(Player player) throws NotMetRequirementsException{
+        try{
+            DevelopmentPlace[] devPlace = player.getBoard().getPersonalDevelopmentSpace();
+            for (int i=0;i<devPlace.length;i++){
 
+            }
+        } catch (NotMetRequirementsException e){
+
+        }
     }
 }

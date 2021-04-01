@@ -13,6 +13,11 @@ public class SaleOnDevelopment implements LeaderPower{
 
     @Override
     public void getPower() {
+        System.out.println("Sale of an amount of one" +getResource());
+    }
 
+    @Override
+    public void activatePower(Player player) {
+        player.addSale(getResource());
     }
 }

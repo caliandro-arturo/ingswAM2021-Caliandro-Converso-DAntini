@@ -6,17 +6,28 @@ package it.polimi.ingsw.model;
  *
  */
 
-import java.util.HashMap;
+import java.util.*;
 
 public class PersonalBoard {
 
+    /*
+    TODO change the warehouse to an Arraylist
+     */
     private WarehouseStore[] store = new WarehouseStore[3];
     private FaithTrack personalPath = new FaithTrack();
     private Strongbox personalBox = new Strongbox();
     private DevelopmentPlace[] personalDevelopmentSpace = new DevelopmentPlace[3];
     private LeaderCard[] leaderCards = new LeaderCard[2];
-    //boardProduction
+    private ArrayList<Production> ProductionList = new ArrayList<>();
 
+
+    public DevelopmentPlace[] getPersonalDevelopmentSpace() {
+        return personalDevelopmentSpace;
+    }
+
+    public ArrayList<Production> getProductionList() {
+        return ProductionList;
+    }
 
     public void setStore(WarehouseStore[] store) { this.store = store; }
 
