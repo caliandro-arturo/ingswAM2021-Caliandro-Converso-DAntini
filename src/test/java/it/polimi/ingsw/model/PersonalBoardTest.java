@@ -30,6 +30,7 @@ class PersonalBoardTest {
         assertTrue(board.getPersonalBox().getResourceMap().containsKey(Resource.SERF));
         assertTrue(board.getPersonalBox().getResourceMap().containsKey(Resource.STONE));
 
+
     }
 
     @Test
