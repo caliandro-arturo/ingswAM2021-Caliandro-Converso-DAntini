@@ -10,8 +10,14 @@ public class Player {
     private String username;
     private PersonalBoard board;
     private LeaderCard[] leaderCard;
-    private ArrayList<Color> whiteAlt = new ArrayList<>();
+    private ArrayList<Resource> whiteAlt = new ArrayList<>();
     private ArrayList<Resource> sale = new ArrayList<>();
+
+    public Player(String username, PersonalBoard board, LeaderCard[] leaderCard, ArrayList<Resource> whiteAlt, ArrayList<Resource> sale) {
+        this.username = username;
+        this.board = board;
+        this.leaderCard = leaderCard;
+    }
 
     public void setBoard(PersonalBoard board) {
         this.board = board;
@@ -29,12 +35,12 @@ public class Player {
         return username;
     }
 
-    public ArrayList<Color> getWhiteAlt() { return whiteAlt; }
+    public ArrayList<Resource> getWhiteAlt() { return whiteAlt; }
 
     public ArrayList<Resource> getSale() { return sale; }
 
-    public void addWhiteAlt(Color color) {
-        whiteAlt.add(color);
+    public void addWhiteAlt(Resource resource) {
+        whiteAlt.add(resource);
     }
 
     public void addSale(Resource resource) {

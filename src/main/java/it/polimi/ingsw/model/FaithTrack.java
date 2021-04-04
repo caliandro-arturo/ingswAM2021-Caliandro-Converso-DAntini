@@ -25,5 +25,4 @@ public class FaithTrack {
         return scoreCard;
     }
 
-
 }

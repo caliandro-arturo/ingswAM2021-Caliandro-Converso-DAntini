@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,38 +9,49 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StrongboxTest {
-    private Strongbox chest;
-    private PersonalBoard personalBoard;
-    private HashMap<Resource, Integer> resourceMap ;
+    private  Strongbox chest;
 
 
     @BeforeEach
-    void setUp() {
+    public  void setUp() {
         chest = new Strongbox();
-        personalBoard = new PersonalBoard();
-        resourceMap = new HashMap<>();
+
     }
 
     @Test
     public void addProdResourceTest(){
-        personalBoard.resetPersonalBoard();
-        personalBoard.getPersonalBox().addProdResource(Resource.SHIELD);
-        personalBoard.getPersonalBox().addProdResource(Resource.SHIELD);
-        personalBoard.getPersonalBox().addProdResource(Resource.SERF);
-        personalBoard.getPersonalBox().addProdResource(Resource.COIN);
-        personalBoard.getPersonalBox().addProdResource(Resource.STONE);
-        personalBoard.getPersonalBox().addProdResource(Resource.COIN);
-        personalBoard.getPersonalBox().addProdResource(Resource.SHIELD);
-        personalBoard.getPersonalBox().addProdResource(Resource.STONE);
-        personalBoard.getPersonalBox().addProdResource(Resource.COIN);
-        personalBoard.getPersonalBox().addProdResource(Resource.COIN);
+        chest.addProdResource(Resource.SHIELD);
+        chest.addProdResource(Resource.SHIELD);
+        chest.addProdResource(Resource.SERF);
+        chest.addProdResource(Resource.COIN);
+        chest.addProdResource(Resource.STONE);
+        chest.addProdResource(Resource.COIN);
+        chest.addProdResource(Resource.SHIELD);
+        chest.addProdResource(Resource.STONE);
+        chest.addProdResource(Resource.COIN);
+        chest.addProdResource(Resource.COIN);
 
-        assertEquals(personalBoard.getPersonalBox().getResourceMap().get(Resource.SHIELD),3);
-        assertEquals(personalBoard.getPersonalBox().getResourceMap().get(Resource.SERF),1);
-        assertEquals(personalBoard.getPersonalBox().getResourceMap().get(Resource.COIN),4);
-        assertEquals(personalBoard.getPersonalBox().getResourceMap().get(Resource.STONE),2);
+        assertEquals(3,chest.getResourceMap().get(Resource.SHIELD));
+        assertEquals(1,chest.getResourceMap().get(Resource.SERF));
+        assertEquals(4,chest.getResourceMap().get(Resource.COIN));
+        assertEquals(2,chest.getResourceMap().get(Resource.STONE));
+
+        //test remove method
+
+        chest.removeResource(Resource.SERF);
+
+        chest.removeResource(Resource.SERF);
+        chest.removeResource(Resource.SHIELD);
+        chest.removeResource(Resource.SHIELD);
+        chest.removeResource(Resource.SHIELD);
+        chest.removeResource(Resource.COIN);
 
 
+        assertEquals(0,chest.getResourceMap().get(Resource.SERF));
+        assertEquals(0,chest.getResourceMap().get(Resource.SHIELD));
+        assertEquals(3,chest.getResourceMap().get(Resource.COIN));
 
     }
+
+
 }

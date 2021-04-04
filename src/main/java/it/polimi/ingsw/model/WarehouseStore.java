@@ -15,9 +15,7 @@ public class WarehouseStore {
         this.quantity = quantity;
     }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
+    public void setSize(int size) { this.size = size; }
 
     public int getQuantity() {
         return quantity;
@@ -34,4 +32,5 @@ public class WarehouseStore {
     public void setResource(Resource resource) {
         this.resource = resource;
     }
+
 }

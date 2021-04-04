@@ -10,10 +10,7 @@ import java.util.*;
 
 public class PersonalBoard {
 
-    /*
-    TODO change the warehouse to an Arraylist
-     */
-    private WarehouseStore[] store = new WarehouseStore[3];
+    private ArrayList<WarehouseStore> store = new ArrayList<>();
     private FaithTrack personalPath = new FaithTrack();
     private Strongbox personalBox = new Strongbox();
     private DevelopmentPlace[] personalDevelopmentSpace = new DevelopmentPlace[3];
@@ -29,32 +26,28 @@ public class PersonalBoard {
         return ProductionList;
     }
 
-    public void setStore(WarehouseStore[] store) { this.store = store; }
+    public void setStore(ArrayList<WarehouseStore> store) { this.store = store;    }
 
     public Strongbox getPersonalBox() { return personalBox;    }
 
-    public WarehouseStore[] getStore() { return store;    }
+    public ArrayList<WarehouseStore> getStore() { return store;    }
 
     public FaithTrack getPersonalPath() {
         return personalPath;
     }
 
     /**
-     * this method is used in the beginning of the game to reset and build the Warehouse store
+     * this is a specific constructor that initialise the board and its elements
      */
-    public void resetPersonalBoard(){
-        store[0]= new WarehouseStore();
-        store[1]= new WarehouseStore();
-        store[2]= new WarehouseStore();
-        store[0].setSize(1);
-        store[1].setSize(2);
-        store[2].setSize(3);
-        personalPath.setPosition(0);
-        personalPath.setScoreCard(0);
-        personalBox.getResourceMap().put(Resource.SERF,0);
-        personalBox.getResourceMap().put(Resource.COIN,0);
-        personalBox.getResourceMap().put(Resource.SHIELD,0);
-        personalBox.getResourceMap().put(Resource.STONE,0);
+    public PersonalBoard() {
+        this.store.add(0,new WarehouseStore());
+        this.store.add(1, new WarehouseStore());
+        this.store.add(2, new WarehouseStore());
+        this.store.get(0).setSize(1);
+        this.store.get(1).setSize(2);
+        this.store.get(2).setSize(3);
+        this.personalPath.setPosition(0);
+        this.personalPath.setScoreCard(0);
 
     }
 
@@ -65,14 +58,16 @@ public class PersonalBoard {
      */
 
     public void addResource(Resource resource){
+        boolean added = false;
 
         for(int i=0; i<3;i++){
 
-            if(store[i].getResource()== resource || store[i].getResource()==null){
+            if((store.get(i).getResource()== resource || store.get(i).getResource()==null) && !added){
 
-                if (store[i].getQuantity() < store[i].getSize() || store[i].getQuantity() == 0){
-                    store[i].setResource(resource);
-                    store[i].setQuantity(store[i].getQuantity() + 1);
+                if (store.get(i).getQuantity() < store.get(i).getSize() || store.get(i).getQuantity() == 0){
+                    store.get(i).setResource(resource);
+                    store.get(i).setQuantity(store.get(i).getQuantity() + 1);
+                    added=true;
                 }
                 else
                     discardResource(resource);
@@ -84,11 +79,12 @@ public class PersonalBoard {
 
     //TODO fare eccezione nel caso in cui la risorsa non c'è
     public void removeResource(Resource resource) {
-
+        boolean removed= false;
         for (int i = 0; i < 3; i++) {
 
-            if (store[i].getResource() == resource) {
-                store[i].setQuantity(store[i].getQuantity() - 1);
+            if ((store.get(i).getResource() == resource)&& !removed) {
+                store.get(i).setQuantity(store.get(i).getQuantity() - 1);
+                removed= true;
             }
 
         }
