@@ -30,5 +30,15 @@ public class DevelopmentPlace {
     public DevelopmentCard getLevel3Card() {
         return level3Card;
     }
+
+    public DevelopmentCard getLevelCard(int level){
+        if (level == 1){
+            return getLevel1Card();
+        } else if (level == 2){
+            return getLevel2Card();
+        } else {
+            return getLevel3Card();
+        }
+    }
 }
 
