@@ -13,7 +13,7 @@ public class Player {
     private ArrayList<Resource> whiteAlt = new ArrayList<>();
     private ArrayList<Resource> sale = new ArrayList<>();
 
-    public Player(String username, PersonalBoard board, LeaderCard[] leaderCard, ArrayList<Resource> whiteAlt, ArrayList<Resource> sale) {
+    public Player(String username,PersonalBoard board,LeaderCard[] leaderCard){
         this.username = username;
         this.board = board;
         this.leaderCard = leaderCard;

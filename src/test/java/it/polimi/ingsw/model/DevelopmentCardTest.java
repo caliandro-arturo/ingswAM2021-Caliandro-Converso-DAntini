@@ -8,6 +8,8 @@ public class DevelopmentCardTest {
     UtilityProductionAndCost[] costtest = new UtilityProductionAndCost[]{cost};
     ProductionPower production = new ProductionPower(costtest,costtest);
     DevelopmentCard developmentCard = new DevelopmentCard(1,1,Color.GREEN,costtest,production);
-    //Player player = new Player();
+    PersonalBoard board = new PersonalBoard();
+    LeaderCard[] leaderCards = new LeaderCard[2];
+    Player player = new Player("Test",board,leaderCards);
 
 }

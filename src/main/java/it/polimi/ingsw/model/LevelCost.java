@@ -38,4 +38,10 @@ public class LevelCost extends ColorCost{
         }
         return flag;
     }
+
+    @Override
+    public void getRequirements() {
+        super.getRequirements();
+        System.out.println("of level" + level);
+    }
 }

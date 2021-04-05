@@ -26,4 +26,9 @@ public class ResourceCost implements Requirements{
             return false;
         }
     }
+
+    @Override
+    public void getRequirements() {
+        System.out.println("to deploy this card you must have: " +cost.getQuantity()+""+cost.getResource());
+    }
 }

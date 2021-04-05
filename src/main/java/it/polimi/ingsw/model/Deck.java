@@ -20,5 +20,10 @@ public class Deck {
     public void shuffleDeck(){
         Collections.shuffle(deck);
     }
-
+    public Card takeCard(){
+        return this.deck.pop();
+    }
+    public Card getTopCard(){
+        return this.deck.peek();
+    }
 }

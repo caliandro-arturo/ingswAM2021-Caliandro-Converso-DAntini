@@ -1,7 +1,17 @@
 package it.polimi.ingsw.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DevelopmentGrid {
     private Deck[][] developmentGrid;
+    private HashMap<Color,Integer> colorPosition = new HashMap<Color,Integer>(){
+        {
+            put(Color.GREEN, 0);
+            put(Color.BLUE,1);
+            put(Color.YELLOW,2);
+            put(Color.PURPLE,3);
+        }};
 
     public DevelopmentGrid(DevelopmentCard[] cards){
         developmentGrid = new Deck[3][4];
@@ -11,37 +21,15 @@ public class DevelopmentGrid {
             }
         }
         for (DevelopmentCard card : cards) {
-            if (card.getColor() == Color.GREEN) {
-                if (card.getLevel() == 1) {
-                    developmentGrid[0][0].getDeck().push(card);
-                } else if (card.getLevel() == 2) {
-                    developmentGrid[1][0].getDeck().push(card);
-                } else {
-                    developmentGrid[2][0].getDeck().push(card);
-                }
-            } else if (card.getColor() == Color.BLUE) {
-                if (card.getLevel() == 1) {
-                    developmentGrid[0][1].getDeck().push(card);
-                } else if (card.getLevel() == 2) {
-                    developmentGrid[1][1].getDeck().push(card);
-                } else {
-                    developmentGrid[2][1].getDeck().push(card);
-                }
-            } else if (card.getColor() == Color.YELLOW) {
-                if (card.getLevel() == 1) {
-                    developmentGrid[0][2].getDeck().push(card);
-                } else if (card.getLevel() == 2) {
-                    developmentGrid[1][2].getDeck().push(card);
-                } else {
-                    developmentGrid[2][2].getDeck().push(card);
-                }
-            } else {
-                if (card.getLevel() == 1) {
-                    developmentGrid[0][3].getDeck().push(card);
-                } else if (card.getLevel() == 2) {
-                    developmentGrid[1][3].getDeck().push(card);
-                } else {
-                    developmentGrid[2][3].getDeck().push(card);
+            for (Map.Entry<Color, Integer> entry : colorPosition.entrySet()) {
+                if (card.getColor() == entry.getKey()) {
+                    if (card.getLevel() == 1) {
+                        developmentGrid[0][entry.getValue()].getDeck().push(card);
+                    } else if (card.getLevel() == 2) {
+                        developmentGrid[1][entry.getValue()].getDeck().push(card);
+                    } else {
+                        developmentGrid[2][entry.getValue()].getDeck().push(card);
+                    }
                 }
             }
         }
@@ -59,15 +47,12 @@ public class DevelopmentGrid {
      * @return the card choosen
      */
     public Card buyCard(Color color,int level){
-        if(color == Color.GREEN) {
-            return developmentGrid[level - 1][0].getDeck().pop();
-        } else if (color == Color.BLUE){
-            return developmentGrid[level - 1][1].getDeck().pop();
-        } else if (color == Color.YELLOW){
-            return developmentGrid[level - 1][2].getDeck().pop();
-        } else {
-            return developmentGrid[level - 1][3].getDeck().pop();
+        for (Map.Entry<Color,Integer> entry : colorPosition.entrySet()){
+            if (entry.getKey() == color){
+                return developmentGrid[level-1][entry.getValue()].takeCard();
+            }
         }
+        return null;
     }
 
     /**
@@ -78,26 +63,13 @@ public class DevelopmentGrid {
         int i = 0;
         int j = 2;
         while (j>0){
-            if(color == Color.GREEN) {
-                while (developmentGrid[i][0].getDeck().empty()){
-                    i++;
+            for (Map.Entry<Color,Integer> entry : colorPosition.entrySet()){
+                if (entry.getKey() == color){
+                    while (developmentGrid[i][entry.getValue()].getDeck().empty() && i<3){
+                        i++;
+                    }
+                     developmentGrid[i][entry.getValue()].takeCard();
                 }
-                developmentGrid[i][0].getDeck().pop();
-            } else if (color == Color.BLUE){
-                while (developmentGrid[i][1].getDeck().empty()){
-                    i++;
-                }
-                developmentGrid[i][1].getDeck().pop();
-            } else if (color == Color.YELLOW){
-                while (developmentGrid[i][2].getDeck().empty()){
-                    i++;
-                }
-                developmentGrid[i][2].getDeck().pop();
-            } else {
-                while (developmentGrid[i][3].getDeck().empty()){
-                    i++;
-                }
-                developmentGrid[i][3].getDeck().pop();
             }
             j--;
         }

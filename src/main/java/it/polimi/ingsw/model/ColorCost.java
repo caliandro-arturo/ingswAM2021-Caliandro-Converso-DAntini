@@ -42,4 +42,12 @@ public class ColorCost implements Requirements{
         }
         return flag;
     }
+
+    @Override
+    public void getRequirements() {
+        System.out.println("to deploy this card you must have: ");
+        for (Map.Entry<Color,Integer> entry: cost.entrySet()){
+            System.out.println(entry.getValue() + "" + entry.getKey() + "Card");
+        }
+    }
 }
