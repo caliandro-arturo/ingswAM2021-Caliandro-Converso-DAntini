@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+
 public class ResourceCost implements Requirements{
     private final UtilityProductionAndCost cost;
 
@@ -14,10 +16,9 @@ public class ResourceCost implements Requirements{
     @Override
     public boolean checkRequirements (Player player) {
         int i = cost.getQuantity();
-        for (int j=0;j<player.getBoard().getStore().length;j++){
-            if (cost.getResource() == player.getBoard().getStore()[j].getResource()){
-                i = i - player.getBoard().getStore()[j].getQuantity();
-                break;
+        for (WarehouseStore store: player.getBoard().getStore()){
+            if (cost.getResource() == store.getResource()){
+                i = i - store.getQuantity();
             }
         }
         if (player.getBoard().getPersonalBox().getResourceMap().get(cost.getResource()) >= i) {
