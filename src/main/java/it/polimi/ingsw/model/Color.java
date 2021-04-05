@@ -1,55 +1,46 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
- * This enumeration contains all the colors used by marbles and cards
+ * This enumeration contains all the colors used by marbles and cards.
+ * For marbles, each color has an action to be performed when a marble is in a selected row or column in the market.
  */
 public enum Color {
-    GREEN {
-        @Override
-        void action(Player player) {
-            /*only for cards*/
-        }
-    },
-    BLUE {
-        @Override
-        void action(Player player) {
-            player.getBoard().addResource(Resource.SHIELD);
-        }
-    },
-    YELLOW {
-        @Override
-        void action(Player player) {
-            player.getBoard().addResource(Resource.COIN);
-        }
-    },
-    PURPLE {
-        @Override
-        void action(Player player) {
-            player.getBoard().addResource(Resource.SERF);
-        }
-    },
-    GREY {
-        @Override
-        void action(Player player) {
-            player.getBoard().addResource(Resource.STONE);
-        }
-    },
-    RED {
-        @Override
-        void action(Player player) {
+    BLUE(player -> player.getBoard().addResource(Resource.SHIELD)),
+    GREY(player -> player.getBoard().addResource(Resource.STONE)),
+    PURPLE(player -> player.getBoard().addResource(Resource.SERF)),
+    YELLOW(player -> player.getBoard().addResource(Resource.COIN)),
+    RED(player -> {
             FaithTrack path = player.getBoard().getPersonalPath();
             path.setPosition(path.getPosition() + 1);
+    }),
+    WHITE(player -> {
+        ArrayList<Resource> whiteAlt = player.getWhiteAlt();
+        if(whiteAlt.isEmpty())
+            return;
+        Resource resource = null;
+        if(whiteAlt.size() == 1)
+            resource = whiteAlt.get(0);
+        else if(whiteAlt.size() == 2) {
+            System.out.println("Choose a power:");
+            AtomicInteger i = new AtomicInteger();
+            whiteAlt.forEach(res -> System.out.println(i.incrementAndGet() + ": "
+                    + res.name().toLowerCase()));
+            Scanner in = new Scanner(System.in);
+            resource = whiteAlt.get(in.nextInt() - 1);
         }
-    },
-    WHITE {
-        @Override
-        void action(Player player) {
-            /*checks player's leaderCards and choose between 3 options:
-                1. no leaderCard with WhiteMarbleConversion -> do nothing;
-                2. one leaderCard with WhiteMarbleConversion -> return resource;
-                3. two leaderCards //          //            -> ask the player which leader to use
-             */
-        }
-    };
-    abstract void action(Player player);
+        player.getBoard().addResource(resource);
+    }),
+    GREEN(player -> {/*only used by DevelopmentCard*/});
+    PlayerAction action;
+    @FunctionalInterface
+    interface PlayerAction {
+        void act(Player player);
+    }
+    Color(PlayerAction action) {
+        this.action = action;
+    }
 }
