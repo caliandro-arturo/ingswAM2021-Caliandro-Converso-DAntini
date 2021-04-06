@@ -5,25 +5,22 @@ import java.util.*;
  * this class identifies all the group of cards in the project
  */
 public class Deck {
-    private Stack<Card> deck;
+    private Stack<DevelopmentCard> deck;
 
 
-    public Deck (){
-        deck= new Stack<Card>();
+    public Deck(){
+        this.deck = new Stack<>();
     }
-    public Deck(Card[] cards){
-        deck.addAll( Arrays.asList(cards));
-    }
-    public Stack<Card> getDeck(){
+    public Stack<DevelopmentCard> getDeck(){
         return deck;
     }
     public void shuffleDeck(){
         Collections.shuffle(deck);
     }
-    public Card takeCard(){
+    public DevelopmentCard takeCard(){
         return this.deck.pop();
     }
-    public Card getTopCard(){
+    public DevelopmentCard getTopCard(){
         return this.deck.peek();
     }
 }

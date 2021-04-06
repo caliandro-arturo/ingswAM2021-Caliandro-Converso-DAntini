@@ -44,9 +44,9 @@ public class DevelopmentGrid {
      * take the card from the grid and return to the player
      * @param color color ask by the player
      * @param level level ask by the player
-     * @return the card choosen
+     * @return the card chosen
      */
-    public Card buyCard(Color color,int level){
+    public DevelopmentCard buyCard(Color color,int level){
         for (Map.Entry<Color,Integer> entry : colorPosition.entrySet()){
             if (entry.getKey() == color){
                 return developmentGrid[level-1][entry.getValue()].takeCard();
