@@ -9,22 +9,27 @@ package it.polimi.ingsw.model;
 import java.util.HashMap;
 public class Strongbox {
 
-    private HashMap<Resource, Integer> resourceMap = new HashMap<>() ;
+    private final HashMap<Resource, Integer> resourceMap = new HashMap<Resource, Integer>(){{
+        put(Resource.SERF,0);
+        put(Resource.COIN,0);
+        put(Resource.SHIELD,0);
+        put(Resource.STONE,0);
+    }} ;
 
     public HashMap<Resource, Integer> getResourceMap() {
         return resourceMap;
     }
 
-    public void setResourceMap(HashMap<Resource, Integer> resourceMap) { this.resourceMap = resourceMap; }
+    //public void setResourceMap(HashMap<Resource, Integer> resourceMap) { this.resourceMap = resourceMap; }
 
     /**
      * this is a specific constructor that initialises the hashmap once
      */
     public Strongbox() {
-        this.resourceMap.put(Resource.SERF,0);
+        /*this.resourceMap.put(Resource.SERF,0);
         this.resourceMap.put(Resource.COIN,0);
         this.resourceMap.put(Resource.SHIELD,0);
-        this.resourceMap.put(Resource.STONE,0);
+        this.resourceMap.put(Resource.STONE,0);*/
 
     }
     /**

@@ -17,24 +17,19 @@ public class PersonalBoard {
     private LeaderCard[] leaderCards = new LeaderCard[2];
     private ArrayList<Production> ProductionList = new ArrayList<>();
 
-
     public DevelopmentPlace[] getPersonalDevelopmentSpace() {
         return personalDevelopmentSpace;
     }
-
     public ArrayList<Production> getProductionList() {
         return ProductionList;
     }
-
     public void setStore(ArrayList<WarehouseStore> store) { this.store = store;    }
-
     public Strongbox getPersonalBox() { return personalBox;    }
-
     public ArrayList<WarehouseStore> getStore() { return store;    }
-
     public FaithTrack getPersonalPath() {
         return personalPath;
     }
+    public void setPersonalPath(FaithTrack personalPath) { this.personalPath = personalPath; }
 
     /**
      * this is a specific constructor that initialise the board and its elements
@@ -48,7 +43,6 @@ public class PersonalBoard {
         this.store.get(2).setSize(3);
         this.personalPath.setPosition(0);
         this.personalPath.setScoreCard(0);
-
     }
 
     /**
@@ -94,4 +88,5 @@ public class PersonalBoard {
      * @param resource
      */
     public void discardResource(Resource resource){}
+
 }

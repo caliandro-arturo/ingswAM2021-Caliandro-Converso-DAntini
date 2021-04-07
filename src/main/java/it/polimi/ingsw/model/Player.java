@@ -13,36 +13,28 @@ public class Player {
     private ArrayList<Resource> whiteAlt = new ArrayList<>();
     private ArrayList<Resource> sale = new ArrayList<>();
 
-    public Player(String username,PersonalBoard board,LeaderCard[] leaderCard){
+    public Player(String username){
         this.username = username;
-        this.board = board;
-        this.leaderCard = leaderCard;
+        board = new PersonalBoard();
     }
 
     public void setBoard(PersonalBoard board) {
         this.board = board;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
-
     public PersonalBoard getBoard() {
         return board;
     }
-
     public String getUsername() {
         return username;
     }
-
     public ArrayList<Resource> getWhiteAlt() { return whiteAlt; }
-
     public ArrayList<Resource> getSale() { return sale; }
-
     public void addWhiteAlt(Resource resource) {
         whiteAlt.add(resource);
     }
-
     public void addSale(Resource resource) {
         sale.add(resource);
     }
