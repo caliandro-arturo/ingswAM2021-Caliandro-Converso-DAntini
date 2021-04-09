@@ -7,8 +7,8 @@ import java.util.Scanner;
  */
 public class AdditionalProductionPower  implements LeaderPower,Production{
 
-    private Resource cost;
-    private Resource production1 = Resource.FAITH;
+    private final Resource cost;
+    private final Resource production1 = Resource.FAITH;
 
     public AdditionalProductionPower(Resource cost){
         this.cost = cost;
@@ -58,16 +58,17 @@ public class AdditionalProductionPower  implements LeaderPower,Production{
      * @return true if from the strongbox and false if is from the warehouse
      */
     private boolean askPlayerWhereTakeResource(){
-        System.out.println("Where you want to take the resource ?");
-        Scanner scanner = new Scanner(System.in);
-        String whatStore = scanner.nextLine();
-        if (whatStore.equals("strongbox")){
-            return true;
-        } else if (whatStore.equals("warehouse")){
-            return false;
-        } else {
-            System.out.println("Error, please write again");
-            return askPlayerWhereTakeResource();
+        while (true) {
+            System.out.println("Where you want to take the resource ?");
+            Scanner scanner = new Scanner(System.in);
+            String whatStore = scanner.nextLine();
+            if (whatStore.equals("strongbox")) {
+                return true;
+            } else if (whatStore.equals("warehouse")) {
+                return false;
+            } else {
+                System.out.println("Error, please write again");
+            }
         }
     }
 
@@ -76,20 +77,23 @@ public class AdditionalProductionPower  implements LeaderPower,Production{
      * @return type of resource chosen
      */
     private Resource askPlayerResourceType(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Chose a Resource");
-        String whatResource = scanner.nextLine();
-        if (whatResource.equals("coin")){
-            return Resource.COIN;
-        } else if (whatResource.equals("stone")){
-            return Resource.STONE;
-        } else if (whatResource.equals("serf")){
-            return Resource.SERF;
-        } else if (whatResource.equals("shield")){
-            return Resource.SHIELD;
-        } else {
-            System.out.println("Error, please write again");
-            return askPlayerResourceType();
+        while (true) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Chose a Resource");
+            String whatResource = scanner.nextLine();
+            switch (whatResource) {
+                case "coin":
+                    return Resource.COIN;
+                case "stone":
+                    return Resource.STONE;
+                case "serf":
+                    return Resource.SERF;
+                case "shield":
+                    return Resource.SHIELD;
+                default:
+                    System.out.println("Error, please write again");
+                    break;
+            }
         }
     }
 }

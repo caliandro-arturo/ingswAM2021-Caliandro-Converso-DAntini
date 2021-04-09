@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import java.util.ArrayList;
-
 public class ResourceCost implements Requirements{
     private final UtilityProductionAndCost cost;
 
@@ -21,11 +19,7 @@ public class ResourceCost implements Requirements{
                 i = i - store.getQuantity();
             }
         }
-        if (player.getBoard().getPersonalBox().getResourceMap().get(cost.getResource()) >= i) {
-            return true;
-        } else {
-            return false;
-        }
+        return player.getBoard().getPersonalBox().getResourceMap().get(cost.getResource()) >= i;
     }
 
     @Override

@@ -10,7 +10,7 @@ package it.polimi.ingsw.model;
  *
  */
 public class DevelopmentCard {
-    private int victoryPoints;
+    private final int victoryPoints;
     private final int level;
     private final Color color;
     private final UtilityProductionAndCost[] cost;

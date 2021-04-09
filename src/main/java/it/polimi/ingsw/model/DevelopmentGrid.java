@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DevelopmentGrid {
-    private Deck[][] developmentGrid;
-    private HashMap<Color,Integer> colorPosition = new HashMap<Color,Integer>(){
+    private final Deck[][] developmentGrid;
+    private final HashMap<Color,Integer> colorPosition = new HashMap<Color,Integer>(){
         {
             put(Color.GREEN, 0);
             put(Color.BLUE,1);

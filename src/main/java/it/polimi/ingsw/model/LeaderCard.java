@@ -7,9 +7,9 @@ package it.polimi.ingsw.model;
  *  leaderPower
  */
 public class LeaderCard{
-    private int victoryPoints;
-    private Requirements requirements;
-    private LeaderPower leaderPower;
+    private final int victoryPoints;
+    private final Requirements requirements;
+    private final LeaderPower leaderPower;
 
     public int getVictoryPoints() {
         return victoryPoints;

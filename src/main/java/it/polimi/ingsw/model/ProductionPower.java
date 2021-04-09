@@ -6,8 +6,8 @@ import java.util.Scanner;
  * Basic type of production power
  */
 public class ProductionPower implements Production{
-    private UtilityProductionAndCost[] cost;
-    private UtilityProductionAndCost[] production;
+    private final UtilityProductionAndCost[] cost;
+    private final UtilityProductionAndCost[] production;
 
 
     public ProductionPower(UtilityProductionAndCost[] cost, UtilityProductionAndCost[] production){
@@ -25,30 +25,31 @@ public class ProductionPower implements Production{
     }
 
     private void manageCost(PersonalBoard board){
-        for (int i = 0; i<cost.length; i++){
-            System.out.println("Cost" +cost[i].getResource());
-            int j = cost[i].getQuantity();
-            while (j!=0) {
+        for (UtilityProductionAndCost utilityProductionAndCost : cost) {
+            System.out.println("Cost" + utilityProductionAndCost.getResource());
+            int j = utilityProductionAndCost.getQuantity();
+            while (j != 0) {
                 if (askPlayerWhereTakeResource()) {
-                    board.getPersonalBox().removeResource(cost[i].getResource());
+                    board.getPersonalBox().removeResource(utilityProductionAndCost.getResource());
                 } else {
-                    board.removeResource(cost[i].getResource());
+                    board.removeResource(utilityProductionAndCost.getResource());
                 }
                 j--;
             }
         }
     }
     private boolean askPlayerWhereTakeResource(){
-        System.out.println("Where you want to take the resource ?");
-        Scanner scanner = new Scanner(System.in);
-        String whatStore = scanner.nextLine();
-        if (whatStore.equals("strongbox")){
-            return true;
-        } else if (whatStore.equals("warehouse")){
-            return false;
-        } else {
-            System.out.println("Error, please write again");
-            return askPlayerWhereTakeResource();
+        while (true) {
+            System.out.println("Where you want to take the resource ?");
+            Scanner scanner = new Scanner(System.in);
+            String whatStore = scanner.nextLine();
+            if (whatStore.equals("strongbox")) {
+                return true;
+            } else if (whatStore.equals("warehouse")) {
+                return false;
+            } else {
+                System.out.println("Error, please write again");
+            }
         }
     }
 }

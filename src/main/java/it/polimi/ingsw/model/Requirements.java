@@ -10,10 +10,10 @@ public interface Requirements {
      * @param player who deploy the card
      * @return true if the requirements are met or false
      */
-    public boolean checkRequirements (Player player);
+    boolean checkRequirements(Player player);
 
     /**
      * show on screen the requirements for the card
      */
-    public void getRequirements();
+    void getRequirements();
 }

@@ -2,13 +2,12 @@ package it.polimi.ingsw.model;
 import java.util.*;
 
 public class ColorCost implements Requirements{
-    private HashMap<Color, Integer> cost;
+    private final HashMap<Color, Integer> cost = new HashMap<>();
 
-    public ColorCost(){
-        cost = new HashMap<>();
-    }
-    public void addCost(Color color,Integer num){
-        this.cost.put(color,num);
+    public ColorCost(Color[] colors, Integer[] quantity){
+        for (int i = 0;i<colors.length;i++){
+            cost.put(colors[i],quantity[i]);
+        }
     }
 
     public HashMap<Color, Integer> getCost() {
@@ -36,9 +35,7 @@ public class ColorCost implements Requirements{
         }
         boolean flag = false;
         for (Map.Entry<Color, Integer> entry: cost.entrySet()){
-            if (checkColor.get(entry.getKey()) >= cost.get(entry.getKey())){
-                flag = true;
-            } else flag = false;
+            flag = checkColor.get(entry.getKey()) >= cost.get(entry.getKey());
         }
         return flag;
     }

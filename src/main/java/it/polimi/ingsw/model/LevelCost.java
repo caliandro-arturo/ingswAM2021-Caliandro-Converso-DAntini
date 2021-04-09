@@ -4,16 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LevelCost extends ColorCost{
-    private int level;
+    private final int level;
 
-    public LevelCost(Color color,Integer num,int level){
-        super();
-        addLevelCost(color,num,level);
-    }
-
-    public void addLevelCost(Color color, Integer num, int level) {
-        super.addCost(color, num);
-        this.level =level;
+    public LevelCost(Color[] colors, Integer[] quantity, int level){
+        super(colors,quantity);
+        this.level = level;
     }
 
     @Override
@@ -32,9 +27,7 @@ public class LevelCost extends ColorCost{
         }
         boolean flag = false;
         for (Map.Entry<Color, Integer> entry: getCost().entrySet()){
-            if (checkColor.get(entry.getKey()) >= getCost().get(entry.getKey())){
-                flag = true;
-            } else flag = false;
+            flag = checkColor.get(entry.getKey()) >= getCost().get(entry.getKey());
         }
         return flag;
     }

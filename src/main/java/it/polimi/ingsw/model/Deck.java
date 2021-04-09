@@ -2,10 +2,10 @@ package it.polimi.ingsw.model;
 import java.util.*;
 
 /**
- * this class identifies all the group of cards in the project
+ * this class identifies all the group of dev cards in the project
  */
 public class Deck {
-    private Stack<DevelopmentCard> deck;
+    private final Stack<DevelopmentCard> deck;
 
 
     public Deck(){

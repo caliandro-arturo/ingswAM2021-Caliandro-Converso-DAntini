@@ -4,8 +4,8 @@ package it.polimi.ingsw.model;
  *  an utily class to help in the costruction of various classes
  */
 public class UtilityProductionAndCost {
-    private Resource resource;
-    private int quantity;
+    private final Resource resource;
+    private final int quantity;
 
     public UtilityProductionAndCost(int quantity, Resource resource){
         this.quantity = quantity;
