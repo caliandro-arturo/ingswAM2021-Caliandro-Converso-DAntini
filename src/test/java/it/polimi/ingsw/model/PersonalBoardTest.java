@@ -51,6 +51,8 @@ class PersonalBoardTest {
         assertEquals(1,board.getStore().get(0).getQuantity());
         assertEquals(2,board.getStore().get(1).getQuantity());
         assertEquals(3,board.getStore().get(2).getQuantity());
+        
+
 
 
 

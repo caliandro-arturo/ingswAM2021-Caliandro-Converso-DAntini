@@ -13,13 +13,13 @@ public abstract class Game {
     private final Market market;
     private final Stack<LeaderCard> leaderDeck;
     private final DevelopmentGrid developmentGrid;
-    private final HashMap<Integer, Boolean> vaticanReportMap = new HashMap<Integer, Boolean>(){{
-        put(1, false);
-        put(2, false);
-        put(3, false);
+    private final HashMap<Integer, Boolean> vaticanMap = new HashMap<Integer, Boolean>() {{
+        put(8,  false);
+        put(16, false);
+        put(24, false);
     }};
     private final ArrayList<TurnPhase> turnPhases = new ArrayList<>();
-    protected final Boolean isOver = false;
+    protected final Boolean gameIsOver = false;
 
     public Game(Player player, Market market, Stack<LeaderCard> leaderDeck, DevelopmentGrid developmentGrid) {
         players.add(player);
@@ -37,8 +37,8 @@ public abstract class Game {
     public DevelopmentGrid getDevelopmentGrid() {
         return developmentGrid;
     }
-    public HashMap<Integer, Boolean> getVaticanReportMap() {
-        return vaticanReportMap;
+    public HashMap<Integer, Boolean> getVaticanMap() {
+        return vaticanMap;
     }
     public Player getCurrentPlayer() {
         return currentPlayer;
@@ -57,12 +57,7 @@ public abstract class Game {
     /**
      * This method sets, in order, the player's turn phases
      */
-    public void setTurnPhases() {
-        turnPhases.add(new UseLeaderPhase());
-        turnPhases.add(new ActionPhase());
-        turnPhases.add(new UseLeaderPhase());
-        turnPhases.add(new EndTurnPhase());
-    }
+    public abstract void setTurnPhases();
 
     /**
      * This method adds a player to the game if the number of players isn't already reached
@@ -78,9 +73,10 @@ public abstract class Game {
      */
     public abstract Player endTurn(Player player);
 
-    public abstract void vaticanReport();
+    public void vaticanReport() {
+    }
 
     public abstract void setUpPlayers();
 
-    public abstract void start();
+    public abstract void startTurnPhase();
 }
