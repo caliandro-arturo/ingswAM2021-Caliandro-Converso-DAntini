@@ -21,11 +21,17 @@ public class Player {
     public void setBoard(PersonalBoard board) {
         this.board = board;
     }
+    public void setLeaderCard(LeaderCard[] leaderCard) {
+        this.leaderCard = leaderCard;
+    }
     public void setUsername(String username) {
         this.username = username;
     }
     public PersonalBoard getBoard() {
         return board;
+    }
+    public LeaderCard[] getLeaderCard() {
+        return leaderCard;
     }
     public String getUsername() {
         return username;
@@ -88,15 +94,13 @@ public class Player {
      * @param rowOrColumn
      * @param number
      */
-    public void useMarket(char rowOrColumn, int number){ //roworcolumn sarà un char
-
-        System.out.println( "\n select 'row' or 'column'\n");
+    public void useMarket(Game game, char rowOrColumn, int number){ //roworcolumn sarà un char
+        /*System.out.println( "\n select 'row' or 'column'\n");
         Scanner input = new Scanner(System.in);
         rowOrColumn = input.next().charAt(0);
         System.out.println( "\n select number for it\n");
-        number = input.nextInt();
-
-
+        number = input.nextInt();*/
+        game.getMarket().getMarblesResources(game, rowOrColumn, number);
     }
 
 

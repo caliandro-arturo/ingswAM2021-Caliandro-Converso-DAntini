@@ -2,42 +2,18 @@ package it.polimi.ingsw.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MarketTest {
-    public static Market market;
-    private static ArrayList<Marble> marbles = new ArrayList<>();
-    /**
-     * this method initializes the market
-     */
-    @BeforeAll
-    public static void setUp(){
-        marbles.add(new Marble(Color.WHITE));
-        marbles.add(new Marble(Color.WHITE));
-        marbles.add(new Marble(Color.WHITE));
-        marbles.add(new Marble(Color.WHITE));
-        marbles.add(new Marble(Color.BLUE));
-        marbles.add(new Marble(Color.BLUE));
-        marbles.add(new Marble(Color.GREY));
-        marbles.add(new Marble(Color.GREY));
-        marbles.add(new Marble(Color.YELLOW));
-        marbles.add(new Marble(Color.YELLOW));
-        marbles.add(new Marble(Color.PURPLE));
-        marbles.add(new Marble(Color.PURPLE));
-        marbles.add(new Marble(Color.RED));
-        market = new Market(3, 4, marbles);
-    }
+    public Market market = new Market();
 
     /**
-     * This test verify that all the marbles are placed in the market tray and that there is
+     * This test verifies that all the marbles are placed in the market tray and that there is
      * an extra marble
      */
     @Test
-    public void fulfillMarket() {
+    public void marketIsFulfilled() {
         int[] colorHistogram = new int[7];
         colorHistogram[Color.WHITE.ordinal()] = 4;
         colorHistogram[Color.RED.ordinal()] = 1;
@@ -52,14 +28,14 @@ public class MarketTest {
                 colorHistogram[row[j].getColor().ordinal()]--;
         }
         colorHistogram[market.getExtraMarble().getColor().ordinal()]--;
-        assertTrue(Arrays.equals(colorHistogram, new int[] {0, 0, 0, 0, 0, 0, 0}));
+        assertArrayEquals(new int[] {0, 0, 0, 0, 0, 0, 0}, colorHistogram);
     }
 
     /**
-     * This test verify that the re-entry of the extra marble in the tray is done correctly
+     * This test verifies that the re-entry of the extra marble in the tray is done correctly
      */
     @Test
-    public void marble() {
+    public void marbleReinsertion() {
         Marble oldExtra;
         Marble[] slice;
         Marble[] newSlice;

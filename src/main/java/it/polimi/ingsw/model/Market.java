@@ -35,6 +35,23 @@ public class Market {
                 tray[i][j] = marbles.get(i * columns + j);
         extraMarble = marbles.get(rows * columns);
     }
+    public Market() {
+        this(3, 4, new ArrayList<Marble>() {{
+            add(new Marble(Color.WHITE));
+            add(new Marble(Color.WHITE));
+            add(new Marble(Color.WHITE));
+            add(new Marble(Color.WHITE));
+            add(new Marble(Color.BLUE));
+            add(new Marble(Color.BLUE));
+            add(new Marble(Color.GREY));
+            add(new Marble(Color.GREY));
+            add(new Marble(Color.YELLOW));
+            add(new Marble(Color.YELLOW));
+            add(new Marble(Color.PURPLE));
+            add(new Marble(Color.PURPLE));
+            add(new Marble(Color.RED));
+        }});
+    }
 
     public Marble[][] getTray() {
         return tray;
@@ -62,7 +79,7 @@ public class Market {
         Marble[] marbleArray = null;
         if(rowOrColumn == 'r') {
             marbleArray = new Marble[columns];
-            if (columns >= 0) System.arraycopy(tray[num], 0, marbleArray, 0, columns);
+            System.arraycopy(tray[num], 0, marbleArray, 0, columns);
         }
         else if(rowOrColumn == 'c') {
             marbleArray = new Marble[rows];
@@ -99,14 +116,14 @@ public class Market {
 
     /**
      * This method is the one directly called when chooses to use the market
-     * @param player the player who uses the market
+     * @param game the game where a player uses the market
      * @param rowOrColumn selection between row or column
      * @param num position of the selected row/column
      */
-    public void getMarblesResources(Player player, char rowOrColumn, int num) {
+    public void getMarblesResources(Game game, char rowOrColumn, int num) {
         Marble[] chosenMarketSlice = getRowOrColumn(rowOrColumn, num);
         for(Marble marble: chosenMarketSlice)
-            marble.pick(player);
+            marble.pick(game);
         reinsertExtraMarble(rowOrColumn, num);
     }
 }
