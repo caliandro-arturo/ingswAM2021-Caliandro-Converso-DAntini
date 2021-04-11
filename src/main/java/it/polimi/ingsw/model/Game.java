@@ -21,13 +21,14 @@ public abstract class Game {
         put(24, false);
     }};
     private final HashMap<String, TurnPhase> turnPhases;
-    private final InputHandler inputHandler;
-    private final ViewMethodsCaller viewMethodsCaller;
+    private InputHandler inputHandler;
+    private ViewMethodsCaller viewMethodsCaller;
     private ArrayList<Player> playersToWait = new ArrayList<>();
     private boolean isOver = false;
     private boolean startReady = false;
 
-    public Game(Player player, int playersNum, Market market, Stack<LeaderCard> leaderDeck, DevelopmentGrid developmentGrid) {
+    public Game(Player player, int playersNum, Market market, Stack<LeaderCard> leaderDeck,
+                DevelopmentGrid developmentGrid) {
         this.players.add(player);
         this.playersNum = playersNum;
         this.market = market;
@@ -110,8 +111,13 @@ public abstract class Game {
      * @return the number of free places in the game
      */
     public int addPlayer(Player player) {
-        if(playersNum > players.size())
-            players.add(player);
+        if(playersNum == players.size()) {
+            viewMethodsCaller.notifyGameIsFull(player);
+            return 0;
+        } else if(!players.contains(player))
+            viewMethodsCaller.notifyAlreadyIn(player);
+        players.add(player);
+        viewMethodsCaller.notifyAddedPlayer(player);
         return playersNum - players.size();
     }
 
@@ -122,4 +128,15 @@ public abstract class Game {
     }
 
     public abstract void setUpPlayers();
+    //public abstract void endGame();
+
+    //------------------------------------------------------------------------------------------------------------------
+    /* for debug purposes */
+
+    public void setInputHandler(InputHandler inputHandler) {
+        this.inputHandler = inputHandler;
+    }
+    public void setViewMethodsCaller(ViewMethodsCaller viewMethodsCaller) {
+        this.viewMethodsCaller = viewMethodsCaller;
+    }
 }

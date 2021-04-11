@@ -29,4 +29,9 @@ public class MultiplayerGame extends Game {
         }
         readyPlayer(0);
     }
+
+    /*@Override
+    public void endGame() {
+
+    }*/
 }

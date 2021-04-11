@@ -27,7 +27,7 @@ class SoloActionsStackTest {
             }
         }
     };
-    SoloActionPhase soloActionPhase = new SoloActionPhase(game);
+    SoloActionPhase soloActionPhase;
 
     @BeforeEach
     void setUp() {
@@ -44,6 +44,7 @@ class SoloActionsStackTest {
         decks[3].getDeck().push(new DevelopmentCard(1,1, Color.PURPLE, null,null));
         decks[3].getDeck().push(new DevelopmentCard(1,1, Color.PURPLE, null,null));
         game = new SinglePlayerGame(player, 1,null, null, testGrid);
+        soloActionPhase = new SoloActionPhase(game);
         //Lorenzo Actions ordered for testing purposes
         soloActionPhase.getSoloActions().set(0, SoloAction.DELGREEN);
         soloActionPhase.getSoloActions().set(1, SoloAction.DELBLUE);

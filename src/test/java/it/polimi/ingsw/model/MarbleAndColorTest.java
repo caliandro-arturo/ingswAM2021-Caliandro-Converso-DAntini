@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MarbleTest {
+class MarbleAndColorTest {
     int i = 0;
     ArrayList<Resource> resources = new ArrayList<>();
     PersonalBoard testBoard = new PersonalBoard() {
@@ -21,11 +21,17 @@ class MarbleTest {
         public void setUpPlayers() {
         }
     };
-
+    ViewMethodsCaller testCaller = new ViewMethodsCaller(testGame) {
+        @Override
+        public void askWhiteMarbleResource() {
+            testGame.getInputHandler().giveChosenWhiteMarbleResource(testPlayer, testPlayer.getWhiteAlt().get(i++));
+        }
+    };
     @BeforeEach
     void setUp() {
         testPlayer.setBoard(testBoard);
         testGame.setCurrentPlayer(testPlayer);
+        testGame.setViewMethodsCaller(testCaller);
     }
     /**
      * This method verifies that every marble activates correctly its action according to its color
@@ -46,12 +52,12 @@ class MarbleTest {
         Marble whiteMarble = new Marble(Color.WHITE);
         whiteMarble.pick(testGame);
         assertEquals(4, resources.size());
-        testPlayer.addWhiteAlt(Resource.COIN);
+        testPlayer.addWhiteAlt(Resource.SERF);
         whiteMarble.pick(testGame);
-        assertEquals(Resource.COIN, resources.get(4));
+        assertEquals(Resource.SERF, resources.get(4));
         testPlayer.addWhiteAlt(Resource.STONE);
         whiteMarble.pick(testGame);
-        assertEquals(Resource.COIN, resources.get(5));
+        assertEquals(Resource.SERF, resources.get(5));
         whiteMarble.pick(testGame);
         assertEquals(Resource.STONE, resources.get(6));
     }
