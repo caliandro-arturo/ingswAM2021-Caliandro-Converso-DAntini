@@ -13,6 +13,10 @@ public class DevelopmentGrid {
             put(Color.PURPLE,3);
         }};
 
+    public Deck getDeck(int level, Color color){
+        return developmentGrid[level][colorPosition.get(color)];
+    }
+
     public DevelopmentGrid(DevelopmentCard[] cards){
         developmentGrid = new Deck[3][4];
         for (int i =0; i < 3; i++){
