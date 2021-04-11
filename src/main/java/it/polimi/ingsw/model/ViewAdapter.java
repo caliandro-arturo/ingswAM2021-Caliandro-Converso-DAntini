@@ -3,13 +3,13 @@ package it.polimi.ingsw.model;
 /**
  * This class contains all the methods used by the model to notify the player and/or to ask him to do an action.
  */
-public class ViewMethodsCaller {
+public class ViewAdapter {
     /**
      * To avoid redundancy, this class is initialized with a reference to the game as attribute.
      */
     private final Game game;
 
-    public ViewMethodsCaller(Game game) {
+    public ViewAdapter(Game game) {
         this.game = game;
     }
 
@@ -61,5 +61,32 @@ public class ViewMethodsCaller {
      * This method sends the notice to the player that the choice he made is invalid.
      */
     public void notifyInvalidChoice() {
+    }
+
+    /**
+     * This method notifies the player that the game is already full.
+     * @param player the player who tried to enter the game
+     */
+    public void notifyGameIsFull(Player player) {
+    }
+
+    /**
+     * This method notifies the player that he is already in the game.
+     * @param player the player who tried to re-enter the game
+     */
+    public void notifyAlreadyIn(Player player) {
+    }
+
+    /**
+     * This method notifies the player that he has been added successfully to the game.
+     * @param player the player that is
+     */
+    public void notifyAddedPlayer(Player player) {
+    }
+
+    /**
+     * This method sends the request to the current player to choose a card to buy from the Development Grid.
+     */
+    public void askWhichCardToBuyFromTheDevelopmentGrid() {
     }
 }

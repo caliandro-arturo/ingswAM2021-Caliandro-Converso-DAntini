@@ -25,7 +25,7 @@ public class MultiplayerGame extends Game {
             p.setLeaderCard(leaderCards);
             for(int j = 0; j < initialFaithPoints[players.indexOf(p)]; j++)  //
                 p.getBoard().getPersonalPath().increasePosition();
-            getViewMethodsCaller().askArbitraryResource(p, initialResources[players.indexOf(p)]);
+            getViewAdapter().askArbitraryResource(p, initialResources[players.indexOf(p)]);
         }
         readyPlayer(0);
     }

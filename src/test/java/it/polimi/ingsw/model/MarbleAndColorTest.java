@@ -21,17 +21,17 @@ class MarbleAndColorTest {
         public void setUpPlayers() {
         }
     };
-    ViewMethodsCaller testCaller = new ViewMethodsCaller(testGame) {
+    ViewAdapter testCaller = new ViewAdapter(testGame) {
         @Override
         public void askWhiteMarbleResource() {
-            testGame.getInputHandler().giveChosenWhiteMarbleResource(testPlayer, testPlayer.getWhiteAlt().get(i++));
+            testGame.getControllerAdapter().giveChosenWhiteMarbleResource(testPlayer, testPlayer.getWhiteAlt().get(i++));
         }
     };
     @BeforeEach
     void setUp() {
         testPlayer.setBoard(testBoard);
         testGame.setCurrentPlayer(testPlayer);
-        testGame.setViewMethodsCaller(testCaller);
+        testGame.setViewAdapter(testCaller);
     }
     /**
      * This method verifies that every marble activates correctly its action according to its color

@@ -7,12 +7,12 @@ public class BuyDevCardPhase extends TurnPhase {
 
     @Override
     public void start() {
-
+        getGame().getViewAdapter().askWhichCardToBuyFromTheDevelopmentGrid();
     }
 
     @Override
     public String getPhaseInfo() {
-        return null;
+        return "Use your resources to buy a new Development Card to insert in your board.";
     }
 
     @Override

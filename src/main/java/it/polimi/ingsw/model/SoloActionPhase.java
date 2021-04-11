@@ -22,7 +22,6 @@ public class SoloActionPhase extends TurnPhase {
     void nextTurnPhase() {
 
     }
-
     //------------------------------------------------------------------------------------------------------------------
     /* for debug purposes */
 

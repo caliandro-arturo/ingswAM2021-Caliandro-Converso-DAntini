@@ -21,7 +21,7 @@ public enum Color {
                         resource = whiteAlt.get(0);
                         game.getCurrentPlayer().getBoard().addResource(resource);
                     } else if (whiteAlt.size() == 2) {
-                        game.getViewMethodsCaller().askWhiteMarbleResource();
+                        game.getViewAdapter().askWhiteMarbleResource();
                     }
                 }),
     GREEN/*---*/(game -> {/*only used by DevelopmentCard*/});

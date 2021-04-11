@@ -11,7 +11,7 @@ public class UseLeaderPhase extends TurnPhase {
     @Override
     public void start() {
         if(getGame().getCurrentPlayer().getLeaderCard().length == 0) return;
-        getGame().getViewMethodsCaller().askLeaderAction();
+        getGame().getViewAdapter().askLeaderAction();
     }
 
     @Override

@@ -7,12 +7,12 @@ import java.util.Arrays;
  * This class is for handling messages sent from the client.
  *
  */
-public class InputHandler {
+public class ControllerAdapter {
     private Game game;
     private final ArrayList<String> selectablePhases = new ArrayList<>(
             Arrays.asList("UseMarket", "BuyDevelopmentCard", "ActivateProduction")
     );
-    public InputHandler(Game game) {
+    public ControllerAdapter(Game game) {
         this.game = game;
     }
 
@@ -23,7 +23,7 @@ public class InputHandler {
      */
     private boolean notExpectedPlayerInput(Player player) {
         if (!player.equals(game.getCurrentPlayer())) {
-            game.getViewMethodsCaller().notifyNotPlayerTurn(player);
+            game.getViewAdapter().notifyNotPlayerTurn(player);
             return true;
         }
         return false;
@@ -46,7 +46,7 @@ public class InputHandler {
     public void startChosenTurnPhase(Player player, String turnPhase) {
         if(notExpectedPlayerInput(player)) return;
         else if(!selectablePhases.contains(turnPhase))
-            game.getViewMethodsCaller().notifyInvalidChoice();
+            game.getViewAdapter().notifyInvalidChoice();
         else turnStart(turnPhase);
     }
 
@@ -67,6 +67,10 @@ public class InputHandler {
      * @param turnPhase the turn phase for which information has been requested
      */
     public void givePlayerTurnPhaseInfo(Player player, String turnPhase) {
-        game.getViewMethodsCaller().giveTurnPhaseInfo(game.getTurnPhases().get(turnPhase).getPhaseInfo());
+        game.getViewAdapter().giveTurnPhaseInfo(game.getTurnPhases().get(turnPhase).getPhaseInfo());
+    }
+
+    public void addPlayer(Player player) {
+        game.addPlayer(player);
     }
 }

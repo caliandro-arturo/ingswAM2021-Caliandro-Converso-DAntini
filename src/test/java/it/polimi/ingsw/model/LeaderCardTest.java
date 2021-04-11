@@ -13,8 +13,8 @@ public class LeaderCardTest {
     private Player player;
     private Player playerFalse;
     public AdditionalProductionPower production;
-    @BeforeEach
 
+    @BeforeEach
     void setUp(){
         UtilityProductionAndCost cost1 = new UtilityProductionAndCost(5,Resource.COIN);
         Color[] colors = new Color[]{Color.GREEN,Color.BLUE};

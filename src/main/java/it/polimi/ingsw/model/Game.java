@@ -21,8 +21,8 @@ public abstract class Game {
         put(24, false);
     }};
     private final HashMap<String, TurnPhase> turnPhases;
-    private InputHandler inputHandler;
-    private ViewMethodsCaller viewMethodsCaller;
+    private ControllerAdapter controllerAdapter;
+    private ViewAdapter viewAdapter;
     private ArrayList<Player> playersToWait = new ArrayList<>();
     private boolean isOver = false;
     private boolean startReady = false;
@@ -34,8 +34,8 @@ public abstract class Game {
         this.market = market;
         this.leaderDeck = leaderDeck;
         this.developmentGrid = developmentGrid;
-        this.inputHandler = new InputHandler(this);
-        this.viewMethodsCaller = new ViewMethodsCaller(this);
+        this.controllerAdapter = new ControllerAdapter(this);
+        this.viewAdapter = new ViewAdapter(this);
         Game game = this;
         turnPhases = new HashMap<String, TurnPhase>() {{
             put("UseLeader", new UseLeaderPhase(game, true));
@@ -80,11 +80,11 @@ public abstract class Game {
     public Stack<LeaderCard> getLeaderDeck() {
         return leaderDeck;
     }
-    public InputHandler getInputHandler() {
-        return inputHandler;
+    public ControllerAdapter getControllerAdapter() {
+        return controllerAdapter;
     }
-    public ViewMethodsCaller getViewMethodsCaller() {
-        return viewMethodsCaller;
+    public ViewAdapter getViewAdapter() {
+        return viewAdapter;
     }
 
     public void setCurrentPlayer(Player currentPlayer) {
@@ -112,12 +112,12 @@ public abstract class Game {
      */
     public int addPlayer(Player player) {
         if(playersNum == players.size()) {
-            viewMethodsCaller.notifyGameIsFull(player);
+            viewAdapter.notifyGameIsFull(player);
             return 0;
         } else if(!players.contains(player))
-            viewMethodsCaller.notifyAlreadyIn(player);
+            viewAdapter.notifyAlreadyIn(player);
         players.add(player);
-        viewMethodsCaller.notifyAddedPlayer(player);
+        viewAdapter.notifyAddedPlayer(player);
         return playersNum - players.size();
     }
 
@@ -133,10 +133,10 @@ public abstract class Game {
     //------------------------------------------------------------------------------------------------------------------
     /* for debug purposes */
 
-    public void setInputHandler(InputHandler inputHandler) {
-        this.inputHandler = inputHandler;
+    public void setControllerAdapter(ControllerAdapter controllerAdapter) {
+        this.controllerAdapter = controllerAdapter;
     }
-    public void setViewMethodsCaller(ViewMethodsCaller viewMethodsCaller) {
-        this.viewMethodsCaller = viewMethodsCaller;
+    public void setViewAdapter(ViewAdapter viewAdapter) {
+        this.viewAdapter = viewAdapter;
     }
 }

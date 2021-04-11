@@ -7,7 +7,7 @@ public class ChooseActionPhase extends TurnPhase {
 
     @Override
     public void start() {
-        getGame().getViewMethodsCaller().askTurnPhaseAction();
+        getGame().getViewAdapter().askTurnPhaseAction();
     }
 
     @Override
