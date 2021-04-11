@@ -73,4 +73,8 @@ public class ControllerAdapter {
     public void addPlayer(Player player) {
         game.addPlayer(player);
     }
+
+    public void addDevCardOnPlace(Player player, int pos, DevelopmentCard devCard){
+
+    }
 }

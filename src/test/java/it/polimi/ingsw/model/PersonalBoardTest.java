@@ -10,11 +10,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PersonalBoardTest {
 
-    private static PersonalBoard board;
+    private PersonalBoard board;
+    Player testPlayer = new Player("pippo");
+    Game testGame = new Game(testPlayer, 4, null, null, null){
+        @Override
+        public void setUpPlayers() {
+
+        }
+
+    };
 
     @BeforeEach
     void setUp() {
-        board = new PersonalBoard();
+        testPlayer.setGame(testGame);
+        board = testPlayer.getBoard();
     }
 
     @Test
@@ -51,6 +60,9 @@ class PersonalBoardTest {
         assertEquals(1,board.getStore().get(0).getQuantity());
         assertEquals(2,board.getStore().get(1).getQuantity());
         assertEquals(3,board.getStore().get(2).getQuantity());
+
+        board.addResource(Resource.COIN);
+
         
 
 

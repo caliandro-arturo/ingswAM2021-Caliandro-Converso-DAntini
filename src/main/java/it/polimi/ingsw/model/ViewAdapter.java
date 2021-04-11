@@ -89,4 +89,11 @@ public class ViewAdapter {
      */
     public void askWhichCardToBuyFromTheDevelopmentGrid() {
     }
+
+    /**
+     * this method asks to the player where he wants to put a newly bought DevCard
+     */
+    public void askDevCardPlace(){
+
+    }
 }

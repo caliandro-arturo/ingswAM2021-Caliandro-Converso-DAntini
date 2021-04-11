@@ -12,35 +12,38 @@ public class Player {
     private LeaderCard[] leaderCard;
     private ArrayList<Resource> whiteAlt = new ArrayList<>();
     private ArrayList<Resource> sale = new ArrayList<>();
+    private Game game;
 
     public Player(String username){
         this.username = username;
         board = new PersonalBoard();
     }
 
+    public Game getGame() {
+        return game;
+    }
+    public void setGame(Game game) {
+        this.game = game;
+        board.setGame(game);
+        board.getPersonalPath().setGame(game);
+    }
     public void setBoard(PersonalBoard board) {
         this.board = board;
     }
-    public void setLeaderCard(LeaderCard[] leaderCard) {
-        this.leaderCard = leaderCard;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public PersonalBoard getBoard() {
-        return board;
-    }
-    public LeaderCard[] getLeaderCard() {
-        return leaderCard;
-    }
-    public String getUsername() {
-        return username;
-    }
+    public void setLeaderCard(LeaderCard[] leaderCard) { this.leaderCard = leaderCard;    }
+    public void setUsername(String username) {        this.username = username;    }
+    public void setSale(ArrayList<Resource> sale) { this.sale = sale;    }
+    public void setWhiteAlt(ArrayList<Resource> whiteAlt) { this.whiteAlt = whiteAlt;    }
+
+    public LeaderCard[] getLeaderCard() { return leaderCard;    }
+    public PersonalBoard getBoard() {        return board;    }
+    public String getUsername() {        return username;    }
     public ArrayList<Resource> getWhiteAlt() { return whiteAlt; }
     public ArrayList<Resource> getSale() { return sale; }
     public void addWhiteAlt(Resource resource) {
         whiteAlt.add(resource);
     }
+
     public void addSale(Resource resource) {
         sale.add(resource);
     }
@@ -60,9 +63,8 @@ public class Player {
      * @param devCard
      * @return
      */
-    public DevelopmentCard buyDevelopmentCard (DevelopmentCard devCard){
+    public void buyDevelopmentCard (DevelopmentCard devCard){
 
-        return devCard;
     }
 
 

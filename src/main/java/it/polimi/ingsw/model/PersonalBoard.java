@@ -16,6 +16,7 @@ public class PersonalBoard {
     private DevelopmentPlace[] personalDevelopmentSpace = new DevelopmentPlace[3];
     private LeaderCard[] leaderCards = new LeaderCard[2];
     private ArrayList<Production> ProductionList = new ArrayList<>();
+    private Game game;
 
     public DevelopmentPlace[] getPersonalDevelopmentSpace() {
         return personalDevelopmentSpace;
@@ -23,18 +24,51 @@ public class PersonalBoard {
     public ArrayList<Production> getProductionList() {
         return ProductionList;
     }
-    public void setStore(ArrayList<WarehouseStore> store) { this.store = store;    }
-    public Strongbox getPersonalBox() { return personalBox;    }
-    public ArrayList<WarehouseStore> getStore() { return store;    }
+    public Strongbox getPersonalBox() {
+        return personalBox;
+    }
+    public ArrayList<WarehouseStore> getStore() {
+        return store;
+    }
     public FaithTrack getPersonalPath() {
         return personalPath;
     }
-    public void setPersonalPath(FaithTrack personalPath) { this.personalPath = personalPath; }
+    public LeaderCard[] getLeaderCards() {
+        return leaderCards;
+    }
+    public Game getGame() {
+        return game;
+    }
+
+    public void setStore(ArrayList<WarehouseStore> store) {
+        this.store = store;
+    }
+    public void setPersonalPath(FaithTrack personalPath) {
+        this.personalPath = personalPath;
+    }
+    public void setLeaderCards(LeaderCard[] leaderCards) {
+        this.leaderCards = leaderCards;
+    }
+    public void setPersonalBox(Strongbox personalBox) {
+        this.personalBox = personalBox;
+    }
+    public void setPersonalDevelopmentSpace(DevelopmentPlace[] personalDevelopmentSpace) {
+        this.personalDevelopmentSpace = personalDevelopmentSpace;
+    }
+    public void setProductionList(ArrayList<Production> productionList) {
+        ProductionList = productionList;
+    }
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
     /**
      * this is a specific constructor that initialise the board and its elements
      */
     public PersonalBoard() {
+        this.personalDevelopmentSpace[0]= new DevelopmentPlace();
+        this.personalDevelopmentSpace[1]= new DevelopmentPlace();
+        this.personalDevelopmentSpace[2]= new DevelopmentPlace();
         this.store.add(0,new WarehouseStore());
         this.store.add(1, new WarehouseStore());
         this.store.add(2, new WarehouseStore());
@@ -64,10 +98,10 @@ public class PersonalBoard {
                     added=true;
                 }
                 else
-                    discardResource(resource);
+                    discardResource();
             }
             else
-                discardResource(resource);
+                discardResource();
         }
     }
 
@@ -85,8 +119,38 @@ public class PersonalBoard {
     }
     /**
      * this method is called from addResource when it's not possible to add more resources to the Warehouse store
-     * @param resource
      */
-    public void discardResource(Resource resource){}
+    public void discardResource(){
+        for(Player player: game.getPlayers()){
+            if(!player.equals(game.getCurrentPlayer()))
+                player.getBoard().getPersonalPath().setPosition(player.getBoard().getPersonalPath().getPosition()+1);
+        }
+        for(Player player: game.getPlayers()){
+            if(!player.equals(game.getCurrentPlayer()))
+                player.getBoard().getPersonalPath().checkPosition();
+        }
+    }
 
+    /**
+     * this method is used to check if there is a free space for a new devCard
+     * @param devCard
+     */
+    public boolean checkSpaceForNewCard(DevelopmentCard devCard) {
+        return !freePlaces(devCard).isEmpty();
+    }
+
+    public void addCard(DevelopmentCard devCard, int pos){
+        personalDevelopmentSpace[pos].getDevelopmentCards().push(devCard);
+
+    }
+
+    public ArrayList<DevelopmentPlace> freePlaces(DevelopmentCard devCard){
+        int level = devCard.getLevel();
+        ArrayList<DevelopmentPlace> developmentPlaces = new ArrayList<>();
+        for(DevelopmentPlace dev : personalDevelopmentSpace){
+            if(dev.hasRoomForCard(level))
+                developmentPlaces.add(dev);
+        }
+        return developmentPlaces;
+    }
 }

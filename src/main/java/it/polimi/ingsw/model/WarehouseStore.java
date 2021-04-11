@@ -14,23 +14,20 @@ public class WarehouseStore {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
     public void setSize(int size) { this.size = size; }
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
 
     public int getQuantity() {
         return quantity;
     }
-
     public int getSize() {
         return size;
     }
-
     public Resource getResource() {
         return resource;
     }
 
-    public void setResource(Resource resource) {
-        this.resource = resource;
-    }
 
 }
