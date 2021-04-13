@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 /**
@@ -10,33 +11,41 @@ import java.util.Stack;
 public class DevelopmentPlace {
 
     private Stack<DevelopmentCard> developmentCards;
+    /*private DevelopmentCard level1Card;
+    private DevelopmentCard level2Card;
+    private DevelopmentCard level3Card;*/
 
     public Stack<DevelopmentCard> getDevelopmentCards() {
         return developmentCards;
     }
-    /*public DevelopmentCard getLevel1Card() { return level1Card;    }
-    public DevelopmentCard getLevel2Card() { return level2Card;    }
-    public DevelopmentCard getLevel3Card() { return level3Card;    }
 
-    public void setLevel1Card(DevelopmentCard level1Card) { this.level1Card = level1Card; }
-    public void setLevel2Card(DevelopmentCard level2Card) { this.level2Card = level2Card; }
-    public void setLevel3Card(DevelopmentCard level3Card) { this.level3Card = level3Card; }*/
+    public DevelopmentPlace() {
+        this.developmentCards = new Stack<>();
+    }
+     public DevelopmentCard getLevel1Card() {
+        return developmentCards.get(0);
+    }
+    public DevelopmentCard getLevel2Card() {
+        return developmentCards.get(1);
+    }
+    public DevelopmentCard getLevel3Card() {
+        return developmentCards.get(2);
+    }
 
-    /*public DevelopmentCard getLevelCard(int level){
-        if (level == 1){
-            return getLevel1Card();
-        } else if (level == 2){
-            return getLevel2Card();
-        } else {
-            return getLevel3Card();
-        }
-    }*/
-
-    public boolean hasRoomForCard(int level){
-        if (level ==1 && developmentCards.isEmpty()) {
+    /**
+     * return true if this place has space for a specific level card
+     * @param level
+     * @return
+     */
+    public boolean hasRoomForCard(int level) {
+        try {
+            if(level>1 && developmentCards.isEmpty())
+                return false;
+            else
+                return level == developmentCards.peek().getLevel() + 1;
+        }catch(EmptyStackException e){
             return true;
-        } else    
-            return level == developmentCards.peek().getLevel()+1;
+        }
     }
 
 }

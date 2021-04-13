@@ -10,12 +10,12 @@ import java.util.*;
 
 public class PersonalBoard {
 
-    private ArrayList<WarehouseStore> store = new ArrayList<>();
-    private FaithTrack personalPath = new FaithTrack();
-    private Strongbox personalBox = new Strongbox();
-    private DevelopmentPlace[] personalDevelopmentSpace = new DevelopmentPlace[3];
-    private LeaderCard[] leaderCards = new LeaderCard[2];
-    private ArrayList<Production> ProductionList = new ArrayList<>();
+    private ArrayList<WarehouseStore> store;
+    private FaithTrack personalPath;
+    private Strongbox personalBox ;
+    private DevelopmentPlace[] personalDevelopmentSpace;
+    private LeaderCard[] leaderCards ;
+    private ArrayList<Production> ProductionList ;
     private Game game;
 
     public DevelopmentPlace[] getPersonalDevelopmentSpace() {
@@ -66,6 +66,12 @@ public class PersonalBoard {
      * this is a specific constructor that initialise the board and its elements
      */
     public PersonalBoard() {
+        this.store = new ArrayList<>();
+        this.personalPath = new FaithTrack(1,0);
+        this.personalBox = new Strongbox();
+        this.personalDevelopmentSpace = new DevelopmentPlace[3];
+        this.leaderCards = new LeaderCard[2];
+        this.ProductionList = new ArrayList<>();
         this.personalDevelopmentSpace[0]= new DevelopmentPlace();
         this.personalDevelopmentSpace[1]= new DevelopmentPlace();
         this.personalDevelopmentSpace[2]= new DevelopmentPlace();
@@ -75,8 +81,6 @@ public class PersonalBoard {
         this.store.get(0).setSize(1);
         this.store.get(1).setSize(2);
         this.store.get(2).setSize(3);
-        this.personalPath.setPosition(0);
-        this.personalPath.setScoreCard(0);
     }
 
     /**
@@ -84,24 +88,35 @@ public class PersonalBoard {
      * another method will allow to move the resources in the Warehouse store
      * @param resource
      */
-
     public void addResource(Resource resource){
         boolean added = false;
+        boolean discarded = false;
+        for(int i=0; i<3;i++) {
 
-        for(int i=0; i<3;i++){
-
-            if((store.get(i).getResource()== resource || store.get(i).getResource()==null) && !added){
-
-                if (store.get(i).getQuantity() < store.get(i).getSize() || store.get(i).getQuantity() == 0){
+            if ((store.get(i).getResource() == resource) && !added && !discarded) {
+                if (store.get(i).getQuantity() < store.get(i).getSize()) {
                     store.get(i).setResource(resource);
                     store.get(i).setQuantity(store.get(i).getQuantity() + 1);
-                    added=true;
+                    added = true;
                 }
                 else
                     discardResource();
+                    discarded = true;
             }
-            else
+        }
+        for(int j=0; j<3;j++) {
+            if ((store.get(j).getResource() == null) && !added && !discarded) {
+                if (store.get(j).getQuantity() < store.get(j).getSize()) {
+                    store.get(j).setResource(resource);
+                    store.get(j).setQuantity(store.get(j).getQuantity() + 1);
+                    added = true;
+
+                }
+            }
+            if(j==2 && !added && !discarded){
                 discardResource();
+                discarded = true;
+            }
         }
     }
 
@@ -110,13 +125,17 @@ public class PersonalBoard {
         boolean removed= false;
         for (int i = 0; i < 3; i++) {
 
-            if ((store.get(i).getResource() == resource)&& !removed) {
+            if ((store.get(i).getResource() == resource) && !removed) {
                 store.get(i).setQuantity(store.get(i).getQuantity() - 1);
+                if(store.get(i).getQuantity()==0)
+                    store.get(i).setResource(null);
+
                 removed= true;
             }
 
         }
     }
+
     /**
      * this method is called from addResource when it's not possible to add more resources to the Warehouse store
      */
@@ -140,10 +159,17 @@ public class PersonalBoard {
     }
 
     public void addCard(DevelopmentCard devCard, int pos){
-        personalDevelopmentSpace[pos].getDevelopmentCards().push(devCard);
-
+        pos--;
+        if(personalDevelopmentSpace[pos].hasRoomForCard(devCard.getLevel())) {
+            personalDevelopmentSpace[pos].getDevelopmentCards().push(devCard);
+        }
     }
 
+    /**
+     * this method shows to the view which places are free to put a card in
+     * @param devCard
+     * @return
+     */
     public ArrayList<DevelopmentPlace> freePlaces(DevelopmentCard devCard){
         int level = devCard.getLevel();
         ArrayList<DevelopmentPlace> developmentPlaces = new ArrayList<>();
