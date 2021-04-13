@@ -1,0 +1,200 @@
+{
+    "LeaderCard": [
+        
+        {
+            "victoryPoints": 2,
+            "colorCost": {
+                "blue":0,
+                "purple":0,
+                "yellow": 1,
+                "green": 1
+            },
+            "saleOnDev": {
+                "resource": "serf"
+            }
+        },
+
+        {
+            "victoryPoints": 2,
+            "colorCost": {
+                "yellow": 0,
+                "green": 0,
+                "blue": 1,
+                "purple": 1
+            },
+            "saleOnDev": {
+                "resource": "shield"
+            }
+        },
+
+        {
+            "victoryPoints": 2,
+            "colorCost": {
+                "purple":0,
+                "yellow": 0,
+                "green": 1,
+                "blue": 1
+            },
+            "saleOnDev": {
+                "resource": "stone"
+            }
+        },
+
+        {
+            "victoryPoints": 2,
+            "colorCost": {
+                "blue": 0,
+                "green": 0,
+                "yellow": 1,
+                "purple": 1
+            },
+            "saleOnDev": {
+                "resource": "coin"
+            }
+        },
+
+        {
+            "victoryPoints": 3,
+            "resourceCost":{
+                "resource": "coin",
+                "quantity": 5
+            },
+            "specialW": {
+                "resource": "stone"
+            }
+        },
+
+        {
+            "victoryPoints": 3,
+            "resourceCost":{
+                "resource": "stone",
+                "quantity": 5
+            },
+            "specialW": {
+                "resource": "serf"
+            }            
+        },
+
+        {
+            "victoryPoints": 3,
+            "resourceCost":{
+                "resource": "serf",
+                "quantity": 5
+            },
+            "specialW": {
+                "resource": "shield"
+            }
+        },
+
+        {
+            "victoryPoints": 3,
+            "resourceCost":{
+                "resource": "shield",
+                "quantity": 5
+            },
+            "specialW": {
+                "resource": "coin"
+            }
+        },
+
+        {
+            "victoryPoints": 5,
+            "colorCost": {
+                "purple": 0,
+                "green": 0,
+                "yellow": 2,
+                "blue": 1
+            },
+            "whiteMarble": {
+                "resource": "serf"
+            }
+        },
+
+        {
+            "victoryPoints": 5,
+            "colorCost": {
+                "blue": 0,
+                "yellow": 0,
+                "green": 2,
+                "purple": 1
+            },
+            "whiteMarble": {
+                "resource": "shield"
+            }
+        },
+
+        {
+            "victoryPoints": 5,
+            "colorCost": {
+                "purple": 0,
+                "green": 0,
+                "blue": 2,
+                "yellow": 1
+            },
+            "whiteMarble": {
+                "resource": "stone"
+            }
+        },
+
+        {
+            "victoryPoints": 5,
+            "colorCost": {
+                "blue": 0,
+                "yellow": 0,
+                "purple": 2,
+                "green": 1
+            },
+            "whiteMarble": {
+                "resource": "coin"
+            }
+        },
+
+        {
+            "victoryPoints": 4,
+            "levelCost": {
+                "color": "YELLOW",
+                "quantity": 1,
+                "level": 2
+            },
+            "specialProduction": {
+                "resource": "shield"
+            }
+        },
+
+        {
+            "victoryPoints": 4,
+            "levelCost": {
+                "color": "BLUE",
+                "quantity": 1,
+                "level": 2
+            },
+            "specialProduction": {
+                "resource": "serf"
+            }
+        },
+
+        {
+            "victoryPoints": 4,
+            "levelCost": {
+                "color": "PURPLE",
+                "quantity": 1,
+                "level": 2
+            },
+            "specialProduction": {
+                "resource": "stone"
+            }
+        },
+
+        {
+            "victoryPoints": 4,
+            "levelCost": {
+                "color": "GREEN",
+                "quantity": 1,
+                "level": 2
+            },
+            "specialProduction": {
+                "resource": "coin"
+            }
+        }
+    ]
+}
