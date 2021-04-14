@@ -14,7 +14,8 @@ import java.util.HashMap;
 import java.util.Stack;
 
 /**
- * This class
+ * This class is the creator of the right instance of the game; its purpose is also to read JSON files with the cards
+ * of the game.
  */
 public class GameCreator {
     private final Market market = new Market();

@@ -16,6 +16,7 @@ public class MultiplayerGame extends Game {
     public void setUpPlayers() {
         ArrayList<Player> players = getPlayers();
         Collections.shuffle(players);
+        players.forEach(p -> getViewAdapter().notifyPlayerTurnNumber(p, players.indexOf(p) + 1));
         setPlayersToWait(new ArrayList<>(players));
         setCurrentPlayer(players.get(0));
         for(Player p: players) {
@@ -25,13 +26,13 @@ public class MultiplayerGame extends Game {
             p.setLeaderCard(leaderCards);
             for(int j = 0; j < initialFaithPoints[players.indexOf(p)]; j++)  //
                 p.getBoard().getPersonalPath().increasePosition();
-            getViewAdapter().askArbitraryResource(p, initialResources[players.indexOf(p)]);
+            getViewAdapter().setUpPlayer(p, initialResources[players.indexOf(p)]);
         }
-        readyPlayer(0);
+        setPlayerReady(0);
     }
 
-    /*@Override
+    @Override
     public void endGame() {
 
-    }*/
+    }
 }

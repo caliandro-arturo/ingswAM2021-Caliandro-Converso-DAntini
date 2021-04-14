@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 public class BuyDevCardPhase extends TurnPhase {
     public BuyDevCardPhase(Game game) {
-        super(game);
+        super(game, "Buy a development card phase", false);
     }
 
     @Override
@@ -16,7 +16,7 @@ public class BuyDevCardPhase extends TurnPhase {
     }
 
     @Override
-    public void nextTurnPhase() {
-
+    public TurnPhase nextTurnPhase() {
+        return getGame().getTurnPhase("UseAgainLeader");
     }
 }

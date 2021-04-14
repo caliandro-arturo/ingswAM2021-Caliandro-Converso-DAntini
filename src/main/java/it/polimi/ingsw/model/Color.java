@@ -21,6 +21,7 @@ public enum Color {
                         resource = whiteAlt.get(0);
                         game.getCurrentPlayer().getBoard().addResource(resource);
                     } else if (whiteAlt.size() == 2) {
+                        game.setExpectedWhiteMarbleEffectChoice(true);
                         game.getViewAdapter().askWhiteMarbleResource();
                     }
                 }),

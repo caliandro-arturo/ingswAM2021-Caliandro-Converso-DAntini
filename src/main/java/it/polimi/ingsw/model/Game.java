@@ -24,11 +24,17 @@ public abstract class Game {
     private ControllerAdapter controllerAdapter;
     private ViewAdapter viewAdapter;
     private ArrayList<Player> playersToWait = new ArrayList<>();
-    private boolean isOver = false;
-    private boolean startReady = false;
+
+    //booleans
+    private boolean isFull = false;                             //all players has been added
+    private boolean isStarted = false;                          //the game is started
+    private boolean expectedWhiteMarbleEffectChoice = false;    //the player have to choose a resource
+    private boolean isOver = false;                             //the game is over (last turns)
+    private boolean isFinished = false;                         //the game is finished
 
     public Game(Player player, int playersNum, Market market, Stack<LeaderCard> leaderDeck,
                 DevelopmentGrid developmentGrid) {
+        player.setGame(this);
         this.players.add(player);
         this.playersNum = playersNum;
         this.market = market;
@@ -45,8 +51,8 @@ public abstract class Game {
             put("ActivateProduction", new ActivateProdPhase(game));
             put("UseAgainLeader", new UseLeaderPhase(game, false));
         }};
-
     }
+
     public ArrayList<Player> getPlayers() {
         return players;
     }
@@ -96,39 +102,143 @@ public abstract class Game {
     public void setPlayersToWait(ArrayList<Player> playersToWait) {
         this.playersToWait = playersToWait;
     }
-    public void readyPlayer(Player player) {
-        playersToWait.remove(player);
-        if(playersToWait.size() == 0)
-            startReady = true;
+
+    //booleans management
+    public boolean isFull() {
+        return isFull;
     }
-    public void readyPlayer(int num) {
-        readyPlayer(playersToWait.get(num));
+    public boolean isStarted() {
+        return isStarted;
+    }
+    public boolean expectedWhiteMarbleEffectChoice() {
+        return expectedWhiteMarbleEffectChoice;
+    }
+    public boolean isOver() {
+        return isOver;
+    }
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFull() {
+        isFull = true;
+    }
+    public void setStarted() {
+        isStarted = true;
+    }
+    public void setExpectedWhiteMarbleEffectChoice(boolean expectedWhiteMarbleEffectChoice) {
+        this.expectedWhiteMarbleEffectChoice = expectedWhiteMarbleEffectChoice;
+    }
+    public void setOver(boolean over) {
+        isOver = over;
+    }
+    public void setFinished() {
+        isFinished = true;
+    }
+
+    //auxiliary methods
+    /**
+     * Returns the reference of the turn phase indicated by {@code name}.
+     * @param name the name of the asked turn phase
+     * @return the turn phase asked
+     */
+    public TurnPhase getTurnPhase(String name) {
+        return turnPhases.get(name);
+    }
+    //main methods
+
+    /**
+     * Adds a player to the game if the number of players isn't already reached.
+     *
+     * @param player the player to add to the game
+     * @throws GameException.GameAlreadyFull if there is no place in the game for the player
+     * @throws GameException.NicknameAlreadyTaken if the nickname of the player has already been
+     * taken from another player in the game
+     */
+    public void addPlayer(Player player) throws GameException.GameAlreadyFull,
+            GameException.NicknameAlreadyTaken {
+        if (isFull)
+            throw new GameException.GameAlreadyFull();
+        else if (players.stream().anyMatch(p -> p.getUsername().equals(player.getUsername())))
+            throw new GameException.NicknameAlreadyTaken();
+        else {
+            players.add(player);
+            player.setGame(this);
+            viewAdapter.notifyAddedPlayer(player);
+            if(playersNum == players.size()) {
+                setFull();
+                viewAdapter.sendMessage("The game now is full. Initializing players...");
+                setUpPlayers();
+            }
+        }
+    }
+    /**
+     * This method removes the player from {@link Game#playersToWait}. If {@code playersToWait} is
+     * empty, set the game ready to start.
+     * @param player the ready player to remove
+     */
+    public void setPlayerReady(Player player) {
+        playersToWait.remove(player);
+        if (playersToWait.isEmpty()) {
+            startGame();
+        }
+    }
+    /**
+     * Removes the player indicated from {@code num} in {@link Game#playersToWait}.
+     * @param num the position in {@link Game#playersToWait} of the player to remove
+     */
+    public void setPlayerReady(int num) {
+        setPlayerReady(playersToWait.get(num));
     }
 
     /**
-     * This method adds a player to the game if the number of players isn't already reached
-     * @param player the player to add to the game
-     * @return the number of free places in the game
+     * Starts the game.
      */
-    public int addPlayer(Player player) {
-        if(playersNum == players.size()) {
-            viewAdapter.notifyGameIsFull(player);
-            return 0;
-        } else if(!players.contains(player))
-            viewAdapter.notifyAlreadyIn(player);
-        players.add(player);
-        viewAdapter.notifyAddedPlayer(player);
-        return playersNum - players.size();
+    public void startGame() {
+        viewAdapter.sendMessage("The game will start now.");
+        setStarted();
+        setCurrentTurnPhase(getTurnPhase("UseLeader"));
+        currentTurnPhase.start();
     }
 
+    /**
+     * Starts the next turn phase.
+     */
+    public void nextTurnPhase() {
+        setCurrentTurnPhase(getCurrentTurnPhase().nextTurnPhase());
+        currentTurnPhase.start();
+    }
+
+    /**
+     * Starts a turn phase.
+     *
+     * @param turnPhase the turn phase to start
+     */
+    public void nextTurnPhase(String turnPhase) {
+        setCurrentTurnPhase(getTurnPhase(turnPhase));
+        currentTurnPhase.start();
+    }
+
+    /**
+     * Starts a Vatican Report: each player that has his red cross in a Vatican Section earns additional VP.
+     * @param popePosition the position in which the Vatican Report has been triggered
+     */
     public void vaticanReport(int popePosition) {
         vaticanMap.replace(popePosition, true);
         players.forEach(player -> player.getBoard().getPersonalPath().isInVatican(popePosition));
-        if(popePosition == 24) isOver = true;
+        if (popePosition == 24) {
+            if (isOver) {
+                setOver(true);
+
+            }
+        }
     }
 
+    /**
+     * Set {@link Game#currentPlayer} and initializes players.
+     */
     public abstract void setUpPlayers();
-    //public abstract void endGame();
+    public abstract void endGame();
 
     //------------------------------------------------------------------------------------------------------------------
     /* for debug purposes */

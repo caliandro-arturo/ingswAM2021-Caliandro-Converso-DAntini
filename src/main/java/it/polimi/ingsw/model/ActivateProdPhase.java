@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 public class ActivateProdPhase extends TurnPhase {
     public ActivateProdPhase(Game game) {
-        super(game);
+        super(game, "Activate productions phase", false);
     }
 
     @Override
@@ -16,7 +16,7 @@ public class ActivateProdPhase extends TurnPhase {
     }
 
     @Override
-    public void nextTurnPhase() {
-
+    public TurnPhase nextTurnPhase() {
+        return getGame().getTurnPhase("UseAgainLeader");
     }
 }

@@ -13,7 +13,7 @@ public class MarketTest {
      * an extra marble
      */
     @Test
-    public void marketIsFulfilled() {
+    public void marketIsFulfilled() throws GameException.InvalidArgument {
         int[] colorHistogram = new int[7];
         colorHistogram[Color.WHITE.ordinal()] = 4;
         colorHistogram[Color.RED.ordinal()] = 1;
@@ -35,7 +35,7 @@ public class MarketTest {
      * This test verifies that the re-entry of the extra marble in the tray is done correctly
      */
     @Test
-    public void marbleReinsertion() {
+    public void marbleReinsertion() throws GameException.InvalidArgument {
         Marble oldExtra;
         Marble[] slice;
         Marble[] newSlice;

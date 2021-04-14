@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class SoloActionPhase extends TurnPhase {
     private final SoloActionsStack soloActions = new SoloActionsStack();
     public SoloActionPhase(Game game) {
-        super(game);
+        super(game, "Solo Action phase", false);
     }
 
     @Override
@@ -19,8 +19,8 @@ public class SoloActionPhase extends TurnPhase {
                 "and there will be an effect based on the token you have picked.";
     }
     @Override
-    void nextTurnPhase() {
-
+    TurnPhase nextTurnPhase() {
+        return null;
     }
     //------------------------------------------------------------------------------------------------------------------
     /* for debug purposes */

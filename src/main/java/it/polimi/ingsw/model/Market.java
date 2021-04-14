@@ -70,27 +70,35 @@ public class Market {
     }
 
     /**
-     * This method returns a selected row or column of marbles from the tray
+     * Returns a selected row or column of marbles from the tray
      * @param rowOrColumn selection between row or column (it must be 'r' or 'c')
      * @param num position of the selected row/column
      */
-    public Marble[] getRowOrColumn(char rowOrColumn, int num) {
-        num -= 1;
+    public Marble[] getRowOrColumn(char rowOrColumn, int num) throws GameException.InvalidArgument {
+        if(!(rowOrColumn == 'r' || rowOrColumn == 'c'))
+            throw new GameException.InvalidArgument("You must choose between 'r' or 'c'.");
+        else if(num < 1)
+            throw new GameException.InvalidArgument("Number cannot be less than 1.");
+        else if(rowOrColumn == 'r' && num > rows)
+            throw new GameException.InvalidArgument("Maximum number accepted for rows is " + rows + ".");
+        else if(rowOrColumn == 'c' && num > columns)
+            throw new GameException.InvalidArgument("Maximum number accepted for columns is " + columns + ".");
+        num--;
         Marble[] marbleArray = null;
-        if(rowOrColumn == 'r') {
+        if (rowOrColumn == 'r') {
             marbleArray = new Marble[columns];
             System.arraycopy(tray[num], 0, marbleArray, 0, columns);
         }
-        else if(rowOrColumn == 'c') {
+        else {
             marbleArray = new Marble[rows];
-            for(int i = 0; i < rows; i++)
+            for (int i = 0; i < rows; i++)
                 marbleArray[i] = tray[i][num];
         }
         return marbleArray;
     }
 
     /**
-     * This method updates the market after the selection of a row or a column, inserting the extra marble at the first
+     * Updates the market after the selection of a row or a column, inserting the extra marble at the first
      * position and shifting the others down/right
      * @param rowOrColumn the choice between row or column
      * @param num position of the selected row/column
@@ -98,13 +106,12 @@ public class Market {
     public void reinsertExtraMarble(char rowOrColumn, int num) {
         Marble temp;
         num -= 1;
-        if(rowOrColumn == 'r') {
+        if (rowOrColumn == 'r') {
             temp = tray[num][columns - 1];
             System.arraycopy(tray[num], 0, tray[num], 1, columns - 2 + 1);
             tray[num][0] = extraMarble;
             extraMarble = temp;
-        }
-        else if(rowOrColumn == 'c') {
+        } else if (rowOrColumn == 'c') {
             temp = tray[rows - 1][num];
             for (int i = rows - 2; i >= 0; i--) {
                 tray[i + 1][num] = tray[i][num];
@@ -115,14 +122,15 @@ public class Market {
     }
 
     /**
-     * This method is the one directly called when chooses to use the market
-     * @param game the game where a player uses the market
+     * Gives the current player resources or faith point based on the row or column selected.
+     * @param game the game in which the current player uses the market
      * @param rowOrColumn selection between row or column
      * @param num position of the selected row/column
+     * @throws GameException.InvalidArgument if parameters are invalids
      */
-    public void getMarblesResources(Game game, char rowOrColumn, int num) {
+    public void getMarblesResources(Game game, char rowOrColumn, int num) throws GameException.InvalidArgument {
         Marble[] chosenMarketSlice = getRowOrColumn(rowOrColumn, num);
-        for(Marble marble: chosenMarketSlice)
+        for (Marble marble : chosenMarketSlice)
             marble.pick(game);
         reinsertExtraMarble(rowOrColumn, num);
     }
