@@ -11,14 +11,31 @@ public class SpecialWarehouse implements LeaderPower{
     }
 
     public SpecialWarehouse (Resource resource, int quantity){
-        extraResource = new WarehouseStore();
-        extraResource.setResource(resource);
-        extraResource.setQuantity(quantity);
+        extraResource = new WarehouseStore(quantity) {{
+            this.setTypeOfResource(resource);
+        }
+            @Override
+            public boolean hasRoomForResource(Resource resource) {
+                return this.getTypeOfResource() == resource &&
+                        this.getResources().size() < this.getSize();
+            }
+
+            @Override
+            public Resource takeOutResource() throws IllegalArgumentException {
+                if(!getResources().isEmpty()) {
+                    Resource resToTake = getResources().get(getResources().size()-1);
+                    getResources().remove(resToTake);
+                    return resToTake;
+                }
+                else
+                    throw new IllegalArgumentException("this shelf is already empty");
+            }
+        };
     }
 
     @Override
     public void getPower() {
-        System.out.println("Build extra Warehouse of" +getExtraResource().getResource());
+        System.out.println("Build extra Warehouse of" + getExtraResource().getTypeOfResource());
     }
 
     @Override
