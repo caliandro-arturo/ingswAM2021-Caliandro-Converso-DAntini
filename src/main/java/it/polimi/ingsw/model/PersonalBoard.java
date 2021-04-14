@@ -17,6 +17,9 @@ public class PersonalBoard {
     private LeaderCard[] leaderCards ;
     private ArrayList<Production> ProductionList ;
     private Game game;
+    private ArrayList<Resource> resHand;
+
+
 
     public DevelopmentPlace[] getPersonalDevelopmentSpace() {
         return personalDevelopmentSpace;
@@ -39,6 +42,10 @@ public class PersonalBoard {
     public Game getGame() {
         return game;
     }
+    public ArrayList<Resource> getResHand() {
+        return resHand;
+    }
+
 
     public void setStore(ArrayList<WarehouseStore> store) {
         this.store = store;
@@ -66,88 +73,59 @@ public class PersonalBoard {
      * this is a specific constructor that initialise the board and its elements
      */
     public PersonalBoard() {
-        this.store = new ArrayList<>();
-        this.personalPath = new FaithTrack(1,0);
+        this.resHand = new ArrayList<>();
+        this.store = new ArrayList<WarehouseStore>() {{
+            addAll(Arrays.asList(
+                    new WarehouseStore(1),
+                    new WarehouseStore(2),
+                    new WarehouseStore(3)
+            ));
+        }};
+        this.personalPath = new FaithTrack();
         this.personalBox = new Strongbox();
         this.personalDevelopmentSpace = new DevelopmentPlace[3];
         this.leaderCards = new LeaderCard[2];
         this.ProductionList = new ArrayList<>();
-        this.personalDevelopmentSpace[0]= new DevelopmentPlace();
-        this.personalDevelopmentSpace[1]= new DevelopmentPlace();
-        this.personalDevelopmentSpace[2]= new DevelopmentPlace();
-        this.store.add(0,new WarehouseStore());
-        this.store.add(1, new WarehouseStore());
-        this.store.add(2, new WarehouseStore());
-        this.store.get(0).setSize(1);
-        this.store.get(1).setSize(2);
-        this.store.get(2).setSize(3);
+        this.personalDevelopmentSpace[0] = new DevelopmentPlace();
+        this.personalDevelopmentSpace[1] = new DevelopmentPlace();
+        this.personalDevelopmentSpace[2] = new DevelopmentPlace();
     }
 
-    /**
-     * this method is used from the Market to add a resource in the Warehouse store, checking if it's possible
-     * another method will allow to move the resources in the Warehouse store
+    /**new version of addResource
+     *
      * @param resource
      */
-    public void addResource(Resource resource){
-        boolean added = false;
-        boolean discarded = false;
-        for(int i=0; i<3;i++) {
-
-            if ((store.get(i).getResource() == resource) && !added && !discarded) {
-                if (store.get(i).getQuantity() < store.get(i).getSize()) {
-                    store.get(i).setResource(resource);
-                    store.get(i).setQuantity(store.get(i).getQuantity() + 1);
-                    added = true;
-                }
-                else
-                    discardResource();
-                    discarded = true;
-            }
-        }
-        for(int j=0; j<3;j++) {
-            if ((store.get(j).getResource() == null) && !added && !discarded) {
-                if (store.get(j).getQuantity() < store.get(j).getSize()) {
-                    store.get(j).setResource(resource);
-                    store.get(j).setQuantity(store.get(j).getQuantity() + 1);
-                    added = true;
-
-                }
-            }
-            if(j==2 && !added && !discarded){
-                discardResource();
-                discarded = true;
-            }
-        }
+    public void deployResource(Resource resource, int pos) {
+        if(!resHand.contains(resource))
+            throw new IllegalArgumentException("you don't have this resource.");
+        else if (!store.get(pos).hasRoomForResource(resource))
+            throw new IllegalArgumentException("you can't add this resource in this depot");
+        else
+            store.get(pos).addResource(resource);
+            resHand.remove(resource);
     }
 
-    //TODO fare eccezione nel caso in cui la risorsa non c'è
-    public void removeResource(Resource resource) {
-        boolean removed= false;
-        for (int i = 0; i < 3; i++) {
-
-            if ((store.get(i).getResource() == resource) && !removed) {
-                store.get(i).setQuantity(store.get(i).getQuantity() - 1);
-                if(store.get(i).getQuantity()==0)
-                    store.get(i).setResource(null);
-
-                removed= true;
-            }
-
-        }
+    public void takeOutResource(int pos){
+        resHand.add(store.get(pos).takeOutResource());
     }
 
     /**
      * this method is called from addResource when it's not possible to add more resources to the Warehouse store
      */
-    public void discardResource(){
-        for(Player player: game.getPlayers()){
-            if(!player.equals(game.getCurrentPlayer()))
-                player.getBoard().getPersonalPath().setPosition(player.getBoard().getPersonalPath().getPosition()+1);
+    public void discardResource(Resource resource){
+        if(!resHand.contains(resource)) {
+            resHand.remove(resource);
+            for (Player player : game.getPlayers()) {
+                if (!player.equals(game.getCurrentPlayer()))
+                    player.getBoard().getPersonalPath().setPosition(player.getBoard().getPersonalPath().getPosition() + 1);
+            }
+            for (Player player : game.getPlayers()) {
+                if (!player.equals(game.getCurrentPlayer()))
+                    player.getBoard().getPersonalPath().checkPosition();
+            }
         }
-        for(Player player: game.getPlayers()){
-            if(!player.equals(game.getCurrentPlayer()))
-                player.getBoard().getPersonalPath().checkPosition();
-        }
+        else
+            throw new IllegalArgumentException("this resource is not in your hand");
     }
 
     /**
@@ -179,4 +157,9 @@ public class PersonalBoard {
         }
         return developmentPlaces;
     }
+
+    public void addResource(Resource resource){
+        resHand.add(resource);
+    }
+
 }

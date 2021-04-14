@@ -6,8 +6,8 @@ package it.polimi.ingsw.model;
  */
 public class FaithTrack {
 
-    private int position ;
-    private int scoreCard ;
+    private int position = 1;
+    private int scoreCard = 0;
 
     public void setPosition(int position) { this.position = position;    }
     public void setScoreCard(int scoreCard) { this.scoreCard = scoreCard;    }
@@ -15,10 +15,6 @@ public class FaithTrack {
     public int getScoreCard() { return scoreCard; }
     private Game game;
 
-    public FaithTrack(int position, int scoreCard) {
-        this.position = position;
-        this.scoreCard = scoreCard;
-    }
 
     public void setGame(Game game) {
         this.game = game;

@@ -22,7 +22,7 @@ public class DevelopmentPlace {
     public DevelopmentPlace() {
         this.developmentCards = new Stack<>();
     }
-     public DevelopmentCard getLevel1Card() {
+    public DevelopmentCard getLevel1Card() {
         return developmentCards.get(0);
     }
     public DevelopmentCard getLevel2Card() {

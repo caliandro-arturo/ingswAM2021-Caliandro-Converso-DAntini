@@ -13,10 +13,15 @@ class FaithTrackTest {
         @Override
         public void setUpPlayers() {
         }
+
+        @Override
+        public void endGame() {
+            
+        }
     };
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws GameException.GameAlreadyFull, GameException.NicknameAlreadyTaken {
         track = playerTest.getBoard().getPersonalPath();
         multiplayerGame.addPlayer( new Player("pluto"));
         multiplayerGame.addPlayer( new Player("topolino"));

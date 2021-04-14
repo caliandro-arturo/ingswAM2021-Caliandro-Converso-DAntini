@@ -88,22 +88,6 @@ public class Player {
         return null;
     }
 
-    /**
-     * this method is used to choose a row or a column from which to take the marbles
-     * then the Marble class will invoke addResources method
-     * it will be possible to discard resources from here
-     * it will be possible to manage resources in the Warehouse store from here
-     * @param rowOrColumn
-     * @param number
-     */
-    public void useMarket(Game game, char rowOrColumn, int number){ //roworcolumn sarà un char
-        /*System.out.println( "\n select 'row' or 'column'\n");
-        Scanner input = new Scanner(System.in);
-        rowOrColumn = input.next().charAt(0);
-        System.out.println( "\n select number for it\n");
-        number = input.nextInt();*/
-        game.getMarket().getMarblesResources(game, rowOrColumn, number);
-    }
 
 
 

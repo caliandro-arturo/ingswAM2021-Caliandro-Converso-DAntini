@@ -7,17 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WarehouseStoreTest {
 
-    private WarehouseStore warehouseStore = new WarehouseStore();
+    private WarehouseStore warehouseStore ;
 
 
     @Test
     void quantityTest(){
-        warehouseStore.setQuantity(3);
-        warehouseStore.setResource(Resource.SHIELD);
-        warehouseStore.setSize(1);
 
-        assertEquals(3, warehouseStore.getQuantity());
-        assertEquals(Resource.SHIELD, warehouseStore.getResource());
-        assertEquals(1,warehouseStore.getSize());
     }
 }
