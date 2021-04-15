@@ -196,60 +196,52 @@ public class ControllerAdapter {
     }
 
     /**
-     * Board Production
+     * Board Production control
      * @param player current player
      * @param cost command of the player
      * @param prod command of the player
      * @param box command of tha player
      */
-    public void startBoardProduction(Player player, String[] cost, String prod, int[] box){
-        Resource production = UtilityMap.mapResource.get(prod);
-        if (production==null || prod.equals("faith")){
-            game.getViewAdapter().sendErrorMessage(player,"Not valid production input");
+    public void startBoardProduction(Player player, String[] cost, String prod, int[] box) {
+        if (!isMoveValid(player,"ActivateProduction"))
             return;
-        }
-        for (int i=0;i<2;i++){
-            Resource resource = UtilityMap.mapResource.get(cost[i]);
-            if (resource==null || cost[i].equals("faith")){
-                game.getViewAdapter().sendErrorMessage(player,"Not valid input");
-                return;
+        Resource production = UtilityMap.mapResource.get(prod);
+        try {
+            if (UtilityMap.isStorable(production)) {
+                throw new IllegalArgumentException("Not valid production input");
             }
-            if (box[i] == 0){
-                int j=player.getBoard().getPersonalBox().getResourceMap().get(resource);
-                if (j==0){
-                    game.getViewAdapter().sendErrorMessage(player,"Not enough resources");
-                    return;
+            for (int i = 0; i < 2; i++) {
+                Resource resource = UtilityMap.mapResource.get(cost[i]);
+                if (UtilityMap.isStorable(resource)) {
+                    throw new IllegalArgumentException("Not valid input");
                 }
-            } else if (box[i]>3) {
-                if (player.getBoard().getStore().size()<box[i]) {
-                    game.getViewAdapter().sendErrorMessage(player, "Invalid store");
-                    return;
+                if (box[i] == 0) {
+                    int j = player.getBoard().getPersonalBox().getResourceMap().get(resource);
+                    if (j == 0) {
+                        throw new IllegalArgumentException("Not enough resources");
+                    }
+                } else if (box[i] > 3) {
+                    if (player.getBoard().getStore().size() < box[i]) {
+                        throw new IllegalArgumentException("Invalid store");
+                    } else {
+                        if (player.getBoard().getStore().get(box[i] - 1).getResources().isEmpty()) {
+                            throw new IllegalArgumentException("Not enough resources");
+                        } else if (player.getBoard().getStore().get(box[i] - 1).getTypeOfResource() != resource) {
+                            throw new IllegalArgumentException("wrong resources");
+                        }
+                    }
                 } else {
-                    if (player.getBoard().getStore().get(box[i] - 1).getResources().isEmpty()) {
-                        game.getViewAdapter().sendErrorMessage(player,"Not enough resources");
-                        return;
-                    } else if (player.getBoard().getStore().get(box[i] - 1).getTypeOfResource()!=resource) {
-                        game.getViewAdapter().sendErrorMessage(player,"Wrong resource");
-                        return;
+                    WarehouseStore warehouseStore = player.getBoard().getStore().get(box[i] - 1);
+                    if (warehouseStore.getResources().isEmpty() || warehouseStore.getTypeOfResource() != resource) {
+                        throw new IllegalArgumentException("Not enough resources or invalid store");
                     }
                 }
-            }else {
-                WarehouseStore warehouseStore = player.getBoard().getStore().get(box[i]-1);
-                if (warehouseStore.getResources().isEmpty() || warehouseStore.getTypeOfResource()!=resource){
-                    game.getViewAdapter().sendErrorMessage(player,"Not enough resources or invalid store");
-                    return;
-                }
             }
+        }catch (IllegalArgumentException e){
+            game.getViewAdapter().sendErrorMessage(player,e.getMessage());
+            return;
         }
-        for (int i=0;i<cost.length;i++){
-            if (box[i] == 0){
-                Resource resource = UtilityMap.mapResource.get(cost[i]);
-                player.getBoard().getPersonalBox().removeResource(resource);
-            } else {
-                player.getBoard().getStore().get(box[i]-1).takeOutResource();
-            }
-        }
-        player.getBoard().getPersonalBox().addProdResource(production);
+        player.startBoardProduction(box,cost,production);
     }
 
     /**
@@ -260,113 +252,78 @@ public class ControllerAdapter {
      * @param index index of the production selected
      */
     public void startLeaderProduction(Player player,int cost,String prod, int index){
+        if (!isMoveValid(player,"ActivateProduction"))
+            return;
         Resource production = UtilityMap.mapResource.get(prod);
-        if (production==null || prod.equals("faith")){
-            game.getViewAdapter().sendErrorMessage(player,"Not valid production input");
+        try {
+            if (UtilityMap.isStorable(production)) {
+                throw new IllegalArgumentException("Not valid production input");
+            }else if (player.getBoard().getProductionList().get(index) == null) {
+                throw new IllegalArgumentException("You don't have leader card on your board");
+            }
+        } catch (IllegalArgumentException e){
+            game.getViewAdapter().sendErrorMessage(player,e.getMessage());
             return;
         }
-
-        if (player.getBoard().getProductionList().get(index) == null){
-            game.getViewAdapter().sendErrorMessage(player,"You don't have leader card on your board");
-            return;
-        }
-        Resource costresource = player.getBoard().getProductionList().get(index).getCost()[0].getResource();
-        if (cost == 0){
-            if (player.getBoard().getPersonalBox().getResourceMap().get(costresource)!=0){
-                player.getBoard().getPersonalBox().removeResource(costresource);
-            } else {
-                game.getViewAdapter().sendErrorMessage(player,"Not enough resource");
-            }
-        } else if (cost>3){
-            if (player.getBoard().getStore().size()<cost) {
-                game.getViewAdapter().sendErrorMessage(player, "Invalid store");
-                return;
-            } else {
-                if (player.getBoard().getStore().get(cost - 1).getResources().isEmpty()) {
-                    game.getViewAdapter().sendErrorMessage(player,"Not enough resources");
-                    return;
-                } else if (player.getBoard().getStore().get(cost - 1).getTypeOfResource()!=costresource) {
-                    game.getViewAdapter().sendErrorMessage(player,"Wrong resource");
-                    return;
-                } else{
-                    player.getBoard().getStore().get(cost-1).takeOutResource();
-                }
-            }
-        } else {
-            WarehouseStore warehouseStore = player.getBoard().getStore().get(cost-1);
-            if (warehouseStore.getResources().isEmpty() || warehouseStore.getTypeOfResource()!=costresource){
-                game.getViewAdapter().sendErrorMessage(player,"Not enough resources or invalid store");
-                return;
-            } else
-                player.getBoard().getStore().get(cost-1).takeOutResource();
-        }
-        player.getBoard().getPersonalBox().addProdResource(production);
-        player.getBoard().getPersonalPath().increasePosition();
+        Resource costResource = player.getBoard().getProductionList().get(index).getCost()[0].getResource();
+        player.startLeaderProduction(cost,production,costResource);
     }
 
     /**
-     * Development Card Production
+     * controls for Development Card Production
      * @param player current player
-     * @param box command by the player
+     * @param box store from where the player take the resources
      * @param index index of the production selected
      */
-    public void startDevProduction(Player player,int[] box, int index){
+    public void startDevProduction(Player player,int[] box, int index) {
+        if (!isMoveValid(player,"ActivateProduction"))
+            return;
         UtilityProductionAndCost[] cost;
-        UtilityProductionAndCost[] production;
-        int j = 0;
-        int k = 0;
-        if (!player.getBoard().getPersonalDevelopmentSpace()[index-1].getDevelopmentCards().empty()) {
-            cost = player.getBoard().getPersonalDevelopmentSpace()[index - 1].
-                    getDevelopmentCards().peek().getCost();
-        } else {
-            game.getViewAdapter().sendErrorMessage(player,"The Development place selected is empty");
+        try {
+            if (!player.getBoard().getPersonalDevelopmentSpace()[index - 1].getDevelopmentCards().empty()) {
+                cost = player.getBoard().getPersonalDevelopmentSpace()[index - 1].
+                        getDevelopmentCards().peek().getCost();
+            } else {
+                throw new IllegalArgumentException("The Development place selected is empty");
+            }
+            if (box.length < cost.length) {
+                throw new IllegalArgumentException("Invalid cmd");
+            }
+        }catch (IllegalArgumentException e){
+            game.getViewAdapter().sendErrorMessage(player,e.getMessage());
             return;
         }
-        if (box.length<cost.length){
-            game.getViewAdapter().sendErrorMessage(player,"Invalid cmd");
+        player.startDevProduction(index,box,cost);
+    }
+
+
+    /**
+     * controls for buycard
+     * @param player current player
+     * @param level level of the card
+     * @param color color of the card
+     * @param devSpace space
+     * @param box box from where take the resource
+     */
+    public void buyCard(Player player,int level,Color color,int devSpace, int[] box) {
+        if (!isMoveValid(player,"BuyDevelopmentCard"))
+            return;
+        try{
+            if (level<1 || level>3 )
+                throw new IllegalArgumentException("the level must be 1,2 or 3");
+            else if (UtilityMap.colorPosition.get(color) == null)
+                throw new IllegalArgumentException("Invalid Color");
+            else if (game.getDevelopmentGrid().getDeck(level,color).getDeck().empty())
+                throw new IllegalArgumentException("this place in empty");
+            else if (player.getBoard().getPersonalDevelopmentSpace()[devSpace-1].hasRoomForCard(level)){
+                throw new IllegalArgumentException("this development place is empty");
+            }
+        } catch (IllegalArgumentException e){
+            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
             return;
         }
-        for (UtilityProductionAndCost utilityProductionAndCost : cost) {
-            Resource resource = utilityProductionAndCost.getResource();
-            j += utilityProductionAndCost.getQuantity();
-            for (; k < j; k++) {
-                if (box[k] == 0) {
-                    if (player.getBoard().getPersonalBox().getResourceMap().get(resource) != 0) {
-                        player.getBoard().getPersonalBox().removeResource(resource);
-                    } else {
-                        game.getViewAdapter().sendErrorMessage(player, "not enough resource"); //TODO
-                        player.refundCost(k,box,cost);
-                        return;
-                    }
-                } else if (box[k] > 3 && box[k] <= 5) {
-                    if (box[k] > player.getBoard().getStore().size()) {
-                        game.getViewAdapter().sendErrorMessage(player, "wrong store"); //TODO
-                        player.refundCost(k-1,box,cost);
-                        return;
-                    }
-                    if (player.getBoard().getStore().get(box[k] - 1).getTypeOfResource() == resource &&
-                            !player.getBoard().getStore().get(box[k] - 1).getResources().isEmpty()) {
-                        player.getBoard().getStore().get(box[k] - 1).takeOutResource();
-                    } else {
-                        game.getViewAdapter().sendErrorMessage(player, "not enough resource"); //TODO
-                        player.refundCost(k,box,cost);
-                        return;
-                    }
-                }
-            }
-        }
-        production = player.getBoard().getPersonalDevelopmentSpace()[index - 1].
-                getDevelopmentCards().peek().getProduction().getProd();
-        for (UtilityProductionAndCost utilityProductionAndCost : production) {
-            Resource resource = utilityProductionAndCost.getResource();
-            for (k = 0; k < utilityProductionAndCost.getQuantity(); k++) {
-                if (resource == Resource.FAITH) {
-                    player.getBoard().getPersonalPath().increasePosition();
-                } else {
-                    player.getBoard().getPersonalBox().addProdResource(resource);
-                }
-            }
-        }
+        DevelopmentCard card = game.getDevelopmentGrid().getDeck(level,color).getTopCard();
+        player.buyDevelopmentCard(card,box,devSpace);
     }
 }
 

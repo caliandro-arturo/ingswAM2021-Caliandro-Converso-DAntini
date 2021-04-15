@@ -123,4 +123,17 @@ public class GameCreator {
             return new MultiplayerGame(player, playersNum, market, leaderDeck, developmentGrid);
         return null; //TODO error handling
     }
+
+    //getter for testing purposes
+    public Market getMarket() {
+        return market;
+    }
+
+    public Stack<LeaderCard> getLeaderDeck() {
+        return leaderDeck;
+    }
+
+    public DevelopmentGrid getDevelopmentGrid() {
+        return developmentGrid;
+    }
 }

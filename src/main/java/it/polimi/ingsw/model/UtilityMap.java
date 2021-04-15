@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class UtilityMap {
@@ -22,4 +24,10 @@ public class UtilityMap {
         put(Color.YELLOW,2);
         put(Color.PURPLE,3);
     }};
+    public static ArrayList<Resource> storableResources = new ArrayList<Resource>(){{
+        addAll(Arrays.asList(Resource.STONE,Resource.SERF,Resource.COIN,Resource.SHIELD));
+    }};
+    public static boolean isStorable(Resource resource){
+        return storableResources.contains(resource);
+    }
 }
