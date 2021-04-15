@@ -4,14 +4,16 @@ package it.polimi.ingsw.model;
  * this class implements all the methods used by a player
  */
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Player {
     private String username;
     private PersonalBoard board;
-    private ArrayList<LeaderCard> leaderCard = new ArrayList<>();
+    private ArrayList<LeaderCard> leaderCards = new ArrayList<>();
     private ArrayList<Resource> whiteAlt = new ArrayList<>();
     private ArrayList<Resource> sale = new ArrayList<>();
     private Game game;
+    private int[] victoryPoints = new int[5];
 
     public Player(String username){
         this.username = username;
@@ -29,17 +31,35 @@ public class Player {
     public void setBoard(PersonalBoard board) {
         this.board = board;
     }
-    public void setLeaderCard(ArrayList<LeaderCard> leaderCard) { this.leaderCard = leaderCard;    }
-    public void setUsername(String username) {        this.username = username;    }
-    public void setSale(ArrayList<Resource> sale) { this.sale = sale;    }
-    public void setWhiteAlt(ArrayList<Resource> whiteAlt) { this.whiteAlt = whiteAlt;    }
-
-    public ArrayList<LeaderCard> getLeaderCard() { return leaderCard;    }
-    public PersonalBoard getBoard() {        return board;    }
-    public String getUsername() {        return username;    }
-    public ArrayList<Resource> getWhiteAlt() { return whiteAlt; }
-    public ArrayList<Resource> getSale() { return sale; }
+    public void setLeaderCards(LeaderCard leader) {
+        this.leaderCards.add(leader);
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public void setSale(ArrayList<Resource> sale) {
+        this.sale = sale;
+    }
+    public void setWhiteAlt(ArrayList<Resource> whiteAlt) {
+        this.whiteAlt = whiteAlt;
+    }
+    public ArrayList<LeaderCard> getLeaderCards() {
+        return leaderCards;
+    }
+    public PersonalBoard getBoard() {
+        return board;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public ArrayList<Resource> getWhiteAlt() {
+        return whiteAlt;
+    }
+    public ArrayList<Resource> getSale() {
+        return sale;
+    }
     public void addWhiteAlt(Resource resource) {
+
         whiteAlt.add(resource);
     }
 
@@ -50,11 +70,15 @@ public class Player {
     /**
      * this method is used in the beginning of the game to discard 2 leaderCards of your choice
      * or during a player turn
-     * @param leader
+     * @param leader the leader the player decides to discard
      *
      */
     public void discardLeaderCard(LeaderCard leader){
-
+        if(!game.isStarted() && leaderCards.size()>2)
+            leaderCards.remove(leader);
+        else if(leaderCards.size()>0)
+                leaderCards.remove(leader);
+                game.getCurrentPlayer().getBoard().getPersonalPath().increasePosition();
     }
 
     /**
@@ -102,9 +126,11 @@ public class Player {
 
     /**
      * this method is used to activate a leader power
-     * @param leader
+     * @param leader the leader you want to activate power from
      */
     public void useLeader(LeaderCard leader){
+        if(!leaderCards.contains(leader))
+            throw new IllegalArgumentException("you don't own this Leader Card");
 
     }
 
@@ -259,5 +285,75 @@ public class Player {
         }
     }
 
+    /**
+     * in the last turn this method sum all the victory points the player is entitled to
+     * index 0 faith path VP
+     * index 1 dev card VP
+     * index 2 lead card VP
+     * index 3 Pope's favor VP
+     * index 4 resource VP
+     * @return array of int containing VictoryPoints already summed in different indexes
+     */
+    public int[] getVictoryPoints(){
+        // index 0 faith path VP
+        int pos = getBoard().getPersonalPath().getPosition();
+        if(pos>=3 && pos<6) {
+            victoryPoints[0]=1;
+        }else if(pos>=6 && pos<9) {
+            victoryPoints[0]=2;
+        }else if(pos>=9 && pos<12) {
+            victoryPoints[0]=4;
+        }else if(pos>=12 && pos<15){
+            victoryPoints[0]=6;
+        }else if(pos>=15 && pos<18){
+            victoryPoints[0]=9;
+        }else if(pos>=18 && pos<21){
+            victoryPoints[0]=12;
+        }else if(pos>=21 && pos<24) {
+            victoryPoints[0]=16;
+        }else if(pos==24) {
+            victoryPoints[0] = 20;
+        }
+        // index 1 dev card VP
+        for(DevelopmentPlace devPlace: board.getPersonalDevelopmentSpace()){
+            for(DevelopmentCard devCard : devPlace.getDevelopmentCards()){
+                victoryPoints[1]+=devCard.getVictoryPoints();
+            }
+        }
+        // index 2 lead card VP
+        for(LeaderCard lead: getBoard().getActiveLeaders()){
+            victoryPoints[2] += lead.getVictoryPoints();
+        }
+        // index 3 Pope's favor VP
+        victoryPoints[3]= board.getPersonalPath().getScoreCard();
+        // index 4 resource VP
+        int boxRes = 0;
+        int storeRes = 0;
+        if(!board.getPersonalBox().isEmptyBox()) {
+            boxRes += board.getPersonalBox().getResourceMap().get(Resource.SERF);
+            boxRes += board.getPersonalBox().getResourceMap().get(Resource.COIN);
+            boxRes += board.getPersonalBox().getResourceMap().get(Resource.SHIELD);
+            boxRes += board.getPersonalBox().getResourceMap().get(Resource.STONE);
+        }
+        for( WarehouseStore stores: board.getStore()){
+            storeRes =+ stores.getQuantity();
+        }
+        victoryPoints[4]= (boxRes+storeRes)/5;
+        return victoryPoints;
+    }
+
+    /**
+     * used to know the number of dev cards owned by the player
+     * @return the number of the cards
+     */
+    public int getNumOfDevCards(){
+        int numOfDevCards=0;
+        for(DevelopmentPlace devPlace: board.getPersonalDevelopmentSpace()){
+            for(DevelopmentCard devCard : devPlace.getDevelopmentCards()){
+                numOfDevCards++;
+            }
+        }
+        return numOfDevCards;
+    }
 }
 

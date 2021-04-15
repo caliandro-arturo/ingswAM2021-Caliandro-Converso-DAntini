@@ -19,6 +19,11 @@ class StrongboxTest {
     }
 
     @Test
+    public void resetTest(){
+        assertTrue(chest.isEmptyBox());
+    }
+
+    @Test
     public void addProdResourceTest(){
         chest.addProdResource(Resource.SHIELD);
         chest.addProdResource(Resource.SHIELD);
@@ -40,7 +45,7 @@ class StrongboxTest {
 
         chest.removeResource(Resource.SERF);
 
-        chest.removeResource(Resource.SERF);
+
         chest.removeResource(Resource.SHIELD);
         chest.removeResource(Resource.SHIELD);
         chest.removeResource(Resource.SHIELD);

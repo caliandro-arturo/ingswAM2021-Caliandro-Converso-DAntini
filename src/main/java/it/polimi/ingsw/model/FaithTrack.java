@@ -47,24 +47,30 @@ public class FaithTrack {
 
     /**
      * this method check if a player is in a papal space and adds victory points to it
-     * @param papalSpace
+     * @param papalSpace identify the Pope space we are checking for
      */
-    public void isInVatican(int papalSpace){
+    public boolean isInVatican(int papalSpace){
         switch(papalSpace){
             case 8:
-                if(this.position>4) {
-                    this.scoreCard = this.scoreCard +2;
-                }
+                if(position>4 && position<9) {
+                    scoreCard +=2;
+                    return true;
+                }else
+                    return false;
             case 16:
-                if(this.position>11) {
-                    this.scoreCard = this.scoreCard +3;
-                }
+                if(position>11 && position<17) {
+                    scoreCard += +3;
+                    return true;
+                }else
+                    return false;
             case 24:
-                if(this.position>18) {
-                    this.scoreCard = this.scoreCard +4;
+                if(position>18 && position<25) {
+                    scoreCard += 4;
+                    return true;
                 }
 
         }
+        return false;
 
     }
 }

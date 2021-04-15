@@ -27,6 +27,7 @@ public class WarehouseStore {
     public int getQuantity() {
         return resources.size();
     }
+
     public int getSize() {
         return size;
     }
@@ -40,8 +41,7 @@ public class WarehouseStore {
     }
 
     /**
-     * return true if there is space for a new resource in the warehouse store
-     * compatibly with the rules of the warehouse
+     * is used to check if there is space for a new resource in this depot
      * @param resource the player wants to check for space
      * @return true if there is space to store a new resource of the specified type, false otherwise
      */
@@ -53,15 +53,16 @@ public class WarehouseStore {
 
     /**
      * add a resource compatibility to the rules of adding
-     * @param resource
+     * @param resource the resource to add in the depot
      * @throws IllegalArgumentException if the player can't add this resource in this depot because the depot is full
      * or not matching with the current resource
      */
     public void addResource(Resource resource){
         if(hasRoomForResource(resource)){
             resources.add(resource);
-            if(typeOfResource==null)
+            if(typeOfResource==null) {
                 typeOfResource=resource;
+            }
         }
         else
             throw new IllegalArgumentException ("you can't add this resource in this depot");
@@ -69,13 +70,13 @@ public class WarehouseStore {
 
     /**
      * take out a resource from this depot
-     * @return the resource taken from the depot
+     * @return the resource taken out from the depot
      * @throws IllegalArgumentException if the shelf is already empty
      */
     public Resource takeOutResource(){
         if(!resources.isEmpty()){
             Resource resToTake = resources.get(0);
-            resources.remove(resources.size()-1);
+            resources.remove(0);
             if(resources.isEmpty())
                 typeOfResource=null;
             return resToTake;

@@ -20,8 +20,17 @@ public class Strongbox {
     public HashMap<Resource, Integer> getResourceMap() { return resourceMap;    }
 
     /**
-     * this method adds resource to the strongbox in the Hashmap structured explained before
-     * @param resource
+     * is used to check if the strongbox is empty
+     * @return true if the strongbox is empty
+     */
+    public boolean isEmptyBox(){
+        return resourceMap.get(Resource.SERF) == 0 && resourceMap.get(Resource.COIN) == 0
+                && resourceMap.get(Resource.SHIELD) == 0 && resourceMap.get(Resource.STONE) == 0;
+    }
+
+    /**
+     * adds resource to the strongbox in the Hashmap structured explained before
+     * @param resource the resource the production produces
      */
     public void addProdResource(Resource resource) {
         Integer temp=this.resourceMap.get(resource) ;
@@ -37,7 +46,8 @@ public class Strongbox {
         Integer temp=this.resourceMap.get(resource);
         if (temp>0)
             this.resourceMap.replace(resource, temp, temp-1);
-
+        else
+            throw new IllegalArgumentException("you don't own this resource");
 
     }
 

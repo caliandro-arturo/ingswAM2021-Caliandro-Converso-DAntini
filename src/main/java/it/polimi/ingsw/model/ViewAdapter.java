@@ -88,9 +88,19 @@ public class ViewAdapter {
 
     /**
      * this method asks to the player where he wants to put a newly bought DevCard
+     * @param p the player to notify
      */
-    public void askDevCardPlace(){
+    public void askDevCardPlace(Player p){
+        sendMessage(p, "choose where to put this Development Card ");
+    }
 
+    /**
+     * ask to the player where he wants to put a resource in the warehouse store
+     * @param p the player to notify
+     * @param resource the resource to store
+     */
+    public void askResPlace(Player p, Resource resource){
+        sendMessage(p, "choose where to put this " + resource + "resource." );
     }
 
     /**

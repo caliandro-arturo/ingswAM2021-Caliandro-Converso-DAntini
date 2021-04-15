@@ -14,16 +14,19 @@ public class PersonalBoard {
     private FaithTrack personalPath;
     private Strongbox personalBox ;
     private DevelopmentPlace[] personalDevelopmentSpace;
-    private LeaderCard[] leaderCards ;
     private ArrayList<Production> ProductionList ;
+    private ArrayList<LeaderCard> activeLeaders;
     private Game game;
     private ArrayList<Resource> resHand;
-
-
 
     public DevelopmentPlace[] getPersonalDevelopmentSpace() {
         return personalDevelopmentSpace;
     }
+
+    public ArrayList<LeaderCard> getActiveLeaders() {
+        return activeLeaders;
+    }
+
     public ArrayList<Production> getProductionList() {
         return ProductionList;
     }
@@ -36,9 +39,7 @@ public class PersonalBoard {
     public FaithTrack getPersonalPath() {
         return personalPath;
     }
-    public LeaderCard[] getLeaderCards() {
-        return leaderCards;
-    }
+
     public Game getGame() {
         return game;
     }
@@ -46,16 +47,17 @@ public class PersonalBoard {
         return resHand;
     }
 
-
     public void setStore(ArrayList<WarehouseStore> store) {
         this.store = store;
     }
     public void setPersonalPath(FaithTrack personalPath) {
         this.personalPath = personalPath;
     }
-    public void setLeaderCards(LeaderCard[] leaderCards) {
-        this.leaderCards = leaderCards;
+
+    public void setActiveLeaders(ArrayList<LeaderCard> activeLeaders) {
+        this.activeLeaders = activeLeaders;
     }
+
     public void setPersonalBox(Strongbox personalBox) {
         this.personalBox = personalBox;
     }
@@ -84,40 +86,53 @@ public class PersonalBoard {
         this.personalPath = new FaithTrack();
         this.personalBox = new Strongbox();
         this.personalDevelopmentSpace = new DevelopmentPlace[3];
-        this.leaderCards = new LeaderCard[2];
         this.ProductionList = new ArrayList<>();
+        this.activeLeaders = new ArrayList<>();
         this.personalDevelopmentSpace[0] = new DevelopmentPlace();
         this.personalDevelopmentSpace[1] = new DevelopmentPlace();
         this.personalDevelopmentSpace[2] = new DevelopmentPlace();
     }
 
-    /**new version of addResource
+    /** used to deploy a resource the player is holding in the hand, the hand must empty
      *
-     * @param resource
+     * @param resource the resource you want to store in warehouse
+     * @param pos the number of the shelf you want to store in
      */
     public void deployResource(Resource resource, int pos) {
+        pos--;
         if(!resHand.contains(resource))
             throw new IllegalArgumentException("you don't have this resource.");
         else if (!store.get(pos).hasRoomForResource(resource))
             throw new IllegalArgumentException("you can't add this resource in this depot");
+        else if(pos>3)
+            throw new IllegalArgumentException("you choose a space depot that doesn't exist");
         else
             store.get(pos).addResource(resource);
             resHand.remove(resource);
     }
 
+    /**
+     * used to take out a resource when the player want to rearrange the position of the resources in the warehouse
+     *
+     * @param pos the number of the shelf you want to remove a resource from
+     */
     public void takeOutResource(int pos){
+        pos--;
         resHand.add(store.get(pos).takeOutResource());
     }
 
     /**
-     * this method is called from addResource when it's not possible to add more resources to the Warehouse store
+     * discard a resource that can't be stored or arranged. gives +1 faith resource to the other players
+     * @param resource the resource you want to discard
+     * @throws GameException.IllegalMove it's thrown if you ask to discard a resource you don't have in hand
      */
-    public void discardResource(Resource resource){
+    public void discardResource(Resource resource) throws GameException.IllegalMove {
         if(!resHand.contains(resource)) {
             resHand.remove(resource);
             for (Player player : game.getPlayers()) {
                 if (!player.equals(game.getCurrentPlayer()))
-                    player.getBoard().getPersonalPath().setPosition(player.getBoard().getPersonalPath().getPosition() + 1);
+                    player.getBoard().getPersonalPath()
+                            .setPosition(player.getBoard().getPersonalPath().getPosition()+1);
             }
             for (Player player : game.getPlayers()) {
                 if (!player.equals(game.getCurrentPlayer()))
@@ -125,7 +140,7 @@ public class PersonalBoard {
             }
         }
         else
-            throw new IllegalArgumentException("this resource is not in your hand");
+            throw new GameException.IllegalMove();
     }
 
     /**
@@ -136,6 +151,11 @@ public class PersonalBoard {
         return !freePlaces(devCard).isEmpty();
     }
 
+    /** used by a player to add a devcard in a certain place of the 3
+     *
+     * @param devCard the card the player needs to add
+     * @param pos chosen position where to stack
+     */
     public void addCard(DevelopmentCard devCard, int pos){
         pos--;
         if(personalDevelopmentSpace[pos].hasRoomForCard(devCard.getLevel())) {
@@ -146,7 +166,7 @@ public class PersonalBoard {
     /**
      * this method shows to the view which places are free to put a card in
      * @param devCard
-     * @return
+     * @return a new list of the free places
      */
     public ArrayList<DevelopmentPlace> freePlaces(DevelopmentCard devCard){
         int level = devCard.getLevel();
@@ -158,8 +178,38 @@ public class PersonalBoard {
         return developmentPlaces;
     }
 
+    /**
+     * used by the market to add a resource to the hand of the player. this hand must empty
+     * this can also be used to arrange the resources in the warehouse
+     * @param resource the resource to add in the hand
+     */
     public void addResource(Resource resource){
         resHand.add(resource);
     }
 
+    /**
+     * show the top of the leader cards stack
+     * @return a list with the 0/1/2/3 dev cards are on top in this moment
+     */
+    public ArrayList<DevelopmentCard> showActiveDevCards(){
+        ArrayList<DevelopmentCard> activeDevCards = new ArrayList<>();
+        for(DevelopmentPlace dev : personalDevelopmentSpace){
+            if(!dev.getDevelopmentCards().isEmpty())
+                activeDevCards.add(dev.getDevelopmentCards().peek());
+
+        }
+        return activeDevCards;
+    }
+
+    /**
+     * used to add a new leader card in the personal board
+     * @param leader the leader you want to add in the personal board
+     */
+    public void addActiveLeader(LeaderCard leader){
+        if(activeLeaders.size()<2){
+            activeLeaders.add(leader);
+        }
+        else
+            throw new IllegalArgumentException("you don't have more space for another leader");
+    }
 }
