@@ -15,7 +15,7 @@ public class ResourceCost implements Requirements{
     public boolean checkRequirements (Player player) {
         int i = cost.getQuantity();
         for (WarehouseStore store: player.getBoard().getStore()){
-            if (cost.getResource() == store.getResource()){
+            if (cost.getResource() == store.getTypeOfResource()){
                 i = i - store.getQuantity();
             }
         }
@@ -23,7 +23,7 @@ public class ResourceCost implements Requirements{
     }
 
     @Override
-    public void getRequirements() {
-        System.out.println("to deploy this card you must have: " +cost.getQuantity()+""+cost.getResource());
+    public void getRequirements(Game game, Player player) {
+        game.getViewAdapter().sendMessage(player, "to deploy this card you must have: ");
     }
 }

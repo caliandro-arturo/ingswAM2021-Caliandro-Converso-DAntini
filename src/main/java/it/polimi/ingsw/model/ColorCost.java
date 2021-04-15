@@ -14,9 +14,7 @@ public class ColorCost implements Requirements{
         return cost;
     }
 
-    /*
-        possible null exception
-         */
+
     @Override
     public boolean checkRequirements(Player player) {
         HashMap<Color,Integer> checkColor = new HashMap<>();
@@ -25,11 +23,12 @@ public class ColorCost implements Requirements{
         checkColor.put(Color.YELLOW,0);
         checkColor.put(Color.PURPLE,0);
         int j;
-        for (int i = 0;i<player.getBoard().getPersonalDevelopmentSpace().length;i++){
-            for (int k=1; k<4;k++){
-                if (player.getBoard().getPersonalDevelopmentSpace()[i].getLevelCard(k)!=null){
-                    j= checkColor.get(player.getBoard().getPersonalDevelopmentSpace()[i].getLevelCard(k).getColor());
-                    checkColor.replace(player.getBoard().getPersonalDevelopmentSpace()[i].getLevelCard(k).getColor(),j,j+1);
+        DevelopmentPlace[] devPlace = player.getBoard().getPersonalDevelopmentSpace();
+        for (int i = 0;i<devPlace.length;i++){
+            if (!devPlace[i].getDevelopmentCards().empty()) {
+                for (int k = 0; k < devPlace[i].getDevelopmentCards().size(); k++) {
+                    j = checkColor.get(devPlace[i].getLevelICard(k).getColor());
+                    checkColor.replace(devPlace[i].getLevelICard(k).getColor(), j, j + 1);
                 }
             }
         }
@@ -41,10 +40,12 @@ public class ColorCost implements Requirements{
     }
 
     @Override
-    public void getRequirements() {
-        System.out.println("to deploy this card you must have: ");
+    public void getRequirements(Game game, Player player) {
+        game.getViewAdapter().sendMessage(player,"to deploy this card you must have: ");
         for (Map.Entry<Color,Integer> entry: cost.entrySet()){
-            System.out.println(entry.getValue() + "" + entry.getKey() + "Card");
+            if (entry.getValue()>0) {
+                game.getViewAdapter().sendMessage(player,entry.getValue() + "" + entry.getKey() + "Card");
+            }
         }
     }
 }

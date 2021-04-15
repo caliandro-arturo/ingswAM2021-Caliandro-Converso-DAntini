@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ public class LeaderCardTest {
     private Player playerFalse;
     public AdditionalProductionPower production;
 
-    @BeforeEach
+    @BeforeAll
     void setUp(){
         UtilityProductionAndCost cost1 = new UtilityProductionAndCost(5,Resource.COIN);
         Color[] colors = new Color[]{Color.GREEN,Color.BLUE};
@@ -42,57 +43,39 @@ public class LeaderCardTest {
         DevelopmentCard card1 = new DevelopmentCard(1,1,Color.GREEN,null,null);
         DevelopmentCard card1lv2 = new DevelopmentCard(1,2,Color.GREEN,null,null);
         DevelopmentCard card2 = new DevelopmentCard(1,1,Color.BLUE,null,null);
-        player.getBoard().getPersonalDevelopmentSpace()[0].addCard(card1);
-        player.getBoard().getPersonalDevelopmentSpace()[0].addCard(card1lv2);
-        player.getBoard().getPersonalDevelopmentSpace()[1].addCard(card2);
+        player.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(card1);
+        player.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(card1lv2);
+        player.getBoard().getPersonalDevelopmentSpace()[1].getDevelopmentCards().push(card2);
         player.getBoard().addResource(Resource.COIN);
         player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
         player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
         player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
         player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        playerFalse.getBoard().getPersonalDevelopmentSpace()[0].addCard(card1);
+        playerFalse.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(card1);
         playerFalse.getBoard().addResource(Resource.STONE);
     }
 
     @Test
-    public void TestCard1() {
+    public void TestCardsPower() {
         cardPower1.getLeaderPower().activatePower(player);
         assertEquals(player.getBoard().getProductionList().toArray()[1], production);
-    }
-
-    @Test
-    public void TestPower2(){
         cardPower2.getLeaderPower().activatePower(player);
         assertEquals(player.getWhiteAlt().toArray()[0],Resource.COIN);
-    }
-
-    @Test
-    public void TestPower3(){
         cardPower3.getLeaderPower().activatePower(player);
-        assertTrue(true);
-    }
-
-    @Test
-    public void TestPower4(){
+        assertTrue(player.getBoard().getStore().size() > 3);
+        assertEquals(player.getBoard().getStore().get(3).getTypeOfResource(),Resource.COIN);
         cardPower4.getLeaderPower().activatePower(player);
         assertEquals(player.getSale().toArray()[0],Resource.SHIELD);
     }
 
     @Test
-    public void TestRequirements1(){
+    public void TestRequirements(){
         assertTrue(cardPower1.getRequirements().checkRequirements(player));
         assertFalse(cardPower1.getRequirements().checkRequirements(playerFalse));
-    }
-
-    @Test
-    public void TestRequirements2(){
         assertTrue(cardPower2.getRequirements().checkRequirements(player));
         assertFalse(cardPower2.getRequirements().checkRequirements(playerFalse));
-    }
-
-    @Test
-    public void TestRequirements3(){
         assertTrue(cardPower3.getRequirements().checkRequirements(player));
         assertFalse(cardPower3.getRequirements().checkRequirements(playerFalse));
     }
+
 }

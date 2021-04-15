@@ -8,7 +8,6 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
@@ -21,20 +20,6 @@ public class GameCreator {
     private final Market market = new Market();
     private final Stack<LeaderCard> leaderDeck;
     private final DevelopmentGrid developmentGrid;
-    private HashMap<String, Color> mapColor = new HashMap<String ,Color>(){{
-        put("GREEN" , Color.GREEN);
-        put("BLUE" , Color.BLUE);
-        put("PURPLE" , Color.PURPLE);
-        put("YELLOW" , Color.YELLOW);
-    }};
-    private HashMap<String, Resource> mapResource = new HashMap<String, Resource>(){{
-        put("faith", Resource.FAITH);
-        put("shield", Resource.SHIELD);
-        put("serf", Resource.SERF);
-        put("coin", Resource.COIN);
-        put("stone", Resource.STONE);
-    }};
-
 
     public GameCreator() {
         Gson gson = new Gson();
@@ -49,9 +34,9 @@ public class GameCreator {
                 ProductionPower production = new ProductionPower(utilityCreator(jsonArray.get(i).getAsJsonObject().
                         get("productionPower").getAsJsonObject(), "cost"), utilityCreator(jsonArray.
                         get(i).getAsJsonObject().get("productionPower").getAsJsonObject(), "production"));
-                developmentGrid[i] = new DevelopmentCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").getAsInt(),
-                        jsonArray.get(i).getAsJsonObject().get("level").getAsInt(),mapColor.get(jsonArray.get(i).
-                        getAsJsonObject().get("color").getAsString()),costs,production);
+                developmentGrid[i] = new DevelopmentCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").
+                        getAsInt(),jsonArray.get(i).getAsJsonObject().get("level").getAsInt(),UtilityMap.mapColor.
+                        get(jsonArray.get(i).getAsJsonObject().get("color").getAsString()),costs,production);
             }
             reader = Files.newBufferedReader(Paths.get("ledCard.json"));
             jsonObject = gson.fromJson(reader, JsonObject.class);
@@ -95,13 +80,14 @@ public class GameCreator {
             resource = jsonObject.get(jsonstring).getAsJsonArray().get(i)
                     .getAsJsonObject().get("resource").getAsString();
             value[i] = new UtilityProductionAndCost(jsonObject.get(jsonstring).getAsJsonArray().
-                    get(i).getAsJsonObject().get("quantity").getAsInt(),mapResource.get(resource));
+                    get(i).getAsJsonObject().get("quantity").getAsInt(),UtilityMap.mapResource.get(resource));
         }
         return value;
     }
 
     private Resource powerCreator(JsonObject jsonObject, String jsonstring){
-        return mapResource.get(jsonObject.get(jsonstring).getAsJsonObject().get("resource").getAsString());
+        return UtilityMap.mapResource.get(jsonObject.get(jsonstring).
+                getAsJsonObject().get("resource").getAsString());
     }
 
     private ColorCost colorCostJSON(JsonObject jsonObject){
@@ -116,14 +102,15 @@ public class GameCreator {
 
     private ResourceCost resourceCostJSON(JsonObject jsonObject){
         UtilityProductionAndCost value = new UtilityProductionAndCost(jsonObject.get("resourceCost").
-                getAsJsonObject().get("quantity").getAsInt(),mapResource.get(jsonObject.get("resourceCost").
+                getAsJsonObject().get("quantity").getAsInt(),UtilityMap.mapResource.get(jsonObject.get("resourceCost").
                 getAsJsonObject().get("resource").getAsString()));
         return new ResourceCost(value);
     }
 
 
     private LevelCost levelCostJSON(JsonObject jsonObject){
-        Color[] colors = {mapColor.get(jsonObject.get("levelCost").getAsJsonObject().get("color").getAsString())};
+        Color[] colors = {UtilityMap.mapColor.get(jsonObject.get("levelCost").getAsJsonObject().
+                get("color").getAsString())};
         Integer[] integers = {jsonObject.get("levelCost").getAsJsonObject().get("quantity").getAsInt()};
         int level = jsonObject.get("levelCost").getAsJsonObject().get("level").getAsInt();
         return new LevelCost(colors,integers,level);

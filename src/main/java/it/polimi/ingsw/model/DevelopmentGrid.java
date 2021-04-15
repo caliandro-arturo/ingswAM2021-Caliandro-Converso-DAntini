@@ -1,20 +1,12 @@
 package it.polimi.ingsw.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class DevelopmentGrid {
     private final Deck[][] developmentGrid;
-    private final HashMap<Color,Integer> colorPosition = new HashMap<Color,Integer>(){
-        {
-            put(Color.GREEN, 0);
-            put(Color.BLUE,1);
-            put(Color.YELLOW,2);
-            put(Color.PURPLE,3);
-        }};
 
     public Deck getDeck(int level, Color color){
-        return developmentGrid[level][colorPosition.get(color)];
+        return developmentGrid[level][UtilityMap.colorPosition.get(color)];
     }
 
     public DevelopmentGrid(DevelopmentCard[] cards){
@@ -25,7 +17,7 @@ public class DevelopmentGrid {
             }
         }
         for (DevelopmentCard card : cards) {
-            for (Map.Entry<Color, Integer> entry : colorPosition.entrySet()) {
+            for (Map.Entry<Color, Integer> entry : UtilityMap.colorPosition.entrySet()) {
                 if (card.getColor() == entry.getKey()) {
                     if (card.getLevel() == 1) {
                         developmentGrid[0][entry.getValue()].getDeck().push(card);
@@ -51,7 +43,7 @@ public class DevelopmentGrid {
      * @return the card chosen
      */
     public DevelopmentCard buyCard(Color color,int level){
-        for (Map.Entry<Color,Integer> entry : colorPosition.entrySet()){
+        for (Map.Entry<Color,Integer> entry : UtilityMap.colorPosition.entrySet()){
             if (entry.getKey() == color){
                 return developmentGrid[level-1][entry.getValue()].takeCard();
             }
@@ -67,7 +59,7 @@ public class DevelopmentGrid {
         int i = 0;
         int j = 2;
         while (j>0){
-            for (Map.Entry<Color,Integer> entry : colorPosition.entrySet()){
+            for (Map.Entry<Color,Integer> entry : UtilityMap.colorPosition.entrySet()){
                 if (entry.getKey() == color){
                     while (developmentGrid[i][entry.getValue()].getDeck().empty() && i<3){
                         i++;

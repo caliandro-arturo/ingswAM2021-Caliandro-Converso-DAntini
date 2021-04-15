@@ -109,6 +109,4 @@ public class ViewAdapter {
     public void sendErrorMessage(Player player, String error) {
     }
 
-
-
 }

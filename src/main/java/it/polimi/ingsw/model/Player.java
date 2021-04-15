@@ -88,8 +88,28 @@ public class Player {
         return null;
     }
 
-
-
+    /**
+     * method called by the production in case of error
+     * @param size number of resource processed before the error
+     * @param box command by the player
+     * @param cost cost of the production that need to be refund
+     */
+    public void refundCost(int size,int[] box, UtilityProductionAndCost[] cost) {
+        if (size < 0) return;
+        int j = 0;
+        int k = 0;
+        for (int i = 0; i < cost.length; i++) {
+            Resource resource = cost[i].getResource();
+            j += cost[i].getQuantity();
+            for (; k < j; k++) {
+                if (k == size)return;
+                if (box[k] == 0) {
+                    board.getPersonalBox().addProdResource(resource);
+                } else
+                    board.getStore().get(box[k]-1).addResource(resource);
+            }
+        }
+    }
 
 }
 

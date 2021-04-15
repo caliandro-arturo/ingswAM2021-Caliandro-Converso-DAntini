@@ -59,7 +59,7 @@
             "color": "BLUE",
             "cost": [ 
                 {
-                    "resorce": "coin",
+                    "resource": "coin",
                     "quantity": 2
                 }
             ],
@@ -1564,7 +1564,7 @@
                         "quantity": 1
                     },
                     {
-                        "resouce": "serf",
+                        "resource": "serf",
                         "quantity": 3
                     }
                 ]

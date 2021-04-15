@@ -15,8 +15,9 @@ public class SaleOnDevelopment implements LeaderPower{
     }
 
     @Override
-    public void getPower() {
-        System.out.println("Sale of an amount of one" +getResource());
+    public void getPower(Game game,Player player) {
+        game.getViewAdapter().sendMessage(player,
+                "Sale of an amount of one");
     }
 
     @Override

@@ -8,11 +8,11 @@ public interface LeaderPower {
     /**
      * show on screen the type of power
      */
-    void getPower();
+    void getPower(Game game,Player player);
 
     /**
      * when the card is deploy activates the power of the leader
-     * @param player the player who activate the card
+     * @param player current player
      */
     void activatePower(Player player);
 }

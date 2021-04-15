@@ -18,14 +18,9 @@ public class DevelopmentCardTest {
         PersonalBoard board = new PersonalBoard();
         player = new Player("Test");
         player.setBoard(board);
-        player.getBoard().getPersonalDevelopmentSpace()[0].addCard(developmentCard);
+        player.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(developmentCard);
         player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
         player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
     }
 
-    @Test
-    public void TestDevProduction(){
-        player.getBoard().getPersonalDevelopmentSpace()[0].getLevel1Card().getProduction().startProduction(player.getBoard());
-        assertEquals(1,player.getBoard().getPersonalBox().getResourceMap().get(Resource.COIN));
-    }
 }

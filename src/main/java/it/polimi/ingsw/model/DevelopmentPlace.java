@@ -11,9 +11,7 @@ import java.util.Stack;
 public class DevelopmentPlace {
 
     private Stack<DevelopmentCard> developmentCards;
-    /*private DevelopmentCard level1Card;
-    private DevelopmentCard level2Card;
-    private DevelopmentCard level3Card;*/
+
 
     public Stack<DevelopmentCard> getDevelopmentCards() {
         return developmentCards;
@@ -31,6 +29,7 @@ public class DevelopmentPlace {
     public DevelopmentCard getLevel3Card() {
         return developmentCards.get(2);
     }
+    public DevelopmentCard getLevelICard(int i){return developmentCards.get(i);}
 
     /**
      * return true if this place has space for a specific level card

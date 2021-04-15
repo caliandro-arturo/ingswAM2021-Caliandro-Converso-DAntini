@@ -4,8 +4,8 @@
         {
             "victoryPoints": 2,
             "colorCost": {
-                "blue":0,
-                "purple":0,
+                "blue": 0,
+                "purple": 0,
                 "yellow": 1,
                 "green": 1
             },
@@ -30,7 +30,7 @@
         {
             "victoryPoints": 2,
             "colorCost": {
-                "purple":0,
+                "purple": 0,
                 "yellow": 0,
                 "green": 1,
                 "blue": 1

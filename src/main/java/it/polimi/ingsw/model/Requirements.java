@@ -15,5 +15,5 @@ public interface Requirements {
     /**
      * show on screen the requirements for the card
      */
-    void getRequirements();
+    void getRequirements(Game game,Player player);
 }

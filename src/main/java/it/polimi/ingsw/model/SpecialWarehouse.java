@@ -34,12 +34,12 @@ public class SpecialWarehouse implements LeaderPower{
     }
 
     @Override
-    public void getPower() {
-        System.out.println("Build extra Warehouse of" + getExtraResource().getTypeOfResource());
+    public void getPower(Game game,Player player) {
+        game.getViewAdapter().sendMessage(player, "Build extra Warehouse of" );
     }
 
     @Override
     public void activatePower(Player player) {
-
+        player.getBoard().getStore().add(extraResource);
     }
 }
