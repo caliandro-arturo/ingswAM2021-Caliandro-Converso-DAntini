@@ -4,12 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -25,47 +23,43 @@ public class GameCreator {
         Gson gson = new Gson();
         DevelopmentCard[] developmentGrid = new DevelopmentCard[48];
         LeaderCard[] leaderDeck= new LeaderCard[16];
-        try {
-            Reader reader = Files.newBufferedReader(Paths.get("devCard.json"));
-            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-            JsonArray jsonArray = jsonObject.get("DevelopmentCard").getAsJsonArray();
-            for (int i = 0; i<48;i++){
-                UtilityProductionAndCost[] costs = utilityCreator(jsonArray.get(i).getAsJsonObject(), "cost");
-                ProductionPower production = new ProductionPower(utilityCreator(jsonArray.get(i).getAsJsonObject().
-                        get("productionPower").getAsJsonObject(), "cost"), utilityCreator(jsonArray.
-                        get(i).getAsJsonObject().get("productionPower").getAsJsonObject(), "production"));
-                developmentGrid[i] = new DevelopmentCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").
-                        getAsInt(),jsonArray.get(i).getAsJsonObject().get("level").getAsInt(),UtilityMap.mapColor.
-                        get(jsonArray.get(i).getAsJsonObject().get("color").getAsString()),costs,production);
-            }
-            reader = Files.newBufferedReader(Paths.get("ledCard.json"));
-            jsonObject = gson.fromJson(reader, JsonObject.class);
-            jsonArray = jsonObject.get("LeaderCard").getAsJsonArray();
-            for (int i=0; i<4;i++){
-                leaderDeck[i] = new LeaderCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").getAsInt(),
-                        colorCostJSON(jsonArray.get(i).getAsJsonObject()), new SaleOnDevelopment(powerCreator(jsonArray.
-                        get(i).getAsJsonObject(),"saleOnDev")));
-            }
-            for (int i=4; i<8; i++){
-                leaderDeck[i] = new LeaderCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").getAsInt(),
-                        resourceCostJSON(jsonArray.get(i).getAsJsonObject()), new SpecialWarehouse(powerCreator(jsonArray.
-                        get(i).getAsJsonObject(),"specialW"),2));
-            }
-            for (int i=8; i<12;i++){
-                leaderDeck[i] = new LeaderCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").getAsInt(),
-                        colorCostJSON(jsonArray.get(i).getAsJsonObject()), new WhiteMarbleConversion(powerCreator(jsonArray.
-                        get(i).getAsJsonObject(),"whiteMarble")));
-            }
-            for (int i=12; i<16;i++) {
-                leaderDeck[i] = new LeaderCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").getAsInt(),
-                        levelCostJSON(jsonArray.get(i).getAsJsonObject()), new AdditionalProductionPower(powerCreator(
-                                jsonArray.get(i).getAsJsonObject(),"specialProduction")));
-            }
-
-        } catch (Exception ex){
-            ex.printStackTrace();
+        InputStream file = getClass().getClassLoader().getResourceAsStream("devCard.json");
+        InputStreamReader inputStreamReader = new InputStreamReader(file);
+        JsonObject jsonObject = gson.fromJson(inputStreamReader, JsonObject.class);
+        JsonArray jsonArray = jsonObject.get("DevelopmentCard").getAsJsonArray();
+        for (int i = 0; i<48;i++){
+            UtilityProductionAndCost[] costs = utilityCreator(jsonArray.get(i).getAsJsonObject(), "cost");
+            ProductionPower production = new ProductionPower(utilityCreator(jsonArray.get(i).getAsJsonObject().
+                    get("productionPower").getAsJsonObject(), "cost"), utilityCreator(jsonArray.
+                    get(i).getAsJsonObject().get("productionPower").getAsJsonObject(), "production"));
+            developmentGrid[i] = new DevelopmentCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").
+                    getAsInt(),jsonArray.get(i).getAsJsonObject().get("level").getAsInt(),UtilityMap.mapColor.
+                    get(jsonArray.get(i).getAsJsonObject().get("color").getAsString()),costs,production);
         }
-
+        file = getClass().getClassLoader().getResourceAsStream("ledCard.json");
+        inputStreamReader = new InputStreamReader(file);
+        jsonObject = gson.fromJson(inputStreamReader, JsonObject.class);
+        jsonArray = jsonObject.get("LeaderCard").getAsJsonArray();
+        for (int i=0; i<4;i++){
+            leaderDeck[i] = new LeaderCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").getAsInt(),
+                    colorCostJSON(jsonArray.get(i).getAsJsonObject()), new SaleOnDevelopment(powerCreator(jsonArray.
+                    get(i).getAsJsonObject(),"saleOnDev")));
+        }
+        for (int i=4; i<8; i++){
+            leaderDeck[i] = new LeaderCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").getAsInt(),
+                    resourceCostJSON(jsonArray.get(i).getAsJsonObject()), new SpecialWarehouse(powerCreator(jsonArray.
+                    get(i).getAsJsonObject(),"specialW"),2));
+        }
+        for (int i=8; i<12;i++){
+            leaderDeck[i] = new LeaderCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").getAsInt(),
+                    colorCostJSON(jsonArray.get(i).getAsJsonObject()), new WhiteMarbleConversion(powerCreator(jsonArray.
+                    get(i).getAsJsonObject(),"whiteMarble")));
+        }
+        for (int i=12; i<16;i++) {
+            leaderDeck[i] = new LeaderCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").getAsInt(),
+                    levelCostJSON(jsonArray.get(i).getAsJsonObject()), new AdditionalProductionPower(powerCreator(
+                            jsonArray.get(i).getAsJsonObject(),"specialProduction")));
+        }
         this.leaderDeck = new Stack<LeaderCard>() {{
             addAll(Arrays.asList(leaderDeck));
         }};
