@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 /**
- * this class rapresent a special type of card (Development type)
+ * this class represent a special type of card (Development type)
  *
  * level -> level of the card
  * color -> color of the card

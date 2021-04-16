@@ -14,37 +14,38 @@ public class PersonalBoard {
     private FaithTrack personalPath;
     private Strongbox personalBox ;
     private DevelopmentPlace[] personalDevelopmentSpace;
-    private ArrayList<Production> ProductionList ;
+    private ArrayList<Production> productionList ;
     private ArrayList<LeaderCard> activeLeaders;
     private Game game;
     private ArrayList<Resource> resHand;
+    private ArrayList<Resource> productionBox;
 
-    public DevelopmentPlace[] getPersonalDevelopmentSpace() {
-        return personalDevelopmentSpace;
-    }
-
-    public ArrayList<LeaderCard> getActiveLeaders() {
-        return activeLeaders;
-    }
-
-    public ArrayList<Production> getProductionList() {
-        return ProductionList;
-    }
-    public Strongbox getPersonalBox() {
-        return personalBox;
-    }
     public ArrayList<WarehouseStore> getStore() {
         return store;
     }
     public FaithTrack getPersonalPath() {
         return personalPath;
     }
-
+    public Strongbox getPersonalBox() {
+        return personalBox;
+    }
+    public DevelopmentPlace[] getPersonalDevelopmentSpace() {
+        return personalDevelopmentSpace;
+    }
+    public ArrayList<Production> getProductionList() {
+        return productionList;
+    }
+    public ArrayList<LeaderCard> getActiveLeaders() {
+        return activeLeaders;
+    }
     public Game getGame() {
         return game;
     }
     public ArrayList<Resource> getResHand() {
         return resHand;
+    }
+    public ArrayList<Resource> getProductionBox() {
+        return productionBox;
     }
 
     public void setStore(ArrayList<WarehouseStore> store) {
@@ -53,11 +54,6 @@ public class PersonalBoard {
     public void setPersonalPath(FaithTrack personalPath) {
         this.personalPath = personalPath;
     }
-
-    public void setActiveLeaders(ArrayList<LeaderCard> activeLeaders) {
-        this.activeLeaders = activeLeaders;
-    }
-
     public void setPersonalBox(Strongbox personalBox) {
         this.personalBox = personalBox;
     }
@@ -65,11 +61,21 @@ public class PersonalBoard {
         this.personalDevelopmentSpace = personalDevelopmentSpace;
     }
     public void setProductionList(ArrayList<Production> productionList) {
-        ProductionList = productionList;
+        this.productionList = productionList;
+    }
+    public void setActiveLeaders(ArrayList<LeaderCard> activeLeaders) {
+        this.activeLeaders = activeLeaders;
     }
     public void setGame(Game game) {
         this.game = game;
     }
+    public void setResHand(ArrayList<Resource> resHand) {
+        this.resHand = resHand;
+    }
+    public void setProductionBox(ArrayList<Resource> productionBox) {
+        this.productionBox = productionBox;
+    }
+
 
     /**
      * this is a specific constructor that initialise the board and its elements
@@ -86,7 +92,10 @@ public class PersonalBoard {
         this.personalPath = new FaithTrack();
         this.personalBox = new Strongbox();
         this.personalDevelopmentSpace = new DevelopmentPlace[3];
-        this.ProductionList = new ArrayList<>();
+        this.productionList = new ArrayList<Production>(){{
+            add(new BoardProduction());
+        }};
+        this.productionBox = new ArrayList<>();
         this.activeLeaders = new ArrayList<>();
         this.personalDevelopmentSpace[0] = new DevelopmentPlace();
         this.personalDevelopmentSpace[1] = new DevelopmentPlace();

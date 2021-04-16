@@ -57,8 +57,5 @@ class PlayerTest {
         assertEquals(3, vic[2]);
         assertEquals(2, vic[3]);
         assertEquals(2, vic[4]);
-
-
-
     }
 }

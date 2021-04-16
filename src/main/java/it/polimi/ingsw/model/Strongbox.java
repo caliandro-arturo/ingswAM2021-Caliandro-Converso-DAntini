@@ -48,11 +48,5 @@ public class Strongbox {
             this.resourceMap.replace(resource, temp, temp-1);
         else
             throw new IllegalArgumentException("you don't own this resource");
-
     }
-
-
-
-
-
 }
