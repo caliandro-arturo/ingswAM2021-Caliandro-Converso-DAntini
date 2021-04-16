@@ -18,21 +18,30 @@ public class LevelCost extends ColorCost{
         checkColor.put(Color.BLUE, 0);
         checkColor.put(Color.YELLOW, 0);
         checkColor.put(Color.PURPLE, 0);
-        int j;
+        boolean flag = false;
         DevelopmentPlace[] devPlace = player.getBoard().getPersonalDevelopmentSpace();
         for (int i = 0; i < devPlace.length; i++) {
             if (!devPlace[i].getDevelopmentCards().empty()) {
-                for (int k = 0; k < devPlace[i].getDevelopmentCards().size(); k++) {
-                    j = checkColor.get(devPlace[i].getLevelICard(k).getColor());
-                    checkColor.replace(devPlace[i].getLevelICard(k).getColor(), j, j + 1);
+                if (devPlace[i].getDevelopmentCards().size()<level){
+                    flag = false;
+                } else{
+                    flag = true;
+                    break;
                 }
             }
         }
-        boolean flag = false;
-        for (Map.Entry<Color, Integer> entry : getCost().entrySet()) {
-            flag = checkColor.get(entry.getKey()) >= getCost().get(entry.getKey());
+        if (!flag){
+            return false;
+        } else {
+            for (int i = 0; i < devPlace.length; i++) {
+                if (devPlace[i].getDevelopmentCards().size()>=level) {
+                    if (getCost().get(devPlace[i].getDevelopmentCards().get(level - 1).getColor()) == 1){
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
-        return flag;
     }
 
     @Override

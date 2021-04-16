@@ -48,7 +48,7 @@ public class LeaderCardTest {
         player.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(card1);
         player.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(card1lv2);
         player.getBoard().getPersonalDevelopmentSpace()[1].getDevelopmentCards().push(card2);
-        player.getBoard().addResource(Resource.COIN);
+        player.getBoard().getStore().get(0).addResource(Resource.COIN);
         player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
         player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
         player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
