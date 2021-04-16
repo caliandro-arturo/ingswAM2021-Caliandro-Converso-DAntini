@@ -231,7 +231,6 @@ public class Player {
      * @return
      */
     public Resource activateProduction(ProductionPower productionPower){
-
         Resource resource = null;
         return null;
     }
@@ -251,8 +250,7 @@ public class Player {
                 board.getStore().get(box[i] - 1).takeOutResource();
             }
         }
-        //TODO substitute personalBox with prodBox
-        board.getPersonalBox().addProdResource(production);
+        board.getPersonalBox().addToProdBox(production);
     }
 
     /**
@@ -292,8 +290,7 @@ public class Player {
             game.getViewAdapter().sendErrorMessage(this,e.getMessage());
             return;
         }
-        //TODO substitute personalBox with prodBox
-        board.getPersonalBox().addProdResource(production);
+        board.getPersonalBox().addToProdBox(production);
         board.getPersonalPath().increasePosition();
     }
 
@@ -339,7 +336,6 @@ public class Player {
                 }
             }
         }
-        //TODO substitute personalBox with prodBox
         production = board.getPersonalDevelopmentSpace()[index - 1]
                 .getDevelopmentCards().peek().getProduction().getProd();
         for (UtilityProductionAndCost utilityProductionAndCost : production) {
@@ -348,7 +344,7 @@ public class Player {
                 if (resource == Resource.FAITH) {
                     board.getPersonalPath().increasePosition();
                 } else {
-                    board.getPersonalBox().addProdResource(resource);
+                    board.getPersonalBox().addToProdBox(resource);
                 }
             }
         }

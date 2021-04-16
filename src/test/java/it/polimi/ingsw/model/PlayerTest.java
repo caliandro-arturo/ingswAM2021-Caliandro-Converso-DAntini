@@ -58,4 +58,9 @@ class PlayerTest {
         assertEquals(2, vic[3]);
         assertEquals(2, vic[4]);
     }
+
+    @Test
+    void productionTest(){
+
+    }
 }

@@ -18,7 +18,6 @@ public class PersonalBoard {
     private ArrayList<LeaderCard> activeLeaders;
     private Game game;
     private ArrayList<Resource> resHand;
-    private ArrayList<Resource> productionBox;
 
     public ArrayList<WarehouseStore> getStore() {
         return store;
@@ -43,9 +42,6 @@ public class PersonalBoard {
     }
     public ArrayList<Resource> getResHand() {
         return resHand;
-    }
-    public ArrayList<Resource> getProductionBox() {
-        return productionBox;
     }
 
     public void setStore(ArrayList<WarehouseStore> store) {
@@ -72,9 +68,6 @@ public class PersonalBoard {
     public void setResHand(ArrayList<Resource> resHand) {
         this.resHand = resHand;
     }
-    public void setProductionBox(ArrayList<Resource> productionBox) {
-        this.productionBox = productionBox;
-    }
 
 
     /**
@@ -95,7 +88,6 @@ public class PersonalBoard {
         this.productionList = new ArrayList<Production>(){{
             add(new BoardProduction());
         }};
-        this.productionBox = new ArrayList<>();
         this.activeLeaders = new ArrayList<>();
         this.personalDevelopmentSpace[0] = new DevelopmentPlace();
         this.personalDevelopmentSpace[1] = new DevelopmentPlace();
