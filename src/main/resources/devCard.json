@@ -1,0 +1,1574 @@
+{
+    "DevelopmentCard": [
+
+        {
+            "victoryPoints": 1,
+            "level": 1,
+            "color": "GREEN",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 1,
+            "level": 1,
+            "color": "PURPLE",
+            "cost": [
+                {
+                    "resource": "serf",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    { 
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+        
+        {
+            "victoryPoints": 1,
+            "level": 1,
+            "color": "BLUE",
+            "cost": [ 
+                {
+                    "resource": "coin",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 1,
+            "level": 1,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "stone",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 2,
+            "level": 1,
+            "color": "GREEN",
+            "cost": [
+                {
+                    "resource": "serf",
+                    "quantity": 1
+                },
+                {
+                    "resource": "stone",
+                    "quantity": 1
+                },
+                {
+                    "resource": "shield",
+                    "quantity": 1
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 2,
+            "level": 1,
+            "color": "PURPLE",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 1
+                },
+                {
+                    "resource": "coin",
+                    "quantity": 1
+                },
+                {
+                    "resource": "serf",
+                    "quantity": 1
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 2,
+            "level": 1,
+            "color": "BLUE",
+            "cost": [
+                {
+                    "resource": "coin",
+                    "quantity": 1
+                },
+                {
+                    "resource": "stone",
+                    "quantity": 1
+                },
+                {
+                    "resource": "serf",
+                    "quantity": 1
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [ 
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 2,
+            "level": 1,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 1
+                },
+                {
+                    "resource": "coin",
+                    "quantity": 1
+
+                },
+                {
+                    "resource": "stone",
+                    "quantity": 1
+
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ],
+                "production": [ 
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 3,
+            "level": 1,
+            "color": "GREEN",
+            "cost": [ 
+                {
+                    "resource": "shield",
+                    "quantity": 3
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "serf",
+                        "quantity": 2
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 3,
+            "level": 1,
+            "color": "PURPLE",
+            "cost": [
+                {
+                    "resource": "serf",
+                    "quantity": 3
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 2
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    },
+                    {
+                        "resource":"shield",
+                        "quantity":1
+                    },
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 3,
+            "level": 1,
+            "color": "BLUE",
+            "cost": [
+                {
+                    "resource": "coin",
+                    "quantity": 3
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "stone",
+                        "quantity": 2
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 3,
+            "level": 1,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "stone",
+                    "quantity": 3
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 2
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 4,
+            "level": 1,
+            "color": "GREEN",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 2
+                },
+                {
+                    "resource": "coin",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "coin",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 4,
+            "level": 1,
+            "color" : "PURPLE",
+            "cost": [
+                {
+                    "resource": "serf",
+                    "quantity": 2
+                },
+                {
+                    "resource": "stone",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "stone",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 4,
+            "level": 1,
+            "color": "BLUE",
+            "cost": [
+                {
+                    "resource": "coin",
+                    "quantity": 2
+                },
+                {
+                    "resource": "serf",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "serf",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 4,
+            "level": 1,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "stone",
+                    "quantity": 2
+                },
+                {
+                    "resource": "shield",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "shield",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 5,
+            "level": 2,
+            "color": "GREEN",
+            "cost": [ 
+                {
+                    "resource": "shield",
+                    "quantity": 4
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 5,
+            "level": 2,
+            "color": "PURPLE",
+            "cost": [ 
+                {
+                    "resource": "serf",
+                    "quantity": 4
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 5,
+            "level": 2,
+            "color": "BLUE",
+            "cost": [ 
+                {
+                    "resource": "coin",
+                    "quantity": 4
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [ 
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }   
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 5,
+            "level": 2,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "stone",
+                    "quantity": 4
+                }
+            ],
+            "productionPower": {
+                "cost": [ 
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ],
+                "production": [ 
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }   
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 6,
+            "level": 2,
+            "color": "GREEN",
+            "cost": [ 
+                {
+                    "resource": "shield",
+                    "quantity": 3
+                },
+                {
+                    "resource": "serf",
+                    "quantity": 2
+
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "stone",
+                        "quantity": 3
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 6,
+            "level": 2,
+            "color": "PURPLE",
+            "cost": [
+                {
+                    "resource" : "serf",
+                    "quantity": 3
+                },
+                {
+                    "resource": "coin",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "shield",
+                        "quantity": 3
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 6,
+            "level": 2,
+            "color": "BLUE",
+            "cost": [
+                {
+                    "resource": "coin",
+                    "quantity": 3
+                },
+                {
+                    "resource": "stone",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "serf",
+                        "quantity": 3
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 6,
+            "level": 2,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 2
+                },
+                {
+                    "resource": "stone",
+                    "quantity": 3
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ],
+                "production": [ 
+                    {
+                        "resource": "coin",
+                        "quantity": 3
+                    }
+                ]   
+            }
+        },
+
+        {
+            "victoryPoints": 7,
+            "level": 2,
+            "color": "GREEN",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 5
+                }
+            ],      
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 2
+                    }
+                ],
+                "production": [
+                    {
+                        "resource" :"stone",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 7,
+            "level": 2,
+            "color": "PURPLE",
+            "cost": [
+                {
+                    "resource": "serf",
+                    "quantity": 5
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 2
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "coin",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 7,
+            "level": 2,
+            "color": "BLUE",
+            "cost": [
+                {
+                    "resource": "coin",
+                    "quantity": 5
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "serf",
+                        "quantity": 2
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "shield",
+                        "quantity": 2
+                    },
+                    {
+                        "resource":"faith",
+                        "quantity":2
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 7,
+            "level": 2,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "stone",
+                    "quantity": 5
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 2
+                    }
+                ],
+                "production": [ 
+                    {
+                        "resource": "serf",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 8,
+            "level": 2,
+            "color": "GREEN",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 3
+                },
+                {
+                    "resource": "coin",
+                    "quantity": 3
+
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "shield",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 8,
+            "level": 2,
+            "color": "PURPLE",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 3
+                },
+                {
+                    "resource": "serf",
+                    "quantity": 3
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "serf",
+                        "quantity":2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 8,
+            "level": 2,
+            "color": "BLUE",
+            "cost": [
+                {
+                    "resource": "coin",
+                    "quantity": 3
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],    
+                "production": [
+                    {
+                        "resource": "stone",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 8,
+            "level": 2,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "stone",
+                    "quantity": 3
+                },
+                {
+                    "resource": "serf",
+                    "quantity": 3
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "coin",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 9,
+            "level": 3,
+            "color": "GREEN",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 6
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 2
+                    }
+                ],
+                "production": [ 
+                    {
+                        "resource": "stone",
+                        "quantity": 3
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 9,
+            "level": 3,
+            "color": "PURPLE",
+            "cost": [ 
+                {
+                    "resource": "serf",
+                    "quantity": 6
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "stone",
+                        "quantity": 2
+                    }
+                ],
+                "production": [
+                    {
+                        "resource" : "coin",
+                        "quantity": 3
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 9,
+            "level": 3,
+            "color": "BLUE",
+            "cost" : [
+                {
+                    "resource": "coin",
+                    "quantity": 6
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "serf",
+                        "quantity": 2
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "shield",
+                        "quantity": 3
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 9,
+            "level": 3,
+            "color": "YELLOW",
+            "cost": [ 
+                {
+                    "resource": "stone",
+                    "quantity": 6
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 2
+                    }
+                ],
+                "production": [ 
+                    {
+                        "resource": "serf",
+                        "quantity": 3
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 2
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 10,
+            "level": 3,
+            "color": "GREEN",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 5
+                },
+                {
+                    "resource": "serf",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "shield",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "stone",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 10,
+            "level": 3,
+            "color": "PURPLE",
+            "cost": [
+                {
+                    "resource": "serf",
+                    "quantity": 5
+                },
+                {
+                    "resource": "coin",
+                    "quantity": 2
+
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "coin",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 10,
+            "level": 3,
+            "color": "BLUE",
+            "cost": [
+                {
+                    "resource": "coin",
+                    "quantity": 5
+                },
+                {
+                    "resource": "stone",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "serf",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "stone",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 10,
+            "level": 3,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "stone",
+                    "quantity": 5
+                },
+                {
+                    "resource": "serf",
+                    "quantity": 2
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource":"stone",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "coin",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "shield",
+                        "quantity": 2
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 11,
+            "level": 3,
+            "color": "GREEN",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 7
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 3
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 11,
+            "level": 3,
+            "color": "PURPLE",
+            "cost": [
+                {
+                    "resource": "serf",
+                    "quantity": 7
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource":"coin",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 3
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 11,
+            "level": 3,
+            "color": "BLUE",
+            "cost": [
+                {
+                    "resource": "coin",
+                    "quantity": 7
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 3
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 11,
+            "level": 3,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "stone",
+                    "quantity": 7
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "faith",
+                        "quantity": 3
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 12,
+            "level": 3,
+            "color": "GREEN",
+            "cost": [
+                {
+                    "resource": "shield",
+                    "quantity": 4
+                },
+                {
+                    "resource": "coin",
+                    "quantity": 4
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource":  "coin",
+                        "quantity": 3
+                    },
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 12,
+            "level": 3,
+            "color": "PURPLE",
+            "cost": [
+                {
+                    "resource": "serf",
+                    "quantity": 4
+                },
+                {
+                    "resource": "shield",
+                    "quantity": 4
+
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "stone",
+                        "quantity": 3
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 12,
+            "level": 3,
+            "color": "BLUE",
+            "cost": [ 
+                {
+                    "resource": "coin",
+                    "quantity": 4
+                },
+                {
+                    "resource": "stone",
+                    "quantity": 4
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "serf",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "coin",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "shield",
+                        "quantity": 3
+                    }
+                ]
+            }
+        },
+
+        {
+            "victoryPoints": 12,
+            "level": 3,
+            "color": "YELLOW",
+            "cost": [
+                {
+                    "resource": "stone",
+                    "quantity": 4
+                },
+                {
+                    "resource": "serf",
+                    "quantity": 4
+                }
+            ],
+            "productionPower": {
+                "cost": [
+                    {
+                        "resource": "shield",
+                        "quantity": 1
+                    }
+                ],
+                "production": [
+                    {
+                        "resource": "stone",
+                        "quantity": 1
+                    },
+                    {
+                        "resource": "serf",
+                        "quantity": 3
+                    }
+                ]
+            }
+        }
+    ]
+}

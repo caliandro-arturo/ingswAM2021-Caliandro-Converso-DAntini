@@ -1,54 +1,46 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+
 /**
- * This enumeration contains all the colors used by marbles and cards
+ * This enumeration contains all the colors used by marbles and cards.
+ * For marbles, each color is associated with an action to do when a
+ * player uses the market:
  */
 public enum Color {
-    BLUE {
-        @Override
-        void action(Player player) {
-            player.getBoard().addResource(Resource.SHIELD);
-        }
-    },
-    GREEN {
-        void action(Player player) {
-            /*only for cards*/
-        };
-    },
-    GREY {
-        @Override
-        void action(Player player) {
-            player.getBoard().addResource(Resource.STONE);
-        }
-    },
-    PURPLE {
-        @Override
-        void action(Player player) {
-            player.getBoard().addResource(Resource.SERF);
-        }
-    },
-    RED {
-        @Override
-        void action(Player player) {
-            FaithTrack path = player.getBoard().getPersonalPath();
-            path.setPosition(path.getPosition() + 1);
-        }
-    },
-    WHITE {
-        @Override
-        void action(Player player) {
-            /*checks player's leaderCards and choose between 3 options:
-                1. no leaderCard with WhiteMarbleConversion -> do nothing;
-                2. one leaderCard with WhiteMarbleConversion -> return resource;
-                3. two leaderCards //          //            -> ask the player which leader to use
-             */
-        }
-    },
-    YELLOW {
-        @Override
-        void action(Player player) {
-            player.getBoard().addResource(Resource.COIN);
-        }
-    };
-    abstract void action(Player player);
+    BLUE        (game -> game.getCurrentPlayer().getBoard().addResource(Resource.SHIELD)),
+    GREY        (game -> game.getCurrentPlayer().getBoard().addResource(Resource.STONE)),
+    PURPLE      (game -> game.getCurrentPlayer().getBoard().addResource(Resource.SERF)),
+    YELLOW      (game -> game.getCurrentPlayer().getBoard().addResource(Resource.COIN)),
+    RED         (game ->  game.getCurrentPlayer().getBoard().getPersonalPath().increasePosition()),
+    WHITE       (game -> {
+                    ArrayList<Resource> whiteAlt = game.getCurrentPlayer().getWhiteAlt();
+                    if(whiteAlt.isEmpty())
+                        return;
+                    Resource resource;
+                    if(whiteAlt.size() == 1) {
+                        resource = whiteAlt.get(0);
+                        game.getCurrentPlayer().getBoard().addResource(resource);
+                    } else if (whiteAlt.size() == 2) {
+                        game.getCurrentPlayer().changeWhiteMarbleChoicesNumber(1);
+                        game.getViewAdapter().askWhiteMarbleResource();
+                    }
+                }),
+    GREEN       (game -> {/*only used by DevelopmentCard*/});
+    private final GameAction action;
+    @FunctionalInterface
+    private interface GameAction {
+        void act(Game game);
+    }
+
+    /**
+     * This method is called when a Marble is picked from the Market.
+     * @param game the game where the player picks the Marble
+     */
+    public void act(Game game) {
+        action.act(game);
+    }
+    Color(GameAction action) {
+        this.action = action;
+    }
 }
