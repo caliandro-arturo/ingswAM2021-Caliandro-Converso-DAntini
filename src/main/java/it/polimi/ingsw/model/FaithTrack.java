@@ -53,13 +53,13 @@ public class FaithTrack {
         switch(papalSpace){
             case 8:
                 if(position>4 && position<9) {
-                    scoreCard +=2;
+                    scoreCard += 2;
                     return true;
                 }else
                     return false;
             case 16:
                 if(position>11 && position<17) {
-                    scoreCard += +3;
+                    scoreCard += 3;
                     return true;
                 }else
                     return false;

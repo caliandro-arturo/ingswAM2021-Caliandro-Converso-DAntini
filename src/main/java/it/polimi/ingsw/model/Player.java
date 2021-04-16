@@ -14,6 +14,8 @@ public class Player {
     private ArrayList<Resource> sale = new ArrayList<>();
     private Game game;
     private int[] victoryPoints = new int[5];
+    private int whiteMarbleChoices = 0;
+    private int initialResources = 0;
 
     public Player(String username){
         this.username = username;
@@ -43,9 +45,27 @@ public class Player {
     public void setWhiteAlt(ArrayList<Resource> whiteAlt) {
         this.whiteAlt = whiteAlt;
     }
+
+    public void setWhiteMarbleChoices(int whiteMarbleChoices) {
+        this.whiteMarbleChoices = whiteMarbleChoices;
+    }
+
+    public void setInitialResources(int initialResources) {
+        this.initialResources = initialResources;
+    }
+
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
     }
+
+    public int getWhiteMarbleChoices() {
+        return whiteMarbleChoices;
+    }
+
+    public int getInitialResources() {
+        return initialResources;
+    }
+
     public PersonalBoard getBoard() {
         return board;
     }
@@ -60,7 +80,11 @@ public class Player {
     }
     public void addWhiteAlt(Resource resource) {
 
+
         whiteAlt.add(resource);
+    }
+    public void changeWhiteMarbleChoicesNumber(int variation){
+        whiteMarbleChoices += variation;
     }
 
     public void addSale(Resource resource) {
@@ -76,10 +100,12 @@ public class Player {
     public void discardLeaderCard(LeaderCard leader){
         if(!game.isStarted() && leaderCards.size()>2)
             leaderCards.remove(leader);
-        else if(leaderCards.size()>0)
-                leaderCards.remove(leader);
-                game.getCurrentPlayer().getBoard().getPersonalPath().increasePosition();
+        else if(leaderCards.size()>0) {
+            leaderCards.remove(leader);
+            game.getCurrentPlayer().getBoard().getPersonalPath().increasePosition();
+        }
     }
+
 
     /**
      * buying method of Development Cards
@@ -287,11 +313,11 @@ public class Player {
 
     /**
      * in the last turn this method sum all the victory points the player is entitled to
-     * index 0 faith path VP
-     * index 1 dev card VP
-     * index 2 lead card VP
-     * index 3 Pope's favor VP
-     * index 4 resource VP
+     * <p> index 0 faith path VP
+     * <p> index 1 dev card VP
+     * <p> index 2 lead card VP
+     * <p> index 3 Pope's favor VP
+     * <p> index 4 resource VP
      * @return array of int containing VictoryPoints already summed in different indexes
      */
     public int[] getVictoryPoints(){
