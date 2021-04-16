@@ -6,7 +6,6 @@ package it.polimi.ingsw.model;
 public abstract class TurnPhase {
     private final Game game;
     private final String name;
-
     private final boolean isSkippable;
     private boolean isFinished = false;
     public TurnPhase(Game game, String name, boolean isSkippable) {
@@ -27,7 +26,6 @@ public abstract class TurnPhase {
     public boolean isFinished() {
         return isFinished;
     }
-
     public void setFinished(boolean isFinished) {
         this.isFinished = isFinished;
     }

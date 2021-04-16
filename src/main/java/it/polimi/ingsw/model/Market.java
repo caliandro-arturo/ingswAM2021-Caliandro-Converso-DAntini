@@ -74,15 +74,15 @@ public class Market {
      * @param rowOrColumn selection between row or column (it must be 'r' or 'c')
      * @param num position of the selected row/column
      */
-    public Marble[] getRowOrColumn(char rowOrColumn, int num) throws GameException.InvalidArgument {
+    public Marble[] getRowOrColumn(char rowOrColumn, int num) {
         if(!(rowOrColumn == 'r' || rowOrColumn == 'c'))
-            throw new GameException.InvalidArgument("You must choose between 'r' or 'c'.");
+            throw new IllegalArgumentException("You must choose between 'r' or 'c'.");
         else if(num < 1)
-            throw new GameException.InvalidArgument("Number cannot be less than 1.");
+            throw new IllegalArgumentException("Number cannot be less than 1.");
         else if(rowOrColumn == 'r' && num > rows)
-            throw new GameException.InvalidArgument("Maximum number accepted for rows is " + rows + ".");
+            throw new IllegalArgumentException("Maximum number accepted for rows is " + rows + ".");
         else if(rowOrColumn == 'c' && num > columns)
-            throw new GameException.InvalidArgument("Maximum number accepted for columns is " + columns + ".");
+            throw new IllegalArgumentException("Maximum number accepted for columns is " + columns + ".");
         num--;
         Marble[] marbleArray = null;
         if (rowOrColumn == 'r') {
@@ -126,9 +126,9 @@ public class Market {
      * @param game the game in which the current player uses the market
      * @param rowOrColumn selection between row or column
      * @param num position of the selected row/column
-     * @throws GameException.InvalidArgument if parameters are invalids
+     * @throws IllegalArgumentException if parameters are invalids
      */
-    public void getMarblesResources(Game game, char rowOrColumn, int num) throws GameException.InvalidArgument {
+    public void getMarblesResources(Game game, char rowOrColumn, int num) {
         Marble[] chosenMarketSlice = getRowOrColumn(rowOrColumn, num);
         for (Marble marble : chosenMarketSlice)
             marble.pick(game);

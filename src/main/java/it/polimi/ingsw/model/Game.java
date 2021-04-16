@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Stack;
 
 /**
- * This class contains attributes and methods useful to both classes SinglePlayerGame and MultiPlayerGame
+ * Parent of both {@link SinglePlayerGame} and {@link MultiplayerGame} classes.
+ *
+ * <p>It contains attributes and methods that represents the state of the game
  */
 public abstract class Game {
     private final ArrayList<Player> players = new ArrayList<>();
@@ -26,11 +28,10 @@ public abstract class Game {
     private ArrayList<Player> playersToWait = new ArrayList<>();
 
     //booleans
-    private boolean isFull = false;                             //all players has been added
-    private boolean isStarted = false;                          //the game is started
-    private boolean expectedWhiteMarbleEffectChoice = false;    //the player have to choose a resource
-    private boolean isOver = false;                             //the game is over (last turns)
-    private boolean isFinished = false;                         //the game is finished
+    private boolean isFull = false;                         //all players has been added
+    private boolean isStarted = false;                      //the game is started
+    private boolean isOver = false;                         //the game is over (last turns)
+    private boolean isFinished = false;                     //the game is finished
 
     public Game(Player player, int playersNum, Market market, Stack<LeaderCard> leaderDeck,
                 DevelopmentGrid developmentGrid) {
@@ -110,9 +111,6 @@ public abstract class Game {
     public boolean isStarted() {
         return isStarted;
     }
-    public boolean expectedWhiteMarbleEffectChoice() {
-        return expectedWhiteMarbleEffectChoice;
-    }
     public boolean isOver() {
         return isOver;
     }
@@ -120,14 +118,11 @@ public abstract class Game {
         return isFinished;
     }
 
-    public void setFull() {
-        isFull = true;
+    public void setFull(boolean isFull) {
+        this.isFull = isFull;
     }
-    public void setStarted() {
-        isStarted = true;
-    }
-    public void setExpectedWhiteMarbleEffectChoice(boolean expectedWhiteMarbleEffectChoice) {
-        this.expectedWhiteMarbleEffectChoice = expectedWhiteMarbleEffectChoice;
+    public void setStarted(boolean isStarted) {
+        this.isStarted = isStarted;
     }
     public void setOver(boolean over) {
         isOver = over;
@@ -145,8 +140,18 @@ public abstract class Game {
     public TurnPhase getTurnPhase(String name) {
         return turnPhases.get(name);
     }
-    //main methods
 
+
+    /**
+     * Checks if a player is ready.
+     * @param player the player to check
+     * @return {@code true} if the player is in the game and it's ready; {@code false} otherwise
+     */
+    public boolean isReady(Player player) {
+        return players.contains(player) && !playersToWait.contains(player);
+    }
+
+    //main methods
     /**
      * Adds a player to the game if the number of players isn't already reached.
      *
@@ -166,29 +171,22 @@ public abstract class Game {
             player.setGame(this);
             viewAdapter.notifyAddedPlayer(player);
             if(playersNum == players.size()) {
-                setFull();
+                setFull(true);
                 viewAdapter.sendMessage("The game now is full. Initializing players...");
                 setUpPlayers();
             }
         }
     }
+
     /**
-     * This method removes the player from {@link Game#playersToWait}. If {@code playersToWait} is
+     * Checks if a player is ready and removes the player from {@link Game#playersToWait}. If {@code playersToWait} is
      * empty, set the game ready to start.
      * @param player the ready player to remove
      */
     public void setPlayerReady(Player player) {
-        playersToWait.remove(player);
-        if (playersToWait.isEmpty()) {
-            startGame();
-        }
-    }
-    /**
-     * Removes the player indicated from {@code num} in {@link Game#playersToWait}.
-     * @param num the position in {@link Game#playersToWait} of the player to remove
-     */
-    public void setPlayerReady(int num) {
-        setPlayerReady(playersToWait.get(num));
+        if (player.getBoard().getResHand().isEmpty() && player.getLeaderCards().size() == 2)
+            playersToWait.remove(player);
+            if (playersToWait.isEmpty()) startGame();
     }
 
     /**
@@ -196,7 +194,7 @@ public abstract class Game {
      */
     public void startGame() {
         viewAdapter.sendMessage("The game will start now.");
-        setStarted();
+        setStarted(true);
         setCurrentTurnPhase(getTurnPhase("UseLeader"));
         currentTurnPhase.start();
     }
@@ -221,15 +219,14 @@ public abstract class Game {
 
     /**
      * Starts a Vatican Report: each player that has his red cross in a Vatican Section earns additional VP.
-     * @param popePosition the position in which the Vatican Report has been triggered
+     * @param popePosition the position that triggered the Vatican Report event
      */
     public void vaticanReport(int popePosition) {
         vaticanMap.replace(popePosition, true);
         players.forEach(player -> player.getBoard().getPersonalPath().isInVatican(popePosition));
         if (popePosition == 24) {
-            if (isOver) {
+            if (!isOver) {
                 setOver(true);
-
             }
         }
     }

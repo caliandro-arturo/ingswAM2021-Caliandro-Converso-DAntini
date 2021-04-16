@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
-
 
 public class MarketTest {
     public Market market = new Market();
@@ -13,7 +11,7 @@ public class MarketTest {
      * an extra marble
      */
     @Test
-    public void marketIsFulfilled() throws GameException.InvalidArgument {
+    public void marketIsFulfilled() {
         int[] colorHistogram = new int[7];
         colorHistogram[Color.WHITE.ordinal()] = 4;
         colorHistogram[Color.RED.ordinal()] = 1;
@@ -35,7 +33,7 @@ public class MarketTest {
      * This test verifies that the re-entry of the extra marble in the tray is done correctly
      */
     @Test
-    public void marbleReinsertion() throws GameException.InvalidArgument {
+    public void marbleReinsertion() {
         Marble oldExtra;
         Marble[] slice;
         Marble[] newSlice;

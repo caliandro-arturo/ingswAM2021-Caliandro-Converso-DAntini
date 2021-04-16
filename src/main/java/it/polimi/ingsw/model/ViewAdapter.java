@@ -29,12 +29,11 @@ public class ViewAdapter {
     }
 
     /**
-     * Sends the request to the player to discard two leader cards and to choose a number of free resources,
-     * specified by parameter.
+     * Notifies the player how much initial resources he has to choose and store in his warehouse depots.
      * @param player the player to notify
-     * @param resourceQuantity the number of free resources the player has to choose
+     * @param resourceQuantity the number of resources the player has to choose
      */
-    public void setUpPlayer(Player player, int resourceQuantity) {
+    public void notifyInitialResourcesAmount(Player player, int resourceQuantity) {
     }
 
     /**
@@ -99,8 +98,14 @@ public class ViewAdapter {
      * @param p the player to notify
      * @param resource the resource to store
      */
-    public void askResPlace(Player p, Resource resource){
-        sendMessage(p, "choose where to put this " + resource + "resource." );
+    public void askResPlace(Player p, Resource resource) {
+        sendMessage(p, "choose where to put this " + resource + "resource.");
+    }
+
+    /**
+     * Notifies that the game is over and returns
+     */
+    public void notifyGameEnded(Player player, int ranking, int[] points) {
     }
 
     /**
