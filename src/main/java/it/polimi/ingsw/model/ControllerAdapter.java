@@ -401,6 +401,7 @@ public class ControllerAdapter {
         }
         DevelopmentCard card = game.getDevelopmentGrid().getDeck(level,color).getTopCard();
         player.buyDevelopmentCard(card,box,devSpace);
+        game.getCurrentTurnPhase().setFinished(true);
     }
 }
 

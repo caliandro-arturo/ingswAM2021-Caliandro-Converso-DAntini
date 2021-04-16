@@ -7,7 +7,8 @@ import java.util.Stack;
 /**
  * Parent of both {@link SinglePlayerGame} and {@link MultiplayerGame} classes.
  *
- * <p>It contains attributes and methods that represents the state of the game
+ * <p>It contains attributes and methods that represents the state of the game:
+ * players
  */
 public abstract class Game {
     private final ArrayList<Player> players = new ArrayList<>();
@@ -235,6 +236,10 @@ public abstract class Game {
      * Set {@link Game#currentPlayer} and initializes players.
      */
     public abstract void setUpPlayers();
+
+    /**
+     * Ends the game, sending to players the results of the game (Victory Points and ranking).
+     */
     public abstract void endGame();
 
     //------------------------------------------------------------------------------------------------------------------

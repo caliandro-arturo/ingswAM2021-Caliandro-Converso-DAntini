@@ -111,11 +111,11 @@ public class GameCreator {
     }
 
     public Game create(Player player, int playersNum) {
-        if(playersNum == 1)
+        if(playersNum < 1 || playersNum > 4)
+            throw new IllegalArgumentException("Number of players must be between 1 and 4.");
+        else if(playersNum == 1)
             return new SinglePlayerGame(player, playersNum, market, leaderDeck, developmentGrid);
-        else if(playersNum >= 2 && playersNum <= 4)
-            return new MultiplayerGame(player, playersNum, market, leaderDeck, developmentGrid);
-        return null; //TODO error handling
+        else return new MultiplayerGame(player, playersNum, market, leaderDeck, developmentGrid);
     }
 
     //getter for testing purposes

@@ -4,15 +4,15 @@ package it.polimi.ingsw.model;
  * This enum contains all the Solo Action effects.
  */
 public enum SoloAction {
-    DELYELLOW/*-------*/((game, soloActions) -> game.getDevelopmentGrid().removeCard(Color.YELLOW)),
-    DELGREEN/*--------*/((game, soloActions) -> game.getDevelopmentGrid().removeCard(Color.GREEN)),
-    DELPURPLE/*-------*/((game, soloActions) -> game.getDevelopmentGrid().removeCard(Color.PURPLE)),
-    DELBLUE/*---------*/((game, soloActions) -> game.getDevelopmentGrid().removeCard(Color.BLUE)),
-    TWOPOSITIONS/*----*/((game, soloActions) -> {
+    DELYELLOW           ((game, soloActions) -> game.getDevelopmentGrid().removeCard(Color.YELLOW)),
+    DELGREEN            ((game, soloActions) -> game.getDevelopmentGrid().removeCard(Color.GREEN)),
+    DELPURPLE           ((game, soloActions) -> game.getDevelopmentGrid().removeCard(Color.PURPLE)),
+    DELBLUE             ((game, soloActions) -> game.getDevelopmentGrid().removeCard(Color.BLUE)),
+    TWOPOSITIONS        ((game, soloActions) -> {
                             game.getPlayer(1).getBoard().getPersonalPath().increasePosition();
                             game.getPlayer(1).getBoard().getPersonalPath().increasePosition();
                         }),
-    ONEPOSITIONRESET/**/((game, soloActions) -> {
+    ONEPOSITIONRESET    ((game, soloActions) -> {
                             game.getPlayer(1).getBoard().getPersonalPath().increasePosition();
                             soloActions.reset();
                         });
