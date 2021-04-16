@@ -14,6 +14,7 @@ public class Market {
      * This attribute is the tray of the market
      */
     private final Marble[][] tray;
+
     /**
      * this attribute represents the extra marble
      */
@@ -35,6 +36,7 @@ public class Market {
                 tray[i][j] = marbles.get(i * columns + j);
         extraMarble = marbles.get(rows * columns);
     }
+  
     public Market() {
         this(3, 4, new ArrayList<Marble>() {{
             add(new Marble(Color.WHITE));
@@ -71,6 +73,7 @@ public class Market {
 
     /**
      * Returns a selected row or column of marbles from the tray
+     *
      * @param rowOrColumn selection between row or column (it must be 'r' or 'c')
      * @param num position of the selected row/column
      */
