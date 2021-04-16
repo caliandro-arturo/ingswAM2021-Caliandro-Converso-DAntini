@@ -4,15 +4,16 @@ import java.util.ArrayList;
 
 /**
  * This enumeration contains all the colors used by marbles and cards.
- * For marbles, each color has an action to be performed when a marble is in a selected row or column in the market.
+ * For marbles, each color is associated with an action to do when a
+ * player uses the market:
  */
 public enum Color {
-    BLUE/*----*/(game -> game.getCurrentPlayer().getBoard().addResource(Resource.SHIELD)),
-    GREY/*----*/(game -> game.getCurrentPlayer().getBoard().addResource(Resource.STONE)),
-    PURPLE/*--*/(game -> game.getCurrentPlayer().getBoard().addResource(Resource.SERF)),
-    YELLOW/*--*/(game -> game.getCurrentPlayer().getBoard().addResource(Resource.COIN)),
-    RED/*-----*/(game ->  game.getCurrentPlayer().getBoard().getPersonalPath().increasePosition()),
-    WHITE/*---*/(game -> {
+    BLUE        (game -> game.getCurrentPlayer().getBoard().addResource(Resource.SHIELD)),
+    GREY        (game -> game.getCurrentPlayer().getBoard().addResource(Resource.STONE)),
+    PURPLE      (game -> game.getCurrentPlayer().getBoard().addResource(Resource.SERF)),
+    YELLOW      (game -> game.getCurrentPlayer().getBoard().addResource(Resource.COIN)),
+    RED         (game ->  game.getCurrentPlayer().getBoard().getPersonalPath().increasePosition()),
+    WHITE       (game -> {
                     ArrayList<Resource> whiteAlt = game.getCurrentPlayer().getWhiteAlt();
                     if(whiteAlt.isEmpty())
                         return;
@@ -21,11 +22,11 @@ public enum Color {
                         resource = whiteAlt.get(0);
                         game.getCurrentPlayer().getBoard().addResource(resource);
                     } else if (whiteAlt.size() == 2) {
-                        game.setExpectedWhiteMarbleEffectChoice(true);
+                        game.getCurrentPlayer().changeWhiteMarbleChoicesNumber(1);
                         game.getViewAdapter().askWhiteMarbleResource();
                     }
                 }),
-    GREEN/*---*/(game -> {/*only used by DevelopmentCard*/});
+    GREEN       (game -> {/*only used by DevelopmentCard*/});
     private final GameAction action;
     @FunctionalInterface
     private interface GameAction {

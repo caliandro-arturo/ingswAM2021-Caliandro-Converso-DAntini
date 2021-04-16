@@ -18,6 +18,12 @@ public class PassTurnPhase extends TurnPhase {
 
     @Override
     TurnPhase nextTurnPhase() {
+        Game game = getGame();
+        if(game.getPlayers().indexOf(game.getCurrentPlayer()) == game.getPlayersNum() - 1)
+            if(game.isOver()) {
+                game.endGame();
+                return null;
+            }
         getGame().setCurrentPlayer(nextPlayer());
         return getGame().getTurnPhase("UseLeader");
     }

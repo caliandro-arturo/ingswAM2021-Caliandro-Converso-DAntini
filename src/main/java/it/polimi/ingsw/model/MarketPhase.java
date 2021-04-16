@@ -7,16 +7,17 @@ public class MarketPhase extends TurnPhase {
 
     @Override
     public void start() {
-        getGame().getViewAdapter().sendMessage(getGame().getCurrentPlayer(), "");
-    }   //todo chiedere di far usare il mercato
+        getGame().getViewAdapter().sendMessage(getGame().getCurrentPlayer(), getName());
+    }
 
     @Override
     public String getPhaseInfo() {
-        return null;
+        return "Use the market to get additional resources.";
     }
 
     @Override
     public TurnPhase nextTurnPhase() {
+        setFinished(false);
         return getGame().getTurnPhase("UseAgainLeader");
     }
 }

@@ -86,11 +86,22 @@ public class ControllerAdapter {
         }
     }
 
-    public void initializePlayer(Player player, ArrayList<Resource> resources, LeaderCard[] leaderCards) {
-        //
-        //todo implement Player.discardLeaderCard(...)
-        //
-        game.setPlayerReady(player);
+    /**
+     * Gives the player the indicated initial resource.
+     *
+     * @param player the player who has selected the resource
+     * @param resource the initial resource to give to the player
+     */
+    public void takeInitialResource(Player player, Resource resource) {
+        try {
+            if (game.isStarted() || player.getInitialResources() == 0)
+                throw new GameException.IllegalMove();
+        } catch (GameException.IllegalMove e) {
+            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
+            return;
+        }
+        player.getBoard().addResource(resource);
+        player.setInitialResources(player.getInitialResources() - 1);
     }
 
     /**
@@ -112,44 +123,56 @@ public class ControllerAdapter {
     }
 
     /**
-     * Calls {@link Player#useLeader(LeaderCard)}
+     * Calls {@link Player#useLeader(LeaderCard)}.
+     *
      * @param player the player who asked to use the leader
      */
-    public void useLeader(Player player/*, LeaderCard leader*/) {
+    public void useLeader(Player player, int leaderCardNumber) {
         if (!isLeaderPhase(player)) return;
-        /*player.useLeader(leader);*/
+        try {
+            player.useLeader(player.getLeaderCards().get(leaderCardNumber - 1));
+        } catch (IllegalArgumentException e) {
+            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
+        }
     }
 
     /**
-     * Calls {@link Player#discardLeaderCard(LeaderCard)}
+     * Calls {@link Player#discardLeaderCard(LeaderCard)}.
+     *
      * @param player the player who asked to discard the leader
      */
-    public void discardLeader(Player player/*, LeaderCard leader*/) {
-        if (!isLeaderPhase(player)) return;
-        /*player.discardLeaderCard(leader);*/
+    public void discardLeader(Player player, int leaderCardNumber) {
+        try {
+            player.discardLeaderCard(player.getLeaderCards().get(leaderCardNumber - 1));
+        } catch (IllegalArgumentException e) {
+            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
+        }
+        if (!game.isStarted() && !game.getPlayersToWait().contains(player))
+            game.setPlayerReady(player);
     }
 
     /**
      * Calls {@link Market#getMarblesResources(Game, char, int)}.
-     * @param player the player that asked to use the market
+     *
+     * @param player      the player that asked to use the market
      * @param rowOrColumn selection between row or column
-     * @param number position of the selected row/column
+     * @param number      position of the selected row/column
      */
     public void useMarket(Player player, char rowOrColumn, int number) {
-        if(!isMoveValid(player, "UseMarket")) return;
+        if (!isMoveValid(player, "UseMarket")) return;
         try {
             game.getMarket().getMarblesResources(game, rowOrColumn, number);
-        } catch (GameException.InvalidArgument e) {
+        } catch (IllegalArgumentException e) {
             game.getViewAdapter().sendErrorMessage(player, e.getMessage());
             return;
         }
-        game.getViewAdapter().sendMessage(player, "Market used successfully.");
+        game.getViewAdapter().sendMessage(player, "Now deploy your resources.");
         game.getCurrentTurnPhase().setFinished(true);
     }
 
     /**
      * Gives the player the resource he has chosen when he picked the white Marble from the Market.
-     * Only called when te player has two leaders with White Marble Conversion power.
+     * Only called if the player has two leaders with White Marble Conversion power.
      *
      * @param player the player to give the resources to
      * @param num    the chosen resource (indicated by its position in the WhiteAlt ArrayList, defined in Player)
@@ -157,20 +180,72 @@ public class ControllerAdapter {
     public void giveChosenWhiteMarbleResource(Player player, int num) {
         if (!isMoveValid(player, "UseMarket")) return;
         try {
-            if(!game.expectedWhiteMarbleEffectChoice())
+            if (player.getWhiteMarbleChoices() == 0)
                 throw new GameException.IllegalMove();
             else if (num != 1 && num != 2)
-                throw new GameException.InvalidArgument("the number must be 1 or 2.");
-        } catch (GameException.IllegalMove | GameException.InvalidArgument e) {
+                throw new IllegalArgumentException("the number must be 1 or 2.");
+        } catch (GameException.IllegalMove | IllegalArgumentException e) {
             game.getViewAdapter().sendErrorMessage(player, e.getMessage());
             return;
         }
         game.getCurrentPlayer().getBoard().addResource(player.getWhiteAlt().get(num - 1));
-        game.setExpectedWhiteMarbleEffectChoice(false);
+        player.changeWhiteMarbleChoicesNumber(-1);
     }
 
     /**
-     * Sends information about a turn to the player.
+     * Calls {@link PersonalBoard#takeOutResource(int)}.
+     *
+     * @param player the player who asked to take out a resource
+     * @param pos    position of the warehouse store
+     */
+    public void takeOutResource(Player player, int pos) {
+        if(game.isStarted() && !playerCanDoThisNow(player)) return;
+        try {
+            if (!game.isStarted() && !game.getPlayersToWait().contains(player))
+                throw new GameException.IllegalMove();
+            else
+                player.getBoard().takeOutResource(pos);
+        } catch (IllegalArgumentException | GameException.IllegalMove e) {
+            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
+        }
+    }
+
+    /**
+     * Calls {@link PersonalBoard#deployResource(Resource, int)}.
+     *
+     * @param player   the player who sent the command
+     * @param resource the resource to place in the warehouse
+     * @param pos      position of the warehouse store
+     */
+    public void deployResource(Player player, Resource resource, int pos) {
+        if (game.isStarted() && !playerCanDoThisNow(player)) return;
+        try {
+            player.getBoard().deployResource(resource, pos);
+        } catch (IllegalArgumentException e) {
+            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
+            return;
+        }
+        if (!game.isStarted() && !game.getPlayersToWait().contains(player))
+            game.setPlayerReady(player);
+    }
+
+    /**
+     * Calls {@link PersonalBoard#takeOutResource(int)}.
+     *
+     * @param player   the player who sent the command
+     * @param resource the resource to discard
+     */
+    public void discardResource(Player player, Resource resource) {
+        if (!isMoveValid(player, "UseMarket")) return;
+        try {
+            player.getBoard().discardResource(resource);
+        } catch (GameException.IllegalMove e) {
+            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
+        }
+    }
+
+    /**
+     * Sends information about a turn phase to the player.
      *
      * @param player    the player who asked information about the turn phase
      * @param turnPhase the turn phase for which information has been requested
@@ -185,7 +260,9 @@ public class ControllerAdapter {
     public void nextTurnPhase(Player player) {
         if (!playerCanDoThisNow(player)) return;
         try {
-            if (!(game.getCurrentTurnPhase().isFinished()))
+            if (!player.getBoard().getResHand().isEmpty())
+                throw new GameException.IllegalMove();
+            else if (!(game.getCurrentTurnPhase().isFinished()))
                 if (!(game.getCurrentTurnPhase().isSkippable()))
                     throw new GameException.IllegalMove();
         } catch (GameException.IllegalMove e) {

@@ -3,17 +3,19 @@ package it.polimi.ingsw.model;
 import java.util.Stack;
 
 public class SinglePlayerGame extends Game {
-    private boolean isLose;
+    private boolean isLost;
     FaithTrack lorenzoTrack = new FaithTrack() {
         @Override
-        public void isInVatican(int papalSpace) {
+        public boolean isInVatican(int papalSpace) {
+            return false;
         }
 
         @Override
         public void increasePosition() {
             super.increasePosition();
             if(getPosition() == 24) {
-                isLose = true;
+                isLost = true;
+                setOver(true);
                 endGame();
             }
         }
@@ -33,5 +35,10 @@ public class SinglePlayerGame extends Game {
 
     @Override
     public void endGame() {
+        setFinished();
+        int rank = 1;
+        if(isLost)
+            rank = 2;
+        getViewAdapter().notifyGameEnded(getPlayer(0), rank, getPlayer(0).getVictoryPoints());
     }
 }

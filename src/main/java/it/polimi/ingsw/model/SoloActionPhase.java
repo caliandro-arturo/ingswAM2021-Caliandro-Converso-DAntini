@@ -20,7 +20,7 @@ public class SoloActionPhase extends TurnPhase {
     }
     @Override
     TurnPhase nextTurnPhase() {
-        return null;
+        return getGame().getTurnPhase("UseLeader");
     }
     //------------------------------------------------------------------------------------------------------------------
     /* for debug purposes */
