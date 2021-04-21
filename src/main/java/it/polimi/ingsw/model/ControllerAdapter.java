@@ -284,41 +284,12 @@ public class ControllerAdapter {
             return;
         Resource production = UtilityMap.mapResource.get(prod);
         try {
-            if (UtilityMap.isStorable(production)) {
-                throw new IllegalArgumentException("Not valid production input");
-            }
-            for (int i = 0; i < 2; i++) {
-                Resource resource = UtilityMap.mapResource.get(cost[i]);
-                if (UtilityMap.isStorable(resource)) {
-                    throw new IllegalArgumentException("Not valid input");
-                }
-                if (box[i] == 0) {
-                    int j = player.getBoard().getPersonalBox().getResourceMap().get(resource);
-                    if (j == 0) {
-                        throw new IllegalArgumentException("Not enough resources");
-                    }
-                } else if (box[i] > 3) {
-                    if (player.getBoard().getStore().size() < box[i]) {
-                        throw new IllegalArgumentException("Invalid store");
-                    } else {
-                        if (player.getBoard().getStore().get(box[i] - 1).getResources().isEmpty()) {
-                            throw new IllegalArgumentException("Not enough resources");
-                        } else if (player.getBoard().getStore().get(box[i] - 1).getTypeOfResource() != resource) {
-                            throw new IllegalArgumentException("wrong resources");
-                        }
-                    }
-                } else {
-                    WarehouseStore warehouseStore = player.getBoard().getStore().get(box[i] - 1);
-                    if (warehouseStore.getResources().isEmpty() || warehouseStore.getTypeOfResource() != resource) {
-                        throw new IllegalArgumentException("Not enough resources or invalid store");
-                    }
-                }
-            }
+            player.startBoardProduction(box,cost,production);
         }catch (IllegalArgumentException e){
             game.getViewAdapter().sendErrorMessage(player,e.getMessage());
             return;
         }
-        player.startBoardProduction(box,cost,production);
+        player.getBoard().getProductionList().get(0).setProductionCanBeActivate(false);
     }
 
     /**
@@ -332,18 +303,22 @@ public class ControllerAdapter {
         if (!isMoveValid(player,"ActivateProduction"))
             return;
         Resource production = UtilityMap.mapResource.get(prod);
+        Production productionPower = player.getBoard().getProductionList().get(index);
         try {
             if (UtilityMap.isStorable(production)) {
                 throw new IllegalArgumentException("Not valid production input");
             }else if (player.getBoard().getProductionList().get(index) == null) {
                 throw new IllegalArgumentException("You don't have leader card on your board");
+            }else if (!productionPower.getProductionCanBeActivate()){
+                throw new IllegalArgumentException("You have already used this production");
             }
+            Resource costResource = productionPower.getCost()[0].getResource();
+            player.startLeaderProduction(cost,production,costResource);
         } catch (IllegalArgumentException e){
             game.getViewAdapter().sendErrorMessage(player,e.getMessage());
             return;
         }
-        Resource costResource = player.getBoard().getProductionList().get(index).getCost()[0].getResource();
-        player.startLeaderProduction(cost,production,costResource);
+        productionPower.setProductionCanBeActivate(false);
     }
 
     /**
@@ -355,22 +330,18 @@ public class ControllerAdapter {
     public void startDevProduction(Player player,int[] box, int index) {
         if (!isMoveValid(player,"ActivateProduction"))
             return;
-        UtilityProductionAndCost[] cost;
+        Production production = player.getBoard().getPersonalDevelopmentSpace()[index - 1].
+                getDevelopmentCards().peek().getProduction();
+        UtilityProductionAndCost[] cost = production.getCost();;
         try {
-            if (!player.getBoard().getPersonalDevelopmentSpace()[index - 1].getDevelopmentCards().empty()) {
-                cost = player.getBoard().getPersonalDevelopmentSpace()[index - 1].
-                        getDevelopmentCards().peek().getCost();
-            } else {
-                throw new IllegalArgumentException("The Development place selected is empty");
+            if (!production.getProductionCanBeActivate()){
+                throw new IllegalArgumentException("You have already used this production");
             }
-            if (box.length < cost.length) {
-                throw new IllegalArgumentException("Invalid cmd");
-            }
+            player.startDevProduction(index,box,cost);
         }catch (IllegalArgumentException e){
             game.getViewAdapter().sendErrorMessage(player,e.getMessage());
-            return;
         }
-        player.startDevProduction(index,box,cost);
+        production.setProductionCanBeActivate(false);
     }
 
 

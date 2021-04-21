@@ -7,9 +7,20 @@ package it.polimi.ingsw.model;
 public class AdditionalProductionPower  implements LeaderPower,Production{
 
     private final Resource cost;
+    private boolean productionCanBeActivate = true;
 
     public AdditionalProductionPower(Resource cost){
         this.cost = cost;
+    }
+
+    @Override
+    public boolean getProductionCanBeActivate() {
+        return productionCanBeActivate;
+    }
+
+    @Override
+    public void setProductionCanBeActivate(boolean productionCanBeActivate) {
+        this.productionCanBeActivate = productionCanBeActivate;
     }
 
     @Override

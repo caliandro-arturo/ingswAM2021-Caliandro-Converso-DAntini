@@ -5,6 +5,18 @@ package it.polimi.ingsw.model;
  */
 public class BoardProduction implements Production{
 
+    boolean productionCanBeActivate = true;
+
+    @Override
+    public boolean getProductionCanBeActivate() {
+        return productionCanBeActivate;
+    }
+
+    @Override
+    public void setProductionCanBeActivate(boolean productionCanBeActivate) {
+        this.productionCanBeActivate = productionCanBeActivate;
+    }
+
     @Override
     public UtilityProductionAndCost[] getProd() {
         return new UtilityProductionAndCost[0];

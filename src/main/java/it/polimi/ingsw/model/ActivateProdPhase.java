@@ -17,7 +17,17 @@ public class ActivateProdPhase extends TurnPhase {
 
     @Override
     public TurnPhase nextTurnPhase() {
-        getGame().getCurrentPlayer().getBoard().getPersonalBox().emptyProdBox();
+        PersonalBoard board = getGame().getCurrentPlayer().getBoard();
+        board.getPersonalBox().emptyProdBox();
+        for (int i = 0; i < board.getProductionList().size(); i++){
+            board.getProductionList().get(i).setProductionCanBeActivate(true);
+        }
+        for (int i = 0; i < board.getPersonalDevelopmentSpace().length; i++){
+            if (!board.getPersonalDevelopmentSpace()[i].getDevelopmentCards().empty()){
+                board.getPersonalDevelopmentSpace()[i].getDevelopmentCards().peek().getProduction()
+                        .setProductionCanBeActivate(true);
+            }
+        }
         return getGame().getTurnPhase("UseAgainLeader");
     }
 }

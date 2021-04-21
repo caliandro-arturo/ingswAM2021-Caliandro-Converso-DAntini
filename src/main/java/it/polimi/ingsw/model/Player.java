@@ -242,6 +242,38 @@ public class Player {
      * @param production production chose by the player
      */
     public void startBoardProduction(int[] box,String[] cost,Resource production){
+        if (UtilityMap.isStorable(production)) {
+            throw new IllegalArgumentException("Not valid production input");
+        } else if (!board.getProductionList().get(0).getProductionCanBeActivate()){
+            throw new IllegalArgumentException("You have already used this production");
+        }
+        for (int i = 0; i < 2; i++) {
+            Resource resource = UtilityMap.mapResource.get(cost[i]);
+            if (UtilityMap.isStorable(resource)) {
+                throw new IllegalArgumentException("Not valid input");
+            }
+            if (box[i] == 0) {
+                int j = board.getPersonalBox().getResourceMap().get(resource);
+                if (j == 0) {
+                    throw new IllegalArgumentException("Not enough resources");
+                }
+            } else if (box[i] > 3) {
+                if (board.getStore().size() < box[i]) {
+                    throw new IllegalArgumentException("Invalid store");
+                } else {
+                    if (board.getStore().get(box[i] - 1).getResources().isEmpty()) {
+                        throw new IllegalArgumentException("Not enough resources");
+                    } else if (board.getStore().get(box[i] - 1).getTypeOfResource() != resource) {
+                        throw new IllegalArgumentException("wrong resources");
+                    }
+                }
+            } else {
+                WarehouseStore warehouseStore = board.getStore().get(box[i] - 1);
+                if (warehouseStore.getResources().isEmpty() || warehouseStore.getTypeOfResource() != resource) {
+                    throw new IllegalArgumentException("Not enough resources or invalid store");
+                }
+            }
+        }
         for (int i = 0; i < cost.length; i++) {
             if (box[i] == 0) {
                 Resource resource = UtilityMap.mapResource.get(cost[i]);
@@ -260,35 +292,30 @@ public class Player {
      * @param costResource cost of the production
      */
     public void startLeaderProduction(int cost,Resource production,Resource costResource){
-        try {
-            if (cost == 0) {
-                if (board.getPersonalBox().getResourceMap().get(costResource) != 0) {
-                    board.getPersonalBox().removeResource(costResource);
-                } else {
-                    throw new IllegalArgumentException("Not enough resource");
-                }
-            } else if (cost > 3) {
-                if (board.getStore().size() < cost) {
-                    throw new IllegalArgumentException("Invalid store");
-                } else {
-                    if (board.getStore().get(cost - 1).getResources().isEmpty()) {
-                        throw new IllegalArgumentException("Not enough resources");
-                    } else if (board.getStore().get(cost - 1).getTypeOfResource() != costResource) {
-                        throw new IllegalArgumentException("Wrong resource");
-                    } else {
-                        board.getStore().get(cost - 1).takeOutResource();
-                    }
-                }
+        if (cost == 0) {
+            if (board.getPersonalBox().getResourceMap().get(costResource) != 0) {
+                board.getPersonalBox().removeResource(costResource);
             } else {
-                WarehouseStore warehouseStore = board.getStore().get(cost - 1);
-                if (warehouseStore.getResources().isEmpty() || warehouseStore.getTypeOfResource() != costResource) {
-                    throw new IllegalArgumentException("Not enough resources or invalid store");
-                } else
-                    board.getStore().get(cost - 1).takeOutResource();
+                throw new IllegalArgumentException("Not enough resource");
             }
-        } catch (IllegalArgumentException e){
-            game.getViewAdapter().sendErrorMessage(this,e.getMessage());
-            return;
+        } else if (cost > 3) {
+            if (board.getStore().size() < cost) {
+                throw new IllegalArgumentException("Invalid store");
+            } else {
+                if (board.getStore().get(cost - 1).getResources().isEmpty()) {
+                    throw new IllegalArgumentException("Not enough resources");
+                } else if (board.getStore().get(cost - 1).getTypeOfResource() != costResource) {
+                    throw new IllegalArgumentException("Wrong resource");
+                } else {
+                    board.getStore().get(cost - 1).takeOutResource();
+                }
+            }
+        } else {
+            WarehouseStore warehouseStore = board.getStore().get(cost - 1);
+            if (warehouseStore.getResources().isEmpty() || warehouseStore.getTypeOfResource() != costResource) {
+                throw new IllegalArgumentException("Not enough resources or invalid store");
+            } else
+                board.getStore().get(cost - 1).takeOutResource();
         }
         board.getPersonalBox().addToProdBox(production);
         board.getPersonalPath().increasePosition();
@@ -304,6 +331,12 @@ public class Player {
         UtilityProductionAndCost[] production;
         int j = 0;
         int k = 0;
+        if (board.getPersonalDevelopmentSpace()[index - 1].getDevelopmentCards().empty()) {
+            throw new IllegalArgumentException("The Development place selected is empty");
+        }
+        if (box.length < cost.length) {
+            throw new IllegalArgumentException("Invalid cmd");
+        }
         for (UtilityProductionAndCost utilityProductionAndCost : cost) {
             Resource resource = utilityProductionAndCost.getResource();
             j += utilityProductionAndCost.getQuantity();
