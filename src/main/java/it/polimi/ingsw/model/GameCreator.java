@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Stack;
 
 /**
@@ -24,7 +24,7 @@ public class GameCreator {
         DevelopmentCard[] developmentGrid = new DevelopmentCard[48];
         LeaderCard[] leaderDeck= new LeaderCard[16];
         InputStream file = getClass().getClassLoader().getResourceAsStream("devCard.json");
-        InputStreamReader inputStreamReader = new InputStreamReader(file);
+        InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(file));
         JsonObject jsonObject = gson.fromJson(inputStreamReader, JsonObject.class);
         JsonArray jsonArray = jsonObject.get("DevelopmentCard").getAsJsonArray();
         for (int i = 0; i<48;i++){
@@ -37,7 +37,7 @@ public class GameCreator {
                     get(jsonArray.get(i).getAsJsonObject().get("color").getAsString()),costs,production);
         }
         file = getClass().getClassLoader().getResourceAsStream("ledCard.json");
-        inputStreamReader = new InputStreamReader(file);
+        inputStreamReader = new InputStreamReader(Objects.requireNonNull(file));
         jsonObject = gson.fromJson(inputStreamReader, JsonObject.class);
         jsonArray = jsonObject.get("LeaderCard").getAsJsonArray();
         for (int i=0; i<4;i++){
@@ -66,21 +66,21 @@ public class GameCreator {
         this.developmentGrid = new DevelopmentGrid(developmentGrid);
     }
 
-    private UtilityProductionAndCost[] utilityCreator(JsonObject jsonObject, String jsonstring){
+    private UtilityProductionAndCost[] utilityCreator(JsonObject jsonObject, String jsonString){
         String resource;
-        UtilityProductionAndCost[] value = new UtilityProductionAndCost[jsonObject.get(jsonstring)
+        UtilityProductionAndCost[] value = new UtilityProductionAndCost[jsonObject.get(jsonString)
                 .getAsJsonArray().size()];
-        for (int i =0; i<jsonObject.get(jsonstring).getAsJsonArray().size(); i++){
-            resource = jsonObject.get(jsonstring).getAsJsonArray().get(i)
+        for (int i =0; i<jsonObject.get(jsonString).getAsJsonArray().size(); i++){
+            resource = jsonObject.get(jsonString).getAsJsonArray().get(i)
                     .getAsJsonObject().get("resource").getAsString();
-            value[i] = new UtilityProductionAndCost(jsonObject.get(jsonstring).getAsJsonArray().
+            value[i] = new UtilityProductionAndCost(jsonObject.get(jsonString).getAsJsonArray().
                     get(i).getAsJsonObject().get("quantity").getAsInt(),UtilityMap.mapResource.get(resource));
         }
         return value;
     }
 
-    private Resource powerCreator(JsonObject jsonObject, String jsonstring){
-        return UtilityMap.mapResource.get(jsonObject.get(jsonstring).
+    private Resource powerCreator(JsonObject jsonObject, String jsonString){
+        return UtilityMap.mapResource.get(jsonObject.get(jsonString).
                 getAsJsonObject().get("resource").getAsString());
     }
 

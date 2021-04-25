@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 /**
- * power of the leader that take a white marble in the market and convert into a differente color
+ * power of the leader that take a white marble in the market and convert into a different color
  */
 public class WhiteMarbleConversion implements LeaderPower{
     private final Resource resource;

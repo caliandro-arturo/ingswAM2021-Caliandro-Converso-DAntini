@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import java.util.Scanner;
-
 /**
  * Basic type of production power
  */

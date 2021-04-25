@@ -1,21 +1,21 @@
 package it.polimi.ingsw.model;
 
+import java.util.*;
+
+
 /**
  * this class represents the personal board
  * each personal board is unique for a player and it's connected to it with a Composition link
  *
  */
-
-import java.util.*;
-
 public class PersonalBoard {
 
     private ArrayList<WarehouseStore> store;
     private FaithTrack personalPath;
-    private Strongbox personalBox ;
-    private DevelopmentPlace[] personalDevelopmentSpace;
-    private ArrayList<Production> productionList ;
-    private ArrayList<LeaderCard> activeLeaders;
+    private final Strongbox personalBox ;
+    private final DevelopmentPlace[] personalDevelopmentSpace;
+    private final ArrayList<Production> productionList ;
+    private final ArrayList<LeaderCard> activeLeaders;
     private Game game;
     private ArrayList<Resource> resHand;
 
@@ -50,18 +50,7 @@ public class PersonalBoard {
     public void setPersonalPath(FaithTrack personalPath) {
         this.personalPath = personalPath;
     }
-    public void setPersonalBox(Strongbox personalBox) {
-        this.personalBox = personalBox;
-    }
-    public void setPersonalDevelopmentSpace(DevelopmentPlace[] personalDevelopmentSpace) {
-        this.personalDevelopmentSpace = personalDevelopmentSpace;
-    }
-    public void setProductionList(ArrayList<Production> productionList) {
-        this.productionList = productionList;
-    }
-    public void setActiveLeaders(ArrayList<LeaderCard> activeLeaders) {
-        this.activeLeaders = activeLeaders;
-    }
+
     public void setGame(Game game) {
         this.game = game;
     }
@@ -146,7 +135,8 @@ public class PersonalBoard {
 
     /**
      * this method is used to check if there is a free space for a new devCard
-     * @param devCard
+     * @param devCard the card that the player wants to buy
+     * @return true if the player can place the card
      */
     public boolean checkSpaceForNewCard(DevelopmentCard devCard) {
         return !freePlaces(devCard).isEmpty();
@@ -166,7 +156,7 @@ public class PersonalBoard {
 
     /**
      * this method shows to the view which places are free to put a card in
-     * @param devCard
+     * @param devCard tha card that the player want to buy
      * @return a new list of the free places
      */
     public ArrayList<DevelopmentPlace> freePlaces(DevelopmentCard devCard){

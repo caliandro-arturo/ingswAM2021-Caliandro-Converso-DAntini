@@ -24,11 +24,11 @@ public class ColorCost implements Requirements{
         checkColor.put(Color.PURPLE,0);
         int j;
         DevelopmentPlace[] devPlace = player.getBoard().getPersonalDevelopmentSpace();
-        for (int i = 0;i<devPlace.length;i++){
-            if (!devPlace[i].getDevelopmentCards().empty()) {
-                for (int k = 0; k < devPlace[i].getDevelopmentCards().size(); k++) {
-                    j = checkColor.get(devPlace[i].getLevelICard(k).getColor());
-                    checkColor.replace(devPlace[i].getLevelICard(k).getColor(), j, j + 1);
+        for (DevelopmentPlace developmentPlace : devPlace) {
+            if (!developmentPlace.getDevelopmentCards().empty()) {
+                for (int k = 0; k < developmentPlace.getDevelopmentCards().size(); k++) {
+                    j = checkColor.get(developmentPlace.getLevelICard(k).getColor());
+                    checkColor.replace(developmentPlace.getLevelICard(k).getColor(), j, j + 1);
                 }
             }
         }

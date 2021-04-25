@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class LevelCost extends ColorCost{
     private final int level;
@@ -20,11 +19,11 @@ public class LevelCost extends ColorCost{
         checkColor.put(Color.PURPLE, 0);
         boolean flag = false;
         DevelopmentPlace[] devPlace = player.getBoard().getPersonalDevelopmentSpace();
-        for (int i = 0; i < devPlace.length; i++) {
-            if (!devPlace[i].getDevelopmentCards().empty()) {
-                if (devPlace[i].getDevelopmentCards().size()<level){
+        for (DevelopmentPlace developmentPlace : devPlace) {
+            if (!developmentPlace.getDevelopmentCards().empty()) {
+                if (developmentPlace.getDevelopmentCards().size() < level) {
                     flag = false;
-                } else{
+                } else {
                     flag = true;
                     break;
                 }
@@ -33,9 +32,9 @@ public class LevelCost extends ColorCost{
         if (!flag){
             return false;
         } else {
-            for (int i = 0; i < devPlace.length; i++) {
-                if (devPlace[i].getDevelopmentCards().size()>=level) {
-                    if (getCost().get(devPlace[i].getDevelopmentCards().get(level - 1).getColor()) == 1){
+            for (DevelopmentPlace developmentPlace : devPlace) {
+                if (developmentPlace.getDevelopmentCards().size() >= level) {
+                    if (getCost().get(developmentPlace.getDevelopmentCards().get(level - 1).getColor()) == 1) {
                         return true;
                     }
                 }

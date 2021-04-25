@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 /**
- *  an utily class to help in the costruction of various classes
+ *  an utility class to help in the construction of various classes
  */
 public class UtilityProductionAndCost {
     private final Resource resource;

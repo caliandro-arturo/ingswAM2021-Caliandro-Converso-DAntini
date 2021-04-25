@@ -17,10 +17,14 @@ public class Strongbox {
         put(Resource.SHIELD,0);
         put(Resource.STONE,0);
     }} ;
-    private ArrayList<Resource> productionBox = new ArrayList<>();
+    private final ArrayList<Resource> productionBox = new ArrayList<>();
 
 
     public HashMap<Resource, Integer> getResourceMap() { return resourceMap;    }
+
+    public ArrayList<Resource> getProductionBox() {
+        return productionBox;
+    }
 
     public void addToProdBox(Resource resource){
         productionBox.add(resource);
@@ -37,7 +41,7 @@ public class Strongbox {
 
     /**
      * this method remove one quantity of the specified resource, if it's >0
-     * @param resource
+     * @param resource resource chose by the player to be removed
      */
     public void removeResource(Resource resource) {
         Integer temp=this.resourceMap.get(resource);

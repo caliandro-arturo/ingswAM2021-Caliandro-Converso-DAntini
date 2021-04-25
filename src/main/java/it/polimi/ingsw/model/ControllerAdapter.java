@@ -332,7 +332,7 @@ public class ControllerAdapter {
             return;
         Production production = player.getBoard().getPersonalDevelopmentSpace()[index - 1].
                 getDevelopmentCards().peek().getProduction();
-        UtilityProductionAndCost[] cost = production.getCost();;
+        UtilityProductionAndCost[] cost = production.getCost();
         try {
             if (!production.getProductionCanBeActivate()){
                 throw new IllegalArgumentException("You have already used this production");

@@ -10,7 +10,7 @@ import java.util.Stack;
  */
 public class DevelopmentPlace {
 
-    private Stack<DevelopmentCard> developmentCards;
+    private final Stack<DevelopmentCard> developmentCards;
 
 
     public Stack<DevelopmentCard> getDevelopmentCards() {
@@ -33,8 +33,8 @@ public class DevelopmentPlace {
 
     /**
      * return true if this place has space for a specific level card
-     * @param level
-     * @return
+     * @param level level of the card
+     * @return true if has space for the card
      */
     public boolean hasRoomForCard(int level) {
         try {

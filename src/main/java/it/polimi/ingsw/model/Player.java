@@ -1,25 +1,24 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+
 /**
  * this class implements all the methods used by a player
  */
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Player {
     private String username;
     private PersonalBoard board;
-    private ArrayList<LeaderCard> leaderCards;
-    private ArrayList<Resource> whiteAlt;
-    private ArrayList<Resource> sale;
+    private final ArrayList<LeaderCard> leaderCards;
+    private final ArrayList<Resource> whiteAlt;
+    private final ArrayList<Resource> sale;
     private Game game;
-    private int[] victoryPoints;
+    private final int[] victoryPoints;
     private int whiteMarbleChoices = 0;
     private int initialResources = 0;
 
     /**
      * customised constructor for player that initialises all attributes a player needs
-     * @param username
+     * @param username chosen by the player
      */
     public Player(String username){
         this.username = username;
@@ -120,12 +119,7 @@ public class Player {
     public void setLeaderCards(LeaderCard leader) {
         this.leaderCards.add(leader);
     }
-    public void setWhiteAlt(ArrayList<Resource> whiteAlt) {
-        this.whiteAlt = whiteAlt;
-    }
-    public void setSale(ArrayList<Resource> sale) {
-        this.sale = sale;
-    }
+
     public void setGame(Game game) {
         this.game = game;
         board.setGame(game);
@@ -175,11 +169,18 @@ public class Player {
     public void buyDevelopmentCard (DevelopmentCard card,int[] box,int index){
         int j = 0;
         int k =0;
+        if (box.length < card.getCost().length){
+            throw new IllegalArgumentException("invalid cmd");
+        }
         for (int i=0;i<card.getCost().length;i++) {
             Resource resource = card.getCost()[i].getResource();
             j += card.getCost()[i].getQuantity();
             for (; k < j; k++) {
                 try {
+                    if (box.length == card.getCost().length && card.getCost()[i].getQuantity() > 1){
+                        k = k -1;
+                        throw new IllegalArgumentException("invalid cmd");
+                    }
                     if (box[k] == 0) {
                         if (board.getPersonalBox().getResourceMap().get(resource) != 0) {
                             board.getPersonalBox().removeResource(resource);
@@ -204,6 +205,7 @@ public class Player {
                     return;
                 }
             }
+            k++;
         }
         board.addCard( game.getDevelopmentGrid().buyCard(card.getColor(), card.getLevel()),index);
     }
@@ -217,6 +219,7 @@ public class Player {
         if(leaderCards.contains(leader)) {
             if (leader.getRequirements().checkRequirements(game.getCurrentPlayer())) {
                 leader.getLeaderPower().activatePower(game.getCurrentPlayer());
+                board.addActiveLeader(leader);
             }else
                 throw new IllegalArgumentException("you don't have these requirements");
         }else
@@ -225,15 +228,14 @@ public class Player {
     }
 
 
-    /**
-     * this method is used to activate the base production or the development card production
-     * @param productionPower
-     * @return
-     */
+
+    /*
+    this method will probably be deleted
     public Resource activateProduction(ProductionPower productionPower){
         Resource resource = null;
         return null;
     }
+     */
 
     /**
      * Board Production
@@ -242,14 +244,14 @@ public class Player {
      * @param production production chose by the player
      */
     public void startBoardProduction(int[] box,String[] cost,Resource production){
-        if (UtilityMap.isStorable(production)) {
+        if (!UtilityMap.isStorable(production)) {
             throw new IllegalArgumentException("Not valid production input");
         } else if (!board.getProductionList().get(0).getProductionCanBeActivate()){
             throw new IllegalArgumentException("You have already used this production");
         }
         for (int i = 0; i < 2; i++) {
             Resource resource = UtilityMap.mapResource.get(cost[i]);
-            if (UtilityMap.isStorable(resource)) {
+            if (!UtilityMap.isStorable(resource)) {
                 throw new IllegalArgumentException("Not valid input");
             }
             if (box[i] == 0) {
@@ -341,33 +343,36 @@ public class Player {
             Resource resource = utilityProductionAndCost.getResource();
             j += utilityProductionAndCost.getQuantity();
             for (; k < j; k++) {
-                for (; k < j; k++) {
-                    try {
-                        if (box[k] == 0) {
-                            if (board.getPersonalBox().getResourceMap().get(resource) != 0) {
-                                board.getPersonalBox().removeResource(resource);
-                            } else {
-                                throw new IllegalArgumentException("not enough resource");
-                            }
-                        } else if (box[k] > 3 && box[k] <= 5) {
-                            if (box[k] > board.getStore().size()) {
-                                k = k - 1;
-                                throw new IllegalArgumentException("wrong store");
-                            }
-                            if (board.getStore().get(box[k] - 1).getTypeOfResource() == resource &&
-                                    !board.getStore().get(box[k] - 1).getResources().isEmpty()) {
-                                board.getStore().get(box[k] - 1).takeOutResource();
-                            } else {
-                                throw new IllegalArgumentException("not enough resource");
-                            }
-                        }
-                    } catch (IllegalArgumentException e) {
-                        game.getViewAdapter().sendErrorMessage(this, e.getMessage());
-                        refundCost(k, box, cost);
-                        return;
+                try {
+                    if (box.length == cost.length && utilityProductionAndCost.getQuantity()>1) {
+                        k=k-1;
+                        throw  new IllegalArgumentException("Invalid cmd");
                     }
+                    if (box[k] == 0) {
+                        if (board.getPersonalBox().getResourceMap().get(resource) != 0) {
+                            board.getPersonalBox().removeResource(resource);
+                        } else {
+                            throw new IllegalArgumentException("not enough resource");
+                        }
+                    } else if (box[k] > 3 && box[k] <= 5) {
+                        if (box[k] > board.getStore().size()) {
+                            k = k - 1;
+                            throw new IllegalArgumentException("wrong store");
+                        }
+                        if (board.getStore().get(box[k] - 1).getTypeOfResource() == resource &&
+                                !board.getStore().get(box[k] - 1).getResources().isEmpty()) {
+                            board.getStore().get(box[k] - 1).takeOutResource();
+                        } else {
+                            throw new IllegalArgumentException("not enough resource");
+                        }
+                    }
+                } catch (IllegalArgumentException e) {
+                    game.getViewAdapter().sendErrorMessage(this, e.getMessage());
+                    refundCost(k, box, cost);
+                    return;
                 }
             }
+            k++;
         }
         production = board.getPersonalDevelopmentSpace()[index - 1]
                 .getDevelopmentCards().peek().getProduction().getProd();
@@ -394,15 +399,15 @@ public class Player {
         if (size < 0) return;
         int j = 0;
         int k = 0;
-        for (int i = 0; i < cost.length; i++) {
-            Resource resource = cost[i].getResource();
-            j += cost[i].getQuantity();
+        for (UtilityProductionAndCost utilityProductionAndCost : cost) {
+            Resource resource = utilityProductionAndCost.getResource();
+            j += utilityProductionAndCost.getQuantity();
             for (; k < j; k++) {
-                if (k == size)return;
+                if (k == size) return;
                 if (box[k] == 0) {
                     board.getPersonalBox().addProdResource(resource);
                 } else
-                    board.getStore().get(box[k]-1).addResource(resource);
+                    board.getStore().get(box[k] - 1).addResource(resource);
             }
         }
     }

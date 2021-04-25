@@ -6,7 +6,7 @@ public class DevelopmentGrid {
     private final Deck[][] developmentGrid;
 
     public Deck getDeck(int level, Color color){
-        return developmentGrid[level][UtilityMap.colorPosition.get(color)];
+        return developmentGrid[level-1][UtilityMap.colorPosition.get(color)];
     }
 
     public DevelopmentGrid(DevelopmentCard[] cards){
@@ -52,7 +52,7 @@ public class DevelopmentGrid {
     }
 
     /**
-     * singleplayer action of lorenzo
+     * SinglePlayer action of lorenzo
      * @param color action's color
      */
     public void removeCard(Color color){
