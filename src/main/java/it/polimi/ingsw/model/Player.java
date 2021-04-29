@@ -116,7 +116,7 @@ public class Player {
     public void setBoard(PersonalBoard board) {
         this.board = board;
     }
-    public void setLeaderCards(LeaderCard leader) {
+    public void addLeaderCards(LeaderCard leader) {
         this.leaderCards.add(leader);
     }
 
@@ -227,16 +227,6 @@ public class Player {
 
     }
 
-
-
-    /*
-    this method will probably be deleted
-    public Resource activateProduction(ProductionPower productionPower){
-        Resource resource = null;
-        return null;
-    }
-     */
-
     /**
      * Board Production
      * @param box store from where you take resource
@@ -291,9 +281,18 @@ public class Player {
      * Leader Production
      * @param cost store from where you take the resource
      * @param production resource chose by the player
-     * @param costResource cost of the production
+     * @param index
      */
-    public void startLeaderProduction(int cost,Resource production,Resource costResource){
+    public void startLeaderProduction(int cost,Resource production,int index){
+        Production productionPower = this.getBoard().getProductionList().get(index);
+        if (!UtilityMap.isStorable(production)) {
+            throw new IllegalArgumentException("Not valid production input");
+        }else if (this.getBoard().getProductionList().get(index) == null) {
+            throw new IllegalArgumentException("You don't have leader card on your board");
+        }else if (!productionPower.getProductionCanBeActivate()){
+            throw new IllegalArgumentException("You have already used this production");
+        }
+        Resource costResource = productionPower.getCost()[0].getResource();
         if (cost == 0) {
             if (board.getPersonalBox().getResourceMap().get(costResource) != 0) {
                 board.getPersonalBox().removeResource(costResource);
@@ -327,14 +326,18 @@ public class Player {
      * Development production
      * @param index index of the production selected
      * @param box store from where the player take the resources
-     * @param cost cost
      */
-    public void startDevProduction(int index,int[] box, UtilityProductionAndCost[] cost){
-        UtilityProductionAndCost[] production;
+    public void startDevProduction(int index,int[] box){
+        ArrayList<DevelopmentCard> devCards = this.getBoard().showActiveDevCards();
         int j = 0;
         int k = 0;
-        if (board.getPersonalDevelopmentSpace()[index - 1].getDevelopmentCards().empty()) {
+        if (devCards.isEmpty() || devCards.get(index-1) == null) {
             throw new IllegalArgumentException("The Development place selected is empty");
+        }
+        UtilityProductionAndCost[] cost = devCards.get(index-1).getProduction().getCost();
+        Production production = devCards.get(index-1).getProduction();
+        if (!production.getProductionCanBeActivate()){
+            throw new IllegalArgumentException("You have already used this production");
         }
         if (box.length < cost.length) {
             throw new IllegalArgumentException("Invalid cmd");
@@ -374,9 +377,8 @@ public class Player {
             }
             k++;
         }
-        production = board.getPersonalDevelopmentSpace()[index - 1]
-                .getDevelopmentCards().peek().getProduction().getProd();
-        for (UtilityProductionAndCost utilityProductionAndCost : production) {
+        UtilityProductionAndCost[] productionResource = production.getProd();
+        for (UtilityProductionAndCost utilityProductionAndCost : productionResource) {
             Resource resource = utilityProductionAndCost.getResource();
             for (k = 0; k < utilityProductionAndCost.getQuantity(); k++) {
                 if (resource == Resource.FAITH) {
@@ -412,20 +414,15 @@ public class Player {
         }
     }
 
-
-
     /**
-     * used to know the number of dev cards owned by the player
-     * @return the number of the cards
+     *
+     * @return number of dev cards owned by the player
      */
-    public int getNumOfDevCards(){
-        int numOfDevCards=0;
-        for(DevelopmentPlace devPlace: board.getPersonalDevelopmentSpace()){
-            for(DevelopmentCard devCard : devPlace.getDevelopmentCards()){
-                numOfDevCards++;
-            }
+    public int getNumOfCards(){
+        int numOfDevCards = 0;
+        for (DevelopmentPlace devPlace : board.getPersonalDevelopmentSpace()){
+            numOfDevCards += devPlace.getDevelopmentCards().size();
         }
         return numOfDevCards;
     }
 }
-

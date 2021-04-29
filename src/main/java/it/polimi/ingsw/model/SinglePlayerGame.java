@@ -4,7 +4,7 @@ import java.util.Stack;
 
 public class SinglePlayerGame extends Game {
     private boolean isLost;
-    FaithTrack lorenzoTrack = new FaithTrack() {
+    private FaithTrack lorenzoTrack = new FaithTrack() {
         @Override
         public boolean isInVatican(int papalSpace) {
             return false;
@@ -12,15 +12,21 @@ public class SinglePlayerGame extends Game {
 
         @Override
         public void increasePosition() {
-            super.increasePosition();
+            super.increasePosition(); //TODO
             if(getPosition() == 24) {
                 isLost = true;
                 setOver(true);
-                endGame();
             }
         }
     };
-    public SinglePlayerGame(Player player, int playersNum, Market market, Stack<LeaderCard> leaderDeck, DevelopmentGrid developmentGrid) {
+
+    @Override
+    public void setOver(boolean over) {
+        super.setOver(over);
+        endGame();
+    }
+    public SinglePlayerGame(Player player, int playersNum, Market market, Stack<LeaderCard> leaderDeck,
+                            DevelopmentGrid developmentGrid) {
         super(player, playersNum, market, leaderDeck, developmentGrid);
         Player lorenzo = new Player("Lorenzo");
         lorenzo.getBoard().setPersonalPath(lorenzoTrack);
@@ -35,6 +41,9 @@ public class SinglePlayerGame extends Game {
 
     @Override
     public void endGame() {
+        if (!getDevelopmentGrid().isStillWinnable() && this.getPlayers().get(0).getNumOfCards() != 7){
+            isLost = true; //TODO
+        }
         setFinished();
         int rank = 1;
         if(isLost)

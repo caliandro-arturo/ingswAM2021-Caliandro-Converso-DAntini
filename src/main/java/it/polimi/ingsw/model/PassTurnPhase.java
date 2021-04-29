@@ -17,7 +17,7 @@ public class PassTurnPhase extends TurnPhase {
     }
 
     @Override
-    TurnPhase nextTurnPhase() {
+    public TurnPhase nextTurnPhase() {
         Game game = getGame();
         if(game.getPlayers().indexOf(game.getCurrentPlayer()) == game.getPlayersNum() - 1)
             if(game.isOver()) {

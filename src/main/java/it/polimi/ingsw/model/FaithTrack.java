@@ -32,7 +32,6 @@ public class FaithTrack {
         if(this.position<24) {
             this.position++;
             checkPosition();
-
         }
     }
 
@@ -40,6 +39,10 @@ public class FaithTrack {
         if (this.position == 8 || this.position == 16 || this.position == 24) {
             if (!game.getVaticanMap().get(this.position)) {
                 game.vaticanReport(this.position);
+            }
+            if (this.position == 24){
+                game.getViewAdapter().notifyLastTurn("someone has reached the finish line");
+                game.setOver(true);
             }
         }
     }

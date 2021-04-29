@@ -9,6 +9,20 @@ public class DevelopmentGrid {
         return developmentGrid[level-1][UtilityMap.colorPosition.get(color)];
     }
 
+    public boolean isStillWinnable(){
+        int i = 0;
+        while (i<4){
+            if (developmentGrid[2][i].getDeck().empty()){
+                if (developmentGrid[1][i].getDeck().empty()){
+                    if (developmentGrid[0][i].getDeck().empty())
+                        return false;
+                }
+            }
+            i++;
+        }
+        return true;
+    }
+
     public DevelopmentGrid(DevelopmentCard[] cards){
         developmentGrid = new Deck[3][4];
         for (int i =0; i < 3; i++){

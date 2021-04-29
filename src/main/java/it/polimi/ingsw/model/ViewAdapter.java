@@ -124,4 +124,12 @@ public class ViewAdapter {
     public void sendErrorMessage(Player player, String error) {
     }
 
+    /**
+     * notify last turn
+     * @param string reason of last turn
+     */
+    public void notifyLastTurn(String string){
+
+    }
+
 }

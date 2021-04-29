@@ -33,4 +33,11 @@ public class DevelopmentGridTest {
     public void TestBuy(){
         assertEquals(cglv1,d1.buyCard(Color.GREEN,1));
     }
+
+    @Test
+    public void TestRemove(){
+        d1.removeCard(Color.BLUE);
+        assertTrue(d1.getDeck(1,Color.BLUE).getDeck().empty());
+        assertTrue(d1.getDeck(2,Color.BLUE).getDeck().empty());
+    }
 }

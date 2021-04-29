@@ -16,5 +16,11 @@ public class GameCreatorTest {
             assertEquals(creator.getDevelopmentGrid().getDeck(i,Color.PURPLE).getDeck().size(),4);
             assertEquals(creator.getDevelopmentGrid().getDeck(i,Color.GREEN).getDeck().size(),4);
         }
+        Game game = creator.create(new Player("pippo"),1);
+        Game game1 = creator.create(new Player("pluto"),2);
+        assertEquals(game.getDevelopmentGrid(), creator.getDevelopmentGrid());
+        assertEquals(game.getLeaderDeck(),creator.getLeaderDeck());
+        assertEquals(game1.getDevelopmentGrid(), creator.getDevelopmentGrid());
+        assertEquals(game1.getLeaderDeck(),creator.getLeaderDeck());
     }
 }

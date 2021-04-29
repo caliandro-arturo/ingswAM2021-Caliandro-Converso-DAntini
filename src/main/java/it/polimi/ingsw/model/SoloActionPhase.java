@@ -11,6 +11,7 @@ public class SoloActionPhase extends TurnPhase {
     @Override
     public void start() {
         soloActions.pick(getGame());
+        this.nextTurnPhase();
     }
 
     @Override
@@ -19,7 +20,10 @@ public class SoloActionPhase extends TurnPhase {
                 "and there will be an effect based on the token you have picked.";
     }
     @Override
-    TurnPhase nextTurnPhase() {
+    public TurnPhase nextTurnPhase() {
+        if (!getGame().getDevelopmentGrid().isStillWinnable()){
+            getGame().setOver(true);
+        }
         return getGame().getTurnPhase("UseLeader");
     }
     //------------------------------------------------------------------------------------------------------------------

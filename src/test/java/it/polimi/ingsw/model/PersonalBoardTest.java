@@ -121,4 +121,14 @@ class PersonalBoardTest {
         assertTrue(board.getResHand().contains(Resource.COIN));
         assertTrue(board.getResHand().contains(Resource.SERF));
     }
+
+    @Test
+    public void TestDiscardResource(){
+        pippo.getBoard().getStore().get(0).addResource(Resource.COIN);
+        pippo.getBoard().takeOutResource(1);
+        try{
+            pippo.getBoard().discardResource(Resource.COIN);
+        }catch (Exception e){}
+        assertEquals(0,pippo.getBoard().getResHand().size());
+    }
 }

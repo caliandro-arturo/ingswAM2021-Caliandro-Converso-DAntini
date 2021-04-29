@@ -20,7 +20,7 @@ public class ChooseActionPhase extends TurnPhase {
 
     //In this case, the next turn phase is managed by ControllerAdapter.
     @Override
-    TurnPhase nextTurnPhase() {
+    public TurnPhase nextTurnPhase() {
         return null;
     }
 }

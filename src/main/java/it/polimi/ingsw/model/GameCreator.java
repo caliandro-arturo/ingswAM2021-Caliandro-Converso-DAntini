@@ -18,10 +18,11 @@ public class GameCreator {
     private final Market market = new Market();
     private final Stack<LeaderCard> leaderDeck;
     private final DevelopmentGrid developmentGrid;
+    private final DevelopmentCard[] developmentCards;
 
     public GameCreator() {
         Gson gson = new Gson();
-        DevelopmentCard[] developmentGrid = new DevelopmentCard[48];
+        developmentCards = new DevelopmentCard[48];
         LeaderCard[] leaderDeck= new LeaderCard[16];
         InputStream file = getClass().getClassLoader().getResourceAsStream("devCard.json");
         InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(file));
@@ -32,7 +33,7 @@ public class GameCreator {
             ProductionPower production = new ProductionPower(utilityCreator(jsonArray.get(i).getAsJsonObject().
                     get("productionPower").getAsJsonObject(), "cost"), utilityCreator(jsonArray.
                     get(i).getAsJsonObject().get("productionPower").getAsJsonObject(), "production"));
-            developmentGrid[i] = new DevelopmentCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").
+            developmentCards[i] = new DevelopmentCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").
                     getAsInt(),jsonArray.get(i).getAsJsonObject().get("level").getAsInt(),UtilityMap.mapColor.
                     get(jsonArray.get(i).getAsJsonObject().get("color").getAsString()),costs,production);
         }
@@ -63,7 +64,7 @@ public class GameCreator {
         this.leaderDeck = new Stack<LeaderCard>() {{
             addAll(Arrays.asList(leaderDeck));
         }};
-        this.developmentGrid = new DevelopmentGrid(developmentGrid);
+        this.developmentGrid = new DevelopmentGrid(developmentCards);
     }
 
     private UtilityProductionAndCost[] utilityCreator(JsonObject jsonObject, String jsonString){

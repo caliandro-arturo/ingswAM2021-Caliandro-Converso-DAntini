@@ -117,7 +117,7 @@ public class PersonalBoard {
      * @throws GameException.IllegalMove it's thrown if you ask to discard a resource you don't have in hand
      */
     public void discardResource(Resource resource) throws GameException.IllegalMove {
-        if(!resHand.contains(resource)) {
+        if(resHand.contains(resource)) {
             resHand.remove(resource);
             for (Player player : game.getPlayers()) {
                 if (!player.equals(game.getCurrentPlayer()))

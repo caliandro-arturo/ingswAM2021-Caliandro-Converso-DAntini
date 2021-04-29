@@ -43,8 +43,9 @@ public class ControllerAdapter {
      */
     private boolean isMoveValid(Player player, String turnPhase) {
         if(!playerCanDoThisNow(player)) return false;
+        TurnPhase actual = game.getTurnPhase(turnPhase);
         try {
-            if (game.getTurnPhase(turnPhase).equals(game.getCurrentTurnPhase()))
+            if (actual.equals(game.getCurrentTurnPhase()) || actual.isFinished())
                 throw new GameException.IllegalMove();
         } catch (GameException.IllegalMove e) {
             game.getViewAdapter().sendErrorMessage(player, e.getMessage());
@@ -303,21 +304,13 @@ public class ControllerAdapter {
         if (!isMoveValid(player,"ActivateProduction"))
             return;
         Resource production = UtilityMap.mapResource.get(prod);
-        Production productionPower = player.getBoard().getProductionList().get(index);
         try {
-            if (UtilityMap.isStorable(production)) {
-                throw new IllegalArgumentException("Not valid production input");
-            }else if (player.getBoard().getProductionList().get(index) == null) {
-                throw new IllegalArgumentException("You don't have leader card on your board");
-            }else if (!productionPower.getProductionCanBeActivate()){
-                throw new IllegalArgumentException("You have already used this production");
-            }
-            Resource costResource = productionPower.getCost()[0].getResource();
-            player.startLeaderProduction(cost,production,costResource);
+            player.startLeaderProduction(cost,production,index);
         } catch (IllegalArgumentException e){
             game.getViewAdapter().sendErrorMessage(player,e.getMessage());
             return;
         }
+        Production productionPower = player.getBoard().getProductionList().get(index);
         productionPower.setProductionCanBeActivate(false);
     }
 
@@ -330,17 +323,14 @@ public class ControllerAdapter {
     public void startDevProduction(Player player,int[] box, int index) {
         if (!isMoveValid(player,"ActivateProduction"))
             return;
-        Production production = player.getBoard().getPersonalDevelopmentSpace()[index - 1].
-                getDevelopmentCards().peek().getProduction();
-        UtilityProductionAndCost[] cost = production.getCost();
         try {
-            if (!production.getProductionCanBeActivate()){
-                throw new IllegalArgumentException("You have already used this production");
-            }
-            player.startDevProduction(index,box,cost);
+            player.startDevProduction(index,box);
         }catch (IllegalArgumentException e){
             game.getViewAdapter().sendErrorMessage(player,e.getMessage());
+            return;
         }
+        Production production = player.getBoard().getPersonalDevelopmentSpace()[index - 1].
+                getDevelopmentCards().peek().getProduction();
         production.setProductionCanBeActivate(false);
     }
 

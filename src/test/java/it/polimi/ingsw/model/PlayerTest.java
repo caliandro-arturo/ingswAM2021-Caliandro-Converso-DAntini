@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -64,13 +63,11 @@ class PlayerTest {
         int[] cmdbox = new int[]{1,0};
         pippo.startBoardProduction(cmdbox,cmdstringcost,production);
         assertEquals(1,pippo.getBoard().getPersonalBox().getProductionBox().size());
-        UtilityProductionAndCost[] costs = pippo.getBoard().getPersonalDevelopmentSpace()[0].
-                getDevelopmentCards().peek().getProduction().getCost();
         cmdbox = new int[]{0};
         pippo.getBoard().getPersonalBox().addProdResource(Resource.SHIELD);
-        pippo.startDevProduction(1,cmdbox,costs);
+        pippo.startDevProduction(1,cmdbox);
         assertEquals(2,pippo.getBoard().getPersonalBox().getProductionBox().size());
-        pippo.startLeaderProduction(0,Resource.SHIELD,Resource.COIN);
+        pippo.startLeaderProduction(0,Resource.SHIELD,1);
         assertEquals(3,pippo.getBoard().getPersonalBox().getProductionBox().size());
         prod.nextTurnPhase();
     }
@@ -132,11 +129,66 @@ class PlayerTest {
         testGame.setCurrentPlayer(pluto);
         UtilityProductionAndCost coin = new UtilityProductionAndCost(2,Resource.COIN);
         TurnPhase prod = new ActivateProdPhase(testGame);
+        testGame.setCurrentTurnPhase(prod);
         UtilityProductionAndCost[] costs = new UtilityProductionAndCost[]{coin};
         int[] box = {0,0};
         pluto.getBoard().addCard(new DevelopmentCard(1,
                 1,Color.BLUE, null ,new ProductionPower(costs,costs)),1);
-        pluto.startDevProduction(1,box,costs);
+        pluto.startDevProduction(1,box);
         assertEquals(1,pluto.getBoard().getPersonalBox().getResourceMap().get(Resource.COIN));
+    }
+
+    @Test
+    void LeaderTest(){
+        Player minnie = new Player("minnie");
+        try {
+            testGame.addPlayer(minnie);
+        }catch (Exception e){}
+        testGame.setCurrentPlayer(minnie);
+        LeaderCard leaderCard1 = new LeaderCard(1,
+                new ResourceCost(new UtilityProductionAndCost(1,Resource.COIN)),
+                new WhiteMarbleConversion(Resource.COIN));
+        LeaderCard leaderCard2 = new LeaderCard(1,
+                new ResourceCost(new UtilityProductionAndCost(1,Resource.COIN)),
+                new WhiteMarbleConversion(Resource.SHIELD));
+        minnie.addLeaderCards(leaderCard1);
+        minnie.addLeaderCards(leaderCard2);
+        minnie.getBoard().getPersonalBox().addProdResource(Resource.COIN);
+        testGame.setCurrentTurnPhase(new UseLeaderPhase(testGame,true));
+        minnie.useLeader(leaderCard1);
+        minnie.discardLeaderCard(leaderCard2);
+        assertEquals(Resource.COIN,minnie.getWhiteAlt().get(0));
+        assertEquals(2,minnie.getBoard().getPersonalPath().getPosition());
+    }
+
+    @Test
+    public void invalidCmdTest(){
+        Player topolino = new Player("topolino");
+        try {
+            testGame.addPlayer(topolino);
+        }catch (Exception e){}
+        testGame.setCurrentPlayer(topolino);
+        TurnPhase prod = new ActivateProdPhase(testGame);
+        testGame.setCurrentTurnPhase(prod);
+        topolino.getBoard().getPersonalBox().addProdResource(Resource.COIN);
+        topolino.getBoard().getStore().get(0).addResource(Resource.COIN);
+        topolino.getBoard().getStore().get(1).addResource(Resource.STONE);
+        assertThrows(IllegalArgumentException.class,() -> {
+            topolino.startDevProduction(1,new int[]{0});
+            topolino.startLeaderProduction(0,Resource.SHIELD,1);
+            topolino.startBoardProduction(new int[]{0,1},new String[]{"shield","faith"},Resource.SHIELD);
+        });
+        topolino.addLeaderCards(new LeaderCard(1,
+                new ResourceCost(new UtilityProductionAndCost(0,Resource.COIN)),
+                new AdditionalProductionPower(Resource.STONE)));
+        topolino.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(new DevelopmentCard(
+                1,1,Color.BLUE,null,new ProductionPower(
+                        new UtilityProductionAndCost[]{new UtilityProductionAndCost(1,Resource.COIN)},
+                new UtilityProductionAndCost[]{new UtilityProductionAndCost(1,Resource.COIN)})));
+        assertThrows(IllegalArgumentException.class,()->{
+            topolino.startBoardProduction(new int[]{0,0}, new String[]{"coin","coin"},Resource.SHIELD);
+            topolino.startLeaderProduction(0,Resource.SHIELD,1);
+            topolino.startDevProduction(1,new int[]{0});
+        });
     }
 }
