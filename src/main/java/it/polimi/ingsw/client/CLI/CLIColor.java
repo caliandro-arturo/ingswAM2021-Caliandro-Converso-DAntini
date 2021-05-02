@@ -15,7 +15,8 @@ public enum CLIColor {
         this.escape = escape;
     }
 
-    public String escape() {
+    @Override
+    public String toString() {
         return escape;
     }
 }
