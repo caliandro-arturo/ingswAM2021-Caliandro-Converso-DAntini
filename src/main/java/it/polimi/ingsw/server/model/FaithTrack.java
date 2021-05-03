@@ -35,6 +35,9 @@ public class FaithTrack {
         }
     }
 
+    /**
+     * checks the behavior of each position
+     */
     public void checkPosition(){
         if (this.position == 8 || this.position == 16 || this.position == 24) {
             if (!game.getVaticanMap().get(this.position)) {
