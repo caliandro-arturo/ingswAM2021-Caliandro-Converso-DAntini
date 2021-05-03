@@ -86,7 +86,7 @@ public class CLIView extends View {
      */
     @Override
     public void showUpdate(String update) {
-        System.out.println(CLIColor.ANSI_BRIGHT_GREEN.escape()
+        System.out.println(CLIColor.ANSI_BRIGHT_GREEN.toString()
                 + update
                 + CLIColor.RESET);
     }

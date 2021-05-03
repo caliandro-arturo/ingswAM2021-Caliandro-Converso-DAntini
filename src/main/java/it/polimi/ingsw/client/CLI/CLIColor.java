@@ -8,7 +8,7 @@ public enum CLIColor {
     ANSI_BLUE("\u001B[36m"),
     ANSI_GREY("\u001B[37m"),
     ANSI_BRIGHT_GREEN("\u001B[92m");
-    static final String RESET = "\u001B[0m";
+    public static final String RESET = "\u001B[0m";
     private final String escape;
 
     CLIColor(String escape) {
