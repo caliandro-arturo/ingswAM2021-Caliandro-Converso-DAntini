@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.model;
 
+import java.util.Arrays;
+
 public class DevelopmentCard {
     private int victoryPoints;
     private Color color;
@@ -20,15 +22,29 @@ public class DevelopmentCard {
 
     @Override
     public String toString() {
-        return  "|---------------------------------|\n" +
-                "|\t " + color.toString() + "  " + level + "   " + color.toString() + " \t|\n" +
-                "|\t " + costs.toString() + " \t|\n" +
-                "|\t  \t  \t|\n" +
-                "|\t  \t  \t|\n" +
-                "|\t " + productionCost.toString() + " \t|\n" +
-                "|\t " + production.toString() + " \t|\n" +
-                "|\t  \t  \t|\n" +
-                "|\t  " + victoryPoints + "  \t|\n" +
-                "|---------------------------------|\n";
+        String cost = assertLength(costs);
+        String productionsCost = assertLength(productionCost);
+        String productionValue = assertLength(production);
+        return  "┌─────────────────┐\n" +
+                "│     " + color + "  " + level + "  " + color + "     │\n" +
+                 cost +
+                "│\t  \t  \t \t  │\n" +
+                "│\t  \t  \t \t  │\n" +
+                productionsCost +
+                productionValue +
+                "│\t  \t  \t \t  │\n" +
+                "│     " + color + " " + String.format("%2d", victoryPoints) + "  " + color + "     │\n" +
+                "└─────────────────┘\n";
+    }
+
+    private String assertLength(UtilityProductionAndCost[] array){
+        int size = array.length;
+        if (size == 1 ){
+            return "│      " + Arrays.toString(array) + "       │\n";
+        } else if(size == 2){
+            return "│    " + Arrays.toString(array) + "     │\n";
+        } else{
+            return "│   " + Arrays.toString(array) + "  │\n";
+        }
     }
 }

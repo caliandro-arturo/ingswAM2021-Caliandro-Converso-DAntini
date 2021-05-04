@@ -13,10 +13,15 @@ public class LeaderCard {
 
     @Override
     public String toString() {
-        return "LeaderCard{" +
-                "requirements=" + requirements +
-                ", leaderPower=" + leaderPower +
-                ", victoryPoints=" + victoryPoints +
-                '}';
+        return "┌─────────────────┐\n" +
+                "│                 │\n"+
+               requirements+
+                "│                 │\n"+
+                "│                 │\n"+
+                "│                 │\n"+
+                leaderPower+
+                "│                 │\n"+
+                "│       " + String.format("%2d",victoryPoints) + "        │\n" +
+                "└─────────────────┘\n";
     }
 }
