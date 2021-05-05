@@ -3,11 +3,11 @@ package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.client.CLI.CLIColor;
 
 public enum Resource {
-    SHIELD(CLIColor.ANSI_BLUE.toString() + "0" + CLIColor.RESET),
-    FAITH(CLIColor.ANSI_RED.toString() + "+" + CLIColor.RESET),
-    SERF(CLIColor.ANSI_PURPLE.toString() + "S" + CLIColor.RESET),
-    STONE(CLIColor.ANSI_GREY.toString() + "D" + CLIColor.RESET),
-    COIN(CLIColor.ANSI_YELLOW.toString() + "o" + CLIColor.RESET);
+    SHIELD(CLIColor.ANSI_BLUE + "■" + CLIColor.ANSI_RESET),
+    FAITH(CLIColor.ANSI_RED + "■" + CLIColor.ANSI_RESET),
+    SERF(CLIColor.ANSI_PURPLE + "■" + CLIColor.ANSI_RESET),
+    STONE(CLIColor.ANSI_GREY + "■" + CLIColor.ANSI_RESET),
+    COIN(CLIColor.ANSI_YELLOW + "■" + CLIColor.ANSI_RESET);
     private final String representation;
 
     Resource(String representation){
