@@ -9,6 +9,6 @@ public class AdditionalProductionPower implements LeaderPower{
 
     @Override
     public String toString() {
-        return "│    " + resource + "-> ? " + Resource.FAITH +"      │\n";
+        return "│" + Utility.center(resource + " -> ?, " + Resource.FAITH ,17) +"│\n";
     }
 }

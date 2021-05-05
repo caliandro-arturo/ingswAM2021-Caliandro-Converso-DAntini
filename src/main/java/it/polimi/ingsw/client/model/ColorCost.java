@@ -13,9 +13,9 @@ public class ColorCost implements Requirements{
     @Override
     public String toString() {
         if(colors.length == 1){
-            return "│        "+ colors[0] + quantity[0] +"       │\n";
+            return "│"+ Utility.center(colors[0] + ":" + quantity[0],17) +"│\n";
         }else {
-            return "│       "+ colors[0] + quantity[0] + colors[1] + quantity[1] +"      │\n";
+            return "│"+ Utility.center(colors[0] + ":" + quantity[0] +" "+ colors[1] + ":" + quantity[1],17) +"│\n";
         }
     }
 }

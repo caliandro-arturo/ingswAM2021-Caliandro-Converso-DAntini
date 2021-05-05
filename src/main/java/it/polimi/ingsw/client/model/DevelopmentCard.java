@@ -20,6 +20,30 @@ public class DevelopmentCard {
         this.production = production;
     }
 
+    public int getVictoryPoints() {
+        return victoryPoints;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public UtilityProductionAndCost[] getCosts() {
+        return costs;
+    }
+
+    public UtilityProductionAndCost[] getProductionCost() {
+        return productionCost;
+    }
+
+    public UtilityProductionAndCost[] getProduction() {
+        return production;
+    }
+
     @Override
     public String toString() {
         String cost = assertLength(costs);
@@ -28,23 +52,17 @@ public class DevelopmentCard {
         return  "┌─────────────────┐\n" +
                 "│     " + color + "  " + level + "  " + color + "     │\n" +
                  cost +
-                "│\t  \t  \t \t  │\n" +
-                "│\t  \t  \t \t  │\n" +
+                "│                 │\n" +
+                "│                 │\n" +
                 productionsCost +
                 productionValue +
-                "│\t  \t  \t \t  │\n" +
+                "│                 │\n" +
                 "│     " + color + " " + String.format("%2d", victoryPoints) + "  " + color + "     │\n" +
                 "└─────────────────┘\n";
     }
 
     private String assertLength(UtilityProductionAndCost[] array){
         int size = array.length;
-        if (size == 1 ){
-            return "│      " + Arrays.toString(array) + "       │\n";
-        } else if(size == 2){
-            return "│    " + Arrays.toString(array) + "     │\n";
-        } else{
-            return "│   " + Arrays.toString(array) + "  │\n";
-        }
+        return "│" + Utility.center(Arrays.toString(array), 17)+ "│\n";
     }
 }

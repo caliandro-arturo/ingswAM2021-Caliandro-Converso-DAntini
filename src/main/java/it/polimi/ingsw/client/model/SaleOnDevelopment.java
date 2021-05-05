@@ -9,6 +9,6 @@ public class SaleOnDevelopment implements LeaderPower{
 
     @Override
     public String toString() {
-        return "│      -1 " + resource + "       │\n";
+        return "│" + Utility.center("-1 " + resource,17) + "│\n";
     }
 }

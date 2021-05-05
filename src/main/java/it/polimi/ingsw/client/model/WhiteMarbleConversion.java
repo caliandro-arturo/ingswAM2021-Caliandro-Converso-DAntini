@@ -9,6 +9,6 @@ public class WhiteMarbleConversion implements LeaderPower{
 
     @Override
     public String toString() {
-        return "│     " + Color.WHITE + " -> " + resource +"      │\n";
+        return "│" + Utility.center(Color.WHITE + " -> " + resource,17) +"│\n";
     }
 }

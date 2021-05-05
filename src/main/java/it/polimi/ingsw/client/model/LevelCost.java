@@ -12,6 +12,6 @@ public class LevelCost extends ColorCost implements Requirements {
 
     @Override
     public String toString() {
-        return "│    "+ quantity[0] + colors[0] + "  level:"+level+"  │\n";
+        return "│"+ Utility.center(colors[0] +":"+ quantity[0] + "  level:"+level,17) +"│\n";
     }
 }

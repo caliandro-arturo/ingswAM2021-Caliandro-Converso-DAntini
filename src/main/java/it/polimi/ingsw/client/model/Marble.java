@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.model;
 
+import it.polimi.ingsw.client.CLI.CLIColor;
+
 public class Marble {
     private Color color;
 
@@ -9,6 +11,9 @@ public class Marble {
 
     @Override
     public String toString() {
-        return color.toString();
+        if (Utility.colorMap.get(color)!=null) {
+            return Utility.colorMap.get(color) + "@" + CLIColor.ANSI_RESET;
+        } else
+            return "@";
     }
 }

@@ -11,6 +11,6 @@ public class ResourceCost implements Requirements{
 
     @Override
     public String toString() {
-        return "│        "+ resource + quantity +"       │\n";
+        return "│"+ Utility.center(resource + ":"+ quantity,17)+"│\n";
     }
 }
