@@ -19,10 +19,12 @@ public class Market {
 
     @Override
     public String toString() {
-        return "    " +extraMarble.toString()+ " \n" +
-                " vvvv \n" +
-                ">" +grid[0][0].toString()+grid[0][1].toString()+grid[0][2].toString()+grid[0][3].toString()+ " \n" +
-                ">" +grid[1][0].toString()+grid[1][1].toString()+grid[1][2].toString()+grid[1][3].toString()+ " \n" +
-                ">" +grid[2][0].toString()+grid[2][1].toString()+grid[2][2].toString()+grid[2][3].toString()+ " \n";
+        return  "┌──────────────┐\n" +
+                "│" +Utility.center(extraMarble.toString(),14) + "│ \n" +
+                "│"+ Utility.center(" ▼ ▼ ▼ ▼",14) + "│ \n" +
+                "│"+ Utility.center("> " +grid[0][0].toString()+ " " +grid[0][1].toString()+ " " +grid[0][2].toString()+ " " + grid[0][3].toString(),14) + "│ \n" +
+                "│"+ Utility.center("> " +grid[1][0].toString()+" " +grid[1][1].toString()+ " " +grid[1][2].toString()+ " " + grid[1][3].toString(),14) + "│ \n" +
+                "│"+ Utility.center("> " +grid[2][0].toString()+" " +grid[2][1].toString()+ " " +grid[2][2].toString()+ " " + grid[2][3].toString(),14) + "│ \n" +
+                "└──────────────┘\n";
     }
 }
