@@ -19,7 +19,7 @@ public class Market {
 
     @Override
     public String toString() {
-        return "    " +extraMarble.toString()+ "\n" +
+        return "    " +extraMarble.toString()+ " \n" +
                 " vvvv \n" +
                 ">" +grid[0][0].toString()+grid[0][1].toString()+grid[0][2].toString()+grid[0][3].toString()+ " \n" +
                 ">" +grid[1][0].toString()+grid[1][1].toString()+grid[1][2].toString()+grid[1][3].toString()+ " \n" +

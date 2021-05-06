@@ -12,7 +12,7 @@ public class DevelopmentGrid{
 
     @Override
     public String toString() {
-        return " ┌──────────────┬──────────────┬──────────────┬──────────────┐ \n" +
+        return " ┌──────────────┬──────────────┬──────────────┬──────────────┐\n" +
                 assertLengthCost(2) + "\n" +
                 assertLengthProductionCost(2) + "\n" +
                 assertLengthProductionValue(2) + "\n" +
