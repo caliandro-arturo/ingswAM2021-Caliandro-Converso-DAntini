@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.messages.Message;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -32,11 +33,29 @@ public class GameTest {
     Player testPlayer3 = new Player("Test3");
     Player testPlayer4 = new Player("Test4");
     Game multiTest;
+    ViewAdapter testView = new ViewAdapter(multiTest) {
+        @Override
+        public void sendMessage(Player player, Message message) {
+        }
+
+        @Override
+        public void sendMessage(Message message) {
+        }
+
+        @Override
+        public void notifyPlayerTurnNumber(Player player, int number) {
+        }
+
+        @Override
+        public void notifyInitialResourcesAmount(Player player, int resourceQuantity) {
+        }
+    };
     Game singleTest;
 
     @BeforeAll
     void setUp() {
         multiTest = new MultiplayerGame(testPlayer1, 4, null, leaderDeck, testGrid);
+        multiTest.setViewAdapter(testView);
         singleTest = new SinglePlayerGame(testPlayer0, 1, null, leaderDeck, testGrid);
         multiTest.setStarted(false);
         try {
@@ -51,28 +70,12 @@ public class GameTest {
     }
 
     /**
-     * Verifies that the game cannot add players with already taken nicknames or if it is full.
-     */
-    @Test
-    void addPlayers() {
-        Player unpleasant = new Player("Unpleasant");
-        assertThrows(GameException.GameAlreadyFull.class, () -> {
-            multiTest.addPlayer(unpleasant);
-        });
-        assertFalse(multiTest.getPlayers().contains(unpleasant));
-        multiTest.getPlayers().remove(testPlayer4);
-        multiTest.setFull(false);
-        assertThrows(GameException.NicknameAlreadyTaken.class, () -> {
-            multiTest.addPlayer(testPlayer3);
-        });
-    }
-
-    /**
      * Verifies that a player is not set ready until he has discarded two cards and added his
      * starting resources in his warehouse.
      */
     @Test
     void settingPlayersReady() {
+        multiTest.setUpPlayers();
         testPlayer1.getBoard().addResource(Resource.COIN);
         testPlayer1.getBoard().addResource(Resource.COIN);
         multiTest.setPlayerReady(testPlayer1);

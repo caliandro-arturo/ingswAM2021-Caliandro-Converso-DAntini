@@ -134,7 +134,11 @@ class PlayerTest {
         int[] box = {0,0};
         pluto.getBoard().addCard(new DevelopmentCard(1,
                 1,Color.BLUE, null ,new ProductionPower(costs,costs)),1);
-        pluto.startDevProduction(1,box);
+        try {
+            pluto.startDevProduction(1, box);
+        } catch (IllegalArgumentException e) {
+            pluto.refundCost(pluto.getProcessedResources(), box, costs);
+        }
         assertEquals(1,pluto.getBoard().getPersonalBox().getResourceMap().get(Resource.COIN));
     }
 

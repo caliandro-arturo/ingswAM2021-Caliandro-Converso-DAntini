@@ -7,7 +7,7 @@ public class PassTurnPhase extends TurnPhase {
 
     @Override
     public void start() {
-        getGame().getViewAdapter().sendMessage("Passing turn to the next player...");
+        getGame().getViewAdapter().notifyTurnPass();
         getGame().nextTurnPhase();
     }
 

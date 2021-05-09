@@ -12,11 +12,16 @@ import java.io.Serializable;
  * @see it.polimi.ingsw.messages.toClient.updates.GameUpdate
  */
 public abstract class Message implements Serializable {
-    Player player;
+    private Player player;
+    private final int id = this.hashCode();
 
     public Player getPlayer() {
         return player;
     }
+    public int getId() {
+        return id;
+    }
+
     public void setPlayer(Player player) {
         this.player = player;
     }

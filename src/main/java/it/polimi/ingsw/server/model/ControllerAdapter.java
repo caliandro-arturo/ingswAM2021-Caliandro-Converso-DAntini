@@ -21,18 +21,10 @@ public class ControllerAdapter {
      * Checks if the message is sent or not by the current player.
      *
      * @param player the player who sent a message
-     * @return {@code true} if the player is the current player, {@code false} otherwise
      */
-    private boolean playerCanDoThisNow(Player player) {
-        try {
-            if (!player.equals(game.getCurrentPlayer())) {
-                throw new GameException.MoveMadeOutsideOfHisTurn();
-            }
-        } catch (GameException.MoveMadeOutsideOfHisTurn e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-            return false;
-        }
-        return true;
+    private void checkIfPlayerCanDoThingsNow(Player player) throws GameException.IllegalMove {
+        if (!player.equals(game.getCurrentPlayer()))
+            throw new GameException.IllegalMove();
     }
 
     /**
@@ -41,19 +33,12 @@ public class ControllerAdapter {
      *
      * @param player    the player who wants to do an action
      * @param turnPhase the phase in which the action is acceptable
-     * @return {@code true} if the action is compatible with the context; {@code false} otherwise
      */
-    private boolean isMoveValid(Player player, String turnPhase) {
-        if(!playerCanDoThisNow(player)) return false;
+    private void checkIfMoveIsValid(Player player, String turnPhase) throws GameException.IllegalMove {
+        checkIfPlayerCanDoThingsNow(player);
         TurnPhase actual = game.getTurnPhase(turnPhase);
-        try {
-            if (actual.equals(game.getCurrentTurnPhase()) || actual.isFinished())
-                throw new GameException.IllegalMove();
-        } catch (GameException.IllegalMove e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-            return false;
-        }
-        return true;
+        if (!actual.equals(game.getCurrentTurnPhase()) || actual.isFinished())
+            throw new GameException.IllegalMove();
     }
 
     /**
@@ -62,44 +47,22 @@ public class ControllerAdapter {
      * @return {@code true} if the player is the current player and the current turn phase
      * is a UseLeaderPhase; {@code false} otherwise
      */
-    private boolean isLeaderPhase(Player player) {
-        if (!playerCanDoThisNow(player)) return false;
-        try {
-            if(!(game.getCurrentTurnPhase().equals(game.getTurnPhase("UseLeader")) ||
-                    game.getCurrentTurnPhase().equals(game.getTurnPhase("UseAgainLeader"))))
-                throw new GameException.IllegalMove();
-        } catch (GameException.IllegalMove e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-        }
-        return true;
+    private void checkIfIsLeaderPhase(Player player) throws GameException.IllegalMove {
+        if (!game.getCurrentTurnPhase().equals(game.getTurnPhase("UseLeader")) &&
+                !game.getCurrentTurnPhase().equals(game.getTurnPhase("UseAgainLeader")))
+            throw new GameException.IllegalMove();
     }
 
     //main methods
-
-    /**
-     * Calls {@link Game#addPlayer(Player)}.
-     *
-     * @param player the player to add to the game
-     */
-    public void addPlayer(Player player) throws GameException.GameAlreadyFull,
-            GameException.NicknameAlreadyTaken {
-        game.addPlayer(player);
-    }
-
     /**
      * Gives the player the indicated initial resource.
      *
      * @param player the player who has selected the resource
      * @param resource the initial resource to give to the player
      */
-    public void takeInitialResource(Player player, Resource resource) {
-        try {
-            if (game.isStarted() || player.getInitialResources() == 0)
-                throw new GameException.IllegalMove();
-        } catch (GameException.IllegalMove e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-            return;
-        }
+    public void takeInitialResource(Player player, Resource resource) throws GameException.IllegalMove {
+        if (game.isStarted() || player.getInitialResources() == 0)
+            throw new GameException.IllegalMove();
         player.getBoard().addResource(resource);
         player.setInitialResources(player.getInitialResources() - 1);
     }
@@ -110,15 +73,10 @@ public class ControllerAdapter {
      * @param player    the player that has chosen the action
      * @param turnPhase the action the player has chosen
      */
-    public void startChosenTurnPhase(Player player, String turnPhase) {
-        if (!isMoveValid(player, "ChooseAction")) return;
-        try {
-            if (!selectablePhases.contains(turnPhase))
-                throw new GameException.IllegalMove();
-        } catch (GameException.IllegalMove e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-            return;
-        }
+    public void startChosenTurnPhase(Player player, String turnPhase) throws GameException.IllegalMove {
+        checkIfMoveIsValid(player, "ChooseAction");
+        if (!selectablePhases.contains(turnPhase))
+            throw new GameException.IllegalMove();
         game.nextTurnPhase(turnPhase);
     }
 
@@ -127,13 +85,10 @@ public class ControllerAdapter {
      *
      * @param player the player who asked to use the leader
      */
-    public void useLeader(Player player, int leaderCardNumber) {
-        if (!isLeaderPhase(player)) return;
-        try {
-            player.useLeader(player.getLeaderCards().get(leaderCardNumber - 1));
-        } catch (IllegalArgumentException e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-        }
+    public void useLeader(Player player, int leaderCardNumber) throws IllegalArgumentException, GameException.IllegalMove {
+        checkIfPlayerCanDoThingsNow(player);
+        checkIfIsLeaderPhase(player);
+        player.useLeader(player.getLeaderCards().get(leaderCardNumber - 1));
     }
 
     /**
@@ -141,12 +96,8 @@ public class ControllerAdapter {
      *
      * @param player the player who asked to discard the leader
      */
-    public void discardLeader(Player player, int leaderCardNumber) {
-        try {
-            player.discardLeaderCard(player.getLeaderCards().get(leaderCardNumber - 1));
-        } catch (IllegalArgumentException e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-        }
+    public void discardLeader(Player player, int leaderCardNumber) throws IllegalArgumentException {
+        player.discardLeaderCard(player.getLeaderCards().get(leaderCardNumber - 1));
         if (!game.isStarted() && !game.getPlayersToWait().contains(player))
             game.setPlayerReady(player);
     }
@@ -158,15 +109,10 @@ public class ControllerAdapter {
      * @param rowOrColumn selection between row or column
      * @param number      position of the selected row/column
      */
-    public void useMarket(Player player, char rowOrColumn, int number) {
-        if (!isMoveValid(player, "UseMarket")) return;
-        try {
-            game.getMarket().getMarblesResources(game, rowOrColumn, number);
-        } catch (IllegalArgumentException e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-            return;
-        }
-        game.getViewAdapter().sendMessage(player, "Now deploy your resources.");
+    public void useMarket(Player player, char rowOrColumn, int number)
+            throws IllegalArgumentException, GameException.IllegalMove {
+        checkIfMoveIsValid(player, "UseMarket");
+        game.getMarket().getMarblesResources(game, rowOrColumn, number);
         game.getCurrentTurnPhase().setFinished(true);
     }
 
@@ -177,17 +123,13 @@ public class ControllerAdapter {
      * @param player the player to give the resources to
      * @param num    the chosen resource (indicated by its position in the WhiteAlt ArrayList, defined in Player)
      */
-    public void giveChosenWhiteMarbleResource(Player player, int num) {
-        if (!isMoveValid(player, "UseMarket")) return;
-        try {
-            if (player.getWhiteMarbleChoices() == 0)
-                throw new GameException.IllegalMove();
-            else if (num != 1 && num != 2)
-                throw new IllegalArgumentException("the number must be 1 or 2.");
-        } catch (GameException.IllegalMove | IllegalArgumentException e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-            return;
-        }
+    public void giveChosenWhiteMarbleResource(Player player, int num)
+            throws IllegalArgumentException, GameException.IllegalMove {
+        checkIfMoveIsValid(player, "UseMarket");
+        if (player.getWhiteMarbleChoices() == 0)
+            throw new GameException.IllegalMove();
+        else if (num != 1 && num != 2)
+            throw new IllegalArgumentException("the number must be 1 or 2.");
         game.getCurrentPlayer().getBoard().addResource(player.getWhiteAlt().get(num - 1));
         player.changeWhiteMarbleChoicesNumber(-1);
     }
@@ -198,16 +140,11 @@ public class ControllerAdapter {
      * @param player the player who asked to take out a resource
      * @param pos    position of the warehouse store
      */
-    public void takeOutResource(Player player, int pos) {
-        if(game.isStarted() && !playerCanDoThisNow(player)) return;
-        try {
-            if (!game.isStarted() && !game.getPlayersToWait().contains(player))
-                throw new GameException.IllegalMove();
-            else
-                player.getBoard().takeOutResource(pos);
-        } catch (IllegalArgumentException | GameException.IllegalMove e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-        }
+    public void takeOutResource(Player player, int pos) throws GameException.IllegalMove {
+        checkIfPlayerCanDoThingsNow(player);
+        if (game.isStarted() || !game.getPlayersToWait().contains(player))
+            throw new GameException.IllegalMove();
+        player.getBoard().takeOutResource(pos);
     }
 
     /**
@@ -217,16 +154,12 @@ public class ControllerAdapter {
      * @param resource the resource to place in the warehouse
      * @param pos      position of the warehouse store
      */
-    public void deployResource(Player player, Resource resource, int pos) {
-        if (game.isStarted() && !playerCanDoThisNow(player)) return;
-        try {
-            player.getBoard().deployResource(resource, pos);
-        } catch (IllegalArgumentException e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-            return;
-        }
+    public void deployResource(Player player, Resource resource, int pos) throws GameException.IllegalMove {
+        checkIfPlayerCanDoThingsNow(player);
+        if (game.isStarted()) throw new GameException.IllegalMove();
+        player.getBoard().deployResource(resource, pos);
         if (!game.isStarted() && !game.getPlayersToWait().contains(player))
-            game.setPlayerReady(player);
+            game.setPlayerReady(player);                                    //todo fix throws
     }
 
     /**
@@ -235,13 +168,9 @@ public class ControllerAdapter {
      * @param player   the player who sent the command
      * @param resource the resource to discard
      */
-    public void discardResource(Player player, Resource resource) {
-        if (!isMoveValid(player, "UseMarket")) return;
-        try {
-            player.getBoard().discardResource(resource);
-        } catch (GameException.IllegalMove e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-        }
+    public void discardResource(Player player, Resource resource) throws GameException.IllegalMove {
+        checkIfMoveIsValid(player, "UseMarket");
+        player.getBoard().discardResource(resource);
     }
 
     /**
@@ -257,18 +186,13 @@ public class ControllerAdapter {
     /**
      * Calls {@link TurnPhase#nextTurnPhase()}, if possible.
      */
-    public void nextTurnPhase(Player player) {
-        if (!playerCanDoThisNow(player)) return;
-        try {
-            if (!player.getBoard().getResHand().isEmpty())
+    public void nextTurnPhase(Player player) throws GameException.IllegalMove {
+        checkIfPlayerCanDoThingsNow(player);
+        if (!player.getBoard().getResHand().isEmpty())
+            throw new GameException.IllegalMove();
+        else if (!(game.getCurrentTurnPhase().isFinished()))
+            if (!(game.getCurrentTurnPhase().isSkippable()))
                 throw new GameException.IllegalMove();
-            else if (!(game.getCurrentTurnPhase().isFinished()))
-                if (!(game.getCurrentTurnPhase().isSkippable()))
-                    throw new GameException.IllegalMove();
-        } catch (GameException.IllegalMove e) {
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-            return;
-        }
         game.nextTurnPhase();
     }
 
@@ -280,16 +204,10 @@ public class ControllerAdapter {
      * @param prod   the resources the player wants to obtain from the production
      * @param box    the depots the player chooses to take resources from
      */
-    public void startBoardProduction(Player player, String[] cost, String prod, int[] box) {
-        if (!isMoveValid(player,"ActivateProduction"))
-            return;
+    public void startBoardProduction(Player player, String[] cost, String prod, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
+        checkIfMoveIsValid(player,"ActivateProduction");
         Resource production = UtilityMap.mapResource.get(prod);
-        try {
-            player.startBoardProduction(box,cost,production);
-        }catch (IllegalArgumentException e){
-            game.getViewAdapter().sendErrorMessage(player,e.getMessage());
-            return;
-        }
+        player.startBoardProduction(box,cost,production);
         player.getBoard().getProductionList().get(0).setProductionCanBeActivate(false);
     }
 
@@ -300,34 +218,30 @@ public class ControllerAdapter {
      * @param prod command of the player
      * @param index index of the production selected
      */
-    public void startLeaderProduction(Player player,int cost,String prod, int index){
-        if (!isMoveValid(player,"ActivateProduction"))
-            return;
+    public void startLeaderProduction(Player player,int cost,String prod, int index) throws IllegalArgumentException, GameException.IllegalMove {
+        checkIfMoveIsValid(player,"ActivateProduction");
         Resource production = UtilityMap.mapResource.get(prod);
-        try {
-            player.startLeaderProduction(cost,production,index);
-        } catch (IllegalArgumentException e){
-            game.getViewAdapter().sendErrorMessage(player,e.getMessage());
-            return;
-        }
+        player.startLeaderProduction(cost,production,index);
         Production productionPower = player.getBoard().getProductionList().get(index);
         productionPower.setProductionCanBeActivate(false);
     }
 
     /**
      * controls for Development Card Production
+     *
      * @param player current player
-     * @param box store from where the player take the resources
-     * @param index index of the production selected
+     * @param box    store from where the player take the resources
+     * @param index  index of the production selected
      */
-    public void startDevProduction(Player player,int[] box, int index) {
-        if (!isMoveValid(player,"ActivateProduction"))
-            return;
+    public void startDevProduction(Player player, int[] box, int index) throws IllegalArgumentException, GameException.IllegalMove {
+        checkIfMoveIsValid(player, "ActivateProduction");
         try {
-            player.startDevProduction(index,box);
-        }catch (IllegalArgumentException e){
-            game.getViewAdapter().sendErrorMessage(player,e.getMessage());
-            return;
+            player.startDevProduction(index, box);
+        } catch (IllegalArgumentException e) {
+            UtilityProductionAndCost[] cost = player
+                    .getBoard().showActiveDevCards().get(index-1).getProduction().getCost();
+            player.refundCost(player.getProcessedResources(), box, cost);
+            throw e;
         }
         Production production = player.getBoard().getPersonalDevelopmentSpace()[index - 1].
                 getDevelopmentCards().peek().getProduction();
@@ -342,25 +256,23 @@ public class ControllerAdapter {
      * @param devSpace space
      * @param box box from where take the resource
      */
-    public void buyCard(Player player,int level,Color color,int devSpace, int[] box) {
-        if (!isMoveValid(player,"BuyDevelopmentCard"))
-            return;
-        try{
-            if (level<1 || level>3 )
-                throw new IllegalArgumentException("the level must be 1,2 or 3");
-            else if (UtilityMap.colorPosition.get(color) == null)
-                throw new IllegalArgumentException("Invalid Color");
-            else if (game.getDevelopmentGrid().getDeck(level,color).getDeck().empty())
-                throw new IllegalArgumentException("this place in empty");
-            else if (player.getBoard().getPersonalDevelopmentSpace()[devSpace-1].hasRoomForCard(level)){
-                throw new IllegalArgumentException("this development place is empty");
-            }
-        } catch (IllegalArgumentException e){
-            game.getViewAdapter().sendErrorMessage(player, e.getMessage());
-            return;
-        }
+    public void buyCard(Player player,int level,Color color,int devSpace, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
+        checkIfMoveIsValid(player,"BuyDevelopmentCard");
+        if (level<1 || level>3 )
+            throw new IllegalArgumentException("the level must be 1,2 or 3");
+        else if (UtilityMap.colorPosition.get(color) == null)
+            throw new IllegalArgumentException("Invalid Color");
+        else if (game.getDevelopmentGrid().getDeck(level,color).getDeck().empty())
+            throw new IllegalArgumentException("this place in empty");
+        else if (player.getBoard().getPersonalDevelopmentSpace()[devSpace-1].hasRoomForCard(level))
+            throw new IllegalArgumentException("this development place is empty");
         DevelopmentCard card = game.getDevelopmentGrid().getDeck(level,color).getTopCard();
-        player.buyDevelopmentCard(card,box,devSpace);
+        try {
+            player.buyDevelopmentCard(card, box, devSpace);
+        } catch (IllegalArgumentException e) {
+            player.refundCost(player.getProcessedResources(), box, card.getCost());
+            throw e;
+        }
         game.getCurrentTurnPhase().setFinished(true);
     }
 }

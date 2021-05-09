@@ -1,17 +1,12 @@
 package it.polimi.ingsw.messages.toServer.actions;
 
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.toServer.ServerMessageVisitor;
 import it.polimi.ingsw.messages.toServer.ToServerMessage;
+import it.polimi.ingsw.messages.toServer.ToServerMessageHandler;
 
 public class UseMarket extends Message implements ToServerMessage {
     private final char rowOrColumn;
     private final int num;
-
-    @Override
-    public void accept(ServerMessageVisitor v) {
-        v.visit(this);
-    }
 
     public UseMarket(char rowOrColumn, int num) {
         this.rowOrColumn = rowOrColumn;
@@ -24,5 +19,10 @@ public class UseMarket extends Message implements ToServerMessage {
 
     public int getNum() {
         return num;
+    }
+
+    @Override
+    public void accept(ToServerMessageHandler v) {
+
     }
 }

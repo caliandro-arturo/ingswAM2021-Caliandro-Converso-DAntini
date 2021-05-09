@@ -3,10 +3,13 @@ package it.polimi.ingsw.client.CLI;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.*;
+import it.polimi.ingsw.network.SocketManager;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +19,7 @@ import java.util.Objects;
  */
 public class CLI implements UI {
     private View view;
-    private SocketManager socketManager;
+    private ClientSocketManager socketManager;
 
     public static void main(String[] args) {
         //todo insert startup prints here
@@ -47,7 +50,7 @@ public class CLI implements UI {
                     portNumber = Integer.parseInt(socketId.get("serverPort"));
                     reader.close();
                 } catch (NullPointerException e) {
-                    System.err.println("Line 51: " + e.getMessage());
+                    System.err.println("Line 53: " + e.getMessage());
                     return;
                 }
             } else {
@@ -60,7 +63,7 @@ public class CLI implements UI {
         }
         System.out.println("Connecting to " + hostName + " at port " + portNumber + "...");
         try {
-            socketManager = new SocketManager(new Socket(hostName, portNumber));
+            socketManager = new ClientSocketManager(new Socket(hostName, portNumber));
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
@@ -68,11 +71,21 @@ public class CLI implements UI {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);
         }
-        System.out.println("connected succesfully.");
+        System.out.println("Connected successfully.");
         view = new CLIView();
-        ClientController controller = new ClientController(view, socketManager);
-
+        new ClientController(view, socketManager);
+        new Thread(() -> {
+            try {
+                socketManager.receiveMessages();
+            } catch (SocketTimeoutException e) {
+                e.printStackTrace();
+            } catch (SocketException e) {
+                System.err.println("Server closed. :(:(");
+                System.exit(1);
+            }
+        }).start();
         //reading user input
+        view.show("asknickname");
         String input;
         do {
             try {

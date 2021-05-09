@@ -2,12 +2,14 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.toClient.CreateGame;
-import it.polimi.ingsw.messages.toClient.ErrorMessage;
+import it.polimi.ingsw.messages.toClient.GameIsFull;
 import it.polimi.ingsw.messages.toClient.WaitGameCreation;
 import it.polimi.ingsw.messages.toClient.updates.NewPlayer;
+import it.polimi.ingsw.messages.toServer.SetNickname;
 import it.polimi.ingsw.server.model.GameException;
 import it.polimi.ingsw.server.model.Player;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
 
@@ -19,8 +21,8 @@ public class VirtualView {
     private final ServerMain serverMain;
     private final Controller controller = new Controller(this);
     private Socket firstPlayer;
-    private final List<ClientHandler> waitingList = Collections.synchronizedList(new ArrayList<>());
-    private final HashMap<Player, ClientHandler> clientMap = new HashMap<>();
+    private final List<ClientHandler> waitingList = new ArrayList<>();
+    private final HashMap<Player, ClientHandler> clientMap = new LinkedHashMap<>();
     private boolean hasBeenSet = false;
 
     public VirtualView(ServerMain serverMain, Socket firstPlayer) {
@@ -67,8 +69,8 @@ public class VirtualView {
      * @return {@code true} if the game is full; {@code false} otherwise
      */
     public boolean isFull() {
-        return hasBeenSet && clientMap.keySet().size() == controller.gamePlayersNum() ||
-                !hasBeenSet && clientMap.keySet().size() == 4;
+        if (hasBeenSet) return clientMap.keySet().size() + waitingList.size() >= controller.gamePlayersNum();
+        else return clientMap.keySet().size() + waitingList.size() == 4;
     }
 
     /**
@@ -107,30 +109,34 @@ public class VirtualView {
     /**
      * Creates the player for the client and removes it from {@link VirtualView#waitingList}.
      *
-     * @param nickname      nickname of the player
-     * @param clientHandler client connection handler to associate the player to
+     * @param setNickname the message that the client sent to set the nickname
      * @throws GameException.NicknameAlreadyTaken if the nickname has been already taken by another player
-     * @throws GameException.GameAlreadyFull      if the game is full
      */
-    public synchronized void createPlayer(String nickname, ClientHandler clientHandler) throws GameException.NicknameAlreadyTaken,
-            GameException.GameAlreadyFull {
+    public void createPlayer(SetNickname setNickname) throws GameException.NicknameAlreadyTaken {
+        String nickname = setNickname.getNickname();
+        ClientHandler clientHandler = setNickname.getClient();
         if (!isNickAvailable(nickname))
             throw new GameException.NicknameAlreadyTaken();
-        else if (isFull())
-            throw new GameException.GameAlreadyFull();
         Player player = new Player(nickname);
         waitingList.remove(clientHandler);
         clientMap.put(player, clientHandler);
         clientHandler.setPlayer(player);
+        clientHandler.confirmMove(setNickname);
         sendMessageToOthers(player, new NewPlayer(player.getUsername()));
-        if (clientHandler.getSocket().equals(firstPlayer) && !hasBeenSet)
-            sendMessage(player, new CreateGame());
-        else sendMessage(player, new WaitGameCreation());
+        if (!hasBeenSet) {
+            if (clientHandler.getSocket().equals(firstPlayer))
+                sendMessage(player, new CreateGame());
+            else sendMessage(player, new WaitGameCreation());
+        } else {
+            if (isFull())
+                controller.startGame();
+        }
     }
 
     /**
-     * Removes a client from this virtualView. If the client to remove is the firstPlayer, replaces firstPlayer value
-     * with the socket of the first next client that has entered the virtualView.
+     * Removes a client from this virtual view (from {@link VirtualView#waitingList} or from {@link
+     * VirtualView#clientMap}. If the client to remove is the firstPlayer, replaces firstPlayer value with the socket of
+     * the first next client that has entered the virtualView.
      *
      * @param client the client to remove
      */
@@ -140,10 +146,10 @@ public class VirtualView {
             Optional<Map.Entry<Player, ClientHandler>> nextFirstPlayer = clientMap.entrySet().stream().findFirst();
             if (nextFirstPlayer.isPresent()) {
                 firstPlayer = nextFirstPlayer.get().getValue().getSocket();
-                nextFirstPlayer.get().getValue().sendMessage(new CreateGame());
+                sendMessage(nextFirstPlayer.get().getValue(), new CreateGame());
             } else {
                 try {
-                    while (waitingList.size() == 0) wait();
+                    while (waitingList.isEmpty()) wait();
                 } catch (InterruptedException e) {
                     System.err.println("In remove() of virtualview: " + e.getMessage());
                     return;
@@ -160,10 +166,14 @@ public class VirtualView {
      * @param expectedNumberOfClients the number of players allowed in this virtual view
      */
     public synchronized void removeExtraClients(int expectedNumberOfClients) {
+        waitingList.forEach(c -> {
+            waitingList.remove(c);
+            c.reassign();
+        });
         ArrayList<Player> players = new ArrayList<>(clientMap.keySet());
         while (connectedClients() > expectedNumberOfClients) {
             Player playerToRemove = players.get(expectedNumberOfClients);
-            sendMessage(playerToRemove, new ErrorMessage("The game is already full."));
+            sendMessage(playerToRemove, new GameIsFull());
             remove(clientMap.get(playerToRemove));
             clientMap.get(playerToRemove).reassign();
             players.remove(expectedNumberOfClients);
@@ -186,7 +196,15 @@ public class VirtualView {
      * @param message the message to send
      */
     public void sendMessage(Player player, Message message) {
-        clientMap.get(player).sendMessage(message);
+        sendMessage(clientMap.get(player), message);
+    }
+
+    public void sendMessage(ClientHandler client, Message message) {
+        try {
+            client.sendMessage(message);
+        } catch (IOException e) {
+            //fixme handle this
+        }
     }
 
     /**
@@ -210,7 +228,4 @@ public class VirtualView {
             if (!p.equals(player)) sendMessage(p, message);
     }
 
-    public void approveMove(Player player, Message message) {
-
-    }
 }

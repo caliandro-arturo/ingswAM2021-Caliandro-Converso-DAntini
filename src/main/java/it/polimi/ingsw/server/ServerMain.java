@@ -17,6 +17,7 @@ public class ServerMain {
     private VirtualView currentView;
     private final List<Socket> connectedClients = new ArrayList<>();
     private final ExecutorService executor = Executors.newCachedThreadPool();
+    public static final int timeout = 20000;
 
     public ServerMain(int port) {
         this.port = port;
@@ -45,10 +46,17 @@ public class ServerMain {
             System.out.println("Accepting...");
             try {
                 Socket socket = serverSocket.accept();
+                socket.setSoTimeout(timeout);
                 connectedClients.add(socket);
-                System.out.println("Accepted " + socket.getInetAddress().getHostName() + " at port "
-                        + socket.getPort());
-                addToVirtualView(socket);
+                System.out.println("Accepted "
+                        + socket.getInetAddress().getHostName()
+                        + " at port "
+                        + socket.getPort() + ".");
+                try {
+                    executor.submit(new ClientHandler(this, socket, findFirstFreeVirtualView(socket)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } catch (IOException e) {
                 System.err.println("ServerMain.line 50: " + e.getMessage());
                 break;
@@ -63,17 +71,24 @@ public class ServerMain {
     }
 
     /**
-     * Adds a socket to the first free virtualView. If there isn't any free virtualView,
-     * creates a new virtualView.
+     * Ensures that there's a free virtual view in which to add new clients. If a new virtual view is created, assigns
+     * the socket provided as parameter to the firstPlayer field.
      *
-     * @param socket the client to add to the virtualView
+     * @param socket the client socket that eventually is used to set the first player of the game
      */
-    public synchronized void addToVirtualView(Socket socket) {
-        if (currentView == null || currentView.isFull()) {
-            currentView = new VirtualView(this, socket);
-            virtualViews.add(currentView);
-        }
-        executor.submit(new ClientHandler(this, connectedClients.indexOf(socket), socket, currentView));
+    public synchronized VirtualView findFirstFreeVirtualView(Socket socket) {
+        return virtualViews.stream()
+                .filter(v -> !v.isFull())
+                .findFirst()
+                .orElseGet(() -> {
+                    currentView = new VirtualView(this, socket);
+                    virtualViews.add(currentView);
+                    return currentView;
+                });
+    }
+
+    public synchronized void reinsertToTheFirstFreeVirtualView(ClientHandler clientHandler) {
+        findFirstFreeVirtualView(clientHandler.getSocket()).addToWaitingList(clientHandler);
     }
 
     public static void main(String[] args) {

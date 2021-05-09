@@ -23,6 +23,7 @@ public class ClientMessageVisitor {
     }
 
     public void visit(ErrorMessage msg) {
+        controller.getFromBuffer(msg.getId());
         controller.showError(msg.getError());
     }
 
@@ -35,7 +36,14 @@ public class ClientMessageVisitor {
     }
 
     public void visit(Ok msg) {
-
+        controller.confirmMove(msg.getId());
     }
 
+    public void visit(GameIsFull gameIsFull) {
+        controller.showError("The game is full. Reconnecting to another game...");
+    }
+
+    public void visit(TablePosition tablePosition) {
+
+    }
 }

@@ -2,13 +2,18 @@ package it.polimi.ingsw.server.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MarbleAndColorTest {
+    /**
+     * Index used to scroll on white alteration list in Player
+     */
     int i = 0;
-    ArrayList<Resource> resources = new ArrayList<>();
+    List<Resource> resources = new ArrayList<>();
     PersonalBoard testBoard = new PersonalBoard() {
         @Override
         public void addResource(Resource resource) {
@@ -23,21 +28,25 @@ class MarbleAndColorTest {
 
         @Override
         public void endGame() {
-
         }
     };
     ViewAdapter testCaller = new ViewAdapter(testGame) {
+        /**
+         * Selects the first resource in whiteAlt the first time, and the second resource the second time it is called.
+         */
         @Override
         public void askWhiteMarbleResource() {
-            testGame.getControllerAdapter().giveChosenWhiteMarbleResource(testPlayer, ++i);
+            testBoard.addResource(testPlayer.getWhiteAlt().get(i++));
         }
     };
+
     @BeforeEach
     void setUp() {
         testPlayer.setBoard(testBoard);
         testGame.setCurrentPlayer(testPlayer);
         testGame.setViewAdapter(testCaller);
     }
+
     /**
      * Verifies that every marble activates correctly its action according to its color
      */

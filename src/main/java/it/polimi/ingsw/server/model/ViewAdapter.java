@@ -1,5 +1,9 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.toClient.ErrorMessage;
+import it.polimi.ingsw.messages.toClient.TablePosition;
+import it.polimi.ingsw.messages.toClient.updates.LastTurn;
 import it.polimi.ingsw.server.VirtualView;
 
 /**
@@ -22,45 +26,61 @@ public class ViewAdapter {
 
     /**
      * sends a message to a player.
+     *
      * @param message the information to send to all players
      */
+    public void sendMessage(Player player, Message message) {
+        virtualView.sendMessage(player, message);
+    }
+
+    /**
+     * Sends a text to the player.
+     * @param player
+     * @param message
+     * @deprecated create a specific method to send specific messages.
+     */
+    @Deprecated
     public void sendMessage(Player player, String message) {
+
     }
 
     /**
      * sends a message to all players.
+     *
      * @param message the information to send to all players
      */
-    public void sendMessage(String message) {
-        game.getPlayers().forEach(p -> sendMessage(p, message));
+    public void sendMessage(Message message) {
+        virtualView.sendMessage(message);
     }
 
     /**
      * Notifies the player how much initial resources he has to choose and store in his warehouse depots.
-     * @param player the player to notify
+     *
+     * @param player           the player to notify
      * @param resourceQuantity the number of resources the player has to choose
      */
     public void notifyInitialResourcesAmount(Player player, int resourceQuantity) {
+
     }
 
     /**
      * Sends the request to the current player to use the market.
      */
     public void askToUseTheMarket() {
+
     }
 
     /**
-     * Sends the request to the current player that has used the Market and in his selected row/column
-     * there is at least one white Marble.
-     * This is called only when the current player has two deployed leaders with White Marble Conversion power, and
-     * he has to choose which Resource to take from the white Marble.
+     * Sends the request to the current player that has used the Market and in his selected row/column there is at least
+     * one white Marble. This is called only when the current player has two deployed leaders with White Marble
+     * Conversion power, and he has to choose which Resource to take from the white Marble.
      */
     public void askWhiteMarbleResource() {
     }
 
     /**
-     * Sends the request to the current player to choose between deploying a leader, discarding a leader or
-     * skipping the turn phase.
+     * Sends the request to the current player to choose between deploying a leader, discarding a leader or skipping the
+     * turn phase.
      */
     public void askLeaderAction() {
     }
@@ -73,17 +93,10 @@ public class ViewAdapter {
 
     /**
      * Sends information about the current turn phase the player has to play.
+     *
      * @param information the information to send to the current player
      */
     public void giveTurnPhaseInfo(String information) {
-    }
-
-    /**
-     * This method notifies all the players that the player has been added successfully to the game.
-     * @param player the player that has been added to the game
-     */
-    public void notifyAddedPlayer(Player player) {
-        sendMessage(player.getUsername() + " has entered the game.");
     }
 
     /**
@@ -93,50 +106,48 @@ public class ViewAdapter {
     }
 
     /**
-     * this method asks to the player where he wants to put a newly bought DevCard
-     * @param p the player to notify
-     */
-    public void askDevCardPlace(Player p){
-        sendMessage(p, "choose where to put this Development Card ");
-    }
-
-    /**
-     * ask to the player where he wants to put a resource in the warehouse store
-     * @param p the player to notify
-     * @param resource the resource to store
-     */
-    public void askResPlace(Player p, Resource resource) {
-        sendMessage(p, "choose where to put this " + resource + "resource.");
-    }
-
-    /**
-     * Notifies that the game is over and returns
+     * Notifies that the game is over and returns the final score and rank
      */
     public void notifyGameEnded(Player player, int ranking, int[] points) {
     }
 
     /**
      * Notifies a player that his turn is a certain number.
+     *
      * @param player the player to notify
      * @param number the position order of the player
      */
     public void notifyPlayerTurnNumber(Player player, int number) {
-        sendMessage(player, "You are the player n. " + number + ".");
+        virtualView.sendMessage(player, new TablePosition(number));
+    }
+
+    public void announceTurnPhase(Player player, String turnPhaseName) {
+
+    }
+
+    /**
+     * Notifies that the turn will pass to the next player.
+     */
+    public void notifyTurnPass() {
+
     }
 
     /**
      * Sends an error message.
+     *
      * @see GameException
      */
-    public void sendErrorMessage(Player player, String error) {
+    public void sendErrorMessage(Message message, String error) {
+        virtualView.sendMessage(message.getPlayer(), new ErrorMessage(message, error));
     }
 
     /**
-     * notify last turn
-     * @param string reason of last turn
+     * Notifies that this is the last turn
+     *
+     * @param reason reason of last turn
      */
-    public void notifyLastTurn(String string){
-
+    public void notifyLastTurn(String reason) {
+        sendMessage(new LastTurn(reason));
     }
 
 }

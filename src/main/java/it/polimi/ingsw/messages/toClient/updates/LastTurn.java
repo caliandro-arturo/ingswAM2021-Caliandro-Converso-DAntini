@@ -4,7 +4,17 @@ import it.polimi.ingsw.client.UpdateHandler;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.toClient.ClientMessageVisitor;
 
-public class GameHasBeenSet extends Message implements GameUpdate {
+public class LastTurn extends Message implements GameUpdate{
+    private String reason;
+
+    public LastTurn(String reason) {
+        this.reason = reason;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
     @Override
     public void accept(ClientMessageVisitor v) {
         v.visit(this);
