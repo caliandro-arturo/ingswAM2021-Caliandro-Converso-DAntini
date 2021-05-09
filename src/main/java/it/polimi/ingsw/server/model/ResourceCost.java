@@ -19,7 +19,7 @@ public class ResourceCost implements Requirements{
                 i = i - store.getQuantity();
             }
         }
-        return player.getBoard().getPersonalBox().getResourceMap().get(cost.getResource()) >= i;
+        return player.getBoard().getStrongbox().getResourceMap().get(cost.getResource()) >= i;
     }
 
     @Override

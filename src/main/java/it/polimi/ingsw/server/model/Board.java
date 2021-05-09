@@ -5,15 +5,15 @@ import java.util.*;
 
 /**
  * this class represents the personal board
- * each personal board is unique for a player and it's connected to it with a Composition link
+ * each board is unique for a player and it's connected to it with a Composition link
  *
  */
-public class PersonalBoard {
+public class Board {
 
     private ArrayList<WarehouseStore> store;
-    private FaithTrack personalPath;
-    private final Strongbox personalBox ;
-    private final DevelopmentPlace[] personalDevelopmentSpace;
+    private FaithTrack faithTrack;
+    private final Strongbox strongbox ;
+    private final DevelopmentPlace[] developmentSpace;
     private final ArrayList<Production> productionList ;
     private final ArrayList<LeaderCard> activeLeaders;
     private Game game;
@@ -22,14 +22,14 @@ public class PersonalBoard {
     public ArrayList<WarehouseStore> getStore() {
         return store;
     }
-    public FaithTrack getPersonalPath() {
-        return personalPath;
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
     }
-    public Strongbox getPersonalBox() {
-        return personalBox;
+    public Strongbox getStrongbox() {
+        return strongbox;
     }
-    public DevelopmentPlace[] getPersonalDevelopmentSpace() {
-        return personalDevelopmentSpace;
+    public DevelopmentPlace[] getDevelopmentSpace() {
+        return developmentSpace;
     }
     public ArrayList<Production> getProductionList() {
         return productionList;
@@ -47,8 +47,8 @@ public class PersonalBoard {
     public void setStore(ArrayList<WarehouseStore> store) {
         this.store = store;
     }
-    public void setPersonalPath(FaithTrack personalPath) {
-        this.personalPath = personalPath;
+    public void setFaithTrack(FaithTrack faithTrack) {
+        this.faithTrack = faithTrack;
     }
 
     public void setGame(Game game) {
@@ -62,7 +62,7 @@ public class PersonalBoard {
     /**
      * this is a specific constructor that initialise the board and its elements
      */
-    public PersonalBoard() {
+    public Board() {
         this.resHand = new ArrayList<>();
         this.store = new ArrayList<WarehouseStore>() {{
             addAll(Arrays.asList(
@@ -71,16 +71,16 @@ public class PersonalBoard {
                     new WarehouseStore(3)
             ));
         }};
-        this.personalPath = new FaithTrack();
-        this.personalBox = new Strongbox();
-        this.personalDevelopmentSpace = new DevelopmentPlace[3];
+        this.faithTrack = new FaithTrack();
+        this.strongbox = new Strongbox();
+        this.developmentSpace = new DevelopmentPlace[3];
         this.productionList = new ArrayList<Production>(){{
             add(new BoardProduction());
         }};
         this.activeLeaders = new ArrayList<>();
-        this.personalDevelopmentSpace[0] = new DevelopmentPlace();
-        this.personalDevelopmentSpace[1] = new DevelopmentPlace();
-        this.personalDevelopmentSpace[2] = new DevelopmentPlace();
+        this.developmentSpace[0] = new DevelopmentPlace();
+        this.developmentSpace[1] = new DevelopmentPlace();
+        this.developmentSpace[2] = new DevelopmentPlace();
     }
 
     /** used to deploy a resource the player is holding in the hand, the hand must empty
@@ -121,12 +121,12 @@ public class PersonalBoard {
             resHand.remove(resource);
             for (Player player : game.getPlayers()) {
                 if (!player.equals(game.getCurrentPlayer()))
-                    player.getBoard().getPersonalPath()
-                            .setPosition(player.getBoard().getPersonalPath().getPosition()+1);
+                    player.getBoard().getFaithTrack()
+                            .setPosition(player.getBoard().getFaithTrack().getPosition()+1);
             }
             for (Player player : game.getPlayers()) {
                 if (!player.equals(game.getCurrentPlayer()))
-                    player.getBoard().getPersonalPath().checkPosition();
+                    player.getBoard().getFaithTrack().checkPosition();
             }
         }
         else
@@ -149,8 +149,8 @@ public class PersonalBoard {
      */
     public void addCard(DevelopmentCard devCard, int pos){
         pos--;
-        if(personalDevelopmentSpace[pos].hasRoomForCard(devCard.getLevel())) {
-            personalDevelopmentSpace[pos].getDevelopmentCards().push(devCard);
+        if(developmentSpace[pos].hasRoomForCard(devCard.getLevel())) {
+            developmentSpace[pos].getDevelopmentCards().push(devCard);
         }
     }
 
@@ -162,7 +162,7 @@ public class PersonalBoard {
     public ArrayList<DevelopmentPlace> freePlaces(DevelopmentCard devCard){
         int level = devCard.getLevel();
         ArrayList<DevelopmentPlace> developmentPlaces = new ArrayList<>();
-        for(DevelopmentPlace dev : personalDevelopmentSpace){
+        for(DevelopmentPlace dev : developmentSpace){
             if(dev.hasRoomForCard(level))
                 developmentPlaces.add(dev);
         }
@@ -184,7 +184,7 @@ public class PersonalBoard {
      */
     public ArrayList<DevelopmentCard> showActiveDevCards(){
         ArrayList<DevelopmentCard> activeDevCards = new ArrayList<>();
-        for(DevelopmentPlace dev : personalDevelopmentSpace){
+        for(DevelopmentPlace dev : developmentSpace){
             if(!dev.getDevelopmentCards().isEmpty())
                 activeDevCards.add(dev.getDevelopmentCards().peek());
 

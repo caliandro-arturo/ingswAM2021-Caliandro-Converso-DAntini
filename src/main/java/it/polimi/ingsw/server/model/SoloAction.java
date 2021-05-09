@@ -9,11 +9,11 @@ public enum SoloAction {
     DELPURPLE           ((game, soloActions) -> game.getDevelopmentGrid().removeCard(Color.PURPLE)),
     DELBLUE             ((game, soloActions) -> game.getDevelopmentGrid().removeCard(Color.BLUE)),
     TWOPOSITIONS        ((game, soloActions) -> {
-                            game.getPlayer(1).getBoard().getPersonalPath().increasePosition();
-                            game.getPlayer(1).getBoard().getPersonalPath().increasePosition();
+                            game.getPlayer(1).getBoard().getFaithTrack().increasePosition();
+                            game.getPlayer(1).getBoard().getFaithTrack().increasePosition();
                         }),
     ONEPOSITIONRESET    ((game, soloActions) -> {
-                            game.getPlayer(1).getBoard().getPersonalPath().increasePosition();
+                            game.getPlayer(1).getBoard().getFaithTrack().increasePosition();
                             soloActions.reset();
                         });
 

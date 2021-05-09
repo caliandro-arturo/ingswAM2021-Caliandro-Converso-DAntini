@@ -3,17 +3,17 @@ package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.client.CLI.CLIColor;
 
 /**
- * light version of PersonalBoard class for representation purposes
+ * light version of Board class for representation purposes
  */
 
-public class PersonalBoard {
+public class Board {
     private DevelopmentPlace developmentPlace;
     private FaithTrack faithTrack;
     private LeaderCard leaderCard;
     private Strongbox strongbox ;
     private WarehouseStore warehouseStore;
 
-    public PersonalBoard(DevelopmentPlace developmentPlace, FaithTrack faithTrack/*, LeaderCard leaderCard,*/
+    public Board(DevelopmentPlace developmentPlace, FaithTrack faithTrack/*, LeaderCard leaderCard,*/
                          ,Strongbox strongbox, WarehouseStore warehouseStore) {
         this.developmentPlace = developmentPlace;
         this.faithTrack = faithTrack;
@@ -43,7 +43,7 @@ public class PersonalBoard {
     }
 
     /**
-     * representation method for PersonalBoard (CLI)
+     * representation method for Board (CLI)
      * @return String with the representation
      */
     @Override

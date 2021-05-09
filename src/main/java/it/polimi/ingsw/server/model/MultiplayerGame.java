@@ -27,7 +27,7 @@ public class MultiplayerGame extends Game {
             for (int i = 0; i < 4; i++)
                 p.getLeaderCards().add(getLeaderDeck().pop());
             for (int i = 0; i < initialFaithPoints[players.indexOf(p)]; i++)
-                p.getBoard().getPersonalPath().increasePosition();
+                p.getBoard().getFaithTrack().increasePosition();
             getViewAdapter().notifyInitialResourcesAmount(p, initialResources[players.indexOf(p)]);
 
         }

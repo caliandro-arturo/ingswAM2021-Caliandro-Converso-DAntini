@@ -33,8 +33,8 @@ public class LeaderCardTest {
         LeaderPower power4 = new SaleOnDevelopment(Resource.SHIELD);
         player = new Player("Test");
         playerFalse = new Player("TestFalse");
-        PersonalBoard board = new PersonalBoard();
-        PersonalBoard boardFalse = new PersonalBoard();
+        Board board = new Board();
+        Board boardFalse = new Board();
         player.setBoard(board);
         playerFalse.setBoard(boardFalse);
         cardPower1 = new LeaderCard(1,type1,power1);
@@ -44,15 +44,15 @@ public class LeaderCardTest {
         DevelopmentCard card1 = new DevelopmentCard(1,1,Color.GREEN,null,null);
         DevelopmentCard card1lv2 = new DevelopmentCard(1,2,Color.GREEN,null,null);
         DevelopmentCard card2 = new DevelopmentCard(1,1,Color.BLUE,null,null);
-        player.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(card1);
-        player.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(card1lv2);
-        player.getBoard().getPersonalDevelopmentSpace()[1].getDevelopmentCards().push(card2);
+        player.getBoard().getDevelopmentSpace()[0].getDevelopmentCards().push(card1);
+        player.getBoard().getDevelopmentSpace()[0].getDevelopmentCards().push(card1lv2);
+        player.getBoard().getDevelopmentSpace()[1].getDevelopmentCards().push(card2);
         player.getBoard().getStore().get(0).addResource(Resource.COIN);
-        player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        player.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        playerFalse.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(card1);
+        player.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        player.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        player.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        player.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        playerFalse.getBoard().getDevelopmentSpace()[0].getDevelopmentCards().push(card1);
         playerFalse.getBoard().addResource(Resource.STONE);
     }
 

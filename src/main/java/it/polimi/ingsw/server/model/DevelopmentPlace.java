@@ -5,7 +5,7 @@ import java.util.Stack;
 
 /**
  * class that take place for the development cards
- * each of the 3 places is connected with a Composition link to the PersonalBoard
+ * each of the 3 places is connected with a Composition link to the Board
 
  */
 public class DevelopmentPlace {

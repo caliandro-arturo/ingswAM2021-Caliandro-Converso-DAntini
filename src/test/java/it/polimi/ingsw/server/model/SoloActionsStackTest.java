@@ -73,11 +73,11 @@ class SoloActionsStackTest {
         soloActionPhase.start();                                                        //DELPURPLE
         assertEquals(0, decks.get(3).size());
         soloActionPhase.start();                                                        //TWOPOSITIONS
-        assertEquals(3, game.getPlayers().get(1).getBoard().getPersonalPath().getPosition());
+        assertEquals(3, game.getPlayers().get(1).getBoard().getFaithTrack().getPosition());
         soloActionPhase.start();                                                        //again TWOPOSITIONS
-        assertEquals(5, game.getPlayers().get(1).getBoard().getPersonalPath().getPosition());
+        assertEquals(5, game.getPlayers().get(1).getBoard().getFaithTrack().getPosition());
         assertEquals(6, soloActionPhase.getSoloActionsActionPointer());         //stack pointer update check 2
         soloActionPhase.start();                                                        //ONEPOSITIONRESET
-        assertEquals(6, game.getPlayers().get(1).getBoard().getPersonalPath().getPosition());
+        assertEquals(6, game.getPlayers().get(1).getBoard().getFaithTrack().getPosition());
     }
 }

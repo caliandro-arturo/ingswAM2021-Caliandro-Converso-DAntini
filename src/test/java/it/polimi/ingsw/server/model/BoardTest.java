@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PersonalBoardTest {
+class BoardTest {
 
-    private PersonalBoard board;
+    private Board board;
     private Player pippo = new Player(("pippo"));
     private DevelopmentCard level1card = new DevelopmentCard(1, 1, null, null, null);
     private DevelopmentCard level2card = new DevelopmentCard(1, 2, null, null, null);
@@ -42,13 +42,13 @@ class PersonalBoardTest {
         assertEquals(1, (board.getStore().get(0)).getSize());
         assertEquals(2, (board.getStore().get(1)).getSize());
         assertEquals(3, (board.getStore().get(2)).getSize());
-        assertEquals(1, (board.getPersonalPath()).getPosition());
-        assertEquals(0, (board.getPersonalPath()).getScoreCard());
-        assertEquals(4, board.getPersonalBox().getResourceMap().size());
-        assertTrue(board.getPersonalBox().getResourceMap().containsKey(Resource.SHIELD));
-        assertTrue(board.getPersonalBox().getResourceMap().containsKey(Resource.COIN));
-        assertTrue(board.getPersonalBox().getResourceMap().containsKey(Resource.SERF));
-        assertTrue(board.getPersonalBox().getResourceMap().containsKey(Resource.STONE));
+        assertEquals(1, (board.getFaithTrack()).getPosition());
+        assertEquals(0, (board.getFaithTrack()).getScoreCard());
+        assertEquals(4, board.getStrongbox().getResourceMap().size());
+        assertTrue(board.getStrongbox().getResourceMap().containsKey(Resource.SHIELD));
+        assertTrue(board.getStrongbox().getResourceMap().containsKey(Resource.COIN));
+        assertTrue(board.getStrongbox().getResourceMap().containsKey(Resource.SERF));
+        assertTrue(board.getStrongbox().getResourceMap().containsKey(Resource.STONE));
     }
 
     @Test
@@ -56,14 +56,14 @@ class PersonalBoardTest {
         board.addCard(level1card, 2);
         board.addCard(level2card, 2);
         board.addCard(level3card, 2);
-        assertEquals(level1card, board.getPersonalDevelopmentSpace()[1].getLevel1Card());
-        assertEquals(level2card, board.getPersonalDevelopmentSpace()[1].getLevel2Card());
-        assertEquals(level3card, board.getPersonalDevelopmentSpace()[1].getLevel3Card());
+        assertEquals(level1card, board.getDevelopmentSpace()[1].getLevel1Card());
+        assertEquals(level2card, board.getDevelopmentSpace()[1].getLevel2Card());
+        assertEquals(level3card, board.getDevelopmentSpace()[1].getLevel3Card());
         board.addCard(level1card, 1);
         board.addCard(level3card, 1);
-        assertEquals(level1card, board.getPersonalDevelopmentSpace()[0].getDevelopmentCards().peek());
+        assertEquals(level1card, board.getDevelopmentSpace()[0].getDevelopmentCards().peek());
         board.addCard(level3card, 3);
-        assertTrue(board.getPersonalDevelopmentSpace()[2].getDevelopmentCards().isEmpty());
+        assertTrue(board.getDevelopmentSpace()[2].getDevelopmentCards().isEmpty());
     }
 
     @Test

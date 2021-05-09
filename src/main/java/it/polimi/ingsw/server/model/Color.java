@@ -12,7 +12,7 @@ public enum Color {
     GREY        (game -> game.getCurrentPlayer().getBoard().addResource(Resource.STONE)),
     PURPLE      (game -> game.getCurrentPlayer().getBoard().addResource(Resource.SERF)),
     YELLOW      (game -> game.getCurrentPlayer().getBoard().addResource(Resource.COIN)),
-    RED         (game ->  game.getCurrentPlayer().getBoard().getPersonalPath().increasePosition()),
+    RED         (game ->  game.getCurrentPlayer().getBoard().getFaithTrack().increasePosition()),
     WHITE       (game -> {
                     ArrayList<Resource> whiteAlt = game.getCurrentPlayer().getWhiteAlt();
                     if(whiteAlt.isEmpty())

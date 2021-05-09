@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * class that represents the three different shelves of the Warehouse store
- * it is connected with a Composition link to the PersonalBoard
+ * it is connected with a Composition link to the Board
  */
 
 public class WarehouseStore {

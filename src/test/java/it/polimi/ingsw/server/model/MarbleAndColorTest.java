@@ -14,7 +14,7 @@ class MarbleAndColorTest {
      */
     int i = 0;
     List<Resource> resources = new ArrayList<>();
-    PersonalBoard testBoard = new PersonalBoard() {
+    Board testBoard = new Board() {
         @Override
         public void addResource(Resource resource) {
             resources.add(resource);
@@ -60,9 +60,9 @@ class MarbleAndColorTest {
         assertEquals(Resource.STONE, resources.get(2));
         new Marble(Color.YELLOW).pick(testGame);
         assertEquals(Resource.COIN, resources.get(3));
-        int oldPosition = testBoard.getPersonalPath().getPosition();
+        int oldPosition = testBoard.getFaithTrack().getPosition();
         new Marble(Color.RED).pick(testGame);
-        assertEquals(oldPosition + 1, testBoard.getPersonalPath().getPosition());
+        assertEquals(oldPosition + 1, testBoard.getFaithTrack().getPosition());
         Marble whiteMarble = new Marble(Color.WHITE);
         whiteMarble.pick(testGame);
         assertEquals(4, resources.size());

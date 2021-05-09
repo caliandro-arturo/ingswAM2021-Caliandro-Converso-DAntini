@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Player {
     private String username;
-    private PersonalBoard board;
+    private Board board;
     private final ArrayList<LeaderCard> leaderCards;
     private final ArrayList<Resource> whiteAlt;
     private final ArrayList<Resource> sale;
@@ -23,7 +23,7 @@ public class Player {
      */
     public Player(String username){
         this.username = username;
-        this.board = new PersonalBoard();
+        this.board = new Board();
         this.leaderCards = new ArrayList<>();
         this.whiteAlt = new ArrayList<>();
         this.sale = new ArrayList<>();
@@ -33,7 +33,7 @@ public class Player {
     public String getUsername() {
         return username;
     }
-    public PersonalBoard getBoard() {
+    public Board getBoard() {
         return board;
     }
     public ArrayList<LeaderCard> getLeaderCards() {
@@ -59,7 +59,7 @@ public class Player {
      */
     public int[] getVictoryPoints(){
         // index 0 faith path VP
-        int pos = getBoard().getPersonalPath().getPosition();
+        int pos = getBoard().getFaithTrack().getPosition();
         if(pos>=3 && pos<6) {
             victoryPoints[0]=1;
         }else if(pos>=6 && pos<9) {
@@ -78,7 +78,7 @@ public class Player {
             victoryPoints[0] = 20;
         }
         // index 1 dev card VP
-        for(DevelopmentPlace devPlace: board.getPersonalDevelopmentSpace()){
+        for(DevelopmentPlace devPlace: board.getDevelopmentSpace()){
             for(DevelopmentCard devCard : devPlace.getDevelopmentCards()){
                 victoryPoints[1]+=devCard.getVictoryPoints();
             }
@@ -88,15 +88,15 @@ public class Player {
             victoryPoints[2] += lead.getVictoryPoints();
         }
         // index 3 Pope's favor VP
-        victoryPoints[3]= board.getPersonalPath().getScoreCard();
+        victoryPoints[3]= board.getFaithTrack().getScoreCard();
         // index 4 resource VP
         int boxRes = 0;
         int storeRes = 0;
-        if(!board.getPersonalBox().isEmptyBox()) {
-            boxRes += board.getPersonalBox().getResourceMap().get(Resource.SERF);
-            boxRes += board.getPersonalBox().getResourceMap().get(Resource.COIN);
-            boxRes += board.getPersonalBox().getResourceMap().get(Resource.SHIELD);
-            boxRes += board.getPersonalBox().getResourceMap().get(Resource.STONE);
+        if(!board.getStrongbox().isEmptyBox()) {
+            boxRes += board.getStrongbox().getResourceMap().get(Resource.SERF);
+            boxRes += board.getStrongbox().getResourceMap().get(Resource.COIN);
+            boxRes += board.getStrongbox().getResourceMap().get(Resource.SHIELD);
+            boxRes += board.getStrongbox().getResourceMap().get(Resource.STONE);
         }
         for( WarehouseStore stores: board.getStore()){
             storeRes =+ stores.getQuantity();
@@ -117,7 +117,7 @@ public class Player {
     public void setUsername(String username) {
         this.username = username;
     }
-    public void setBoard(PersonalBoard board) {
+    public void setBoard(Board board) {
         this.board = board;
     }
     public void addLeaderCards(LeaderCard leader) {
@@ -127,7 +127,7 @@ public class Player {
     public void setGame(Game game) {
         this.game = game;
         board.setGame(game);
-        board.getPersonalPath().setGame(game);
+        board.getFaithTrack().setGame(game);
     }
     public void setWhiteMarbleChoices(int whiteMarbleChoices) {
         this.whiteMarbleChoices = whiteMarbleChoices;
@@ -159,7 +159,7 @@ public class Player {
             leaderCards.remove(leader);
         else if(leaderCards.size()>0) {
             leaderCards.remove(leader);
-            game.getCurrentPlayer().getBoard().getPersonalPath().increasePosition();
+            game.getCurrentPlayer().getBoard().getFaithTrack().increasePosition();
         }
     }
 
@@ -185,8 +185,8 @@ public class Player {
                     throw new IllegalArgumentException("invalid cmd");
                 }
                 if (box[processedResources] == 0) {
-                    if (board.getPersonalBox().getResourceMap().get(resource) != 0) {
-                        board.getPersonalBox().removeResource(resource);
+                    if (board.getStrongbox().getResourceMap().get(resource) != 0) {
+                        board.getStrongbox().removeResource(resource);
                     } else {
                         throw new IllegalArgumentException("not enough resource");
                     }
@@ -243,7 +243,7 @@ public class Player {
                 throw new IllegalArgumentException("Not valid input");
             }
             if (box[i] == 0) {
-                int j = board.getPersonalBox().getResourceMap().get(resource);
+                int j = board.getStrongbox().getResourceMap().get(resource);
                 if (j == 0) {
                     throw new IllegalArgumentException("Not enough resources");
                 }
@@ -267,12 +267,12 @@ public class Player {
         for (int i = 0; i < cost.length; i++) {
             if (box[i] == 0) {
                 Resource resource = UtilityMap.mapResource.get(cost[i]);
-                board.getPersonalBox().removeResource(resource);
+                board.getStrongbox().removeResource(resource);
             } else {
                 board.getStore().get(box[i] - 1).takeOutResource();
             }
         }
-        board.getPersonalBox().addToProdBox(production);
+        board.getStrongbox().addToProdBox(production);
     }
 
     /**
@@ -292,8 +292,8 @@ public class Player {
         }
         Resource costResource = productionPower.getCost()[0].getResource();
         if (cost == 0) {
-            if (board.getPersonalBox().getResourceMap().get(costResource) != 0) {
-                board.getPersonalBox().removeResource(costResource);
+            if (board.getStrongbox().getResourceMap().get(costResource) != 0) {
+                board.getStrongbox().removeResource(costResource);
             } else {
                 throw new IllegalArgumentException("Not enough resource");
             }
@@ -316,8 +316,8 @@ public class Player {
             } else
                 board.getStore().get(cost - 1).takeOutResource();
         }
-        board.getPersonalBox().addToProdBox(production);
-        board.getPersonalPath().increasePosition();
+        board.getStrongbox().addToProdBox(production);
+        board.getFaithTrack().increasePosition();
     }
 
     /**
@@ -349,8 +349,8 @@ public class Player {
                     throw  new IllegalArgumentException("Invalid cmd");
                 }
                 if (box[processedResources] == 0) {
-                    if (board.getPersonalBox().getResourceMap().get(resource) != 0) {
-                        board.getPersonalBox().removeResource(resource);
+                    if (board.getStrongbox().getResourceMap().get(resource) != 0) {
+                        board.getStrongbox().removeResource(resource);
                     } else {
                         throw new IllegalArgumentException("not enough resource");
                     }
@@ -374,9 +374,9 @@ public class Player {
             Resource resource = utilityProductionAndCost.getResource();
             for (processedResources = 0; processedResources < utilityProductionAndCost.getQuantity(); processedResources++) {
                 if (resource == Resource.FAITH) {
-                    board.getPersonalPath().increasePosition();
+                    board.getFaithTrack().increasePosition();
                 } else {
-                    board.getPersonalBox().addToProdBox(resource);
+                    board.getStrongbox().addToProdBox(resource);
                 }
             }
         }
@@ -399,7 +399,7 @@ public class Player {
             for (; processedResources < j; processedResources++) {
                 if (processedResources == size) return;
                 if (box[processedResources] == 0) {
-                    board.getPersonalBox().addProdResource(resource);
+                    board.getStrongbox().addProdResource(resource);
                 } else
                     board.getStore().get(box[processedResources] - 1).addResource(resource);
             }
@@ -412,7 +412,7 @@ public class Player {
      */
     public int getNumOfCards(){
         int numOfDevCards = 0;
-        for (DevelopmentPlace devPlace : board.getPersonalDevelopmentSpace()){
+        for (DevelopmentPlace devPlace : board.getDevelopmentSpace()){
             numOfDevCards += devPlace.getDevelopmentCards().size();
         }
         return numOfDevCards;

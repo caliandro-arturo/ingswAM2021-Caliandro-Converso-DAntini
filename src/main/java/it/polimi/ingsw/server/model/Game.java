@@ -234,7 +234,7 @@ public abstract class Game {
      */
     public void vaticanReport(int popePosition) {
         vaticanMap.replace(popePosition, true);
-        players.forEach(player -> player.getBoard().getPersonalPath().isInVatican(popePosition));
+        players.forEach(player -> player.getBoard().getFaithTrack().isInVatican(popePosition));
         if (popePosition == 24) {
             if (!isOver) {
                 setOver(true);

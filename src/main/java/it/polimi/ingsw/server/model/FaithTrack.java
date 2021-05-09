@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model;
 
 /**
  * this class represents the faith path,
- * each faith path is connected with a Composition link to the PersonalBoard
+ * each faith path is connected with a Composition link to the Board
  */
 public class FaithTrack {
 

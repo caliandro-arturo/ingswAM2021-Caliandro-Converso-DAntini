@@ -105,8 +105,8 @@ public class GameTest {
     void vaticanReportThatEndsTheGame() {
         multiTest.getVaticanMap().replace(8, true);
         multiTest.getVaticanMap().replace(16, true);
-        testPlayer1.getBoard().getPersonalPath().setPosition(23);
-        testPlayer1.getBoard().getPersonalPath().increasePosition();
+        testPlayer1.getBoard().getFaithTrack().setPosition(23);
+        testPlayer1.getBoard().getFaithTrack().increasePosition();
         assertTrue(multiTest.isOver());
     }
 }

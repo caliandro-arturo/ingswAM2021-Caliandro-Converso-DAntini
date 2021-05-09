@@ -135,7 +135,7 @@ public class ControllerAdapter {
     }
 
     /**
-     * Calls {@link PersonalBoard#takeOutResource(int)}.
+     * Calls {@link Board#takeOutResource(int)}.
      *
      * @param player the player who asked to take out a resource
      * @param pos    position of the warehouse store
@@ -148,7 +148,7 @@ public class ControllerAdapter {
     }
 
     /**
-     * Calls {@link PersonalBoard#deployResource(Resource, int)}.
+     * Calls {@link Board#deployResource(Resource, int)}.
      *
      * @param player   the player who sent the command
      * @param resource the resource to place in the warehouse
@@ -163,7 +163,7 @@ public class ControllerAdapter {
     }
 
     /**
-     * Calls {@link PersonalBoard#takeOutResource(int)}.
+     * Calls {@link Board#takeOutResource(int)}.
      *
      * @param player   the player who sent the command
      * @param resource the resource to discard
@@ -243,7 +243,7 @@ public class ControllerAdapter {
             player.refundCost(player.getProcessedResources(), box, cost);
             throw e;
         }
-        Production production = player.getBoard().getPersonalDevelopmentSpace()[index - 1].
+        Production production = player.getBoard().getDevelopmentSpace()[index - 1].
                 getDevelopmentCards().peek().getProduction();
         production.setProductionCanBeActivate(false);
     }
@@ -264,7 +264,7 @@ public class ControllerAdapter {
             throw new IllegalArgumentException("Invalid Color");
         else if (game.getDevelopmentGrid().getDeck(level,color).getDeck().empty())
             throw new IllegalArgumentException("this place in empty");
-        else if (player.getBoard().getPersonalDevelopmentSpace()[devSpace-1].hasRoomForCard(level))
+        else if (player.getBoard().getDevelopmentSpace()[devSpace-1].hasRoomForCard(level))
             throw new IllegalArgumentException("this development place is empty");
         DevelopmentCard card = game.getDevelopmentGrid().getDeck(level,color).getTopCard();
         try {

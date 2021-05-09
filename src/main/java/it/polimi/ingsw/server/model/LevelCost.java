@@ -18,7 +18,7 @@ public class LevelCost extends ColorCost{
         checkColor.put(Color.YELLOW, 0);
         checkColor.put(Color.PURPLE, 0);
         boolean flag = false;
-        DevelopmentPlace[] devPlace = player.getBoard().getPersonalDevelopmentSpace();
+        DevelopmentPlace[] devPlace = player.getBoard().getDevelopmentSpace();
         for (DevelopmentPlace developmentPlace : devPlace) {
             if (!developmentPlace.getDevelopmentCards().empty()) {
                 if (developmentPlace.getDevelopmentCards().size() < level) {

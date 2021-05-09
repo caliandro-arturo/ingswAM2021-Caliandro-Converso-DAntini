@@ -21,7 +21,7 @@ class FaithTrackTest {
 
     @BeforeEach
     void setUp() throws GameException.GameAlreadyFull, GameException.NicknameAlreadyTaken {
-        track = playerTest.getBoard().getPersonalPath();
+        track = playerTest.getBoard().getFaithTrack();
         multiplayerGame.addPlayer( new Player("pluto"));
         multiplayerGame.addPlayer( new Player("topolino"));
         multiplayerGame.addPlayer( new Player("minnie"));
@@ -50,41 +50,41 @@ class FaithTrackTest {
             track.increasePosition();
         }//pippo 7 pos
         for (int i3 = 0; i3 < 3; i3++) {
-            pluto.getBoard().getPersonalPath().increasePosition();
+            pluto.getBoard().getFaithTrack().increasePosition();
         }
         for (int i2 = 0; i2 < 2; i2++) {
-            pluto.getBoard().getPersonalPath().increasePosition();
+            pluto.getBoard().getFaithTrack().increasePosition();
         }//pluto, 5 pos
         for (int i1 = 0; i1 < 3; i1++) {
-            topolino.getBoard().getPersonalPath().increasePosition();
+            topolino.getBoard().getFaithTrack().increasePosition();
         }// topolino, 3 pos
         for (int k = 0; k < 8; k++) {
-            minnie.getBoard().getPersonalPath().increasePosition();
+            minnie.getBoard().getFaithTrack().increasePosition();
         }//minnie, 8 pos
-        assertEquals(2, pippo.getBoard().getPersonalPath().getScoreCard());
-        assertEquals(2, pluto.getBoard().getPersonalPath().getScoreCard());
-        assertEquals(0, topolino.getBoard().getPersonalPath().getScoreCard());
-        assertEquals(2, minnie.getBoard().getPersonalPath().getScoreCard());
+        assertEquals(2, pippo.getBoard().getFaithTrack().getScoreCard());
+        assertEquals(2, pluto.getBoard().getFaithTrack().getScoreCard());
+        assertEquals(0, topolino.getBoard().getFaithTrack().getScoreCard());
+        assertEquals(2, minnie.getBoard().getFaithTrack().getScoreCard());
         // primo papal space
         track.increasePosition();
         track.increasePosition();//pippo pos 9
-        assertEquals(2, pippo.getBoard().getPersonalPath().getScoreCard());
+        assertEquals(2, pippo.getBoard().getFaithTrack().getScoreCard());
         for (int j = 0; j < 5; j++) {
-            minnie.getBoard().getPersonalPath().increasePosition();
+            minnie.getBoard().getFaithTrack().increasePosition();
         }//minnie pos 13
         for (int j = 0; j < 7; j++) {
             track.increasePosition();
         }//pippo pos 16
-        assertEquals(5, minnie.getBoard().getPersonalPath().getScoreCard());
+        assertEquals(5, minnie.getBoard().getFaithTrack().getScoreCard());
         //secondo papal space
-        assertEquals(5, pippo.getBoard().getPersonalPath().getScoreCard());
+        assertEquals(5, pippo.getBoard().getFaithTrack().getScoreCard());
         for (int i = 0; i < 15; i++) {
-            topolino.getBoard().getPersonalPath().increasePosition();
+            topolino.getBoard().getFaithTrack().increasePosition();
         }//topolino pos 18
-        assertEquals(5, minnie.getBoard().getPersonalPath().getScoreCard());
-        assertEquals(0, topolino.getBoard().getPersonalPath().getScoreCard());
-        assertEquals(5, pippo.getBoard().getPersonalPath().getScoreCard());
-        assertEquals(2, pluto.getBoard().getPersonalPath().getScoreCard());
+        assertEquals(5, minnie.getBoard().getFaithTrack().getScoreCard());
+        assertEquals(0, topolino.getBoard().getFaithTrack().getScoreCard());
+        assertEquals(5, pippo.getBoard().getFaithTrack().getScoreCard());
+        assertEquals(2, pluto.getBoard().getFaithTrack().getScoreCard());
 
     }
 }

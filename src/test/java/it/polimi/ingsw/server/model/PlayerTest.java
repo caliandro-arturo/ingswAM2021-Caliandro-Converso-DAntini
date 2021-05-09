@@ -16,10 +16,10 @@ class PlayerTest {
     @BeforeAll
     void setUp(){
         pippo.getBoard().getStore().get(0).addResource(Resource.COIN);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.STONE);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.SHIELD);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.STONE);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.SHIELD);
         Production production = new AdditionalProductionPower(Resource.STONE);
         pippo.getBoard().getProductionList().add(production);
         UtilityProductionAndCost cost = new UtilityProductionAndCost(1,Resource.SHIELD);
@@ -62,13 +62,13 @@ class PlayerTest {
         Resource production = Resource.STONE;
         int[] cmdbox = new int[]{1,0};
         pippo.startBoardProduction(cmdbox,cmdstringcost,production);
-        assertEquals(1,pippo.getBoard().getPersonalBox().getProductionBox().size());
+        assertEquals(1,pippo.getBoard().getStrongbox().getProductionBox().size());
         cmdbox = new int[]{0};
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.SHIELD);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.SHIELD);
         pippo.startDevProduction(1,cmdbox);
-        assertEquals(2,pippo.getBoard().getPersonalBox().getProductionBox().size());
+        assertEquals(2,pippo.getBoard().getStrongbox().getProductionBox().size());
         pippo.startLeaderProduction(0,Resource.SHIELD,1);
-        assertEquals(3,pippo.getBoard().getPersonalBox().getProductionBox().size());
+        assertEquals(3,pippo.getBoard().getStrongbox().getProductionBox().size());
         prod.nextTurnPhase();
     }
 
@@ -79,14 +79,14 @@ class PlayerTest {
         testGame.setCurrentTurnPhase(buyCard);
         buyCard.start();
         pippo.buyDevelopmentCard(card1,new int[]{0},1);
-        assertEquals(card1,pippo.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().peek());
+        assertEquals(card1,pippo.getBoard().getDevelopmentSpace()[0].getDevelopmentCards().peek());
     }
 
     @Test
     void victoryPointsTest() {
-        pippo.getBoard().getPersonalPath().increasePosition();
-        pippo.getBoard().getPersonalPath().increasePosition();
-        pippo.getBoard().getPersonalPath().increasePosition();
+        pippo.getBoard().getFaithTrack().increasePosition();
+        pippo.getBoard().getFaithTrack().increasePosition();
+        pippo.getBoard().getFaithTrack().increasePosition();
         ProductionPower productionPower = new ProductionPower(utilityarray,utilityarray);
         pippo.getBoard().addCard(new DevelopmentCard(2,1,Color.BLUE,null, productionPower), 2);
         //2 VP in [1]
@@ -94,22 +94,22 @@ class PlayerTest {
         //        new ColorCost(new Color[]{Color.BLUE},new Integer[]{2}),
         //        new AdditionalProductionPower(Resource.COIN)))
         //3 VP in [2]
-        pippo.getBoard().getPersonalPath().increasePosition();
-        pippo.getBoard().getPersonalPath().increasePosition();
-        pippo.getBoard().getPersonalPath().increasePosition();
-        pippo.getBoard().getPersonalPath().increasePosition();
-        pippo.getBoard().getPersonalPath().increasePosition();
+        pippo.getBoard().getFaithTrack().increasePosition();
+        pippo.getBoard().getFaithTrack().increasePosition();
+        pippo.getBoard().getFaithTrack().increasePosition();
+        pippo.getBoard().getFaithTrack().increasePosition();
+        pippo.getBoard().getFaithTrack().increasePosition();
         //2 VP in [3]
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.COIN);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.STONE);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.STONE);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.STONE);
-        pippo.getBoard().getPersonalBox().addProdResource(Resource.STONE);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.STONE);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.STONE);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.STONE);
+        pippo.getBoard().getStrongbox().addProdResource(Resource.STONE);
         // 1 VP in [4]
         int[] vic = pippo.getVictoryPoints();
         assertEquals(4, vic[0]);
@@ -125,7 +125,7 @@ class PlayerTest {
         try {
             testGame.addPlayer(pluto);
         }catch (Exception e){}
-        pluto.getBoard().getPersonalBox().addProdResource(Resource.COIN);
+        pluto.getBoard().getStrongbox().addProdResource(Resource.COIN);
         testGame.setCurrentPlayer(pluto);
         UtilityProductionAndCost coin = new UtilityProductionAndCost(2,Resource.COIN);
         TurnPhase prod = new ActivateProdPhase(testGame);
@@ -139,7 +139,7 @@ class PlayerTest {
         } catch (IllegalArgumentException e) {
             pluto.refundCost(pluto.getProcessedResources(), box, costs);
         }
-        assertEquals(1,pluto.getBoard().getPersonalBox().getResourceMap().get(Resource.COIN));
+        assertEquals(1,pluto.getBoard().getStrongbox().getResourceMap().get(Resource.COIN));
     }
 
     @Test
@@ -157,12 +157,12 @@ class PlayerTest {
                 new WhiteMarbleConversion(Resource.SHIELD));
         minnie.addLeaderCards(leaderCard1);
         minnie.addLeaderCards(leaderCard2);
-        minnie.getBoard().getPersonalBox().addProdResource(Resource.COIN);
+        minnie.getBoard().getStrongbox().addProdResource(Resource.COIN);
         testGame.setCurrentTurnPhase(new UseLeaderPhase(testGame,true));
         minnie.useLeader(leaderCard1);
         minnie.discardLeaderCard(leaderCard2);
         assertEquals(Resource.COIN,minnie.getWhiteAlt().get(0));
-        assertEquals(2,minnie.getBoard().getPersonalPath().getPosition());
+        assertEquals(2,minnie.getBoard().getFaithTrack().getPosition());
     }
 
     @Test
@@ -174,7 +174,7 @@ class PlayerTest {
         testGame.setCurrentPlayer(topolino);
         TurnPhase prod = new ActivateProdPhase(testGame);
         testGame.setCurrentTurnPhase(prod);
-        topolino.getBoard().getPersonalBox().addProdResource(Resource.COIN);
+        topolino.getBoard().getStrongbox().addProdResource(Resource.COIN);
         topolino.getBoard().getStore().get(0).addResource(Resource.COIN);
         topolino.getBoard().getStore().get(1).addResource(Resource.STONE);
         assertThrows(IllegalArgumentException.class,() -> {
@@ -185,7 +185,7 @@ class PlayerTest {
         topolino.addLeaderCards(new LeaderCard(1,
                 new ResourceCost(new UtilityProductionAndCost(0,Resource.COIN)),
                 new AdditionalProductionPower(Resource.STONE)));
-        topolino.getBoard().getPersonalDevelopmentSpace()[0].getDevelopmentCards().push(new DevelopmentCard(
+        topolino.getBoard().getDevelopmentSpace()[0].getDevelopmentCards().push(new DevelopmentCard(
                 1,1,Color.BLUE,null,new ProductionPower(
                         new UtilityProductionAndCost[]{new UtilityProductionAndCost(1,Resource.COIN)},
                 new UtilityProductionAndCost[]{new UtilityProductionAndCost(1,Resource.COIN)})));

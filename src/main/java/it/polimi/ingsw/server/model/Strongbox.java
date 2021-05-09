@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * class that represent the strongbox storing the resources produced, it has unlimited space stored in
  * HashMap<Resource, Integer>
- * it is connected with a Composition link to the PersonalBoard
+ * it is connected with a Composition link to the Board
  */
 
 

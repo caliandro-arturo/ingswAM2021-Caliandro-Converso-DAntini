@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * class used to build and represent the personal board next to the card grid, market and leader cards for a player
  */
 public class FullBoard {
-    private PersonalBoard board;
+    private Board board;
     private DevelopmentGrid grid;
     private Market market;
     private ArrayList<LeaderCard> leaderCards;
@@ -24,7 +24,7 @@ public class FullBoard {
                     "│                 │\n"+
                     "└─────────────────┘\n";
 
-    public FullBoard(PersonalBoard board, DevelopmentGrid grid, Market market, ArrayList<LeaderCard> leaderCards) {
+    public FullBoard(Board board, DevelopmentGrid grid, Market market, ArrayList<LeaderCard> leaderCards) {
         this.board = board;
         this.grid = grid;
         this.market = market;
@@ -39,7 +39,7 @@ public class FullBoard {
         return grid;
     }
 
-    public PersonalBoard getBoard() {
+    public Board getBoard() {
         return board;
     }
 
