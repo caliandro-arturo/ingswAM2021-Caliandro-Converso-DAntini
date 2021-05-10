@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client.model;
 
-import it.polimi.ingsw.client.CLI.CLIColor;
-
 import java.util.ArrayList;
 
 /**
@@ -12,9 +10,8 @@ public class FullBoard {
     private DevelopmentGrid grid;
     private Market market;
     private ArrayList<LeaderCard> leaderCards;
-    private String space = "                               ";
+    private String space = "                                                        ";
     private String bigSpace = "                                                                             \n";
-    private String marketName = "\u001B[101m" + "Market:" + CLIColor.ANSI_RESET+" ";
     String emptyCard =
                     "┌─────────────────┐\n"+
                     "│                 │\n"+
@@ -73,29 +70,18 @@ public class FullBoard {
                 tempCardArt.append(leaderCards.get(0).toString()).append(emptyCard).append(bigSpace).append(bigSpace);
                 break;
             case 2:
-                tempCardArt.append(leaderCards.get(0).toString()).append(leaderCards.get(1).toString()).
-                        append(bigSpace).append(bigSpace);
+                tempCardArt.append(leaderCards.get(0).toString()).append(leaderCards.get(1).toString()).append(bigSpace).append(bigSpace);
                 break;
         }
         String[] leaderCardArt = tempCardArt.toString().split("\n");
         int po = leaderCardArt.length;
-        fullBoardArt.append(boardArt[0]+"\n");
-        fullBoardArt.append(boardArt[1]+"   \u001B[42m" + "Leader Cards" + CLIColor.ANSI_RESET+" \n");
-
-        for(int i=2; i<23; i++ ){
-            //fullBoardArt.append(boardArt[i]).append(gridArt[i]).append(leaderCardArt[i]).append("\n");
-            fullBoardArt.append(boardArt[i]+"  ").append(leaderCardArt[i-2]+"\n");
+        for(int i=0; i<16; i++ ){
+            fullBoardArt.append(boardArt[i]).append(gridArt[i]).append(leaderCardArt[i]).append("\n");
         }
-        /*fullBoardArt.append(boardArt[17]).append("              ").append(marketArt[0]).append(space+" ").append(leaderCardArt[16]).append("\n");
-        fullBoardArt.append(boardArt[18]).append("      "+marketName).append(marketArt[1]).append(space).append(leaderCardArt[17]).append("\n");
-        for(int j=19; j<22;j++) {
-            fullBoardArt.append(boardArt[j]).append("              ").append(marketArt[j-17]).append(space).append(leaderCardArt[j]).append("\n");
+        for(int j=16; j<21;j++) {
+            fullBoardArt.append(boardArt[j]).append(marketArt[j-16]).append(space).append(leaderCardArt[j]).append("\n");
         }
-        fullBoardArt.append("                                                                                  " +
-                "                                                             ").append(marketArt[5]).append("\n");
-        fullBoardArt.append("                                                                                  "+
-                "                                                             ").append(marketArt[6]).append("\n");*/
-
+        fullBoardArt.append(boardArt[21]);
         return fullBoardArt.toString();
 
     }

@@ -2,8 +2,6 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.client.CLI.CLIColor;
 
-import java.util.ArrayList;
-
 /**
  * light version of Board class for representation purposes
  */
@@ -11,17 +9,17 @@ import java.util.ArrayList;
 public class Board {
     private DevelopmentPlace developmentPlace;
     private FaithTrack faithTrack;
+    private LeaderCard leaderCard;
     private Strongbox strongbox ;
     private WarehouseStore warehouseStore;
-    private ArrayList<LeaderCard> leaderCards;
 
-    public Board(DevelopmentPlace developmentPlace, FaithTrack faithTrack
+    public Board(DevelopmentPlace developmentPlace, FaithTrack faithTrack/*, LeaderCard leaderCard,*/
                          ,Strongbox strongbox, WarehouseStore warehouseStore) {
         this.developmentPlace = developmentPlace;
         this.faithTrack = faithTrack;
+        //this.leaderCard = leaderCard;
         this.strongbox = strongbox;
         this.warehouseStore = warehouseStore;
-        this.leaderCards = new ArrayList<>();
     }
 
     public DevelopmentPlace getDevelopmentPlace() {
@@ -32,12 +30,12 @@ public class Board {
         return faithTrack;
     }
 
-    public Strongbox getStrongbox() {
-        return strongbox;
+    public LeaderCard getLeaderCard() {
+        return leaderCard;
     }
 
-    public void setLeaderCards(LeaderCard leaderCard) {
-        this.leaderCards.add(leaderCard);
+    public Strongbox getStrongbox() {
+        return strongbox;
     }
 
     public WarehouseStore getWarehouseStore() {
@@ -56,52 +54,28 @@ public class Board {
         String[] faithArt = faithTrack.toString().split("\n");
         String[] devPlaceArt = developmentPlace.toString().split("\n");
         String b = "\u001B[40m"+"?"+ CLIColor.ANSI_RESET;
-        boardArt.append("┌─────────────────────────────────────────────────────────────────────────────────────" +
-                "──────────────────────────────────────────────────────────────┐\n");
-        String emptyCard =
-                "┌─────────────────┐\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "└─────────────────┘\n";
-        StringBuilder tempArt = new StringBuilder();
-        switch(leaderCards.size()){
-            case(0):
-                tempArt.append(emptyCard).append(emptyCard);
-                break;
-            case(1):
-                tempArt.append(leaderCards.get(0).toString()).append(emptyCard);
-                break;
-            case(2):
-                tempArt.append(leaderCards.get(0).toString()).append(leaderCards.get(1).toString());
-                break;
-            }
-        String[] leaderArt = tempArt.toString().split("\n");
+        boardArt.append("┌──────────────────────────────────────────────────────────────────────────────" +
+                "─────────────────────────────────────────────────┐\n");
         for(int k=0; k<4; k++){
             boardArt.append("│");
-            boardArt.append(Utility.center(faithArt[k],127)).append(leaderArt[k]);
-            boardArt.append(" │\n");
+            boardArt.append(Utility.center(faithArt[k],127));
+            boardArt.append("│\n");
         }
-        boardArt.append("│  "+faithArt[4]+"     "+leaderArt[4]+" │\n");
+        boardArt.append("│  "+faithArt[4]+"    │\n");
 
         for(int i = 0; i<9;i++){
-            boardArt.append(wareArt[i].concat("                       "+devPlaceArt[i])).append(leaderArt[i+5]);
-            boardArt.append(" │\n");
+            boardArt.append(wareArt[i].concat("                     "+devPlaceArt[i]));
+            boardArt.append("\n");
         }
-        boardArt.append(boxArt[0]).append("     ╦══════════╦      "+devPlaceArt[9]).append(leaderArt[14]).append(" │\n");
-        boardArt.append(boxArt[1]).append("     ║ 1"+b+"--┐    ║      "+devPlaceArt[10]+leaderArt[15]+" │\n");
-        boardArt.append(boxArt[2]).append("     ║     ├>1"+b+" ║      "+devPlaceArt[11]+leaderArt[16]+" │\n");
-        boardArt.append(boxArt[3]).append("     ║ 1"+b+"--┘    ║      "+devPlaceArt[12]+leaderArt[17]+" │\n");
-        boardArt.append(boxArt[4]).append("     ╩══════════╩      "+devPlaceArt[13]+leaderArt[18]+" │\n");
-        boardArt.append(boxArt[5]).append("                                        " +
-                "                                                             "+leaderArt[19]+" │\n");
+        boardArt.append(boxArt[0]).append("     ╦══════════╦    "+devPlaceArt[9]).append("\n");
+        boardArt.append(boxArt[1]).append("     ║ 1"+b+"--┐    ║    "+devPlaceArt[10]+"\n");
+        boardArt.append(boxArt[2]).append("     ║     ├>1"+b+" ║    "+devPlaceArt[11]+"\n");
+        boardArt.append(boxArt[3]).append("     ║ 1"+b+"--┘    ║    "+devPlaceArt[12]+"\n");
+        boardArt.append(boxArt[4]).append("     ╩══════════╩    "+devPlaceArt[13]+"\n");
+        boardArt.append(boxArt[5]).append("                                    " +
+                "                                                                 │\n");
         boardArt.append("└───────────────────────────────────────────────────────────────────────────────────────" +
-                "────────────────────────────────────────────────────────────┘\n");
+                "────────────────────────────────────────┘\n");
 
         return boardArt.toString();
     }
