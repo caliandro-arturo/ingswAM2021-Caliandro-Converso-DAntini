@@ -78,10 +78,10 @@ public class FaithTrack {
 
         for (Boolean key: vaticanMap.values()){
             if(key){
-                faithArt.append(f+f+f+f+f+CLIColor.ANSI_YELLOW+"  FT:"+ft+"  "+CLIColor.ANSI_GREEN+"✔"+
+                faithArt.append(f+f+f+f+f+CLIColor.ANSI_YELLOW+"  FT:"+ft+"  "+CLIColor.ANSI_GREEN+"V"+
                         CLIColor.ANSI_YELLOW+"   (┼)"+CLIColor.ANSI_RESET);
             }else
-                faithArt.append(f+f+f+f+f+CLIColor.ANSI_YELLOW+"  FT:"+ft+"  "+CLIColor.ANSI_RED+"❌"+
+                faithArt.append(f+f+f+f+f+CLIColor.ANSI_YELLOW+"  FT:"+ft+"  "+CLIColor.ANSI_RED+"X"+
                         CLIColor.ANSI_YELLOW+"   (┼)"+CLIColor.ANSI_RESET);
             ft++;
         }
