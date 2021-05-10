@@ -74,14 +74,18 @@ public class FullBoard {
                 break;
         }
         String[] leaderCardArt = tempCardArt.toString().split("\n");
-        int po = leaderCardArt.length;
         for(int i=0; i<16; i++ ){
             fullBoardArt.append(boardArt[i]).append(gridArt[i]).append(leaderCardArt[i]).append("\n");
         }
         for(int j=16; j<21;j++) {
-            fullBoardArt.append(boardArt[j]).append(marketArt[j-16]).append(space).append(leaderCardArt[j]).append("\n");
+            if(j==16){fullBoardArt.append(boardArt[j]).append(marketArt[j-16]).append("                  " +
+                    "                            ").append(leaderCardArt[j]).append("\n");}else
+            fullBoardArt.append(boardArt[j]).append(marketArt[j-16]).append("                  " +
+                    "                           ").append(leaderCardArt[j]).append("\n");
         }
-        fullBoardArt.append(boardArt[21]);
+        fullBoardArt.append(boardArt[21]).append(marketArt[marketArt.length-2]+"\n");
+        fullBoardArt.append("                                                                                      " +
+                "                                                               "+marketArt[marketArt.length-1]);
         return fullBoardArt.toString();
 
     }
