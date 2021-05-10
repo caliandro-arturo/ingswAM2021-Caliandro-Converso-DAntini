@@ -30,7 +30,7 @@ public class DevelopmentGrid{
                 " └──────────────┴──────────────┴──────────────┴──────────────┘\n" +
                 "        " + grid[0][0].getColor() + grid[0][0].getColor() + "             " + grid[0][1].getColor() +
                 grid[0][1].getColor() + "             " + grid[0][2].getColor() + grid[0][2].getColor() + "             " +
-                 grid[0][3].getColor() + grid[0][3].getColor() + "        ";
+                 grid[0][3].getColor() + grid[0][3].getColor() + "       ";
 
     }
 
