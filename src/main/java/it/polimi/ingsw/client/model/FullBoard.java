@@ -86,6 +86,8 @@ public class FullBoard {
         fullBoardArt.append(boardArt[21]).append(marketArt[marketArt.length-2]+"\n");
         fullBoardArt.append("                                                                                      " +
                 "                                                               "+marketArt[marketArt.length-1]);
+
+
         return fullBoardArt.toString();
 
     }
