@@ -46,4 +46,8 @@ public class ClientMessageVisitor {
     public void visit(TablePosition tablePosition) {
 
     }
+    public void visit(AskPositionWarehouse msg){
+        controller.show("choose position for this resource :" );
+
+    }
 }

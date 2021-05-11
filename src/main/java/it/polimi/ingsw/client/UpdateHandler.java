@@ -40,7 +40,10 @@ public class UpdateHandler implements ToServerMessageHandler {
     public void visit(GameStarted msg) {
 
     }
-
+    public void visit(LastTurn lastTurn) {
+        if (!model.isLast())
+            controller.showUpdate("Last turns: " + lastTurn.getReason());
+    }
     //------------------------------------------------------------------------------------------------------------------
     /*messages from client*/
 
@@ -56,8 +59,9 @@ public class UpdateHandler implements ToServerMessageHandler {
     /**
      * Updates the market when the player uses it.
      */
+    @Override
     public void visit(UseMarket msg) {
-
+        model.getMarket().reinsertExtraMarble(msg.getRowOrColumn(),msg.getNum());
     }
 
     @Override
@@ -65,8 +69,5 @@ public class UpdateHandler implements ToServerMessageHandler {
         model.setNumOfPlayers(msg.getNumberOfPlayers());
     }
 
-    public void visit(LastTurn lastTurn) {
-        if (!model.isLast())
-            controller.showUpdate("Last turns: " + lastTurn.getReason());
-    }
+
 }

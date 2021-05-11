@@ -6,17 +6,30 @@ import java.util.Collections;
 public class Market {
     private Marble extraMarble;
     private Marble[][] grid;
+    private int columns = 4;
+    private int rows = 3;
 
-    public Market(ArrayList<Marble> marbles) {
-        grid = new Marble[3][4];
-        Collections.shuffle(marbles);
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 4; j++)
-                grid[i][j] = marbles.get(i * 4 + j);
-        extraMarble = marbles.get(3 * 4);
+    public Market(Marble extraMarble, Marble[][] grid) {
+        this.extraMarble = extraMarble;
+        this.grid = grid;
     }
-
-
+    public void reinsertExtraMarble(char rowOrColumn, int num) {
+        Marble temp;
+        num -= 1;
+        if (rowOrColumn == 'r') {
+            temp = grid[num][columns - 1];
+            System.arraycopy(grid[num], 0, grid[num], 1, columns - 2 + 1);
+            grid[num][0] = extraMarble;
+            extraMarble = temp;
+        } else if (rowOrColumn == 'c') {
+            temp = grid[rows - 1][num];
+            for (int i = rows - 2; i >= 0; i--) {
+                grid[i + 1][num] = grid[i][num];
+            }
+            grid[0][num] = extraMarble;
+            extraMarble = temp;
+        }
+    }
     @Override
     public String toString() {
         return  "┌──────────────┐\n" +

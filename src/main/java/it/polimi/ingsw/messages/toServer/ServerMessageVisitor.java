@@ -29,6 +29,10 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         controller.sendMessage(player, message);
     }
 
+    private void sendMessageToOthers(Player p, Message msg) {
+        controller.getVirtualView().sendMessageToOthers(p,msg);
+    }
+
     private void confirmMove(Message message) {
         controller.getVirtualView().getClientMap().get(message.getPlayer()).confirmMove(message);
     }
@@ -40,16 +44,17 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     /**
      * Calls {@link ControllerAdapter#useMarket(Player, char, int)}.
      */
-    public void visit(UseMarket useMarket) {
-        Player player = useMarket.getPlayer();
-        char rowOrColumn = useMarket.getRowOrColumn();
-        int num = useMarket.getNum();
+    public void visit(UseMarket msg) {
+        Player player = msg.getPlayer();
+        char rowOrColumn = msg.getRowOrColumn();
+        int num = msg.getNum();
         try {
             controllerAdapter.useMarket(player, rowOrColumn, num);
         } catch (IllegalArgumentException | GameException.IllegalMove e) {
-            denyMove(useMarket, e.getMessage());
+            denyMove(msg, e.getMessage());
         }
-        confirmMove(useMarket);
+        confirmMove(msg);
+        sendMessageToOthers(player, msg);
     }
 
     /* These methods are dedicated to the initial phases of games (creation of game, nickname setting).

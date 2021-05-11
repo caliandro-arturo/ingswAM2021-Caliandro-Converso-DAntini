@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.CLI;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.messages.toServer.SetGame;
 import it.polimi.ingsw.messages.toServer.SetNickname;
+import it.polimi.ingsw.messages.toServer.actions.UseMarket;
 
 /**
  * Prints on {@link System#out} ASCII characters representing the game, updates.
@@ -41,6 +42,21 @@ public class CLIView extends View {
                 }
                 break;
             }
+            case "usemarket":{
+                String[] args = commandSlice[1].split("\\s*,\\s*");
+                if(args[0].matches("[rc]")) {
+                    try{
+                        getController().sendMessage(new UseMarket(args[0].charAt(0), Integer.parseInt(args[1])));
+                    }catch (NumberFormatException e){
+                        System.err.println("Wrong parameter");
+                        break;
+                    }
+                }else
+                    System.err.println("Wrong parameter");
+                break;
+            }
+
+
             //todo insert other commands
             default:
                 System.err.println("Invalid command, retry.");

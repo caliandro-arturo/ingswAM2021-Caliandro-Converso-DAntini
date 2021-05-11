@@ -23,6 +23,6 @@ public class UseMarket extends Message implements ToServerMessage {
 
     @Override
     public void accept(ToServerMessageHandler v) {
-
+        v.visit(this);
     }
 }
