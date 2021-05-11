@@ -38,4 +38,11 @@ public class Utility {
         put(Color.GREY, CLIColor.ANSI_GREY);
         put(Color.YELLOW,CLIColor.ANSI_YELLOW);
     }};
+
+    public static HashMap<Color, Integer> colorPosition = new HashMap<Color, Integer>(){{
+        put(Color.GREEN, 0);
+        put(Color.BLUE,1);
+        put(Color.YELLOW,2);
+        put(Color.PURPLE,3);
+    }};
 }

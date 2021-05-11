@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.model;
 
+/**
+ * WhiteMarbleConversion class for client
+ */
 public class WhiteMarbleConversion implements LeaderPower{
     private Resource resource;
 

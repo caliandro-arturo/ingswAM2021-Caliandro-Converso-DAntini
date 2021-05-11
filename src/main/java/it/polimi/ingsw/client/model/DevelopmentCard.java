@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.model;
 
 import java.util.Arrays;
 
+/**
+ * DevelopmentCard class for client
+ */
 public class DevelopmentCard {
     private int victoryPoints;
     private Color color;
@@ -43,6 +46,7 @@ public class DevelopmentCard {
     public UtilityProductionAndCost[] getProduction() {
         return production;
     }
+
 
     @Override
     public String toString() {

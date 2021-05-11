@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.model;
 
+/**
+ * LeaderCard class for client
+ */
 public class LeaderCard {
     Requirements requirements;
     LeaderPower leaderPower;
@@ -11,9 +14,10 @@ public class LeaderCard {
         this.victoryPoints = victoryPoints;
     }
 
+
     @Override
     public String toString() {
-        return "┌─────────────────┐\n" +
+        return  "┌─────────────────┐\n" +
                 "│                 │\n"+
                requirements+
                 "│                 │\n"+

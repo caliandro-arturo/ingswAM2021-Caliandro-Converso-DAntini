@@ -1,7 +1,9 @@
 package it.polimi.ingsw.messages.toClient;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.model.DevelopmentGrid;
 import it.polimi.ingsw.messages.toClient.updates.GameUpdate;
+import it.polimi.ingsw.messages.toClient.updates.GridUpdate;
 
 /**
  * Reads messages from server and updates the client version of the model, or notifies the player.
@@ -48,6 +50,10 @@ public class ClientMessageVisitor {
     }
     public void visit(AskPositionWarehouse msg){
         controller.show("choose position for this resource :" );
+
+    }
+
+    public void visit(GridUpdate msg){
 
     }
 }

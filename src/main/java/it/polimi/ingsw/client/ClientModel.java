@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.model.DevelopmentGrid;
+
 import it.polimi.ingsw.client.model.Board;
 import it.polimi.ingsw.client.model.DevelopmentGrid;
 import it.polimi.ingsw.client.model.LeaderHand;
@@ -10,10 +12,18 @@ public class ClientModel {
     private int numOfPlayers;
     private int position;           //position on the table (for turns order)
     private boolean isLast;
+    private DevelopmentGrid developmentGrid;
     private Market market;
     private Board board;
     private LeaderHand leaderHand;
-    private DevelopmentGrid developmentGrid;
+
+    public DevelopmentGrid getDevelopmentGrid() {
+        return developmentGrid;
+    }
+
+    public void setDevelopmentGrid(DevelopmentGrid developmentGrid) {
+        this.developmentGrid = developmentGrid;
+    }
 
     public String getPlayerUsername() {
         return playerUsername;
@@ -67,11 +77,4 @@ public class ClientModel {
         this.leaderHand = leaderHand;
     }
 
-    public DevelopmentGrid getDevelopmentGrid() {
-        return developmentGrid;
-    }
-
-    public void setDevelopmentGrid(DevelopmentGrid developmentGrid) {
-        this.developmentGrid = developmentGrid;
-    }
 }

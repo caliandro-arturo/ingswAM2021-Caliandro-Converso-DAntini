@@ -1,6 +1,7 @@
 package it.polimi.ingsw.messages.toServer;
 
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.toServer.actions.StartProduction;
 import it.polimi.ingsw.server.Controller;
 import it.polimi.ingsw.messages.toClient.ErrorMessage;
 import it.polimi.ingsw.messages.toServer.actions.UseMarket;
@@ -78,5 +79,29 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         } catch (GameException.NicknameAlreadyTaken e) {
             denyMove(setNickname, "You have already chosen your nickname.");
         }
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void visit(StartProduction startProduction) {
+        int ID = startProduction.getID();
+        Player player = startProduction.getPlayer();
+        String[] costResource = startProduction.getCostResource();
+        String production =  startProduction.getProduction();
+        int[] costs = startProduction.getCost().stream().mapToInt(i->i).toArray();
+        try{
+            if (ID == 0){
+                controllerAdapter.startBoardProduction(player,costResource,production,costs);
+            } else if (ID<=3){
+                controllerAdapter.startDevProduction(player,costs,ID);
+            } else {
+                controllerAdapter.startLeaderProduction(player,costs[0],production,ID);
+            }
+        }catch (GameException.IllegalMove e){
+            denyMove(startProduction,e.getMessage());
+        }
+        confirmMove(startProduction);
     }
 }

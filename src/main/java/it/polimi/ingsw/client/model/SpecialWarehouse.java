@@ -2,6 +2,10 @@ package it.polimi.ingsw.client.model;
 
 import java.util.ArrayList;
 
+
+/**
+ * SpecialWarehouse class for client
+ */
 public class SpecialWarehouse implements LeaderPower{
     private ArrayList<Resource> resources;
     private Resource resourceType;

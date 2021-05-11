@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.model;
 
+/**
+ * SaleOnDevelopment class for client
+ */
 public class SaleOnDevelopment implements LeaderPower{
     private Resource resource;
 

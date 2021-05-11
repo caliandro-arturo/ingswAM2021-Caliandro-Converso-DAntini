@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.model;
 
+/**
+ * UtilityProductionAndCost class for client
+ */
 public class UtilityProductionAndCost {
     private Resource resource;
     private int quantity;
@@ -11,6 +14,6 @@ public class UtilityProductionAndCost {
 
     @Override
     public String toString() {
-        return "" +resource.toString()+ "" + quantity;
+        return "" +resource+ "" + quantity;
     }
 }

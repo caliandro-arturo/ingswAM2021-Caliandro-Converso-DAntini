@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.model;
 
-
+/**
+ * ColorCost requirements class for client
+ */
 public class ColorCost implements Requirements{
     Color[] colors;
     int[] quantity;
@@ -9,6 +11,7 @@ public class ColorCost implements Requirements{
         this.colors = colors;
         this.quantity = quantity;
     }
+
 
     @Override
     public String toString() {

@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.client.CLI.CLIColor;
 
+/**
+ * Resource representation for client
+ */
 public enum Resource {
     SHIELD(CLIColor.ANSI_BLUE + "■" + CLIColor.ANSI_RESET),
     FAITH(CLIColor.ANSI_RED + "■" + CLIColor.ANSI_RESET),

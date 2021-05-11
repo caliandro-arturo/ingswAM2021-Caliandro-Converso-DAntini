@@ -4,6 +4,7 @@ import it.polimi.ingsw.messages.toClient.updates.*;
 import it.polimi.ingsw.messages.toServer.SetGame;
 import it.polimi.ingsw.messages.toServer.SetNickname;
 import it.polimi.ingsw.messages.toServer.ToServerMessageHandler;
+import it.polimi.ingsw.messages.toServer.actions.StartProduction;
 import it.polimi.ingsw.messages.toServer.actions.UseMarket;
 
 /**
@@ -44,6 +45,15 @@ public class UpdateHandler implements ToServerMessageHandler {
         if (!model.isLast())
             controller.showUpdate("Last turns: " + lastTurn.getReason());
     }
+
+    /**
+     *
+     * @param msg
+     */
+    public void visit(GridUpdate msg){
+        model.getDevelopmentGrid().setGrid(msg.getGrid());
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     /*messages from client*/
 
@@ -64,10 +74,18 @@ public class UpdateHandler implements ToServerMessageHandler {
         model.getMarket().reinsertExtraMarble(msg.getRowOrColumn(),msg.getNum());
     }
 
+    /**
+     *
+     * @param msg
+     */
     @Override
     public void visit(SetGame msg) {
         model.setNumOfPlayers(msg.getNumberOfPlayers());
     }
 
 
+    @Override
+    public void visit(StartProduction startProduction) {
+
+    }
 }

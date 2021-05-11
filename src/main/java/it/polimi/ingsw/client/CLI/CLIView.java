@@ -4,6 +4,9 @@ import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.messages.toServer.SetGame;
 import it.polimi.ingsw.messages.toServer.SetNickname;
 import it.polimi.ingsw.messages.toServer.actions.UseMarket;
+import it.polimi.ingsw.messages.toServer.actions.StartProduction;
+
+import java.util.ArrayList;
 
 /**
  * Prints on {@link System#out} ASCII characters representing the game, updates.
@@ -41,6 +44,38 @@ public class CLIView extends View {
                     break;
                 }
                 break;
+            }
+            case "activateprod": {
+                String[] arguments = commandSlice[1].split("\\s*,\\s*");
+                String[] elements;
+                ArrayList<Integer> cost = new ArrayList<>();
+                int ID = Integer.parseInt(arguments[0]);
+                try{
+                    if (ID < 0)
+                        throw new IllegalArgumentException("Invalid ID");
+                    if(ID == 0){
+                        elements = arguments[3].split("\\s*");
+                        for (String element : elements) {
+                            cost.add(Integer.parseInt(element));
+                        }
+                        elements = arguments[1].split("\\s*");
+                        getController().sendMessage(new StartProduction(ID,cost,arguments[2],elements));
+                    } else if (ID <= 3){
+                        elements = arguments[1].split("\\s*");
+                        for (String element : elements) {
+                            cost.add(Integer.parseInt(element));
+                        }
+                        getController().sendMessage(new StartProduction(ID,cost));
+                    } else if (ID <= 5){
+                        cost.add(Integer.parseInt(arguments[1]));
+                        getController().sendMessage(new StartProduction(ID,cost,arguments[2]));
+                    }
+                } catch (NumberFormatException e) {
+                    System.err.println("You must insert a number.");
+                    break;
+                } catch (IllegalArgumentException e1){
+                    System.err.println(e1.getMessage());
+                }
             }
             case "usemarket":{
                 String[] args = commandSlice[1].split("\\s*,\\s*");

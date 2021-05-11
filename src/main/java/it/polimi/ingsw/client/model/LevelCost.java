@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client.model;
 
-import java.util.Arrays;
 
+/**
+ * LevelCost class for client
+ */
 public class LevelCost extends ColorCost implements Requirements {
     private int level;
 

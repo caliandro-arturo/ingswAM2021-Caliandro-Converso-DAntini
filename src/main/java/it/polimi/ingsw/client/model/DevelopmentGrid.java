@@ -1,7 +1,11 @@
 package it.polimi.ingsw.client.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * DevelopmentGrid class for client
+ */
 public class DevelopmentGrid{
     private DevelopmentCard[][] grid;
 
@@ -9,6 +13,12 @@ public class DevelopmentGrid{
         this.grid = grid;
     }
 
+    public void setGrid(ArrayList<DevelopmentCard> grid) {
+        for (DevelopmentCard developmentCard : grid) {
+            this.grid[developmentCard.getLevel()][Utility.colorPosition.
+                    get(developmentCard.getColor())] = developmentCard;
+        }
+    }
 
     @Override
     public String toString() {

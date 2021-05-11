@@ -1,6 +1,9 @@
 package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.client.CLI.CLIColor;
 
+/**
+ * Color class for client
+ */
 public enum Color {
     GREEN(CLIColor.ANSI_GREEN + "█" + CLIColor.ANSI_RESET),
     BLUE(CLIColor.ANSI_BLUE + "█" + CLIColor.ANSI_RESET),
@@ -14,6 +17,7 @@ public enum Color {
     Color(String representation){
         this.representation = representation;
     }
+
 
     @Override
     public String toString() {
