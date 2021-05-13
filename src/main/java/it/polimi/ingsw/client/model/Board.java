@@ -84,6 +84,9 @@ public class Board {
         String[] leaderArt = tempArt.toString().split("\n");
         for(int k=0; k<4; k++){
             boardArt.append("│");
+            if(k==2)
+                boardArt.append("  "+faithArt[k]+"   "+leaderArt[k]);
+            else
             boardArt.append(Utility.center(faithArt[k],127)).append(leaderArt[k]);
             boardArt.append(" │\n");
         }

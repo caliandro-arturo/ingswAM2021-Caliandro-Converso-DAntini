@@ -50,10 +50,8 @@ public class ClientMessageVisitor {
     }
     public void visit(AskPositionWarehouse msg){
         controller.show("choose position for this resource :" );
-
     }
 
     public void visit(GridUpdate msg){
-
     }
 }
