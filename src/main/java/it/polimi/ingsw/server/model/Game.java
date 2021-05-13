@@ -2,10 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.common_files.model.LeaderCard;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Parent of both {@link SinglePlayerGame} and {@link MultiplayerGame} classes.
@@ -14,7 +11,7 @@ import java.util.Stack;
  * players
  */
 public abstract class Game {
-    private final ArrayList<Player> players = new ArrayList<>();
+    private final HashMap<String, Player> players = new LinkedHashMap<>();
     private final int playersNum;
     private Player currentPlayer;
     private TurnPhase currentTurnPhase;
@@ -39,7 +36,7 @@ public abstract class Game {
     public Game(Player player, int playersNum, Market market, Stack<LeaderCard> leaderDeck,
                 DevelopmentGrid developmentGrid) {
         player.setGame(this);
-        this.players.add(player);
+        this.players.put(player.getUsername(), player);
         this.playersNum = playersNum;
         this.market = market;
         this.leaderDeck = leaderDeck;
@@ -58,11 +55,15 @@ public abstract class Game {
     }
 
     public ArrayList<Player> getPlayers() {
-        return players;
+        return new ArrayList<>(players.values());
     }
 
     public Player getPlayer(int num) {
-        return players.get(num);
+        return new ArrayList<>(players.values()).get(num);
+    }
+
+    public Player getPlayer(String nickname) {
+        return players.get(nickname);
     }
 
     public ArrayList<Player> getPlayersToWait() {
@@ -166,7 +167,7 @@ public abstract class Game {
      * @return {@code true} if the player is in the game and it's ready; {@code false} otherwise
      */
     public boolean isReady(Player player) {
-        return players.contains(player) && !playersToWait.contains(player);
+        return !playersToWait.contains(player);
     }
 
     //main methods
@@ -174,7 +175,7 @@ public abstract class Game {
     /**
      * Add players to the game.
      */
-    public void addPlayers(List<Player> players) {
+    public void addPlayers(List<String> players) {
         players.forEach(this::addPlayer);
     }
 
@@ -184,8 +185,13 @@ public abstract class Game {
      * @param player the player to add to the game
      */
     @Deprecated
+    public void addPlayer(String player) {
+        players.put(player, new Player(player));
+        players.get(player).setGame(this);
+    }
+
     public void addPlayer(Player player) {
-        players.add(player);
+        players.put(player.getUsername(), player);
         player.setGame(this);
     }
 
@@ -236,7 +242,7 @@ public abstract class Game {
      */
     public void vaticanReport(int popePosition) {
         vaticanMap.replace(popePosition, true);
-        players.forEach(player -> player.getBoard().getFaithTrack().isInVatican(popePosition));
+        players.values().forEach(player -> player.getBoard().getFaithTrack().isInVatican(popePosition));
         if (popePosition == 24) {
             if (!isOver) {
                 setOver(true);

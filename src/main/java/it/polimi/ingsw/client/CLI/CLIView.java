@@ -32,7 +32,7 @@ public class CLIView extends View {
                 if (!commandSlice[1].isEmpty() && !commandSlice[1].matches("\\s*")) {
                     System.out.println("creating nickname...");
                     getController().sendMessage(new SetNickname(commandSlice[1]));
-                } else System.out.println("nickname not valid.");
+                } else System.err.println("nickname not valid.");
                 break;
             }
             case "setgame": {

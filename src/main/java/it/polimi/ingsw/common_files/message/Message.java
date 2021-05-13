@@ -15,17 +15,17 @@ import java.io.Serializable;
  * @see GameUpdate
  */
 public abstract class Message implements Serializable {
-    private Player player;
+    private String player;
     private final int id = this.hashCode();
 
-    public Player getPlayer() {
+    public String getPlayer() {
         return player;
     }
     public int getId() {
         return id;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(String player) {
         this.player = player;
     }
 }

@@ -44,7 +44,7 @@ public class ClientMessageVisitor {
         controller.showError("The game is full. Reconnecting to another game...");
     }
 
-    public void visit(TablePosition tablePosition) {
+    public void visit(TablePosition msg) {
 
     }
     public void visit(AskPositionWarehouse msg){
@@ -52,5 +52,9 @@ public class ClientMessageVisitor {
     }
 
     public void visit(GridUpdate msg){
+    }
+
+    public void visit(TurnPhaseAnnouncement msg) {
+
     }
 }

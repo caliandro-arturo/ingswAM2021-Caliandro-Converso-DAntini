@@ -21,7 +21,7 @@ public class ClientSocketManager extends SocketManager {
     @Override
     public void readMessage(Message message) {
         if (message instanceof Ok)
-            controller.confirmMove(((Ok) message).getId());
+            controller.confirmMove(message.getId());
         else controller.readMessage((ToClientMessage) message);
     }
 

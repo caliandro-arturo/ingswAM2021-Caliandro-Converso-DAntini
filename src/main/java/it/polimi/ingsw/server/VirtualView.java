@@ -22,7 +22,7 @@ public class VirtualView {
     private final Controller controller = new Controller(this);
     private Socket firstPlayer;
     private final List<ClientHandler> waitingList = new ArrayList<>();
-    private final HashMap<Player, ClientHandler> clientMap = new LinkedHashMap<>();
+    private final HashMap<String, ClientHandler> clientMap = new LinkedHashMap<>();
     private boolean hasBeenSet = false;
 
     public VirtualView(ServerMain serverMain, Socket firstPlayer) {
@@ -30,7 +30,7 @@ public class VirtualView {
         this.firstPlayer = firstPlayer;
     }
 
-    public HashMap<Player, ClientHandler> getClientMap() {
+    public HashMap<String, ClientHandler> getClientMap() {
         return clientMap;
     }
 
@@ -60,7 +60,7 @@ public class VirtualView {
      * @return {@code true} if the nickname is still available; {@code false} otherwise
      */
     public boolean isNickAvailable(String nickname) {
-        return clientMap.keySet().stream().noneMatch(p -> nickname.equals(p.getUsername()));
+        return clientMap.keySet().stream().noneMatch(nickname::equals);
     }
 
     /**
@@ -79,7 +79,7 @@ public class VirtualView {
      * @param player the player to check
      * @return {@code true} if the player is the first player; {@code false} otherwise
      */
-    public boolean isTheFirstPlayer(Player player) {
+    public boolean isTheFirstPlayer(String player) {
         return clientMap.get(player).getSocket().equals(firstPlayer);
     }
 
@@ -117,16 +117,15 @@ public class VirtualView {
         ClientHandler clientHandler = setNickname.getClient();
         if (!isNickAvailable(nickname))
             throw new GameException.NicknameAlreadyTaken();
-        Player player = new Player(nickname);
         waitingList.remove(clientHandler);
-        clientMap.put(player, clientHandler);
-        clientHandler.setPlayer(player);
+        clientMap.put(nickname, clientHandler);
+        clientHandler.setPlayerName(nickname);
         clientHandler.confirmMove(setNickname);
-        sendMessageToOthers(player, new NewPlayer(player.getUsername()));
+        sendMessageToOthers(nickname, new NewPlayer(nickname));
         if (!hasBeenSet) {
             if (clientHandler.getSocket().equals(firstPlayer))
-                sendMessage(player, new CreateGame());
-            else sendMessage(player, new WaitGameCreation());
+                sendMessage(nickname, new CreateGame());
+            else sendMessage(nickname, new WaitGameCreation());
         } else {
             if (isFull())
                 controller.startGame();
@@ -143,7 +142,7 @@ public class VirtualView {
     public synchronized void remove(ClientHandler client) {
         if (!waitingList.remove(client)) clientMap.remove(client.getPlayer());
         if (client.getSocket().equals(firstPlayer)) {
-            Optional<Map.Entry<Player, ClientHandler>> nextFirstPlayer = clientMap.entrySet().stream().findFirst();
+            Optional<Map.Entry<String, ClientHandler>> nextFirstPlayer = clientMap.entrySet().stream().findFirst();
             if (nextFirstPlayer.isPresent()) {
                 firstPlayer = nextFirstPlayer.get().getValue().getSocket();
                 sendMessage(nextFirstPlayer.get().getValue(), new CreateGame());
@@ -170,9 +169,9 @@ public class VirtualView {
             waitingList.remove(c);
             c.reassign();
         });
-        ArrayList<Player> players = new ArrayList<>(clientMap.keySet());
+        ArrayList<String> players = new ArrayList<>(clientMap.keySet());
         while (connectedClients() > expectedNumberOfClients) {
-            Player playerToRemove = players.get(expectedNumberOfClients);
+            String playerToRemove = players.get(expectedNumberOfClients);
             sendMessage(playerToRemove, new GameIsFull());
             remove(clientMap.get(playerToRemove));
             clientMap.get(playerToRemove).reassign();
@@ -195,8 +194,12 @@ public class VirtualView {
      * @param player  the player to send the message to
      * @param message the message to send
      */
-    public void sendMessage(Player player, Message message) {
+    public void sendMessage(String player, Message message) {
         sendMessage(clientMap.get(player), message);
+    }
+
+    public void sendMessage(Player player, Message message) {
+        sendMessage(player.getUsername(), message);
     }
 
     public void sendMessage(ClientHandler client, Message message) {
@@ -213,7 +216,7 @@ public class VirtualView {
      * @param message the message to send
      */
     public void sendMessage(Message message) {
-        for (Player player : clientMap.keySet())
+        for (String player : clientMap.keySet())
             sendMessage(player, message);
     }
 
@@ -223,9 +226,13 @@ public class VirtualView {
      * @param player  the player not to send the message to
      * @param message the message to send to other players
      */
-    public void sendMessageToOthers(Player player, Message message) {
-        for (Player p : clientMap.keySet())
+    public void sendMessageToOthers(String player, Message message) {
+        for (String p : clientMap.keySet())
             if (!p.equals(player)) sendMessage(p, message);
+    }
+
+    public void sendMessageToOthers(Player player, Message message) {
+        sendMessageToOthers(player.getUsername(), message);
     }
 
 }

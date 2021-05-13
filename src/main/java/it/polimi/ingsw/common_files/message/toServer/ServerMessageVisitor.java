@@ -25,8 +25,15 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         this.controllerAdapter = controllerAdapter;
     }
 
+    private Player getPlayer(String nick) {
+        return controller.getPlayer(nick);
+    }
+
     private void sendMessage(Player player, Message message) {
         controller.sendMessage(player, message);
+    }
+    private void sendMessage(String player, Message message) {
+        controller.sendMessage(getPlayer(player), message);
     }
 
     private void sendMessageToOthers(Player p, Message msg) {
@@ -45,7 +52,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
      * Calls {@link ControllerAdapter#useMarket(Player, char, int)}.
      */
     public void visit(UseMarket msg) {
-        Player player = msg.getPlayer();
+        Player player = getPlayer(msg.getPlayer());
         char rowOrColumn = msg.getRowOrColumn();
         int num = msg.getNum();
         try {
@@ -56,6 +63,64 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         confirmMove(msg);
         sendMessageToOthers(player, msg);
     }
+
+    /**
+     *
+     * @param startProduction
+     */
+    @Override
+    public void visit(StartProduction startProduction) {
+        int ID = startProduction.getID();
+        Player player = getPlayer(startProduction.getPlayer());
+        String[] costResource = startProduction.getCostResource();
+        String production =  startProduction.getProduction();
+        int[] costs = startProduction.getCost().stream().mapToInt(i->i).toArray();
+        try{
+            if (ID == 0){
+                controllerAdapter.startBoardProduction(player,costResource,production,costs);
+            } else if (ID<=3){
+                controllerAdapter.startDevProduction(player,costs,ID);
+            } else {
+                controllerAdapter.startLeaderProduction(player,costs[0],production,ID);
+            }
+        }catch (GameException.IllegalMove e){
+            denyMove(startProduction,e.getMessage());
+        }
+        confirmMove(startProduction);
+    }
+
+    @Override
+    public void visit(BuyCard buyCard) {
+        try {
+            controllerAdapter.buyCard(getPlayer(buyCard.getPlayer()), buyCard.getLevel(), buyCard.getColor(), buyCard.getSpace(),
+                    buyCard.getStores());
+        } catch (GameException.IllegalMove e) {
+            denyMove(buyCard, e.getMessage());
+        }
+        confirmMove(buyCard);
+    }
+
+    @Override
+    public void visit(UseLeader useLeader) {
+        try{
+            controllerAdapter.useLeader(getPlayer(useLeader.getPlayer()), useLeader.getIDCard());
+        } catch (GameException.IllegalMove e){
+            denyMove(useLeader,e.getMessage());
+        }
+        confirmMove(useLeader);
+    }
+
+    @Override
+    public void visit(DiscardLeader discardLeader) {
+        try{
+            controllerAdapter.discardLeader(getPlayer(discardLeader.getPlayer()), discardLeader.getPos());
+        } catch (IllegalArgumentException e){
+            denyMove(discardLeader,e.getMessage());
+        }
+        confirmMove(discardLeader);
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
 
     /* These methods are dedicated to the initial phases of games (creation of game, nickname setting).
      * For this reason, error handling is implemented differently than the others above.
@@ -78,61 +143,5 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         } catch (GameException.NicknameAlreadyTaken e) {
             denyMove(setNickname, "You have already chosen your nickname.");
         }
-    }
-
-    /**
-     *
-     * @param startProduction
-     */
-    @Override
-    public void visit(StartProduction startProduction) {
-        int ID = startProduction.getID();
-        Player player = startProduction.getPlayer();
-        String[] costResource = startProduction.getCostResource();
-        String production =  startProduction.getProduction();
-        int[] costs = startProduction.getCost().stream().mapToInt(i->i).toArray();
-        try{
-            if (ID == 0){
-                controllerAdapter.startBoardProduction(player,costResource,production,costs);
-            } else if (ID<=3){
-                controllerAdapter.startDevProduction(player,costs,ID);
-            } else {
-                controllerAdapter.startLeaderProduction(player,costs[0],production,ID);
-            }
-        }catch (GameException.IllegalMove e){
-            denyMove(startProduction,e.getMessage());
-        }
-        confirmMove(startProduction);
-    }
-
-    @Override
-    public void visit(BuyCard buyCard) {
-        try {
-            controllerAdapter.buyCard(buyCard.getPlayer(), buyCard.getLevel(), buyCard.getColor(), buyCard.getSpace(),
-                    buyCard.getStores());
-        } catch (GameException.IllegalMove e) {
-            denyMove(buyCard, e.getMessage());
-        }
-        confirmMove(buyCard);
-    }
-
-    @Override
-    public void visit(UseLeader useLeader) {
-        try{
-            controllerAdapter.useLeader(useLeader.getPlayer(), useLeader.getIDCard());
-        } catch (GameException.IllegalMove e){
-            denyMove(useLeader,e.getMessage());
-        }
-        confirmMove(useLeader);
-    }
-
-    @Override
-    public void visit(DiscardLeader discardLeader) {
-        try{
-            controllerAdapter.discardLeader(discardLeader.getPlayer(), discardLeader.getPos());
-        } catch (IllegalArgumentException e){
-            denyMove(discardLeader,e.getMessage());
-        }
-        confirmMove(discardLeader);
     }
 }
