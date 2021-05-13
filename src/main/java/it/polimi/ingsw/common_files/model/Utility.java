@@ -66,4 +66,10 @@ public class Utility {
     public static boolean isStorable(Resource resource){
         return storableResources.contains(resource);
     }
+    public static HashMap<Resource,Integer> mapStrongbox = new HashMap<Resource,Integer>(){{
+        put(Resource.COIN,0);
+        put(Resource.SERF,1);
+        put(Resource.SHIELD,3);
+        put(Resource.STONE,2);
+    }};
 }

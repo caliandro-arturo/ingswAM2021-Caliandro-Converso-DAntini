@@ -17,6 +17,10 @@ public class LeaderHand {
         this.hand = hand;
     }
 
+    public void removeCardFromHand(int pos){
+        hand.remove(pos-1);
+    }
+
     public ArrayList<LeaderCard> getHand() {
         return hand;
     }

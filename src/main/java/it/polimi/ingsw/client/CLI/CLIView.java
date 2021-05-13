@@ -3,9 +3,7 @@ package it.polimi.ingsw.client.CLI;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.common_files.message.toServer.SetGame;
 import it.polimi.ingsw.common_files.message.toServer.SetNickname;
-import it.polimi.ingsw.common_files.message.toServer.actions.BuyCard;
-import it.polimi.ingsw.common_files.message.toServer.actions.UseMarket;
-import it.polimi.ingsw.common_files.message.toServer.actions.StartProduction;
+import it.polimi.ingsw.common_files.message.toServer.actions.*;
 
 import java.util.ArrayList;
 
@@ -51,52 +49,52 @@ public class CLIView extends View {
                 String[] elements;
                 ArrayList<Integer> cost = new ArrayList<>();
                 int ID = Integer.parseInt(arguments[0]);
-                try{
+                try {
                     if (ID < 0)
                         throw new IllegalArgumentException("Invalid ID");
-                    if(ID == 0){
+                    if (ID == 0) {
                         elements = arguments[3].split("\\s*");
                         for (String element : elements) {
                             cost.add(Integer.parseInt(element));
                         }
                         elements = arguments[1].split("\\s*");
-                        getController().sendMessage(new StartProduction(ID,cost,arguments[2],elements));
-                    } else if (ID <= 3){
+                        getController().sendMessage(new StartProduction(ID, cost, arguments[2], elements));
+                    } else if (ID <= 3) {
                         elements = arguments[1].split("\\s*");
                         for (String element : elements) {
                             cost.add(Integer.parseInt(element));
                         }
-                        getController().sendMessage(new StartProduction(ID,cost));
-                    } else if (ID <= 5){
+                        getController().sendMessage(new StartProduction(ID, cost));
+                    } else if (ID <= 5) {
                         cost.add(Integer.parseInt(arguments[1]));
-                        getController().sendMessage(new StartProduction(ID,cost,arguments[2]));
+                        getController().sendMessage(new StartProduction(ID, cost, arguments[2]));
                     }
                 } catch (NumberFormatException e) {
                     System.err.println("You must insert a number.");
                     break;
-                } catch (IllegalArgumentException e1){
+                } catch (IllegalArgumentException e1) {
                     System.err.println(e1.getMessage());
                 }
             }
-            case "usemarket":{
+            case "usemarket": {
                 String[] args = commandSlice[1].split("\\s*,\\s*");
-                if(args[0].matches("[rc]")) {
-                    try{
+                if (args[0].matches("[rc]")) {
+                    try {
                         getController().sendMessage(new UseMarket(args[0].charAt(0), Integer.parseInt(args[1])));
-                    }catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.err.println("Wrong parameter");
                         break;
                     }
-                }else
+                } else
                     System.err.println("Wrong parameter");
                 break;
             }
-            case "buydevcard":{
+            case "buydevcard": {
                 String[] arguments = commandSlice[1].split("\\s*,\\s*");
                 int level, space;
                 String color;
                 ArrayList<Integer> stores = new ArrayList<>();
-                try{
+                try {
                     level = Integer.parseInt(arguments[0]);
                     color = arguments[1];
                     space = Integer.parseInt(arguments[2]);
@@ -104,7 +102,27 @@ public class CLIView extends View {
                     for (String argument : arguments) {
                         stores.add(Integer.parseInt(argument));
                     }
-                    getController().sendMessage(new BuyCard(level,color,space,stores));
+                    getController().sendMessage(new BuyCard(level, color, space, stores));
+                } catch (NumberFormatException e) {
+                    System.err.println("You must insert a number.");
+                    break;
+                }
+            }
+            case "useleader": {
+                int pos;
+                try {
+                    pos = Integer.parseInt(commandSlice[1]);
+                    getController().sendMessage(new UseLeader(pos));
+                } catch (NumberFormatException e) {
+                    System.err.println("You must insert a number.");
+                    break;
+                }
+            }
+            case "discardleader": {
+                int pos;
+                try {
+                    pos = Integer.parseInt(commandSlice[1]);
+                    getController().sendMessage(new DiscardLeader(pos));
                 } catch (NumberFormatException e) {
                     System.err.println("You must insert a number.");
                     break;
@@ -162,5 +180,6 @@ public class CLIView extends View {
                 + CLIColor.ANSI_RESET);
     }
 
-    private void clear() {}
+    private void clear() {
+    }
 }

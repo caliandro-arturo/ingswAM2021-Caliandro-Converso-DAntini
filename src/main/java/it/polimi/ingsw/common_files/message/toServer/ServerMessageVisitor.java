@@ -1,9 +1,7 @@
 package it.polimi.ingsw.common_files.message.toServer;
 
-import it.polimi.ingsw.common_files.message.toServer.actions.StartProduction;
-import it.polimi.ingsw.common_files.message.toServer.actions.UseMarket;
+import it.polimi.ingsw.common_files.message.toServer.actions.*;
 import it.polimi.ingsw.common_files.message.Message;
-import it.polimi.ingsw.common_files.message.toServer.actions.BuyCard;
 import it.polimi.ingsw.server.Controller;
 import it.polimi.ingsw.common_files.message.toClient.ErrorMessage;
 import it.polimi.ingsw.server.VirtualView;
@@ -116,5 +114,25 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             denyMove(buyCard, e.getMessage());
         }
         confirmMove(buyCard);
+    }
+
+    @Override
+    public void visit(UseLeader useLeader) {
+        try{
+            controllerAdapter.useLeader(useLeader.getPlayer(), useLeader.getIDCard());
+        } catch (GameException.IllegalMove e){
+            denyMove(useLeader,e.getMessage());
+        }
+        confirmMove(useLeader);
+    }
+
+    @Override
+    public void visit(DiscardLeader discardLeader) {
+        try{
+            controllerAdapter.discardLeader(discardLeader.getPlayer(), discardLeader.getPos());
+        } catch (IllegalArgumentException e){
+            denyMove(discardLeader,e.getMessage());
+        }
+        confirmMove(discardLeader);
     }
 }

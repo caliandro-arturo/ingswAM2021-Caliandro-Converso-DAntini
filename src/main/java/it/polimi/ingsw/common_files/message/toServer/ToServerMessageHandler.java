@@ -1,8 +1,6 @@
 package it.polimi.ingsw.common_files.message.toServer;
 
-import it.polimi.ingsw.common_files.message.toServer.actions.StartProduction;
-import it.polimi.ingsw.common_files.message.toServer.actions.UseMarket;
-import it.polimi.ingsw.common_files.message.toServer.actions.BuyCard;
+import it.polimi.ingsw.common_files.message.toServer.actions.*;
 
 public interface ToServerMessageHandler {
     void visit(SetGame setGame);
@@ -10,4 +8,6 @@ public interface ToServerMessageHandler {
     void visit(UseMarket useMarket);
     void visit(StartProduction startProduction);
     void visit(BuyCard buyCard);
+    void visit(UseLeader useLeader);
+    void visit(DiscardLeader discardLeader);
 }

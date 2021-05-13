@@ -3,18 +3,23 @@ package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.client.CLI.CLIColor;
 
 import java.util.HashMap;
+
 /**
  * light version of FaithTrack class for representation purposes
  */
 public class FaithTrack {
-    private final int position;
+    private int position;
     private HashMap<Integer, Boolean> vaticanMap;
 
 
     public FaithTrack(int position, HashMap<Integer, Boolean> vaticanMap){
         this.position = position;
         this.vaticanMap = vaticanMap;
-    };
+    }
+
+    public void addPosition(){
+        this.position++;
+    }
 
     public void setVaticanMap(HashMap<Integer, Boolean> vaticanMap) {
         this.vaticanMap = vaticanMap;
