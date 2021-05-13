@@ -38,9 +38,10 @@ public class Controller {
      * @param setGame the message with information about the game to create (the player and the number of players
      */
     public void createGame(SetGame setGame) {
-        Player player = setGame.getPlayer();
+        String playerNick = setGame.getPlayer();
+        Player player = new Player(playerNick);
         int playersNum = setGame.getNumberOfPlayers();
-        if (!virtualView.isTheFirstPlayer(player)) {
+        if (!virtualView.isTheFirstPlayer(setGame.getPlayer())) {
             sendMessage(player, new ErrorMessage(setGame, "You cannot create the game."));
             return;
         } else if (virtualView.hasBeenSet()) {
@@ -50,10 +51,10 @@ public class Controller {
         try {
             model = new GameCreator().create(player, playersNum);
         } catch (IllegalArgumentException e) {
-            virtualView.sendMessage(player, new ErrorMessage(setGame, e.getMessage()));
+            sendMessage(player, new ErrorMessage(setGame, e.getMessage()));
             return;
         }
-        virtualView.getClientMap().get(player).confirmMove(setGame);
+        virtualView.getClientMap().get(playerNick).confirmMove(setGame);
         messageVisitor.setControllerAdapter(model.getControllerAdapter());
         model.getViewAdapter().setVirtualView(virtualView);
         virtualView.setHasBeenSet(true);
@@ -71,19 +72,27 @@ public class Controller {
         ((ToServerMessage) message).accept(messageVisitor);
     }
 
-    public void sendMessage(Player player, Message message) {
+    public void sendMessage(String player, Message message) {
         virtualView.sendMessage(player, message);
+    }
+
+    public void sendMessage(Player player, Message message) {
+        sendMessage(player.getUsername(), message);
     }
 
     public void startGame() {
         virtualView.sendMessage(new GameStarted());
         try {
-            List<Player> toAdd = new ArrayList<>(
+            List<String> toAdd = new ArrayList<>(
                     virtualView.getClientMap().keySet()).subList(1, virtualView.getClientMap().keySet().size());
             model.addPlayers(toAdd);
         } catch (IndexOutOfBoundsException ignore) {
         }
         model.setUpPlayers();
+    }
+
+    public Player getPlayer(String nick) {
+        return model.getPlayer(nick);
     }
 
     public boolean isFinished() {

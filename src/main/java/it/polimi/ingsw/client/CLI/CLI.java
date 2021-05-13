@@ -6,10 +6,7 @@ import it.polimi.ingsw.client.*;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.Map;
 import java.util.Objects;
 
@@ -19,6 +16,7 @@ import java.util.Objects;
 public class CLI implements UI {
     private View view;
     private ClientSocketManager socketManager;
+    private Thread messageReader;
 
     public static void main(String[] args) {
         //todo insert startup prints here
@@ -62,7 +60,7 @@ public class CLI implements UI {
         }
         System.out.println("Connecting to " + hostName + " at port " + portNumber + "...");
         try {
-            socketManager = new ClientSocketManager(new Socket(hostName, portNumber));
+            connectToServer(hostName, portNumber);
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
@@ -71,18 +69,7 @@ public class CLI implements UI {
             System.exit(1);
         }
         System.out.println("Connected successfully.");
-        view = new CLIView();
-        new ClientController(view, socketManager);
-        new Thread(() -> {
-            try {
-                socketManager.receiveMessages();
-            } catch (SocketTimeoutException e) {
-                e.printStackTrace();
-            } catch (SocketException e) {
-                System.err.println("Server closed. :(:(");
-                System.exit(1);
-            }
-        }).start();
+        initializeCli();
         //reading user input
         view.show("asknickname");
         String input;
@@ -91,9 +78,39 @@ public class CLI implements UI {
                 input = stdIn.readLine();
                 view.process(input);
             } catch (IOException e) {
-                System.err.println("Line 83: " + e.getMessage());
+                e.printStackTrace();
                 System.exit(1);
             }
         } while (true);
     }
+
+    public void connectToServer(String hostName, int port) throws IOException {
+        socketManager = new ClientSocketManager(new Socket(hostName, port));
+    }
+
+    public void initializeCli() {
+        view = new CLIView();
+        new ClientController(view, socketManager);
+        messageReader = new Thread(() -> {
+            try {
+                socketManager.receiveMessages();
+            } catch (SocketTimeoutException e) {
+                e.printStackTrace();
+            } catch (SocketException e) {
+                System.err.println("Server closed. :(:(");
+                System.exit(1);
+            }
+        });
+        messageReader.start();
+    }
+
+    public SocketManager getSocketManager() {
+        return socketManager;
+    }
+
+    public void shutdown() {
+        messageReader.interrupt();
+        socketManager.shutdown();
+    }
+
 }

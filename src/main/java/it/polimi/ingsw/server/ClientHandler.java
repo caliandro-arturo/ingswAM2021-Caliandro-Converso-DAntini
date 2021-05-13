@@ -17,7 +17,7 @@ import java.net.SocketTimeoutException;
  */
 public class ClientHandler extends SocketManager implements Runnable {
     private final ServerMain serverMain;
-    private Player player;
+    private String player;
     private final Socket socket;
     private final VirtualView virtualView;
 
@@ -29,7 +29,7 @@ public class ClientHandler extends SocketManager implements Runnable {
         virtualView.addToWaitingList(this);
     }
 
-    public Player getPlayer() {
+    public String getPlayer() {
         return player;
     }
 
@@ -37,7 +37,7 @@ public class ClientHandler extends SocketManager implements Runnable {
         return virtualView;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayerName(String nickname) {
         this.player = player;
     }
 
@@ -49,7 +49,7 @@ public class ClientHandler extends SocketManager implements Runnable {
         } catch (IOException e) {
             String name;
             if (player != null) {
-                name = player.getUsername();
+                name = player;
                 virtualView.sendMessage(new PlayerLeft(name));
             } else
                 name = Integer.toString(socket.getPort());

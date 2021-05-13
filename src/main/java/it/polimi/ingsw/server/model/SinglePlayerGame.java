@@ -32,7 +32,7 @@ public class SinglePlayerGame extends Game {
         super(player, playersNum, market, leaderDeck, developmentGrid);
         Player lorenzo = new Player("Lorenzo");
         lorenzo.getBoard().setFaithTrack(lorenzoTrack);
-        getPlayers().add(lorenzo);
+        addPlayer(lorenzo);
         getTurnPhases().put("EndTurnPhase", new SoloActionPhase(this));
     }
 

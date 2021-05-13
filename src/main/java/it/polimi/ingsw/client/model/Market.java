@@ -4,9 +4,9 @@ import it.polimi.ingsw.common_files.model.Utility;
 
 public class Market {
     private Marble extraMarble;
-    private Marble[][] grid;
-    private int columns = 4;
-    private int rows = 3;
+    private final Marble[][] grid;
+    private final int columns = 4;
+    private final int rows = 3;
 
     public Market(Marble extraMarble, Marble[][] grid) {
         this.extraMarble = extraMarble;
