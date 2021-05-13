@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.model;
 
+import it.polimi.ingsw.common_files.model.Color;
 import it.polimi.ingsw.client.CLI.CLIColor;
+import it.polimi.ingsw.common_files.model.Utility;
 
 public class Marble {
     private Color color;

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.client.CLI.CLIColor;
+import it.polimi.ingsw.common_files.model.Resource;
 
 /**
  * light version of Strongbox class for representation purposes

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.model;
 
+import it.polimi.ingsw.common_files.model.LeaderCard;
 import java.util.ArrayList;
 /**
  * this class is used to represent the hand of the player in the phase of choosing leader cards

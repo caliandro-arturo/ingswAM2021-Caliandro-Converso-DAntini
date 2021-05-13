@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.model;
 
+import it.polimi.ingsw.common_files.model.Utility;
+import it.polimi.ingsw.common_files.model.DevelopmentCard;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -47,7 +49,7 @@ public class DevelopmentGrid{
     private String assertLengthCost(int row) {
         StringBuilder costs = new StringBuilder(new String(" "));
         for (int i = 0; i < 4; i++) {
-            costs.append("│").append(Utility.center(Arrays.toString(grid[row][i].getCosts()), 14));
+            costs.append("│").append(Utility.center(Arrays.toString(grid[row][i].getCost()), 14));
         }
         costs.append("│");
         return costs.toString();
@@ -56,7 +58,8 @@ public class DevelopmentGrid{
     private String assertLengthProductionCost(int row){
         StringBuilder productionCost = new StringBuilder(new String(" "));
         for (int i = 0; i<4; i++) {
-            productionCost.append("│").append(Utility.center(Arrays.toString(grid[row][i].getProductionCost()),14));
+            productionCost.append("│").append(Utility.center(Arrays.toString(grid[row][i].
+                    getProduction().getCost()),14));
         }
         productionCost.append("│");
         return productionCost.toString();
@@ -65,7 +68,8 @@ public class DevelopmentGrid{
     private String assertLengthProductionValue(int row){
         StringBuilder productionValue = new StringBuilder(new String(" "));
         for (int i = 0; i<4; i++) {
-            productionValue.append("│").append(Utility.center(Arrays.toString(grid[row][i].getProduction()),14));
+            productionValue.append("│").append(Utility.center(Arrays.toString(grid[row][i].
+                    getProduction().getProd()),14));
         }
         productionValue.append("│");
         return productionValue.toString();

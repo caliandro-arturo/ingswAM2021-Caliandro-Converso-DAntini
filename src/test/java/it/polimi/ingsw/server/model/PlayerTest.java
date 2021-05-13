@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common_files.model.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -27,7 +28,7 @@ class PlayerTest {
         UtilityProductionAndCost[] costs = new UtilityProductionAndCost[]{cost};
         UtilityProductionAndCost[] prods = new UtilityProductionAndCost[]{prod};
         ProductionPower production1 = new ProductionPower(costs,prods);
-        DevelopmentCard card = new DevelopmentCard(1,1,Color.BLUE,costs,production1);
+        DevelopmentCard card = new DevelopmentCard(1,1, Color.BLUE,costs,production1);
         pippo.getBoard().addCard(card,1);
         card1 = new DevelopmentCard(2,2,Color.BLUE,costs,production1);
         UtilityProductionAndCost utilitytest = new UtilityProductionAndCost(1, Resource.COIN);

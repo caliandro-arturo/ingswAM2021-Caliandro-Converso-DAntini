@@ -1,11 +1,12 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.DevelopmentGrid;
-
 import it.polimi.ingsw.client.model.Board;
 import it.polimi.ingsw.client.model.DevelopmentGrid;
 import it.polimi.ingsw.client.model.LeaderHand;
 import it.polimi.ingsw.client.model.Market;
+import it.polimi.ingsw.server.model.Player;
+
+import java.util.ArrayList;
 
 public class ClientModel {
     private String playerUsername;
@@ -16,6 +17,7 @@ public class ClientModel {
     private Market market;
     private Board board;
     private LeaderHand leaderHand;
+    private ArrayList<Player> othersPlayers = new ArrayList<>();
 
     public DevelopmentGrid getDevelopmentGrid() {
         return developmentGrid;

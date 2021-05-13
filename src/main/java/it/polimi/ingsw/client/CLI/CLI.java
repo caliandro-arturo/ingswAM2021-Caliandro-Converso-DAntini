@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.CLI;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.*;
-import it.polimi.ingsw.network.SocketManager;
 
 import java.io.*;
 import java.lang.reflect.Type;

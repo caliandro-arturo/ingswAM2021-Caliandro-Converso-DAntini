@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common_files.model.*;
+
 import java.util.ArrayList;
 
 /**
@@ -232,14 +234,14 @@ public class Player {
      * @param production production chose by the player
      */
     public void startBoardProduction(int[] box,String[] cost,Resource production){
-        if (!UtilityMap.isStorable(production)) {
+        if (!Utility.isStorable(production)) {
             throw new IllegalArgumentException("Not valid production input");
         } else if (!board.getProductionList().get(0).getProductionCanBeActivate()){
             throw new IllegalArgumentException("You have already used this production");
         }
         for (int i = 0; i < 2; i++) {
-            Resource resource = UtilityMap.mapResource.get(cost[i]);
-            if (!UtilityMap.isStorable(resource)) {
+            Resource resource = Utility.mapResource.get(cost[i]);
+            if (!Utility.isStorable(resource)) {
                 throw new IllegalArgumentException("Not valid input");
             }
             if (box[i] == 0) {
@@ -266,7 +268,7 @@ public class Player {
         }
         for (int i = 0; i < cost.length; i++) {
             if (box[i] == 0) {
-                Resource resource = UtilityMap.mapResource.get(cost[i]);
+                Resource resource = Utility.mapResource.get(cost[i]);
                 board.getStrongbox().removeResource(resource);
             } else {
                 board.getStore().get(box[i] - 1).takeOutResource();
@@ -283,7 +285,7 @@ public class Player {
      */
     public void startLeaderProduction(int cost,Resource production,int index){
         Production productionPower = this.getBoard().getProductionList().get(index);
-        if (!UtilityMap.isStorable(production)) {
+        if (!Utility.isStorable(production)) {
             throw new IllegalArgumentException("Not valid production input");
         }else if (this.getBoard().getProductionList().get(index) == null) {
             throw new IllegalArgumentException("You don't have leader card on your board");

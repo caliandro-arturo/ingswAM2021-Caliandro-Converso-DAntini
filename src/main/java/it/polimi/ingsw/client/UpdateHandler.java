@@ -1,11 +1,12 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.messages.toClient.updates.*;
-import it.polimi.ingsw.messages.toServer.SetGame;
-import it.polimi.ingsw.messages.toServer.SetNickname;
-import it.polimi.ingsw.messages.toServer.ToServerMessageHandler;
-import it.polimi.ingsw.messages.toServer.actions.StartProduction;
-import it.polimi.ingsw.messages.toServer.actions.UseMarket;
+import it.polimi.ingsw.common_files.message.toClient.updates.*;
+import it.polimi.ingsw.common_files.message.toServer.SetGame;
+import it.polimi.ingsw.common_files.message.toServer.SetNickname;
+import it.polimi.ingsw.common_files.message.toServer.ToServerMessageHandler;
+import it.polimi.ingsw.common_files.message.toServer.actions.BuyCard;
+import it.polimi.ingsw.common_files.message.toServer.actions.StartProduction;
+import it.polimi.ingsw.common_files.message.toServer.actions.UseMarket;
 
 /**
  * Handles model updates and service communications.
@@ -48,7 +49,6 @@ public class UpdateHandler implements ToServerMessageHandler {
 
     /**
      *
-     * @param msg
      */
     public void visit(GridUpdate msg){
         model.getDevelopmentGrid().setGrid(msg.getGrid());
@@ -86,6 +86,11 @@ public class UpdateHandler implements ToServerMessageHandler {
 
     @Override
     public void visit(StartProduction startProduction) {
+
+    }
+
+    @Override
+    public void visit(BuyCard buyCard) {
 
     }
 }

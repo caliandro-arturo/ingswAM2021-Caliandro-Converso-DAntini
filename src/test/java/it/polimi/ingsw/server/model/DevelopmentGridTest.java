@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 import static org.junit.jupiter.api.Assertions.*;
 
+import it.polimi.ingsw.common_files.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

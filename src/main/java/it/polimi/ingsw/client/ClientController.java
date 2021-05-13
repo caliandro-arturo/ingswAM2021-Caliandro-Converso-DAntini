@@ -1,14 +1,13 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.toClient.ClientMessageVisitor;
-import it.polimi.ingsw.messages.toClient.ToClientMessage;
-import it.polimi.ingsw.messages.toClient.updates.GameUpdate;
-import it.polimi.ingsw.messages.toServer.ToServerMessage;
+import it.polimi.ingsw.common_files.message.Message;
+import it.polimi.ingsw.common_files.message.toClient.ClientMessageVisitor;
+import it.polimi.ingsw.common_files.message.toClient.ToClientMessage;
+import it.polimi.ingsw.common_files.message.toClient.updates.GameUpdate;
+import it.polimi.ingsw.common_files.message.toServer.ToServerMessage;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Controller element of the MVC architectural pattern applied to the client.

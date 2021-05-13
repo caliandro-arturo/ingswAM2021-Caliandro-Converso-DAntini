@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client.model;
+import it.polimi.ingsw.common_files.model.DevelopmentCard;
 
 import java.util.ArrayList;
 import java.util.Stack;
+
 
 /**
  * light version of DevelopmentPlace class for representation purposes
