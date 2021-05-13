@@ -1,11 +1,11 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.toClient.CreateGame;
-import it.polimi.ingsw.messages.toClient.GameIsFull;
-import it.polimi.ingsw.messages.toClient.WaitGameCreation;
-import it.polimi.ingsw.messages.toClient.updates.NewPlayer;
-import it.polimi.ingsw.messages.toServer.SetNickname;
+import it.polimi.ingsw.common_files.message.Message;
+import it.polimi.ingsw.common_files.message.toClient.CreateGame;
+import it.polimi.ingsw.common_files.message.toClient.GameIsFull;
+import it.polimi.ingsw.common_files.message.toClient.WaitGameCreation;
+import it.polimi.ingsw.common_files.message.toClient.updates.NewPlayer;
+import it.polimi.ingsw.common_files.message.toServer.SetNickname;
 import it.polimi.ingsw.server.model.GameException;
 import it.polimi.ingsw.server.model.Player;
 

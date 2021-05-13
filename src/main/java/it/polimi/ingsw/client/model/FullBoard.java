@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.model;
 
+import it.polimi.ingsw.common_files.model.LeaderCard;
+
 import java.util.ArrayList;
 
 /**

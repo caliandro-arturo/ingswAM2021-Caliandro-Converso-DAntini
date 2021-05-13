@@ -1,10 +1,11 @@
 package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.messages.toServer.SetGame;
-import it.polimi.ingsw.messages.toServer.SetNickname;
-import it.polimi.ingsw.messages.toServer.actions.UseMarket;
-import it.polimi.ingsw.messages.toServer.actions.StartProduction;
+import it.polimi.ingsw.common_files.message.toServer.SetGame;
+import it.polimi.ingsw.common_files.message.toServer.SetNickname;
+import it.polimi.ingsw.common_files.message.toServer.actions.BuyCard;
+import it.polimi.ingsw.common_files.message.toServer.actions.UseMarket;
+import it.polimi.ingsw.common_files.message.toServer.actions.StartProduction;
 
 import java.util.ArrayList;
 
@@ -89,6 +90,25 @@ public class CLIView extends View {
                 }else
                     System.err.println("Wrong parameter");
                 break;
+            }
+            case "buydevcard":{
+                String[] arguments = commandSlice[1].split("\\s*,\\s*");
+                int level, space;
+                String color;
+                ArrayList<Integer> stores = new ArrayList<>();
+                try{
+                    level = Integer.parseInt(arguments[0]);
+                    color = arguments[1];
+                    space = Integer.parseInt(arguments[2]);
+                    arguments = arguments[3].split("\\s*");
+                    for (String argument : arguments) {
+                        stores.add(Integer.parseInt(argument));
+                    }
+                    getController().sendMessage(new BuyCard(level,color,space,stores));
+                } catch (NumberFormatException e) {
+                    System.err.println("You must insert a number.");
+                    break;
+                }
             }
 
 

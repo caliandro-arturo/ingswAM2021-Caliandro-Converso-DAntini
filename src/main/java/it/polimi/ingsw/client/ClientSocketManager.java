@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.toClient.Ok;
-import it.polimi.ingsw.messages.toClient.ToClientMessage;
-import it.polimi.ingsw.network.SocketManager;
+import it.polimi.ingsw.common_files.message.Message;
+import it.polimi.ingsw.common_files.message.toClient.Ok;
+import it.polimi.ingsw.common_files.message.toClient.ToClientMessage;
+import it.polimi.ingsw.common_files.network.SocketManager;
 
 import java.io.IOException;
 import java.net.Socket;

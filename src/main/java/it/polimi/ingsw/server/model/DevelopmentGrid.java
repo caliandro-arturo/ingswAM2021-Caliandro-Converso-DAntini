@@ -1,12 +1,16 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common_files.model.Color;
+import it.polimi.ingsw.common_files.model.DevelopmentCard;
+import it.polimi.ingsw.common_files.model.Utility;
+
 import java.util.Map;
 
 public class DevelopmentGrid {
     private final Deck[][] developmentGrid;
 
     public Deck getDeck(int level, Color color){
-        return developmentGrid[level-1][UtilityMap.colorPosition.get(color)];
+        return developmentGrid[level-1][Utility.colorPosition.get(color)];
     }
 
     public boolean isStillWinnable(){
@@ -31,7 +35,7 @@ public class DevelopmentGrid {
             }
         }
         for (DevelopmentCard card : cards) {
-            for (Map.Entry<Color, Integer> entry : UtilityMap.colorPosition.entrySet()) {
+            for (Map.Entry<Color, Integer> entry : Utility.colorPosition.entrySet()) {
                 if (card.getColor() == entry.getKey()) {
                     if (card.getLevel() == 1) {
                         developmentGrid[0][entry.getValue()].getDeck().push(card);
@@ -57,7 +61,7 @@ public class DevelopmentGrid {
      * @return the card chosen
      */
     public DevelopmentCard buyCard(Color color,int level){
-        for (Map.Entry<Color,Integer> entry : UtilityMap.colorPosition.entrySet()){
+        for (Map.Entry<Color,Integer> entry : Utility.colorPosition.entrySet()){
             if (entry.getKey() == color){
                 return developmentGrid[level-1][entry.getValue()].takeCard();
             }
@@ -73,7 +77,7 @@ public class DevelopmentGrid {
         int i = 0;
         int j = 2;
         while (j>0){
-            for (Map.Entry<Color,Integer> entry : UtilityMap.colorPosition.entrySet()){
+            for (Map.Entry<Color,Integer> entry : Utility.colorPosition.entrySet()){
                 if (entry.getKey() == color){
                     while (developmentGrid[i][entry.getValue()].getDeck().empty() && i<3){
                         i++;

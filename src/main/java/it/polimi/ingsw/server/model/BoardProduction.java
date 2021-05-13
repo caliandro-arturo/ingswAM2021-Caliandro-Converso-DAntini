@@ -1,9 +1,12 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common_files.model.Production;
+import it.polimi.ingsw.common_files.model.UtilityProductionAndCost;
+
 /**
  * special Board Production
  */
-public class BoardProduction implements Production{
+public class BoardProduction implements Production {
 
     boolean productionCanBeActivate = true;
 

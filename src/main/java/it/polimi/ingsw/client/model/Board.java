@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.model;
 
+import it.polimi.ingsw.common_files.model.LeaderCard;
 import it.polimi.ingsw.client.CLI.CLIColor;
+import it.polimi.ingsw.common_files.model.Utility;
 
 import java.util.ArrayList;
 

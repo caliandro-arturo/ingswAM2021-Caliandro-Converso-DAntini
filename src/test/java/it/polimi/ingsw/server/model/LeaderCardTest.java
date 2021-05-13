@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 import static org.junit.jupiter.api.Assertions.*;
 
+import it.polimi.ingsw.common_files.model.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -57,7 +58,7 @@ public class LeaderCardTest {
     }
 
     @Test
-    public void TestCardsPower() {
+    public void testCardsPower() {
         cardPower1.getLeaderPower().activatePower(player);
         assertEquals(player.getBoard().getProductionList().toArray()[1], production);
         cardPower2.getLeaderPower().activatePower(player);
@@ -70,13 +71,18 @@ public class LeaderCardTest {
     }
 
     @Test
-    public void TestRequirements(){
+    public void testRequirements(){
         assertTrue(cardPower1.getRequirements().checkRequirements(player));
         assertFalse(cardPower1.getRequirements().checkRequirements(playerFalse));
         assertTrue(cardPower2.getRequirements().checkRequirements(player));
         assertFalse(cardPower2.getRequirements().checkRequirements(playerFalse));
         assertTrue(cardPower3.getRequirements().checkRequirements(player));
         assertFalse(cardPower3.getRequirements().checkRequirements(playerFalse));
+    }
+
+    @Test
+    public void testPrint(){
+        System.out.println(cardPower1);
     }
 
 }

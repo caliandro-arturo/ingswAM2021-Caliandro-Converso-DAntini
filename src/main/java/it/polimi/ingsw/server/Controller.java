@@ -1,19 +1,17 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.toClient.ErrorMessage;
-import it.polimi.ingsw.messages.toClient.updates.GameStarted;
-import it.polimi.ingsw.messages.toServer.ServerMessageVisitor;
-import it.polimi.ingsw.messages.toServer.SetGame;
-import it.polimi.ingsw.messages.toServer.ToServerMessage;
-import it.polimi.ingsw.messages.toServer.actions.StartProduction;
+import it.polimi.ingsw.common_files.message.Message;
+import it.polimi.ingsw.common_files.message.toClient.ErrorMessage;
+import it.polimi.ingsw.common_files.message.toClient.updates.GameStarted;
+import it.polimi.ingsw.common_files.message.toServer.ServerMessageVisitor;
+import it.polimi.ingsw.common_files.message.toServer.SetGame;
+import it.polimi.ingsw.common_files.message.toServer.ToServerMessage;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.GameCreator;
 import it.polimi.ingsw.server.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Controller element of the MVC architectural pattern: sends received messages to the message visitor and creates the

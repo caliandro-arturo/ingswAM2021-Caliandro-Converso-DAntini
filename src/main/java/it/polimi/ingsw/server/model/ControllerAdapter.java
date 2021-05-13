@@ -1,10 +1,13 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common_files.message.toServer.ServerMessageVisitor;
+import it.polimi.ingsw.common_files.model.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * methods of the model that can be called by {@link it.polimi.ingsw.messages.toServer.ServerMessageVisitor}.
+ * methods of the model that can be called by {@link ServerMessageVisitor}.
  */
 public class ControllerAdapter {
     private final Game game;
@@ -206,7 +209,7 @@ public class ControllerAdapter {
      */
     public void startBoardProduction(Player player, String[] cost, String prod, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
         checkIfMoveIsValid(player,"ActivateProduction");
-        Resource production = UtilityMap.mapResource.get(prod);
+        Resource production = Utility.mapResource.get(prod);
         player.startBoardProduction(box,cost,production);
         player.getBoard().getProductionList().get(0).setProductionCanBeActivate(false);
     }
@@ -220,7 +223,7 @@ public class ControllerAdapter {
      */
     public void startLeaderProduction(Player player,int cost,String prod, int index) throws IllegalArgumentException, GameException.IllegalMove {
         checkIfMoveIsValid(player,"ActivateProduction");
-        Resource production = UtilityMap.mapResource.get(prod);
+        Resource production = Utility.mapResource.get(prod);
         player.startLeaderProduction(cost,production,index);
         Production productionPower = player.getBoard().getProductionList().get(index);
         productionPower.setProductionCanBeActivate(false);
@@ -252,15 +255,16 @@ public class ControllerAdapter {
      * controls for buycard
      * @param player current player
      * @param level level of the card
-     * @param color color of the card
+     * @param colorString color of the card
      * @param devSpace space
      * @param box box from where take the resource
      */
-    public void buyCard(Player player,int level,Color color,int devSpace, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
+    public void buyCard(Player player,int level,String colorString,int devSpace, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
         checkIfMoveIsValid(player,"BuyDevelopmentCard");
+        Color color = Utility.mapColor.get(colorString);
         if (level<1 || level>3 )
             throw new IllegalArgumentException("the level must be 1,2 or 3");
-        else if (UtilityMap.colorPosition.get(color) == null)
+        else if (Utility.colorPosition.get(color) == null)
             throw new IllegalArgumentException("Invalid Color");
         else if (game.getDevelopmentGrid().getDeck(level,color).getDeck().empty())
             throw new IllegalArgumentException("this place in empty");

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common_files.model.*;
+
 import java.util.*;
 
 

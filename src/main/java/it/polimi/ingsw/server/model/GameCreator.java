@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.common_files.model.*;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,7 +35,7 @@ public class GameCreator {
                     get("productionPower").getAsJsonObject(), "cost"), utilityCreator(jsonArray.
                     get(i).getAsJsonObject().get("productionPower").getAsJsonObject(), "production"));
             developmentCards[i] = new DevelopmentCard(jsonArray.get(i).getAsJsonObject().get("victoryPoints").
-                    getAsInt(),jsonArray.get(i).getAsJsonObject().get("level").getAsInt(),UtilityMap.mapColor.
+                    getAsInt(),jsonArray.get(i).getAsJsonObject().get("level").getAsInt(),Utility.mapColor.
                     get(jsonArray.get(i).getAsJsonObject().get("color").getAsString()),costs,production);
         }
         file = getClass().getClassLoader().getResourceAsStream("ledCard.json");
@@ -75,13 +76,13 @@ public class GameCreator {
             resource = jsonObject.get(jsonString).getAsJsonArray().get(i)
                     .getAsJsonObject().get("resource").getAsString();
             value[i] = new UtilityProductionAndCost(jsonObject.get(jsonString).getAsJsonArray().
-                    get(i).getAsJsonObject().get("quantity").getAsInt(),UtilityMap.mapResource.get(resource));
+                    get(i).getAsJsonObject().get("quantity").getAsInt(),Utility.mapResource.get(resource));
         }
         return value;
     }
 
     private Resource powerCreator(JsonObject jsonObject, String jsonString){
-        return UtilityMap.mapResource.get(jsonObject.get(jsonString).
+        return Utility.mapResource.get(jsonObject.get(jsonString).
                 getAsJsonObject().get("resource").getAsString());
     }
 
@@ -97,14 +98,14 @@ public class GameCreator {
 
     private ResourceCost resourceCostJSON(JsonObject jsonObject){
         UtilityProductionAndCost value = new UtilityProductionAndCost(jsonObject.get("resourceCost").
-                getAsJsonObject().get("quantity").getAsInt(),UtilityMap.mapResource.get(jsonObject.get("resourceCost").
+                getAsJsonObject().get("quantity").getAsInt(),Utility.mapResource.get(jsonObject.get("resourceCost").
                 getAsJsonObject().get("resource").getAsString()));
         return new ResourceCost(value);
     }
 
 
     private LevelCost levelCostJSON(JsonObject jsonObject){
-        Color[] colors = {UtilityMap.mapColor.get(jsonObject.get("levelCost").getAsJsonObject().
+        Color[] colors = {Utility.mapColor.get(jsonObject.get("levelCost").getAsJsonObject().
                 get("color").getAsString())};
         Integer[] integers = {jsonObject.get("levelCost").getAsJsonObject().get("quantity").getAsInt()};
         int level = jsonObject.get("levelCost").getAsJsonObject().get("level").getAsInt();

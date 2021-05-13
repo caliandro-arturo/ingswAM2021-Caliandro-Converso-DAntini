@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common_files.model.LeaderCard;
+
 import java.util.Stack;
 
 public class SinglePlayerGame extends Game {

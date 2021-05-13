@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common_files.model.Color;
+
 /**
  * This class represents the marbles in the market.
  */
