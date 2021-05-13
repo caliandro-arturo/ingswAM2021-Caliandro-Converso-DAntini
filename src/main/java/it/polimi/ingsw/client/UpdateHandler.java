@@ -1,12 +1,15 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.model.LeaderHand;
 import it.polimi.ingsw.common_files.message.toClient.updates.*;
 import it.polimi.ingsw.common_files.message.toServer.SetGame;
 import it.polimi.ingsw.common_files.message.toServer.SetNickname;
 import it.polimi.ingsw.common_files.message.toServer.ToServerMessageHandler;
-import it.polimi.ingsw.common_files.message.toServer.actions.BuyCard;
-import it.polimi.ingsw.common_files.message.toServer.actions.StartProduction;
-import it.polimi.ingsw.common_files.message.toServer.actions.UseMarket;
+import it.polimi.ingsw.common_files.message.toServer.actions.*;
+import it.polimi.ingsw.common_files.model.DevelopmentCard;
+import it.polimi.ingsw.common_files.model.Production;
+import it.polimi.ingsw.common_files.model.Utility;
+import it.polimi.ingsw.common_files.model.UtilityProductionAndCost;
 
 /**
  * Handles model updates and service communications.
@@ -85,12 +88,45 @@ public class UpdateHandler implements ToServerMessageHandler {
 
 
     @Override
-    public void visit(StartProduction startProduction) {
+    public void visit(StartProduction msg) {
+        if (msg.getID() == 0){
+            model.getBoard().getStrongbox().addResources(1,Utility.mapResource.
+                    get(msg.getProduction()));
+        } else if (msg.getID()<=3){
+            UtilityProductionAndCost[] prod = model.getBoard().
+                    getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getProd();
+            for (int i = 0; i<prod.length; i++) {
+                if (Utility.isStorable(prod[i].getResource())) {
+                    model.getBoard().getStrongbox().addResources(prod[i].getQuantity(),
+                            prod[i].getResource());
+                }else {
+                    for (int k=0; k<prod[i].getQuantity(); i++){
+                        model.getBoard().getFaithTrack().addPosition();
+                    }
+                }
+            }
+        } else {
+            model.getBoard().getStrongbox().addResources(1,Utility.mapResource.
+                    get(msg.getProduction()));
+            model.getBoard().getFaithTrack().addPosition();
+        }
+    }
+
+    @Override
+    public void visit(BuyCard msg) {
 
     }
 
     @Override
-    public void visit(BuyCard buyCard) {
+    public void visit(UseLeader msg) {
+        LeaderHand leaderHand = model.getLeaderHand();
+        model.getFullBoard().getLeaderCards().add(leaderHand.getHand().get(msg.getIDCard()-1));
+        leaderHand.removeCardFromHand(msg.getIDCard());
+    }
 
+    @Override
+    public void visit(DiscardLeader msg){
+        model.getLeaderHand().removeCardFromHand(msg.getPos());
+        model.getBoard().getFaithTrack().addPosition();
     }
 }

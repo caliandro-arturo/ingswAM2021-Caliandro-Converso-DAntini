@@ -27,6 +27,11 @@ public class DevelopmentPlace {
     public void setDevStack(DevelopmentCard developmentCard, int pos){
         this.devStack.get(--pos).push(developmentCard);
     }
+
+    public DevelopmentCard getTopCard(int pos){
+        return this.devStack.get(--pos).peek();
+    }
+
     /**
      * representation method for Development Place (CLI)
      * @return String with the representation

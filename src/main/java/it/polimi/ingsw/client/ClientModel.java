@@ -1,12 +1,10 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.Board;
-import it.polimi.ingsw.client.model.DevelopmentGrid;
-import it.polimi.ingsw.client.model.LeaderHand;
-import it.polimi.ingsw.client.model.Market;
+import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.server.model.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ClientModel {
     private String playerUsername;
@@ -17,7 +15,28 @@ public class ClientModel {
     private Market market;
     private Board board;
     private LeaderHand leaderHand;
-    private ArrayList<Player> othersPlayers = new ArrayList<>();
+    private FullBoard fullBoard;
+    private HashMap<String,Board> othersBoards = new HashMap<>();
+
+    public int getPosition() {
+        return position;
+    }
+
+    public FullBoard getFullBoard() {
+        return fullBoard;
+    }
+
+    public void setFullBoard(FullBoard fullBoard) {
+        this.fullBoard = fullBoard;
+    }
+
+    public HashMap<String, Board> getOthersBoards() {
+        return othersBoards;
+    }
+
+    public void setOthersBoards(HashMap<String, Board> othersBoards) {
+        this.othersBoards = othersBoards;
+    }
 
     public DevelopmentGrid getDevelopmentGrid() {
         return developmentGrid;

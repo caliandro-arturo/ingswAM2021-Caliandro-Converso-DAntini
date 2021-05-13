@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.client.CLI.CLIColor;
 
 import java.util.HashMap;
+
 /**
  * light version of FaithTrack class for representation purposes
  */
@@ -15,7 +16,11 @@ public class FaithTrack {
     public FaithTrack(int position, HashMap<Integer, Boolean> vaticanMap){
         this.position = position;
         this.vaticanMap = vaticanMap;
-    };
+    }
+
+    public void addPosition(){
+        this.position++;
+    }
 
     public void setVaticanMap(HashMap<Integer, Boolean> vaticanMap) {
         this.vaticanMap = vaticanMap;
@@ -38,6 +43,7 @@ public class FaithTrack {
         StringBuilder faithArt = new StringBuilder("");
         String f = "     ";
         int ft=1;
+
         String cross = CLIColor.ANSI_RED +"╬" + CLIColor.ANSI_RESET;
         String crossB = CLIColor.ANSI_RESET+"\u001B[40m" +"╬" + CLIColor.ANSI_RESET;
 
