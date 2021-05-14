@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.common_files.model.LeaderCard;
 import it.polimi.ingsw.client.CLI.CLIColor;
+import it.polimi.ingsw.common_files.model.Resource;
 import it.polimi.ingsw.common_files.model.Utility;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Board {
     private Strongbox strongbox ;
     private WarehouseStore warehouseStore;
     private ArrayList<LeaderCard> leaderCards;
+    private ArrayList<Resource> resHand;
 
     public Board(DevelopmentPlace developmentPlace, FaithTrack faithTrack
             ,Strongbox strongbox, WarehouseStore warehouseStore) {
@@ -24,6 +26,23 @@ public class Board {
         this.strongbox = strongbox;
         this.warehouseStore = warehouseStore;
         this.leaderCards = new ArrayList<>();
+        this.resHand = new ArrayList<>();
+    }
+
+    public ArrayList<LeaderCard> getLeaderCards() {
+        return leaderCards;
+    }
+
+    public void setLeaderCards(ArrayList<LeaderCard> leaderCards) {
+        this.leaderCards = leaderCards;
+    }
+
+    public void setDevelopmentPlace(DevelopmentPlace developmentPlace) {
+        this.developmentPlace = developmentPlace;
+    }
+
+    public void setResHand(ArrayList<Resource> resHand) {
+        this.resHand = resHand;
     }
 
     public DevelopmentPlace getDevelopmentPlace() {
@@ -61,7 +80,7 @@ public class Board {
         boardArt.append("┌─────────────────────────────────────────────────────────────────────────────────────" +
                 "──────────────────────────────────────────────────────────────┐\n");
         String emptyCard =
-                "┌─────────────────┐\n"+
+                        "┌─────────────────┐\n"+
                         "│                 │\n"+
                         "│                 │\n"+
                         "│                 │\n"+

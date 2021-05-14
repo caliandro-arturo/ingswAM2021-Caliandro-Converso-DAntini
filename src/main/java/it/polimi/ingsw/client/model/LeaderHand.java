@@ -24,6 +24,10 @@ public class LeaderHand {
     public ArrayList<LeaderCard> getHand() {
         return hand;
     }
+
+    public void discardLeaderCard(LeaderCard leaderCard){
+        this.hand.remove(leaderCard);
+    }
     /**
      * representation method for the hand of the player (CLI)
      * @return String with the representation

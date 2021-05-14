@@ -14,9 +14,9 @@ public class Board {
 
     private ArrayList<WarehouseStore> store;
     private FaithTrack faithTrack;
-    private final Strongbox strongbox ;
+    private final Strongbox strongbox;
     private final DevelopmentPlace[] developmentSpace;
-    private final ArrayList<Production> productionList ;
+    private final ArrayList<Production> productionList;
     private final ArrayList<LeaderCard> activeLeaders;
     private Game game;
     private ArrayList<Resource> resHand;

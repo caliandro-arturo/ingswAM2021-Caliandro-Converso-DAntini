@@ -3,6 +3,7 @@ package it.polimi.ingsw.common_files.message.toClient;
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.common_files.message.toClient.updates.GameUpdate;
 import it.polimi.ingsw.common_files.message.toClient.updates.GridUpdate;
+import it.polimi.ingsw.common_files.message.toClient.updates.ResourceUpdate;
 
 /**
  * Reads messages from server and updates the client version of the model, or notifies the player.
@@ -53,7 +54,7 @@ public class ClientMessageVisitor {
 
     public void visit(GridUpdate msg){
     }
-
+    public void visit(ResourceUpdate msg){}
     public void visit(TurnPhaseAnnouncement msg) {
 
     }

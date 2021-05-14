@@ -57,6 +57,14 @@ public class UpdateHandler implements ToServerMessageHandler {
         model.getDevelopmentGrid().setGrid(msg.getGrid());
     }
 
+    /**
+     * updates the hand of the player with the recently bought resources from the market
+     * @param msg
+     */
+    public void visit(ResourceUpdate msg){
+        model.getBoard().setResHand(msg.getResHandUpdate());
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     /*messages from client*/
 

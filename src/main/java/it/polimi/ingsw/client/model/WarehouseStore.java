@@ -25,6 +25,16 @@ public class WarehouseStore {
         --position;
         this.res.get(position).add(resource);
     }
+
+    /**
+     * removes the first instance of the searched resource
+     * @param resource the resource you want to remove
+     */
+    public void removeRes( Resource resource){
+        for(ArrayList a: res){
+            a.remove(resource);
+        }
+    }
     /**
      * representation method for Warehouse Store (CLI)
      * @return String with the representation
@@ -37,8 +47,8 @@ public class WarehouseStore {
         String resString3 = "";
 
 
-        if(res.get(0)==null){
-            resString1= "│         /     _    \\      \n";
+        if(res.get(0).isEmpty()){
+            resString1= "│         /    _    \\      \n";
         }
         else
             resString1 = "│         /    "+res.get(0).get(0)+"    \\      \n";
