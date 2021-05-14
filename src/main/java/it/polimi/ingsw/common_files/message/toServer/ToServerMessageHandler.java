@@ -11,5 +11,7 @@ public interface ToServerMessageHandler {
     void visit(DeployRes deployRes);
     void visit(UseLeader useLeader);
     void visit(DiscardLeader discardLeader);
+    void visit(Next next);
+    void visit(ChooseTurnPhase chooseTurnPhase);
     void visit(TakeRes takeRes);
 }

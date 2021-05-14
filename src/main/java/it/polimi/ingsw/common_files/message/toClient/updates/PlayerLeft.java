@@ -4,6 +4,9 @@ import it.polimi.ingsw.client.UpdateHandler;
 import it.polimi.ingsw.common_files.message.Message;
 import it.polimi.ingsw.common_files.message.toClient.ClientMessageVisitor;
 
+/**
+ * Update sent when a player lefts the virtualView.
+ */
 public class PlayerLeft extends Message implements GameUpdate {
     private final String name;
 

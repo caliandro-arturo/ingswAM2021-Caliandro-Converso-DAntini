@@ -4,8 +4,11 @@ import it.polimi.ingsw.client.UpdateHandler;
 import it.polimi.ingsw.common_files.message.Message;
 import it.polimi.ingsw.common_files.message.toClient.ClientMessageVisitor;
 
+/**
+ * Update sent when a player reaches a victory condition.
+ */
 public class LastTurn extends Message implements GameUpdate{
-    private String reason;
+    private final String reason;
 
     public LastTurn(String reason) {
         this.reason = reason;

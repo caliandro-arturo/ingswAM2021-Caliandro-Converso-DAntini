@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common_files.message.toClient;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.ClientModel;
+import it.polimi.ingsw.common_files.message.toClient.updates.GameSet;
 import it.polimi.ingsw.common_files.message.toClient.updates.GameUpdate;
 import it.polimi.ingsw.common_files.message.toClient.updates.GridUpdate;
 import it.polimi.ingsw.common_files.message.toClient.updates.ResourceUpdate;
@@ -14,10 +16,6 @@ public class ClientMessageVisitor {
 
     public ClientMessageVisitor(ClientController controller) {
         this.controller = controller;
-    }
-
-    public void visit(AskNickname msg) {
-        controller.show("asknickname");
     }
 
     public void visit(CreateGame msg) {
@@ -56,6 +54,7 @@ public class ClientMessageVisitor {
     }
     public void visit(ResourceUpdate msg){}
     public void visit(TurnPhaseAnnouncement msg) {
-
+        controller.getModel().setCurrentTurnPhase(msg.getTurnPhaseName());
+        controller.show("turnphase");
     }
 }

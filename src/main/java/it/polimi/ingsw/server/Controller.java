@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.common_files.message.Message;
 import it.polimi.ingsw.common_files.message.toClient.ErrorMessage;
+import it.polimi.ingsw.common_files.message.toClient.updates.GameSet;
 import it.polimi.ingsw.common_files.message.toClient.updates.GameStarted;
 import it.polimi.ingsw.common_files.message.toServer.ServerMessageVisitor;
 import it.polimi.ingsw.common_files.message.toServer.SetGame;
@@ -58,6 +59,7 @@ public class Controller {
         messageVisitor.setControllerAdapter(model.getControllerAdapter());
         model.getViewAdapter().setVirtualView(virtualView);
         virtualView.setHasBeenSet(true);
+        virtualView.sendMessage(new GameSet(playersNum));
         if (virtualView.isFull()) {
             virtualView.removeExtraClients(playersNum);
             startGame();

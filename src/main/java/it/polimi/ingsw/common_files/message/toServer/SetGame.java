@@ -2,6 +2,9 @@ package it.polimi.ingsw.common_files.message.toServer;
 
 import it.polimi.ingsw.common_files.message.Message;
 
+/**
+ * Message sent to set the game with a certain number of players.
+ */
 public class SetGame extends Message implements ToServerMessage {
     private final int numberOfPlayers;
 

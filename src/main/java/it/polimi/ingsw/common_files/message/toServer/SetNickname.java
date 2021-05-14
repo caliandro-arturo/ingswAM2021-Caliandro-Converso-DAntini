@@ -4,15 +4,10 @@ import it.polimi.ingsw.common_files.message.Message;
 import it.polimi.ingsw.server.ClientHandler;
 
 /**
- * Message with a nickname. {@link SetNickname#nickname} cannot be empty.
+ * Message sent by the client to set his nickname.
  */
 public class SetNickname extends Message implements ToServerMessage {
-    @Override
-    public void accept(ToServerMessageHandler v) {
-        v.visit(this);
-    }
-
-    private String nickname;
+    private final String nickname;
     private ClientHandler client;
 
     public SetNickname(String nickname) {
@@ -29,5 +24,10 @@ public class SetNickname extends Message implements ToServerMessage {
 
     public void setClient(ClientHandler client) {
         this.client = client;
+    }
+
+    @Override
+    public void accept(ToServerMessageHandler v) {
+        v.visit(this);
     }
 }

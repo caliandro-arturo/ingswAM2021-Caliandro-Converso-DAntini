@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class ClientController {
     private final View view;
-    private ClientModel model = new ClientModel();
+    private final ClientModel model = new ClientModel();
     private final ClientSocketManager socketManager;
     private final ClientMessageVisitor clientMessageVisitor = new ClientMessageVisitor(this);
     private final UpdateHandler updateHandler;
@@ -26,6 +26,10 @@ public class ClientController {
         this.socketManager = socketManager;
         socketManager.setController(this);
         updateHandler = new UpdateHandler(this, model);
+    }
+
+    public ClientModel getModel() {
+        return model;
     }
 
     /**

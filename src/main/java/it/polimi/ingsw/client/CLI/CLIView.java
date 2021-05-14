@@ -31,9 +31,9 @@ public class CLIView extends View {
             //each case is an identifier
             case "setnick": {
                 if (!commandSlice[1].isEmpty() && !commandSlice[1].matches("\\s*")) {
-                    System.out.println("creating nickname...");
+                    System.out.println("Creating nickname...");
                     getController().sendMessage(new SetNickname(commandSlice[1]));
-                } else System.err.println("nickname not valid.");
+                } else System.err.println("Nickname not valid.");
                 break;
             }
             case "setgame": {
@@ -43,6 +43,12 @@ public class CLIView extends View {
                     System.err.println("You must insert a number.");
                     break;
                 }
+                break;
+            }
+            case "choose": {
+                if (!commandSlice[1].isEmpty() || commandSlice[1].matches("\\s*"))
+                    getController().sendMessage(new ChooseTurnPhase(commandSlice[1]));
+                else System.err.println("You must insert a turn phase.");
                 break;
             }
             case "activateprod": {
@@ -160,8 +166,10 @@ public class CLIView extends View {
                 }
 
             }
-
-
+            case "next": {
+                getController().sendMessage(new Next());
+                break;
+            }
             //todo insert other commands
             default:
                 System.err.println("Invalid command, retry.");
@@ -186,7 +194,10 @@ public class CLIView extends View {
             }
             case "waitgamecreation": {
                 System.out.println("Waiting creation of the game...");
+                break;
             }
+            case "turnphase":
+                System.out.println("Next turn phase: " + getModel().getCurrentTurnPhase());
         }
     }
 

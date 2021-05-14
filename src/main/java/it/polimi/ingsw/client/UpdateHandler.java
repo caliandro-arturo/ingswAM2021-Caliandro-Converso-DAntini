@@ -40,14 +40,23 @@ public class UpdateHandler implements ToServerMessageHandler {
     }
 
     /**
+     * Handles the game setting.
+     */
+    public void visit(GameSet msg) {
+        model.setNumOfPlayers(msg.getPlayersNum());
+        controller.showUpdate("The game has been set: " + model.getNumOfPlayers() + " allowed players.");
+    }
+
+    /**
      * Handles the start of the game.
      */
     public void visit(GameStarted msg) {
-
+        controller.showUpdate("The game is starting now...");
     }
-    public void visit(LastTurn lastTurn) {
+
+    public void visit(LastTurn msg) {
         if (!model.isLast())
-            controller.showUpdate("Last turns: " + lastTurn.getReason());
+            controller.showUpdate("Last turns: " + msg.getReason());
     }
 
     /**
@@ -86,8 +95,7 @@ public class UpdateHandler implements ToServerMessageHandler {
     }
 
     /**
-     *
-     * @param msg
+     * Sets the game inserting the number of players in the model.
      */
     @Override
     public void visit(SetGame msg) {
@@ -146,5 +154,17 @@ public class UpdateHandler implements ToServerMessageHandler {
     @Override
     public void visit(TakeRes takeRes) {
 
+    }
+
+    @Override
+    public void visit(Next msg) {
+    }
+
+    /**
+     * Sets the current turn phase to the one selected by the player.
+     */
+    @Override
+    public void visit(ChooseTurnPhase msg) {
+        model.setCurrentTurnPhase(msg.getTurnPhaseName());
     }
 }

@@ -123,7 +123,7 @@ public class ViewAdapter {
     }
 
     public void announceTurnPhase(Player player, String turnPhaseName) {
-
+        /*virtualView.sendMessage(player, new TurnPhaseAnnouncement(turnPhaseName));*/
     }
 
     /**

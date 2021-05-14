@@ -1,9 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.*;
-import it.polimi.ingsw.server.model.Player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ClientModel {
@@ -16,35 +14,8 @@ public class ClientModel {
     private Board board;
     private LeaderHand leaderHand;
     private FullBoard fullBoard;
-    private HashMap<String,Board> othersBoards = new HashMap<>();
-
-    public int getPosition() {
-        return position;
-    }
-
-    public FullBoard getFullBoard() {
-        return fullBoard;
-    }
-
-    public void setFullBoard(FullBoard fullBoard) {
-        this.fullBoard = fullBoard;
-    }
-
-    public HashMap<String, Board> getOthersBoards() {
-        return othersBoards;
-    }
-
-    public void setOthersBoards(HashMap<String, Board> othersBoards) {
-        this.othersBoards = othersBoards;
-    }
-
-    public DevelopmentGrid getDevelopmentGrid() {
-        return developmentGrid;
-    }
-
-    public void setDevelopmentGrid(DevelopmentGrid developmentGrid) {
-        this.developmentGrid = developmentGrid;
-    }
+    private HashMap<String, Board> otherBoards = new HashMap<>();
+    private String currentTurnPhase;
 
     public String getPlayerUsername() {
         return playerUsername;
@@ -54,8 +25,40 @@ public class ClientModel {
         return numOfPlayers;
     }
 
+    public int getPosition() {
+        return position;
+    }
+
     public boolean isLast() {
         return isLast;
+    }
+
+    public DevelopmentGrid getDevelopmentGrid() {
+        return developmentGrid;
+    }
+
+    public Market getMarket() {
+        return market;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public LeaderHand getLeaderHand() {
+        return leaderHand;
+    }
+
+    public FullBoard getFullBoard() {
+        return fullBoard;
+    }
+
+    public HashMap<String, Board> getOtherBoards() {
+        return otherBoards;
+    }
+
+    public String getCurrentTurnPhase() {
+        return currentTurnPhase;
     }
 
     public void setPlayerUsername(String playerUsername) {
@@ -74,8 +77,8 @@ public class ClientModel {
         isLast = last;
     }
 
-    public Market getMarket() {
-        return market;
+    public void setDevelopmentGrid(DevelopmentGrid developmentGrid) {
+        this.developmentGrid = developmentGrid;
     }
 
     public void setMarket(Market market) {
@@ -86,16 +89,19 @@ public class ClientModel {
         this.board = board;
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public LeaderHand getLeaderHand() {
-        return leaderHand;
-    }
-
     public void setLeaderHand(LeaderHand leaderHand) {
         this.leaderHand = leaderHand;
     }
 
+    public void setFullBoard(FullBoard fullBoard) {
+        this.fullBoard = fullBoard;
+    }
+
+    public void setOtherBoards(HashMap<String, Board> otherBoards) {
+        this.otherBoards = otherBoards;
+    }
+
+    public void setCurrentTurnPhase(String currentTurnPhase) {
+        this.currentTurnPhase = currentTurnPhase;
+    }
 }

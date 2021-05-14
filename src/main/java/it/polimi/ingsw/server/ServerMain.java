@@ -36,7 +36,7 @@ public class ServerMain {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            System.err.println("ServerMain.line 36: " + e.getMessage());
+            e.printStackTrace();
             return;
         }
         System.out.println("Server ready");
@@ -58,14 +58,14 @@ public class ServerMain {
                     e.printStackTrace();
                 }
             } catch (IOException e) {
-                System.err.println("ServerMain.line 50: " + e.getMessage());
+                e.printStackTrace();
                 break;
             }
         }
         try {
             serverSocket.close();
         } catch (IOException e) {
-            System.err.println("ServerMain.line 57: " + e.getMessage());
+            e.printStackTrace();
         }
         executor.shutdown();
     }
@@ -97,12 +97,11 @@ public class ServerMain {
             server = new ServerMain(Integer.parseInt(args[0]));
         } catch (ArrayIndexOutOfBoundsException e) {
             try (Reader reader = new InputStreamReader(
-                        Objects.requireNonNull(ServerMain.class
-                                .getClassLoader()
-                                .getResourceAsStream("serverConfig.json")
-                        )
-                )
-            ) {
+                    Objects.requireNonNull(ServerMain.class
+                            .getClassLoader()
+                            .getResourceAsStream("serverConfig.json")
+                    )
+            )) {
                 Gson gson = new Gson();
                 Type serverPort = new TypeToken<Map<String, Integer>>() {
                 }.getType();

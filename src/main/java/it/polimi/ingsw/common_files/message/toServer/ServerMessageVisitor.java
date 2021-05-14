@@ -140,7 +140,35 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         confirmMove(msg);
     }
 
-//----------------------------------------------------------------------------------------------------------------------
+    /**
+     * Handles requests to go to the next turn phase.
+     */
+    @Override
+    public void visit(Next next) {
+        try {
+            controllerAdapter.nextTurnPhase(getPlayer(next.getPlayer()));
+        } catch (GameException.IllegalMove e) {
+            denyMove(next, e.getMessage());
+        }
+        confirmMove(next);
+    }
+
+    /**
+     * Handles requests to choose the turn action.
+     */
+    @Override
+    public void visit(ChooseTurnPhase msg) {
+        Player player = getPlayer(msg.getPlayer());
+        String turnPhase = msg.getTurnPhaseName();
+        try {
+            controllerAdapter.startChosenTurnPhase(player, turnPhase);
+        } catch (GameException.IllegalMove e) {
+            denyMove(msg, e.getMessage());
+        }
+        confirmMove(msg);
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------
 
     /* These methods are dedicated to the initial phases of games (creation of game, nickname setting).
      * For this reason, error handling is implemented differently than the others above.

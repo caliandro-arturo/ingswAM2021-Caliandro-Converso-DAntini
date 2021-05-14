@@ -46,6 +46,7 @@ public abstract class SocketManager {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        pinger.interrupt();
         shutdown();
     }
 

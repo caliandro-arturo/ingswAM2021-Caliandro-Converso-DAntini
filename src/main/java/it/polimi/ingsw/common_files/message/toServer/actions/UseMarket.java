@@ -5,7 +5,7 @@ import it.polimi.ingsw.common_files.message.toServer.ToServerMessage;
 import it.polimi.ingsw.common_files.message.toServer.ToServerMessageHandler;
 
 /**
- * input command to use Market
+ * Message sent to use the market.
  */
 public class UseMarket extends Message implements ToServerMessage {
     private final char rowOrColumn;

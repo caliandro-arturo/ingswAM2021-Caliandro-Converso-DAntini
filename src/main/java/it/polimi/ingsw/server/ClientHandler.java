@@ -38,7 +38,7 @@ public class ClientHandler extends SocketManager implements Runnable {
     }
 
     public void setPlayerName(String nickname) {
-        this.player = player;
+        this.player = nickname;
     }
 
     public void run() {

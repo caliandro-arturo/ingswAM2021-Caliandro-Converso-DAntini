@@ -5,13 +5,19 @@ package it.polimi.ingsw.client;
  */
 public abstract class View {
     private ClientController controller;
+    private ClientModel model;
 
     public void setController(ClientController controller) {
         this.controller = controller;
+        model = controller.getModel();
     }
 
     public ClientController getController() {
         return controller;
+    }
+
+    public ClientModel getModel() {
+        return model;
     }
 
     /**
