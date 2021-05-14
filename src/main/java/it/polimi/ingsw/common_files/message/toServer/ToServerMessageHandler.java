@@ -8,6 +8,8 @@ public interface ToServerMessageHandler {
     void visit(UseMarket useMarket);
     void visit(StartProduction startProduction);
     void visit(BuyCard buyCard);
+    void visit(DeployRes deployRes);
     void visit(UseLeader useLeader);
     void visit(DiscardLeader discardLeader);
+    void visit(TakeRes takeRes);
 }

@@ -126,6 +126,11 @@ public class UpdateHandler implements ToServerMessageHandler {
     }
 
     @Override
+    public void visit(DeployRes deployRes) {
+
+    }
+
+    @Override
     public void visit(UseLeader msg) {
         LeaderHand leaderHand = model.getLeaderHand();
         model.getFullBoard().getLeaderCards().add(leaderHand.getHand().get(msg.getIDCard()-1));
@@ -136,5 +141,10 @@ public class UpdateHandler implements ToServerMessageHandler {
     public void visit(DiscardLeader msg){
         model.getLeaderHand().removeCardFromHand(msg.getPos());
         model.getBoard().getFaithTrack().addPosition();
+    }
+
+    @Override
+    public void visit(TakeRes takeRes) {
+
     }
 }

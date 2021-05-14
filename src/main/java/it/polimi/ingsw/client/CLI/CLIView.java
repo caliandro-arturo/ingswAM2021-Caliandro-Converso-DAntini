@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.common_files.message.toServer.SetGame;
 import it.polimi.ingsw.common_files.message.toServer.SetNickname;
 import it.polimi.ingsw.common_files.message.toServer.actions.*;
+import it.polimi.ingsw.common_files.model.Resource;
 
 import java.util.ArrayList;
 
@@ -127,6 +128,37 @@ public class CLIView extends View {
                     System.err.println("You must insert a number.");
                     break;
                 }
+            }
+            case "deployres":{
+                String[] args = commandSlice[1].split("\\s*,\\s*");
+                if (args[0].matches("[Ss]erf|[Ss]hield|[Cc]oin|[Ss]tone")) {
+                    try {
+                        if(args[0].matches("[Ss]erf"))
+                            getController().sendMessage(new DeployRes(Resource.SERF,Integer.parseInt(args[1])));
+                        else if(args[0].matches("[Ss]hield"))
+                            getController().sendMessage(new DeployRes(Resource.SHIELD, Integer.parseInt(args[1])));
+                        else if(args[0].matches("[Cc]oin"))
+                            getController().sendMessage(new DeployRes(Resource.COIN, Integer.parseInt(args[1])));
+                        else if(args[0].matches("[Ss]tone"))
+                            getController().sendMessage(new DeployRes(Resource.STONE, Integer.parseInt(args[1])));
+                    } catch (NumberFormatException e) {
+                        System.err.println("Wrong parameter");
+                        break;
+                    }
+                } else
+                    System.err.println("Wrong parameter");
+                break;
+            }
+            case "takeres":{
+                int depot;
+                try{
+                    depot=Integer.parseInt(commandSlice[1]);
+                    getController().sendMessage(new TakeRes(depot));
+                }catch(NumberFormatException e){
+                    System.err.println("you must insert a number");
+                    break;
+                }
+
             }
 
 

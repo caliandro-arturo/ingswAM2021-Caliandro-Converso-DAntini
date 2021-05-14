@@ -101,6 +101,16 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     }
 
     @Override
+    public void visit(DeployRes msg){
+        try{
+            controllerAdapter.deployResource(getPlayer(msg.getPlayer()),msg.getResource(), msg.getDepot());
+        }catch( GameException.IllegalMove e){
+            denyMove(msg, e.getMessage());
+        }
+        confirmMove(msg);
+    }
+
+    @Override
     public void visit(UseLeader useLeader) {
         try{
             controllerAdapter.useLeader(getPlayer(useLeader.getPlayer()), useLeader.getIDCard());
@@ -118,6 +128,16 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             denyMove(discardLeader,e.getMessage());
         }
         confirmMove(discardLeader);
+    }
+
+    @Override
+    public void visit(TakeRes msg) {
+        try{
+            controllerAdapter.takeOutResource(getPlayer(msg.getPlayer()), msg.getDepot());
+        } catch (GameException.IllegalMove e){
+            denyMove(msg, e.getMessage());
+        }
+        confirmMove(msg);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
