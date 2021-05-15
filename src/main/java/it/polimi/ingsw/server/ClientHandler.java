@@ -1,11 +1,11 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.common_files.message.Message;
-import it.polimi.ingsw.common_files.message.toClient.ErrorMessage;
-import it.polimi.ingsw.common_files.message.toClient.Ok;
-import it.polimi.ingsw.common_files.message.toClient.updates.PlayerLeft;
-import it.polimi.ingsw.common_files.message.toServer.SetNickname;
-import it.polimi.ingsw.common_files.network.SocketManager;
+import it.polimi.ingsw.commonFiles.messages.Message;
+import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
+import it.polimi.ingsw.commonFiles.messages.toClient.Ok;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.PlayerLeft;
+import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
+import it.polimi.ingsw.commonFiles.network.SocketManager;
 
 import java.io.IOException;
 import java.net.Socket;

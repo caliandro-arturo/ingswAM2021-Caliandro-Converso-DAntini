@@ -1,7 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.common_files.model.Color;
-
 import java.util.ArrayList;
 import java.util.Collections;
 

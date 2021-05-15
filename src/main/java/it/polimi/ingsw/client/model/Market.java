@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client.model;
 
-import it.polimi.ingsw.common_files.model.Utility;
-
 public class Market {
     private Marble extraMarble;
     private final Marble[][] grid;

@@ -1,9 +1,7 @@
 package it.polimi.ingsw.client;
 
-import com.google.gson.Gson;
-import it.polimi.ingsw.client.CLI.CLIView;
-import it.polimi.ingsw.common_files.JSONReader;
-import it.polimi.ingsw.common_files.network.SocketManager;
+import it.polimi.ingsw.commonFiles.JSONReader;
+import it.polimi.ingsw.commonFiles.network.SocketManager;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -11,7 +9,6 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Map;
-import java.util.concurrent.Future;
 
 /**
  * Interface that represents user interface.

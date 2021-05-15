@@ -1,11 +1,10 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.common_files.JSONReader;
+import it.polimi.ingsw.commonFiles.JSONReader;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

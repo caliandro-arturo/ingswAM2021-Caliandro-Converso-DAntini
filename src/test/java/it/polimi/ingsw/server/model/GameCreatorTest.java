@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.common_files.model.Color;
 import org.junit.jupiter.api.Test;
 
 public class GameCreatorTest {

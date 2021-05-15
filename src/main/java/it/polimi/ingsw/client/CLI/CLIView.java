@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.common_files.message.toServer.SetGame;
-import it.polimi.ingsw.common_files.message.toServer.SetNickname;
-import it.polimi.ingsw.common_files.message.toServer.actions.*;
-import it.polimi.ingsw.common_files.model.Resource;
+import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
+import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
+import it.polimi.ingsw.commonFiles.messages.toServer.actions.*;
+import it.polimi.ingsw.commonFiles.model.Resource;
 
 import java.util.ArrayList;
 

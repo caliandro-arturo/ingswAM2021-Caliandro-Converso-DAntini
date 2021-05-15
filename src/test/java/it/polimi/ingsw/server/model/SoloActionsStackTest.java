@@ -1,7 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.common_files.model.Color;
-import it.polimi.ingsw.common_files.model.DevelopmentCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

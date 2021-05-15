@@ -1,11 +1,9 @@
 package it.polimi.ingsw.client.model;
 
-import it.polimi.ingsw.common_files.model.*;
+import it.polimi.ingsw.commonFiles.model.Resource;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class LeaderHandTest {
     LeaderCard card1;
@@ -17,8 +15,10 @@ class LeaderHandTest {
     public void printTest(){
         production = new AdditionalProductionPower(Resource.COIN);
         ArrayList<LeaderCard> leaderCards = new ArrayList<>();
-        Color[] colors = new Color[]{Color.GREEN,Color.BLUE};
-        Integer[] quantity = new Integer[]{2,1};
+        ArrayList<Color> colors = new ArrayList<>();
+        colors.add(Color.BLUE);
+        ArrayList<Integer> quantity = new ArrayList<>();
+        quantity.add(2);
         Requirements type1 = new ColorCost(colors,quantity);
         LeaderPower power1 = production;
 

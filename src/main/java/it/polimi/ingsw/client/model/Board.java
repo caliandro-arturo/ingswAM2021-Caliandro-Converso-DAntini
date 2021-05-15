@@ -1,9 +1,8 @@
 package it.polimi.ingsw.client.model;
 
-import it.polimi.ingsw.common_files.model.LeaderCard;
+
 import it.polimi.ingsw.client.CLI.CLIColor;
-import it.polimi.ingsw.common_files.model.Resource;
-import it.polimi.ingsw.common_files.model.Utility;
+import it.polimi.ingsw.commonFiles.model.Resource;
 
 import java.util.ArrayList;
 
@@ -63,6 +62,18 @@ public class Board {
 
     public WarehouseStore getWarehouseStore() {
         return warehouseStore;
+    }
+
+    public void removeResource(int[] store, ArrayList<Resource> resources){
+        for (int i=0; i<store.length; i++){
+            if (store[i]==0){
+                strongbox.removeResources(resources.get(i));
+            } else if (store[i] <=3){
+                warehouseStore.removeRes(resources.get(i));
+            } else {
+                //TODO leader warehouse not accessible
+            }
+        }
     }
 
     /**

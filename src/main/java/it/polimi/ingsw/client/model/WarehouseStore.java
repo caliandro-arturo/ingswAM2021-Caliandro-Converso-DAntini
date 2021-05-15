@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.client.CLI.CLIColor;
-import it.polimi.ingsw.common_files.model.Resource;
+import it.polimi.ingsw.commonFiles.model.Resource;
 
 import java.util.ArrayList;
 
@@ -35,6 +35,8 @@ public class WarehouseStore {
             a.remove(resource);
         }
     }
+
+
     /**
      * representation method for Warehouse Store (CLI)
      * @return String with the representation

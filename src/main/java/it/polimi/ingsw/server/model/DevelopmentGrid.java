@@ -1,9 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.common_files.model.Color;
-import it.polimi.ingsw.common_files.model.DevelopmentCard;
-import it.polimi.ingsw.common_files.model.Utility;
-
 import java.util.Map;
 
 public class DevelopmentGrid {

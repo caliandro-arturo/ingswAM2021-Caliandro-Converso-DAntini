@@ -1,8 +1,9 @@
 package it.polimi.ingsw.client.model;
 
-import it.polimi.ingsw.common_files.model.*;
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.commonFiles.model.ProductionPower;
+import it.polimi.ingsw.commonFiles.model.Resource;
+import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
+import it.polimi.ingsw.server.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -37,8 +38,10 @@ class PersonalBoardTest {
         track.setPositionB(3);
         production = new AdditionalProductionPower(Resource.COIN);
         ArrayList<LeaderCard> leaderCards = new ArrayList<>();
-        Color[] colors = new Color[]{Color.GREEN,Color.BLUE};
-        Integer[] quantity = new Integer[]{2,1};
+        ArrayList<Color> colors = new ArrayList<>();
+        ArrayList<Integer> quantity = new ArrayList<>();
+        colors.add(Color.BLUE);
+        quantity.add(2);
         Requirements type1 = new ColorCost(colors,quantity);
         LeaderPower power1 = production;
         card1 = new LeaderCard(1, type1,power1);

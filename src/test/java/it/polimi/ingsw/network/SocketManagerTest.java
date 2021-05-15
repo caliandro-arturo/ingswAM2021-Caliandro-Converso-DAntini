@@ -2,8 +2,8 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.client.CLI.CLI;
 import it.polimi.ingsw.client.CLI.CLIView;
-import it.polimi.ingsw.common_files.message.toServer.SetNickname;
-import it.polimi.ingsw.common_files.network.SocketManager;
+import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
+import it.polimi.ingsw.commonFiles.network.SocketManager;
 import it.polimi.ingsw.server.ServerMain;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

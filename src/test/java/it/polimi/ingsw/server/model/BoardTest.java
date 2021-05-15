@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.common_files.model.DevelopmentCard;
-import it.polimi.ingsw.common_files.model.Resource;
+import it.polimi.ingsw.commonFiles.model.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

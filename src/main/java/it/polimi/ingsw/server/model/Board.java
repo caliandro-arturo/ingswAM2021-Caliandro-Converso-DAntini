@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.common_files.model.*;
+import it.polimi.ingsw.commonFiles.model.Production;
+import it.polimi.ingsw.commonFiles.model.Resource;
 
 import java.util.*;
 

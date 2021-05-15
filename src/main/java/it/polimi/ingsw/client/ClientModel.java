@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.*;
+import it.polimi.ingsw.commonFiles.model.Resource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ClientModel {
@@ -93,6 +95,10 @@ public class ClientModel {
         this.leaderHand = leaderHand;
     }
 
+    public void updateResource(int[] cost, ArrayList<Resource> resource){
+
+        board.removeResource(cost, resource);
+    }
     public void setFullBoard(FullBoard fullBoard) {
         this.fullBoard = fullBoard;
     }

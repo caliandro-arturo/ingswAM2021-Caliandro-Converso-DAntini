@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.common_files.message.Message;
-import it.polimi.ingsw.common_files.message.toClient.ClientMessageVisitor;
-import it.polimi.ingsw.common_files.message.toClient.ToClientMessage;
-import it.polimi.ingsw.common_files.message.toClient.updates.GameUpdate;
-import it.polimi.ingsw.common_files.message.toServer.ToServerMessage;
+import it.polimi.ingsw.commonFiles.messages.Message;
+import it.polimi.ingsw.commonFiles.messages.toClient.ClientMessageVisitor;
+import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessage;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
+import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessage;
 
 import java.io.IOException;
 import java.util.HashMap;

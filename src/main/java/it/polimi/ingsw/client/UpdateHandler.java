@@ -1,15 +1,17 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.LeaderHand;
-import it.polimi.ingsw.common_files.message.toClient.updates.*;
-import it.polimi.ingsw.common_files.message.toServer.SetGame;
-import it.polimi.ingsw.common_files.message.toServer.SetNickname;
-import it.polimi.ingsw.common_files.message.toServer.ToServerMessageHandler;
-import it.polimi.ingsw.common_files.message.toServer.actions.*;
-import it.polimi.ingsw.common_files.model.DevelopmentCard;
-import it.polimi.ingsw.common_files.model.Production;
-import it.polimi.ingsw.common_files.model.Utility;
-import it.polimi.ingsw.common_files.model.UtilityProductionAndCost;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.*;
+import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
+import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
+import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessageHandler;
+import it.polimi.ingsw.commonFiles.messages.toServer.actions.*;
+import it.polimi.ingsw.commonFiles.model.Resource;
+import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
+import it.polimi.ingsw.client.model.Utility;
+import it.polimi.ingsw.client.model.DevelopmentCard;
+
+import java.util.ArrayList;
 
 /**
  * Handles model updates and service communications.
@@ -105,6 +107,11 @@ public class UpdateHandler implements ToServerMessageHandler {
 
     @Override
     public void visit(StartProduction msg) {
+        ArrayList<Resource> resources = new ArrayList<Resource>();
+        for (String s : msg.getCostResource()) {
+            resources.add(Utility.mapResource.get(s));
+        }
+        model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
         if (msg.getID() == 0){
             model.getBoard().getStrongbox().addResources(1,Utility.mapResource.
                     get(msg.getProduction()));
@@ -130,7 +137,14 @@ public class UpdateHandler implements ToServerMessageHandler {
 
     @Override
     public void visit(BuyCard msg) {
-
+        DevelopmentCard card = model.getDevelopmentGrid().
+                getCard(msg.getLevel(), Utility.mapColor.get(msg.getColor()));
+        ArrayList<Resource> resources = new ArrayList<Resource>();
+        for (int i=0; i<card.getCosts().length; i++){
+            resources.add(card.getCosts()[i].getResource());
+        }
+        model.updateResource(msg.getStores(),resources);
+        model.getBoard().getDevelopmentPlace().setDevStack(card,msg.getSpace());
     }
 
     @Override

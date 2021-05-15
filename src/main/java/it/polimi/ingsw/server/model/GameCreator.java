@@ -3,7 +3,9 @@ package it.polimi.ingsw.server.model;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.common_files.model.*;
+import it.polimi.ingsw.commonFiles.model.ProductionPower;
+import it.polimi.ingsw.commonFiles.model.Resource;
+import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

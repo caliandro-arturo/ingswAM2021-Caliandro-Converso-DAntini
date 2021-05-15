@@ -1,5 +1,4 @@
 package it.polimi.ingsw.client.model;
-import it.polimi.ingsw.common_files.model.DevelopmentCard;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -27,6 +26,7 @@ public class DevelopmentPlace {
     public void setDevStack(DevelopmentCard developmentCard, int pos){
         this.devStack.get(--pos).push(developmentCard);
     }
+
 
     public DevelopmentCard getTopCard(int pos){
         return this.devStack.get(--pos).peek();

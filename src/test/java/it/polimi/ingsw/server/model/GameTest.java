@@ -1,10 +1,7 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.common_files.message.Message;
-import it.polimi.ingsw.common_files.model.Color;
-import it.polimi.ingsw.common_files.model.DevelopmentCard;
-import it.polimi.ingsw.common_files.model.LeaderCard;
-import it.polimi.ingsw.common_files.model.Resource;
+import it.polimi.ingsw.commonFiles.messages.Message;
+import it.polimi.ingsw.commonFiles.model.Resource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

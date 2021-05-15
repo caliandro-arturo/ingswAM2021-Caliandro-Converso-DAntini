@@ -1,6 +1,9 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.common_files.model.*;
+import it.polimi.ingsw.commonFiles.model.Production;
+import it.polimi.ingsw.commonFiles.model.ProductionPower;
+import it.polimi.ingsw.commonFiles.model.Resource;
+import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

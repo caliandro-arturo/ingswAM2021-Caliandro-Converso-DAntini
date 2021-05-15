@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.*;
+import it.polimi.ingsw.commonFiles.network.SocketManager;
 
 import java.io.*;
 

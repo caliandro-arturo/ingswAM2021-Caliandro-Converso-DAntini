@@ -1,7 +1,8 @@
 package it.polimi.ingsw.server.model;
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.common_files.model.*;
+import it.polimi.ingsw.commonFiles.model.Resource;
+import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -19,7 +20,7 @@ public class LeaderCardTest {
 
     @BeforeAll
     void setUp(){
-        UtilityProductionAndCost cost1 = new UtilityProductionAndCost(5,Resource.COIN);
+        UtilityProductionAndCost cost1 = new UtilityProductionAndCost(5, Resource.COIN);
         Color[] colors = new Color[]{Color.GREEN,Color.BLUE};
         Color[] colors1 = new Color[]{Color.GREEN};
         Integer[] quantity = new Integer[]{2,1};

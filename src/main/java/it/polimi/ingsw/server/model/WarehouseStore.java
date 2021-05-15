@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.common_files.model.Resource;
+import it.polimi.ingsw.commonFiles.model.Resource;
 
 import java.util.ArrayList;
 

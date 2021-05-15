@@ -1,12 +1,12 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.common_files.message.Message;
-import it.polimi.ingsw.common_files.message.toClient.ErrorMessage;
-import it.polimi.ingsw.common_files.message.toClient.updates.GameSet;
-import it.polimi.ingsw.common_files.message.toClient.updates.GameStarted;
-import it.polimi.ingsw.common_files.message.toServer.ServerMessageVisitor;
-import it.polimi.ingsw.common_files.message.toServer.SetGame;
-import it.polimi.ingsw.common_files.message.toServer.ToServerMessage;
+import it.polimi.ingsw.commonFiles.messages.Message;
+import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameSet;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameStarted;
+import it.polimi.ingsw.commonFiles.messages.toServer.ServerMessageVisitor;
+import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
+import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessage;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.GameCreator;
 import it.polimi.ingsw.server.model.Player;
