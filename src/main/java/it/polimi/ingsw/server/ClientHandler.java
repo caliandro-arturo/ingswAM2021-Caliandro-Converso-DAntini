@@ -6,7 +6,6 @@ import it.polimi.ingsw.common_files.message.toClient.Ok;
 import it.polimi.ingsw.common_files.message.toClient.updates.PlayerLeft;
 import it.polimi.ingsw.common_files.message.toServer.SetNickname;
 import it.polimi.ingsw.common_files.network.SocketManager;
-import it.polimi.ingsw.server.model.Player;
 
 import java.io.IOException;
 import java.net.Socket;

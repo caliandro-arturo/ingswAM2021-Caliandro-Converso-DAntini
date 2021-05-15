@@ -18,7 +18,4 @@ public interface LeaderPower {
      * @param player current player
      */
     void activatePower(Player player);
-
-    String toString();
-
 }

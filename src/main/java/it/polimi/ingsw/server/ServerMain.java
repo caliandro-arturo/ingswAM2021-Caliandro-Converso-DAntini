@@ -1,12 +1,11 @@
 package it.polimi.ingsw.server;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.common_files.JSONReader;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,31 +41,30 @@ public class ServerMain {
         System.out.println("Server ready");
         /*main loop: accepting new sockets and verifying that there's space in the game for other players;
          * otherwise, creating new games. */
-        while (true) {
+        Socket socket;
+        do {
             System.out.println("Accepting...");
             try {
-                Socket socket = serverSocket.accept();
+                socket = serverSocket.accept();
                 socket.setSoTimeout(timeout);
-                connectedClients.add(socket);
-                System.out.println("Accepted "
-                        + socket.getInetAddress().getHostName()
-                        + " at port "
-                        + socket.getPort() + ".");
-                try {
-                    executor.submit(new ClientHandler(this, socket, findFirstFreeVirtualView(socket)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             } catch (IOException e) {
                 e.printStackTrace();
-                break;
+                continue;
             }
-        }
-        try {
-            serverSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            try {
+                executor.submit(new ClientHandler(this, socket, findFirstFreeVirtualView(socket)));
+            } catch (IOException e) {
+                try {
+                    socket.close();
+                } catch (IOException ignore) {
+                }
+            }
+            connectedClients.add(socket);
+            System.out.println("Accepted "
+                    + socket.getInetAddress().getHostName()
+                    + " at port "
+                    + socket.getPort() + ".");
+        } while (!serverSocket.isClosed());
         executor.shutdown();
     }
 
@@ -93,26 +91,23 @@ public class ServerMain {
 
     public static void main(String[] args) {
         ServerMain server = null;
+        Map<String, String> file = null;
         try {
             server = new ServerMain(Integer.parseInt(args[0]));
         } catch (ArrayIndexOutOfBoundsException e) {
-            try (Reader reader = new InputStreamReader(
-                    Objects.requireNonNull(ServerMain.class
-                            .getClassLoader()
-                            .getResourceAsStream("serverConfig.json")
-                    )
-            )) {
-                Gson gson = new Gson();
-                Type serverPort = new TypeToken<Map<String, Integer>>() {
-                }.getType();
-                server = new ServerMain((int) ((Map) gson.fromJson(reader, serverPort)).get("serverPort"));
+            try {
+                file = JSONReader.readMap("serverConfig.json");
             } catch (IOException ex) {
-                e.printStackTrace();
+                System.err.println(ex.getMessage());
                 System.exit(1);
             } catch (NullPointerException ex) {
                 System.err.println("Cannot read file serverConfig.json.");
                 System.exit(1);
             }
+            server = new ServerMain(Integer.parseInt(file.get("serverPort")));
+        } catch (NumberFormatException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
         }
         server.startServer();
     }

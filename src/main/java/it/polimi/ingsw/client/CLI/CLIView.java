@@ -196,8 +196,12 @@ public class CLIView extends View {
                 System.out.println("Waiting creation of the game...");
                 break;
             }
-            case "turnphase":
+            case "turnphase": {
                 System.out.println("Next turn phase: " + getModel().getCurrentTurnPhase());
+                break;
+            }
+            default:
+                System.out.println(element);
         }
     }
 
