@@ -2,6 +2,7 @@ package it.polimi.ingsw.commonFiles.messages.toClient;
 
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.ResourceUpdate;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.TablePosition;
 
 public interface ToClientMessageVisitor {
     void visit(CreateGame msg);

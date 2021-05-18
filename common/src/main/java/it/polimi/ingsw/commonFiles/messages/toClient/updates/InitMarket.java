@@ -3,11 +3,11 @@ package it.polimi.ingsw.commonFiles.messages.toClient.updates;
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
 
-public class initMarket extends Message implements GameUpdate {
+public class InitMarket extends Message implements GameUpdate {
     private String[][] tray;
     private String extraMarble;
 
-    public initMarket(String[][] tray, String extraMarble) {
+    public InitMarket(String[][] tray, String extraMarble) {
         this.tray = tray;
         this.extraMarble = extraMarble;
     }

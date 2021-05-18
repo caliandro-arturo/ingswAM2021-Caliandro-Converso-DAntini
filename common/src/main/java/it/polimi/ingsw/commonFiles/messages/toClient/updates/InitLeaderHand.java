@@ -5,12 +5,12 @@ import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
 
 import java.util.ArrayList;
 
-public class initLeaderHand extends Message implements GameUpdate {
+public class InitLeaderHand extends Message implements GameUpdate {
     private ArrayList<Integer> victoryPoints = new ArrayList<>();
     private ArrayList<String[]> requirements = new ArrayList<>();
     private ArrayList<String[]> leaderPower = new ArrayList<>();
 
-    public initLeaderHand(ArrayList<Integer> victoryPoints, ArrayList<String[]> requirements, ArrayList<String[]> leaderPower) {
+    public InitLeaderHand(ArrayList<Integer> victoryPoints, ArrayList<String[]> requirements, ArrayList<String[]> leaderPower) {
         this.victoryPoints = victoryPoints;
         this.requirements = requirements;
         this.leaderPower = leaderPower;

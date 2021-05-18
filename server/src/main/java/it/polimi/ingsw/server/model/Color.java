@@ -45,4 +45,6 @@ public enum Color {
     Color(GameAction action) {
         this.action = action;
     }
+
+
 }

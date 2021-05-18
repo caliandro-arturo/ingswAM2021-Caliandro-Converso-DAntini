@@ -7,14 +7,14 @@ import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.util.ArrayList;
 
-public class initDevGrid extends Message implements GameUpdate {
+public class InitDevGrid extends Message implements GameUpdate {
     private ArrayList<String> colors;
     private ArrayList<UtilityProductionAndCost[]> costs;
     private ArrayList<Integer> levels;
     private ArrayList<Integer> victoryPoints;
     private ArrayList<Production> productions;
 
-    public initDevGrid(ArrayList<String> colors, ArrayList<UtilityProductionAndCost[]> costs, ArrayList<Integer> levels,
+    public InitDevGrid(ArrayList<String> colors, ArrayList<UtilityProductionAndCost[]> costs, ArrayList<Integer> levels,
                        ArrayList<Integer> victoryPoints, ArrayList<Production> productions) {
         this.colors = colors;
         this.costs = costs;

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class DevelopmentGrid {
@@ -83,5 +84,18 @@ public class DevelopmentGrid {
             }
             j--;
         }
+    }
+
+    /**
+     *
+     */
+    public ArrayList<DevelopmentCard> getTopDevelopmentCards(){
+        ArrayList<DevelopmentCard> cards = new ArrayList<>();
+        for(Deck[] d : developmentGrid) {
+            for(Deck deck : d) {
+                cards.add(deck.getTopCard());
+            }
+        }
+        return cards;
     }
 }

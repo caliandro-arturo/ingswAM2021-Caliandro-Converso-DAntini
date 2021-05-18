@@ -10,11 +10,6 @@ import java.util.HashMap;
 
 class PersonalBoardTest {
     private final WarehouseStore warehouseStore = new WarehouseStore();
-    private final HashMap<Integer, Boolean> vaticanMap = new HashMap<Integer, Boolean>() {{
-        put(1, true);
-        put(2, false);
-        put(3, true);
-    }};
     UtilityProductionAndCost utilityProductionAndCost =
             new UtilityProductionAndCost(1, Resource.COIN);
     UtilityProductionAndCost[] costs = new UtilityProductionAndCost[]{utilityProductionAndCost};
@@ -24,12 +19,12 @@ class PersonalBoardTest {
 
 
     private final Strongbox strongbox = new Strongbox();
-    private final FaithTrack track = new FaithTrack(1, vaticanMap);
-    private final Board personalBoard = new Board(developmentPlace, track, strongbox, warehouseStore);
+    private final FaithTrack track = new FaithTrack(1);
+    private final Board personalBoard = new Board();
 
     LeaderCard card1;
     LeaderCard card2;
-    LeaderHand leaderHand ;
+    LeaderHand leaderHand;
     public AdditionalProductionPower production ;
 
     @Test

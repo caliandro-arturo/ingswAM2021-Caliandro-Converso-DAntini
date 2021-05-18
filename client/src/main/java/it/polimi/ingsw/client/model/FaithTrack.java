@@ -10,20 +10,19 @@ import java.util.HashMap;
 public class FaithTrack {
     private int position;
     private int positionB = 0;
-    private HashMap<Integer, Boolean> vaticanMap;
+    private HashMap<Integer, Boolean> vaticanMap = new HashMap<Integer, Boolean>(){{
+        put(1, false);
+        put(2, false);
+        put(3, false);
+    }};
 
 
-    public FaithTrack(int position, HashMap<Integer, Boolean> vaticanMap){
+    public FaithTrack(int position){
         this.position = position;
-        this.vaticanMap = vaticanMap;
     }
 
     public void addPosition(){
         this.position++;
-    }
-
-    public void setVaticanMap(HashMap<Integer, Boolean> vaticanMap) {
-        this.vaticanMap = vaticanMap;
     }
 
     public void setPosition(int position) {

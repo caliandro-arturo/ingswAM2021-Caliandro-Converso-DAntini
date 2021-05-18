@@ -2,9 +2,16 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
-import it.polimi.ingsw.commonFiles.messages.toClient.TablePosition;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.TablePosition;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitLeaderHand;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitMarket;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.LastTurn;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitDevGrid;
+import it.polimi.ingsw.commonFiles.model.Production;
+import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import it.polimi.ingsw.server.VirtualView;
+
+import java.util.ArrayList;
 
 /**
  * This class contains all the methods used by the model to notify the player and/or to ask him to do an action.
@@ -148,6 +155,53 @@ public class ViewAdapter {
      */
     public void notifyLastTurn(String reason) {
         sendMessage(new LastTurn(reason));
+    }
+
+    /**
+     * Sends initial configurations of development grid and market.
+     */
+    public void sendTable(){
+        ArrayList<DevelopmentCard> cards = game.getDevelopmentGrid().getTopDevelopmentCards();
+        ArrayList<Integer> level = new ArrayList<>();
+        ArrayList<Integer> victoryPoints = new ArrayList<>();
+        ArrayList<String> colors = new ArrayList<>();
+        ArrayList<UtilityProductionAndCost[]> costs = new ArrayList<>();
+        ArrayList<Production> productions = new ArrayList<>();
+        for (DevelopmentCard card : cards){
+            level.add(card.getLevel());
+            victoryPoints.add(card.getVictoryPoints());
+            colors.add(card.getColorString());
+            costs.add(card.getCost());
+            productions.add(card.getProduction());
+        }
+        sendMessage(new InitDevGrid(colors,costs,level,victoryPoints,productions));
+        Market market = game.getMarket();
+        String extraMarble = market.getExtraMarble().getColorString();
+        String[][] tray = new String[market.getRows()][market.getColumns()];
+        for (int i = 0; i < market.getRows(); i++){
+            for (int j = 0; j < market.getColumns(); j++){
+                tray[i][j] = market.getTray()[i][j].getColorString();
+            }
+        }
+        sendMessage(new InitMarket(tray,extraMarble));
+    }
+
+    /**
+     * Sends to the player his leader cards.
+     *
+     * @param player the player to send the leader cards to
+     */
+    public void sendLeaderHand(Player player){
+        ArrayList<LeaderCard> cards = player.getLeaderCards();
+        ArrayList<String[]> requirements = new ArrayList<>();
+        ArrayList<String[]> leaderPowers = new ArrayList<>();
+        ArrayList<Integer> victoryPoints = new ArrayList<>();
+        for (LeaderCard leaderCard : cards){
+            requirements.add(leaderCard.getRequirements().identifier());
+            leaderPowers.add(leaderCard.getLeaderPower().identifier());
+            victoryPoints.add(leaderCard.getVictoryPoints());
+        }
+        sendMessage(player,new InitLeaderHand(victoryPoints,requirements,leaderPowers));
     }
 
 }

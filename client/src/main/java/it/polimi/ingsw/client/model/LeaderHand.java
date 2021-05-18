@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  */
 public class LeaderHand {
-    private ArrayList<LeaderCard> hand;
+    private ArrayList<LeaderCard> hand = new ArrayList<>();
 
     public LeaderHand(ArrayList<LeaderCard> hand) {
         this.hand = hand;

@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.commonFiles.messages.toClient.*;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.ResourceUpdate;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.TablePosition;
 
 /**
  * Reads messages from server and updates the client version of the model, or notifies the player.

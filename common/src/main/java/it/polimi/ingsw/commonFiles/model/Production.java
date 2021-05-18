@@ -2,7 +2,9 @@ package it.polimi.ingsw.commonFiles.model;
 
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
-public interface Production {
+import java.io.Serializable;
+
+public interface Production extends Serializable {
 
     UtilityProductionAndCost[] getProd();
     UtilityProductionAndCost[] getCost();

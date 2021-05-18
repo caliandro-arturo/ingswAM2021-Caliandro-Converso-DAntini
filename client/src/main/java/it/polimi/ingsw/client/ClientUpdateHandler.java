@@ -29,6 +29,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      * Handles the entry of a new player.
      */
     public void visit(NewPlayer msg) {
+        model.setBoards(msg.getName());
         controller.showUpdate(msg.getName() + " has entered the game.");
     }
 
@@ -73,7 +74,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      * @param msg message from server with attributes
      */
     @Override
-    public void visit(initLeaderHand msg) {
+    public void visit(InitLeaderHand msg) {
         ArrayList<LeaderCard> leaderCards = new ArrayList<>();
         Requirements requirement;
         LeaderPower leaderPower;
@@ -119,6 +120,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             leaderCards.add(new LeaderCard(victoryPoints,requirement,leaderPower));
         }
         model.setLeaderHand(new LeaderHand(leaderCards));
+        model.setGameStarted(true);
     }
 
     /**
@@ -126,7 +128,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      * @param msg message from server with attributes
      */
     @Override
-    public void visit(initMarket msg) {
+    public void visit(InitMarket msg) {
         Marble[][] marbles = new Marble[3][4];
         Marble marble = new Marble(Utility.mapColor.get(msg.getExtraMarble()));
         for (int i = 0; i < 3; i++){
@@ -142,13 +144,13 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      * @param msg message from server with attributes
      */
     @Override
-    public void visit(initDevGrid msg) {
+    public void visit(InitDevGrid msg) {
         DevelopmentCard[][] grid = new DevelopmentCard[3][4];
         for(int i=0; i<12; i++){
             int level = msg.getLevels().get(i);
             Color color = Utility.mapColor.get(msg.getColors().get(i));
             int victoryPoints = msg.getVictoryPoints().get(i);
-            grid[level][Utility.colorPosition.get(color)] = new DevelopmentCard(level,victoryPoints,color,
+            grid[level-1][Utility.colorPosition.get(color)] = new DevelopmentCard(level,victoryPoints,color,
                     msg.getCosts().get(i),msg.getProductions().get(i));
         }
         model.setDevelopmentGrid(new DevelopmentGrid(grid));

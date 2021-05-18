@@ -2,10 +2,12 @@ package it.polimi.ingsw.commonFiles.model;
 
 import it.polimi.ingsw.commonFiles.model.Resource;
 
+import java.io.Serializable;
+
 /**
  *  an utility class to help in the construction of various classes
  */
-public class UtilityProductionAndCost {
+public class UtilityProductionAndCost implements Serializable {
     private final Resource resource;
     private final int quantity;
 

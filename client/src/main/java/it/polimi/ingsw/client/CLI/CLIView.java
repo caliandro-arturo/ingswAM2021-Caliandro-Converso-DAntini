@@ -7,6 +7,7 @@ import it.polimi.ingsw.commonFiles.messages.toServer.actions.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -201,6 +202,12 @@ public class CLIView extends View {
                 System.out.println("Next turn phase: " + getModel().getCurrentTurnPhase());
                 break;
             }
+            case "board": {
+                System.out.println(getModel().getFullBoard());
+            }
+            case "hand": {
+                System.out.println(getModel().getLeaderHand());
+            }
             default:
                 System.out.println(element);
         }
@@ -226,6 +233,24 @@ public class CLIView extends View {
         System.out.println(CLIColor.ANSI_BRIGHT_GREEN
                 + update
                 + CLIColor.ANSI_RESET);
+        if (getModel().isGameStarted()){
+            refresh();
+        }
+    }
+
+    /**
+     * refresh the cli after a change
+     */
+    private void refresh(){
+        try {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                System.out.print("\u001B[H\u001B[2J");
+        } catch (IOException | InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        show("board");
     }
 
     private void clear() {

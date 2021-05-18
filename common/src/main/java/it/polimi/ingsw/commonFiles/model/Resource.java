@@ -2,10 +2,12 @@ package it.polimi.ingsw.commonFiles.model;
 
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
 
+import java.io.Serializable;
+
 /**
  *  enum that explain the different type of resource
  */
-public enum Resource {
+public enum Resource implements Serializable {
     SHIELD(CLIColor.ANSI_BLUE + "■" + CLIColor.ANSI_RESET),
     FAITH(CLIColor.ANSI_RED + "■" + CLIColor.ANSI_RESET),
     SERF(CLIColor.ANSI_PURPLE + "■" + CLIColor.ANSI_RESET),

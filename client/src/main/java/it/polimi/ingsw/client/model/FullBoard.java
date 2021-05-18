@@ -9,7 +9,7 @@ public class FullBoard {
     private Board board;
     private DevelopmentGrid grid;
     private Market market;
-    private ArrayList<LeaderCard> leaderCards;
+    private ArrayList<LeaderCard> leaderCards = new ArrayList<>();
     private String space = "                                                        ";
     private String bigSpace = "                                                                             \n";
     String emptyCard =

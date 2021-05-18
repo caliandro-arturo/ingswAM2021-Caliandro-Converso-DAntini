@@ -36,6 +36,10 @@ public class SinglePlayerGame extends Game {
 
     @Override
     public void setUpPlayers() {
+        getViewAdapter().sendTable();
+        for (int i = 0; i < 4; i++)
+            getPlayer(0).getLeaderCards().add(getLeaderDeck().pop());
+        getViewAdapter().sendLeaderHand(getPlayer(0));
         setCurrentPlayer(getPlayer(0));
     }
 

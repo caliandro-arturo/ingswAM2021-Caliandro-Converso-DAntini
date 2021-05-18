@@ -17,6 +17,15 @@ public class ClientModel {
     private FullBoard fullBoard;
     private HashMap<String, Board> boards = new HashMap<>();
     private String currentTurnPhase;
+    private boolean gameStarted = false;
+
+    public boolean isGameStarted(){
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
 
     public String getPlayerUsername() {
         return playerUsername;
@@ -64,6 +73,8 @@ public class ClientModel {
 
     public void setPlayerUsername(String playerUsername) {
         this.playerUsername = playerUsername;
+        boards.put(playerUsername,new Board());
+        fullBoard = new FullBoard(getBoard(),developmentGrid,market, null);
     }
 
     public void setNumOfPlayers(int numOfPlayers) {
@@ -93,12 +104,9 @@ public class ClientModel {
     public void updateResource(int[] cost, ArrayList<Resource> resource){
         getBoard().removeResource(cost, resource);
     }
-    public void setFullBoard(FullBoard fullBoard) {
-        this.fullBoard = fullBoard;
-    }
 
-    public void setBoards(HashMap<String, Board> boards) {
-        this.boards = boards;
+    public void setBoards(String username) {
+        boards.put(username,new Board());
     }
 
     public void setCurrentTurnPhase(String currentTurnPhase) {

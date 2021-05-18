@@ -21,5 +21,8 @@ public class Marble {
     public void pick(Game game) {
         color.act(game);
     }
+    public String getColorString(){
+        return color.name();
+    }
 
 }

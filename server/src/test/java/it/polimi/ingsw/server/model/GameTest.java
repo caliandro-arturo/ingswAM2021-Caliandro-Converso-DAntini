@@ -50,6 +50,16 @@ public class GameTest {
         @Override
         public void notifyInitialResourcesAmount(Player player, int resourceQuantity) {
         }
+
+        @Override
+        public void sendLeaderHand(Player player){
+
+        }
+
+        @Override
+        public void sendTable(){
+
+        }
     };
     Game singleTest;
 

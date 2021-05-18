@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class ProductionPower implements Production {
     private final UtilityProductionAndCost[] cost;
     private final UtilityProductionAndCost[] production;
-    boolean productionCanBeActivate = true;
+    private boolean productionCanBeActivate = true;
 
     @Override
     public boolean getProductionCanBeActivate() {

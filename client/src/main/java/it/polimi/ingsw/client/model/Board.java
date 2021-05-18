@@ -19,12 +19,11 @@ public class Board {
     private ArrayList<LeaderCard> leaderCards;
     private ArrayList<Resource> resHand;
 
-    public Board(DevelopmentPlace developmentPlace, FaithTrack faithTrack
-            ,Strongbox strongbox, WarehouseStore warehouseStore) {
-        this.developmentPlace = developmentPlace;
-        this.faithTrack = faithTrack;
-        this.strongbox = strongbox;
-        this.warehouseStore = warehouseStore;
+    public Board() {
+        this.developmentPlace = new DevelopmentPlace();
+        this.faithTrack = new FaithTrack(0);
+        this.strongbox = new Strongbox();
+        this.warehouseStore = new WarehouseStore();
         this.leaderCards = new ArrayList<>();
         this.resHand = new ArrayList<>();
     }
