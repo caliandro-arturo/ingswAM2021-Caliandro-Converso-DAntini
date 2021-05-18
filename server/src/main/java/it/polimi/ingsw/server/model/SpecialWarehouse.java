@@ -47,4 +47,8 @@ public class SpecialWarehouse implements LeaderPower {
         player.getBoard().getStore().add(extraResource);
     }
 
+    @Override
+    public String[] identifier() {
+        return new String[]{"specialWarehouse", extraResource.getTypeOfResource().toString()};
+    }
 }

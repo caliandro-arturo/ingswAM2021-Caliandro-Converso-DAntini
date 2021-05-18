@@ -7,4 +7,7 @@ public interface UpdateHandler {
     void visit(NewPlayer msg);
     void visit(PlayerLeft msg);
     void visit(ResourceUpdate msg);
+    void visit(initLeaderHand msg);
+    void visit(initMarket msg);
+    void visit(initDevGrid msg);
 }

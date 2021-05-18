@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.LeaderHand;
+import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.*;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
@@ -8,8 +8,6 @@ import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessageHandler;
 import it.polimi.ingsw.commonFiles.messages.toServer.actions.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
-import it.polimi.ingsw.client.model.Utility;
-import it.polimi.ingsw.client.model.DevelopmentCard;
 
 import java.util.ArrayList;
 
@@ -68,6 +66,92 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      */
     public void visit(ResourceUpdate msg){
         model.getBoard().setResHand(msg.getResHandUpdate());
+    }
+
+    /**
+     * initialize leaderHand in model
+     * @param msg message from server with attributes
+     */
+    @Override
+    public void visit(initLeaderHand msg) {
+        ArrayList<LeaderCard> leaderCards = new ArrayList<>();
+        Requirements requirement;
+        LeaderPower leaderPower;
+        for (int i = 0; i < msg.getVictoryPoints().size(); i++) {
+            int victoryPoints = msg.getVictoryPoints().get(i);
+            switch (msg.getLeaderPower().get(i)[0]) {
+                case "saleOnDevelopment":
+                    leaderPower = new SaleOnDevelopment(Utility.mapRepresentationResource.
+                            get(msg.getLeaderPower().get(i)[1]));
+                    break;
+                case "whiteMarbleConversion":
+                    leaderPower = new WhiteMarbleConversion(Utility.mapRepresentationResource.
+                            get(msg.getLeaderPower().get(i)[1]));
+                    break;
+                case "specialWarehouse":
+                    leaderPower = new SpecialWarehouse(null, Utility.mapRepresentationResource.
+                            get(msg.getLeaderPower().get(i)[1]));
+                    break;
+                default:
+                    leaderPower = new AdditionalProductionPower(Utility.mapRepresentationResource.
+                            get(msg.getLeaderPower().get(i)[1]));
+                    break;
+            }
+            if (msg.getRequirements().get(i)[0].equals("resourceCost")) {
+                requirement = new ResourceCost(new UtilityProductionAndCost(Integer.parseInt(msg.getRequirements().
+                        get(i)[2]), Utility.mapRepresentationResource.get(msg.getRequirements().get(i)[1])));
+            } else {
+                String[] colors = msg.getRequirements().get(i)[1].split("\\s*");
+                String[] quantity = msg.getRequirements().get(i)[2].split("\\s*");
+                ArrayList<Color> colorArrayList = new ArrayList<>();
+                ArrayList<Integer> quantityArrayList = new ArrayList<>();
+                for (int k = 0; k < colors.length; k++) {
+                    colorArrayList.add(Utility.mapColor.get(colors[k]));
+                    quantityArrayList.add(Integer.parseInt(quantity[k]));
+                }
+                if (msg.getRequirements().get(i)[0].equals("colorCost")) {
+                    requirement = new ColorCost(colorArrayList, quantityArrayList);
+                } else {
+                    requirement = new LevelCost(colorArrayList,quantityArrayList,
+                            Integer.parseInt(msg.getRequirements().get(i)[3]));
+                }
+            }
+            leaderCards.add(new LeaderCard(victoryPoints,requirement,leaderPower));
+        }
+        model.setLeaderHand(new LeaderHand(leaderCards));
+    }
+
+    /**
+     * initialize Market in model
+     * @param msg message from server with attributes
+     */
+    @Override
+    public void visit(initMarket msg) {
+        Marble[][] marbles = new Marble[3][4];
+        Marble marble = new Marble(Utility.mapColor.get(msg.getExtraMarble()));
+        for (int i = 0; i < 3; i++){
+            for (int k = 0; k < 4; k++){
+                marbles[i][k] = new Marble(Utility.mapColor.get(msg.getTray()[i][k]));
+            }
+        }
+        model.setMarket(new Market(marble,marbles));
+    }
+
+    /**
+     * initialize DevelopmentGrid in model
+     * @param msg message from server with attributes
+     */
+    @Override
+    public void visit(initDevGrid msg) {
+        DevelopmentCard[][] grid = new DevelopmentCard[3][4];
+        for(int i=0; i<12; i++){
+            int level = msg.getLevels().get(i);
+            Color color = Utility.mapColor.get(msg.getColors().get(i));
+            int victoryPoints = msg.getVictoryPoints().get(i);
+            grid[level][Utility.colorPosition.get(color)] = new DevelopmentCard(level,victoryPoints,color,
+                    msg.getCosts().get(i),msg.getProductions().get(i));
+        }
+        model.setDevelopmentGrid(new DevelopmentGrid(grid));
     }
 
     //------------------------------------------------------------------------------------------------------------------

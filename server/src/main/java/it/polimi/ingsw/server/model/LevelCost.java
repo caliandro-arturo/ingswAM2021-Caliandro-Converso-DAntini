@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 public class LevelCost extends ColorCost implements Requirements {
     private final int level;
@@ -49,6 +49,14 @@ public class LevelCost extends ColorCost implements Requirements {
     public void getRequirements(Game game, Player player) {
         super.getRequirements(game,player);
         game.getViewAdapter().sendMessage(player,"of level" );
+    }
+
+    @Override
+    public String[] identifier(){
+        ArrayList<String> arguments = new ArrayList<>(Arrays.asList(super.identifier()));
+        arguments.set(0, "levelCost");
+        arguments.add(Integer.toString(level));
+        return arguments.toArray(new String[4]);
     }
 
 }

@@ -48,4 +48,8 @@ public class AdditionalProductionPower  implements LeaderPower, Production {
         player.getBoard().getProductionList().add(this);
     }
 
+    @Override
+    public String[] identifier() {
+        return new String[]{"specialProduction", cost.toString()};
+    }
 }

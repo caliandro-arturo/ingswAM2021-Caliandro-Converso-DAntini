@@ -13,10 +13,9 @@ public class ClientModel {
     private boolean isLast;
     private DevelopmentGrid developmentGrid;
     private Market market;
-    private Board board;
     private LeaderHand leaderHand;
     private FullBoard fullBoard;
-    private HashMap<String, Board> otherBoards = new HashMap<>();
+    private HashMap<String, Board> boards = new HashMap<>();
     private String currentTurnPhase;
 
     public String getPlayerUsername() {
@@ -44,7 +43,7 @@ public class ClientModel {
     }
 
     public Board getBoard() {
-        return board;
+        return boards.get(playerUsername);
     }
 
     public LeaderHand getLeaderHand() {
@@ -55,8 +54,8 @@ public class ClientModel {
         return fullBoard;
     }
 
-    public HashMap<String, Board> getOtherBoards() {
-        return otherBoards;
+    public Board getOtherPlayerBoard(String playerUsername) {
+        return boards.get(playerUsername);
     }
 
     public String getCurrentTurnPhase() {
@@ -87,24 +86,19 @@ public class ClientModel {
         this.market = market;
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
     public void setLeaderHand(LeaderHand leaderHand) {
         this.leaderHand = leaderHand;
     }
 
     public void updateResource(int[] cost, ArrayList<Resource> resource){
-
-        board.removeResource(cost, resource);
+        getBoard().removeResource(cost, resource);
     }
     public void setFullBoard(FullBoard fullBoard) {
         this.fullBoard = fullBoard;
     }
 
-    public void setOtherBoards(HashMap<String, Board> otherBoards) {
-        this.otherBoards = otherBoards;
+    public void setBoards(HashMap<String, Board> boards) {
+        this.boards = boards;
     }
 
     public void setCurrentTurnPhase(String currentTurnPhase) {

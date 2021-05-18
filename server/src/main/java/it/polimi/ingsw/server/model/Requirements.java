@@ -1,8 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.Player;
-
 /**
  * standard requirements for the leader card
  */
@@ -20,5 +17,8 @@ public interface Requirements {
      */
     void getRequirements(Game game, Player player);
 
-    String toString();
+    /**
+     * Identifier for message to client
+     */
+    String[] identifier();
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 public class ResourceCost implements Requirements {
@@ -8,10 +7,6 @@ public class ResourceCost implements Requirements {
 
     public ResourceCost(UtilityProductionAndCost cost){
         this.cost = cost;
-    }
-
-    public UtilityProductionAndCost getCost(){
-        return cost;
     }
 
     @Override
@@ -28,5 +23,11 @@ public class ResourceCost implements Requirements {
     @Override
     public void getRequirements(Game game, Player player) {
         game.getViewAdapter().sendMessage(player, "to deploy this card you must have: ");
+    }
+
+    @Override
+    public String[] identifier() {
+        return new String[]{"resourceCost", cost.getResource().toString(), 
+                Integer.toString(cost.getQuantity())} ;
     }
 }

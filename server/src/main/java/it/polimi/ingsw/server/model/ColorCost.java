@@ -49,4 +49,15 @@ public class ColorCost implements Requirements {
             }
         }
     }
+
+    @Override
+    public String[] identifier() {
+        StringBuilder arguments = new StringBuilder();
+        StringBuilder quantity = new StringBuilder();
+        for (Map.Entry<Color,Integer> entry: cost.entrySet()){
+            arguments.append(entry.getKey().toString()).append(" ");
+            quantity.append(entry.getValue()).append(" ");
+        }
+        return new String[]{"colorCost", arguments.toString(), quantity.toString() };
+    }
 }

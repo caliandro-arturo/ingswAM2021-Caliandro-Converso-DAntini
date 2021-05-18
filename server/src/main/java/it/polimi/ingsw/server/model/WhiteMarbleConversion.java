@@ -26,4 +26,8 @@ public class WhiteMarbleConversion implements LeaderPower {
         player.addWhiteAlt(getResource());
     }
 
+    @Override
+    public String[] identifier() {
+        return new String[]{"whiteMarbleConversion", resource.toString()};
+    }
 }

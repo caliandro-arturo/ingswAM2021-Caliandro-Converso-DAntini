@@ -35,6 +35,9 @@ public class Utility {
         put("BLUE" , Color.BLUE);
         put("PURPLE" , Color.PURPLE);
         put("YELLOW" , Color.YELLOW);
+        put("WHITE" , Color.WHITE);
+        put("GREY" , Color.GREY);
+        put("RED" , Color.RED);
     }};
     public static ArrayList<Resource> storableResources = new ArrayList<Resource>(){{
         addAll(Arrays.asList(Resource.STONE,Resource.SERF,Resource.COIN,Resource.SHIELD));
@@ -47,5 +50,12 @@ public class Utility {
         put(Resource.SERF,1);
         put(Resource.SHIELD,3);
         put(Resource.STONE,2);
+    }};
+    public static HashMap<String, Resource> mapRepresentationResource = new HashMap<String, Resource>(){{
+        put(CLIColor.ANSI_BLUE + "■" + CLIColor.ANSI_RESET, Resource.SHIELD);
+        put(CLIColor.ANSI_RED + "■" + CLIColor.ANSI_RESET, Resource.FAITH);
+        put(CLIColor.ANSI_PURPLE + "■" + CLIColor.ANSI_RESET, Resource.SERF);
+        put(CLIColor.ANSI_GREY + "■" + CLIColor.ANSI_RESET, Resource.STONE);
+        put(CLIColor.ANSI_YELLOW + "■" + CLIColor.ANSI_RESET, Resource.COIN);
     }};
 }

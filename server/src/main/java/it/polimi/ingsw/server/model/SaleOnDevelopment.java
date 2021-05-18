@@ -26,4 +26,9 @@ public class SaleOnDevelopment implements LeaderPower {
     public void activatePower(Player player) {
         player.addSale(getResource());
     }
+
+    @Override
+    public String[] identifier() {
+        return new String[]{"saleOnDevelopment", resource.toString()};
+    }
 }

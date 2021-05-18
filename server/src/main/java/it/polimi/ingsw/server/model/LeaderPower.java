@@ -1,7 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.Player;
 
 /**
  * standard powers of leader card
@@ -18,4 +16,9 @@ public interface LeaderPower {
      * @param player current player
      */
     void activatePower(Player player);
+
+    /**
+     * Identifier for message to client
+     */
+    String[] identifier();
 }
