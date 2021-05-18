@@ -4,21 +4,6 @@ import java.util.Stack;
 
 public class SinglePlayerGame extends Game {
     private boolean isLost;
-    private FaithTrack lorenzoTrack = new FaithTrack() {
-        @Override
-        public boolean isInVatican(int papalSpace) {
-            return false;
-        }
-
-        @Override
-        public void increasePosition() {
-            super.increasePosition(); //TODO
-            if(getPosition() == 24) {
-                isLost = true;
-                setOver(true);
-            }
-        }
-    };
 
     @Override
     public void setOver(boolean over) {
@@ -29,6 +14,22 @@ public class SinglePlayerGame extends Game {
                             DevelopmentGrid developmentGrid) {
         super(player, playersNum, market, leaderDeck, developmentGrid);
         Player lorenzo = new Player("Lorenzo");
+        //TODO
+        FaithTrack lorenzoTrack = new FaithTrack() {
+            @Override
+            public boolean isInVatican(int papalSpace) {
+                return false;
+            }
+
+            @Override
+            public void increasePosition() {
+                super.increasePosition(); //TODO
+                if (getPosition() == 24) {
+                    isLost = true;
+                    setOver(true);
+                }
+            }
+        };
         lorenzo.getBoard().setFaithTrack(lorenzoTrack);
         addPlayer(lorenzo);
         getTurnPhases().put("EndTurnPhase", new SoloActionPhase(this));

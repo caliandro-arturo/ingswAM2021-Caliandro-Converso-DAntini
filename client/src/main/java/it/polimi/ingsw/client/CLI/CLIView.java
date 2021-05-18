@@ -81,8 +81,8 @@ public class CLIView extends View {
                 } catch (NumberFormatException e) {
                     System.err.println("You must insert a number.");
                     break;
-                } catch (IllegalArgumentException e1) {
-                    System.err.println(e1.getMessage());
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getMessage());
                 }
             }
             case "usemarket": {
