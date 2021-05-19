@@ -203,5 +203,4 @@ public class ViewAdapter {
         }
         sendMessage(player,new InitLeaderHand(victoryPoints,requirements,leaderPowers));
     }
-
 }

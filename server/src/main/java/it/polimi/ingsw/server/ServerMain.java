@@ -58,7 +58,7 @@ public class ServerMain {
             }
             connectedClients.add(socket);
             System.out.println("Accepted "
-                    + socket.getInetAddress().getHostName()
+                    + socket.getInetAddress().getCanonicalHostName()
                     + " at port "
                     + socket.getPort() + ".");
         } while (!serverSocket.isClosed());
