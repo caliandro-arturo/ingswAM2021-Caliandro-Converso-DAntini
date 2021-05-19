@@ -9,8 +9,7 @@ public class SpecialWarehouse implements LeaderPower{
     ArrayList<Resource> resources = new ArrayList<>();
     Resource resourceType;
 
-    public SpecialWarehouse(ArrayList<Resource> warehouse, Resource resource) {
-        this.resources = warehouse;
+    public SpecialWarehouse(Resource resource) {
         resourceType = resource;
     }
 

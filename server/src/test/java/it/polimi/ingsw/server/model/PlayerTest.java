@@ -5,6 +5,7 @@ import it.polimi.ingsw.commonFiles.model.ProductionPower;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import it.polimi.ingsw.server.model.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -89,36 +90,38 @@ class PlayerTest {
 
     @Test
     void victoryPointsTest() {
-        pippo.getBoard().getFaithTrack().increasePosition();
-        pippo.getBoard().getFaithTrack().increasePosition();
-        pippo.getBoard().getFaithTrack().increasePosition();
+        Player player = new Player("test");
+        MultiplayerGame game = new MultiplayerGame(player,1,null,null,null);
+        player.getBoard().getFaithTrack().increasePosition();
+        player.getBoard().getFaithTrack().increasePosition();
+        player.getBoard().getFaithTrack().increasePosition();
         ProductionPower productionPower = new ProductionPower(utilityarray,utilityarray);
-        pippo.getBoard().addCard(new DevelopmentCard(2,1,Color.BLUE,null, productionPower), 2);
+        player.getBoard().addCard(new DevelopmentCard(2,1,Color.BLUE,null, productionPower), 2);
         //2 VP in [1]
-        //pippo.getBoard().addActiveLeader(new LeaderCard(3,
-        //        new ColorCost(new Color[]{Color.BLUE},new Integer[]{2}),
-        //        new AdditionalProductionPower(Resource.COIN)))
+        player.getBoard().addActiveLeader(new LeaderCard(3,
+               new ColorCost(new Color[]{Color.BLUE},new Integer[]{2}),
+                new AdditionalProductionPower(Resource.COIN)));
         //3 VP in [2]
-        pippo.getBoard().getFaithTrack().increasePosition();
-        pippo.getBoard().getFaithTrack().increasePosition();
-        pippo.getBoard().getFaithTrack().increasePosition();
-        pippo.getBoard().getFaithTrack().increasePosition();
-        pippo.getBoard().getFaithTrack().increasePosition();
+        player.getBoard().getFaithTrack().increasePosition();
+        player.getBoard().getFaithTrack().increasePosition();
+        player.getBoard().getFaithTrack().increasePosition();
+        player.getBoard().getFaithTrack().increasePosition();
+        player.getBoard().getFaithTrack().increasePosition();
         //2 VP in [3]
-        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
-        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
-        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
-        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
-        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
-        pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
-        pippo.getBoard().getStrongbox().addProdResource(Resource.STONE);
-        pippo.getBoard().getStrongbox().addProdResource(Resource.STONE);
-        pippo.getBoard().getStrongbox().addProdResource(Resource.STONE);
-        pippo.getBoard().getStrongbox().addProdResource(Resource.STONE);
-        // 1 VP in [4]
-        int[] vic = pippo.getVictoryPoints();
+        player.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        player.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        player.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        player.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        player.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        player.getBoard().getStrongbox().addProdResource(Resource.COIN);
+        player.getBoard().getStrongbox().addProdResource(Resource.STONE);
+        player.getBoard().getStrongbox().addProdResource(Resource.STONE);
+        player.getBoard().getStrongbox().addProdResource(Resource.STONE);
+        player.getBoard().getStrongbox().addProdResource(Resource.STONE);
+        // 2 VP in [4]
+        int[] vic = player.getVictoryPoints();
         assertEquals(4, vic[0]);
-        assertEquals(5, vic[1]);
+        assertEquals(2, vic[1]);
         assertEquals(3, vic[2]);
         assertEquals(2, vic[3]);
         assertEquals(2, vic[4]);

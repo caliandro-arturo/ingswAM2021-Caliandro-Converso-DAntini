@@ -90,7 +90,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                             get(msg.getLeaderPower().get(i)[1]));
                     break;
                 case "specialWarehouse":
-                    leaderPower = new SpecialWarehouse(null, Utility.mapRepresentationResource.
+                    leaderPower = new SpecialWarehouse(Utility.mapRepresentationResource.
                             get(msg.getLeaderPower().get(i)[1]));
                     break;
                 default:

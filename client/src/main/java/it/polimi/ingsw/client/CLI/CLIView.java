@@ -9,6 +9,7 @@ import it.polimi.ingsw.commonFiles.utility.CLIColor;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Prints on {@link System#out} ASCII characters representing the game, updates.
@@ -32,141 +33,48 @@ public class CLIView extends View {
         switch (commandSlice[0].toLowerCase()) {
             //each case is an identifier
             case "setnick": {
-                if (!commandSlice[1].isEmpty() && !commandSlice[1].matches("\\s*")) {
-                    System.out.println("Creating nickname...");
-                    getController().sendMessage(new SetNickname(commandSlice[1]));
-                } else System.err.println("Nickname not valid.");
+                setNick(commandSlice);
                 break;
             }
             case "setgame": {
-                try {
-                    getController().sendMessage(new SetGame(Integer.parseInt(commandSlice[1])));
-                } catch (NumberFormatException e) {
-                    System.err.println("You must insert a number.");
-                    break;
-                }
+                setGame(commandSlice);
                 break;
             }
             case "choose": {
-                if (!commandSlice[1].isEmpty() || commandSlice[1].matches("\\s*"))
-                    getController().sendMessage(new ChooseTurnPhase(commandSlice[1]));
-                else System.err.println("You must insert a turn phase.");
+                chose(commandSlice);
                 break;
             }
             case "activateprod": {
-                String[] arguments = commandSlice[1].split("\\s*,\\s*");
-                String[] elements;
-                ArrayList<Integer> cost = new ArrayList<>();
-                int ID = Integer.parseInt(arguments[0]);
-                try {
-                    if (ID < 0)
-                        throw new IllegalArgumentException("Invalid ID");
-                    if (ID == 0) {
-                        elements = arguments[3].split("\\s*");
-                        for (String element : elements) {
-                            cost.add(Integer.parseInt(element));
-                        }
-                        elements = arguments[1].split("\\s*");
-                        getController().sendMessage(new StartProduction(ID, cost, arguments[2], elements));
-                    } else if (ID <= 3) {
-                        elements = arguments[1].split("\\s*");
-                        for (String element : elements) {
-                            cost.add(Integer.parseInt(element));
-                        }
-                        getController().sendMessage(new StartProduction(ID, cost));
-                    } else if (ID <= 5) {
-                        cost.add(Integer.parseInt(arguments[1]));
-                        getController().sendMessage(new StartProduction(ID, cost, arguments[2]));
-                    }
-                } catch (NumberFormatException e) {
-                    System.err.println("You must insert a number.");
-                    break;
-                } catch (IllegalArgumentException e) {
-                    System.err.println(e.getMessage());
-                }
+                activateProduction(commandSlice);
+                break;
             }
             case "usemarket": {
-                String[] args = commandSlice[1].split("\\s*,\\s*");
-                if (args[0].matches("[rc]")) {
-                    try {
-                        getController().sendMessage(new UseMarket(args[0].charAt(0), Integer.parseInt(args[1])));
-                    } catch (NumberFormatException e) {
-                        System.err.println("Wrong parameter");
-                        break;
-                    }
-                } else
-                    System.err.println("Wrong parameter");
+                useMarket(commandSlice);
                 break;
             }
             case "buydevcard": {
-                String[] arguments = commandSlice[1].split("\\s*,\\s*");
-                int level, space;
-                String color;
-                ArrayList<Integer> stores = new ArrayList<>();
-                try {
-                    level = Integer.parseInt(arguments[0]);
-                    color = arguments[1];
-                    space = Integer.parseInt(arguments[2]);
-                    arguments = arguments[3].split("\\s*");
-                    for (String argument : arguments) {
-                        stores.add(Integer.parseInt(argument));
-                    }
-                    getController().sendMessage(new BuyCard(level, color, space, stores));
-                } catch (NumberFormatException e) {
-                    System.err.println("You must insert a number.");
-                    break;
-                }
+                buyDevCard(commandSlice);
+                break;
             }
             case "useleader": {
-                int pos;
-                try {
-                    pos = Integer.parseInt(commandSlice[1]);
-                    getController().sendMessage(new UseLeader(pos));
-                } catch (NumberFormatException e) {
-                    System.err.println("You must insert a number.");
-                    break;
-                }
+                useLeader(commandSlice);
+                break;
             }
             case "discardleader": {
-                int pos;
-                try {
-                    pos = Integer.parseInt(commandSlice[1]);
-                    getController().sendMessage(new DiscardLeader(pos));
-                } catch (NumberFormatException e) {
-                    System.err.println("You must insert a number.");
-                    break;
-                }
+                discardLeader(commandSlice);
+                break;
             }
             case "deployres":{
-                String[] args = commandSlice[1].split("\\s*,\\s*");
-                if (args[0].matches("[Ss]erf|[Ss]hield|[Cc]oin|[Ss]tone")) {
-                    try {
-                        if(args[0].matches("[Ss]erf"))
-                            getController().sendMessage(new DeployRes(Resource.SERF,Integer.parseInt(args[1])));
-                        else if(args[0].matches("[Ss]hield"))
-                            getController().sendMessage(new DeployRes(Resource.SHIELD, Integer.parseInt(args[1])));
-                        else if(args[0].matches("[Cc]oin"))
-                            getController().sendMessage(new DeployRes(Resource.COIN, Integer.parseInt(args[1])));
-                        else if(args[0].matches("[Ss]tone"))
-                            getController().sendMessage(new DeployRes(Resource.STONE, Integer.parseInt(args[1])));
-                    } catch (NumberFormatException e) {
-                        System.err.println("Wrong parameter");
-                        break;
-                    }
-                } else
-                    System.err.println("Wrong parameter");
+                deployRes(commandSlice);
                 break;
             }
             case "takeres":{
-                int depot;
-                try{
-                    depot=Integer.parseInt(commandSlice[1]);
-                    getController().sendMessage(new TakeRes(depot));
-                }catch(NumberFormatException e){
-                    System.err.println("you must insert a number");
-                    break;
-                }
-
+                takeRes(commandSlice);
+                break;
+            }
+            case "show":{
+                showHandler(commandSlice);
+                break;
             }
             case "next": {
                 getController().sendMessage(new Next());
@@ -204,12 +112,15 @@ public class CLIView extends View {
             }
             case "board": {
                 System.out.println(getModel().getBoard());
+                break;
             }
             case "hand": {
                 System.out.println(getModel().getLeaderHand());
+                break;
             }
             default:
                 System.out.println(element);
+                break;
         }
     }
 
@@ -235,6 +146,200 @@ public class CLIView extends View {
                 + CLIColor.ANSI_RESET);
         if (getModel().isGameStarted()){
             refresh();
+        }
+    }
+
+    private void showHandler(String[] commandSlice){
+        String target = commandSlice[1].toLowerCase();
+        switch (target) {
+            case "myboard": {
+                show("board");
+                break;
+            }
+            case "hand": {
+                show(target);
+                break;
+            }
+        }
+    }
+
+    /**
+     * this methods handles the calling for the player command setnick
+     * @param commandSlice command by the player
+     */
+    private void setNick(String[] commandSlice){
+        if (!commandSlice[1].isEmpty() && !commandSlice[1].matches("\\s*")) {
+            System.out.println("Creating nickname...");
+            getController().sendMessage(new SetNickname(commandSlice[1]));
+        } else System.err.println("Nickname not valid.");
+    }
+
+    /**
+     * this methods handles the calling for the player command setgame
+     * @param commandSlice command by the player
+     */
+    private void setGame(String[] commandSlice){
+        try {
+            getController().sendMessage(new SetGame(Integer.parseInt(commandSlice[1])));
+        } catch (NumberFormatException e) {
+            System.err.println("You must insert a number.");
+        }
+    }
+
+    /**
+     * this methods handles the calling for the player command chose
+     * @param commandSlice command by the player
+     */
+    private void chose(String[] commandSlice){
+        if (!commandSlice[1].isEmpty() || commandSlice[1].matches("\\s*"))
+            getController().sendMessage(new ChooseTurnPhase(commandSlice[1]));
+        else System.err.println("You must insert a turn phase.");
+    }
+
+    /**
+     * this methods control if the command is write in a good way than
+     * handles the calling for the player command activeprod
+     * @param commandSlice command by the player
+     */
+    private void activateProduction(String[] commandSlice){
+        String[] arguments = commandSlice[1].split("\\s*,\\s*");
+        String[] elements;
+        ArrayList<Integer> cost = new ArrayList<>();
+        int ID = Integer.parseInt(arguments[0]);
+        try {
+            if (ID < 0)
+                throw new IllegalArgumentException("Invalid ID");
+            if (ID == 0) {
+                elements = arguments[3].split("\\s*");
+                for (String element : elements) {
+                    cost.add(Integer.parseInt(element));
+                }
+                elements = arguments[1].split("\\s*");
+                getController().sendMessage(new StartProduction(ID, cost, arguments[2], elements));
+            } else if (ID <= 3) {
+                elements = arguments[1].split("\\s*");
+                for (String element : elements) {
+                    cost.add(Integer.parseInt(element));
+                }
+                getController().sendMessage(new StartProduction(ID, cost));
+            } else if (ID <= 5) {
+                cost.add(Integer.parseInt(arguments[1]));
+                getController().sendMessage(new StartProduction(ID, cost, arguments[2]));
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("You must insert a number.");
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+
+    /**
+     * this methods control if the command is write in a good way than
+     * handles the calling for the player command buydevcard
+     * @param commandSlice command by the player
+     */
+    private void buyDevCard(String[] commandSlice){
+        String[] arguments = commandSlice[1].split("\\s*,\\s*");
+        int level, space;
+        String color;
+        ArrayList<Integer> stores = new ArrayList<>();
+        try {
+            level = Integer.parseInt(arguments[0]);
+            color = arguments[1];
+            space = Integer.parseInt(arguments[2]);
+            arguments = arguments[3].split("\\s*");
+            for (String argument : arguments) {
+                stores.add(Integer.parseInt(argument));
+            }
+            getController().sendMessage(new BuyCard(level, color, space, stores));
+        } catch (NumberFormatException e) {
+            System.err.println("You must insert a number.");
+        }
+    }
+
+    /**
+     * this methods handles the calling for the player command usemarket
+     * @param commandSlice command by the player
+     */
+    private void useMarket(String[] commandSlice){
+        String[] args = commandSlice[1].split("\\s*,\\s*");
+        if (args[0].matches("[rc]")) {
+            try {
+                getController().sendMessage(new UseMarket(args[0].charAt(0), Integer.parseInt(args[1])));
+            } catch (NumberFormatException e) {
+                System.err.println("Wrong parameter");
+            }
+        } else
+            System.err.println("Wrong parameter");
+    }
+
+    /**
+     * this methods handles the calling for the player command useleader
+     * @param commandSlice command by the player
+     */
+    private void useLeader(String[] commandSlice){
+        int pos;
+        try {
+            pos = Integer.parseInt(commandSlice[1]);
+            getController().sendMessage(new UseLeader(pos));
+        } catch (NumberFormatException e) {
+            System.err.println("You must insert a number.");
+        }
+    }
+
+    /**
+     * this methods handles the calling for the player command deployRes
+     * @param commandSlice command by the player
+     */
+    private void deployRes(String[] commandSlice){
+        String[] args = commandSlice[1].split("\\s*,\\s*");
+        String argument = args[0].toLowerCase();
+        try {
+            switch (argument) {
+                case "serf":
+                    getController().sendMessage(new DeployRes(Resource.SERF, Integer.parseInt(args[1])));
+                    break;
+                case "shield":
+                    getController().sendMessage(new DeployRes(Resource.SHIELD, Integer.parseInt(args[1])));
+                    break;
+                case "coin":
+                    getController().sendMessage(new DeployRes(Resource.COIN, Integer.parseInt(args[1])));
+                    break;
+                case "stone":
+                    getController().sendMessage(new DeployRes(Resource.STONE, Integer.parseInt(args[1])));
+                    break;
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("Wrong parameter");
+        }
+    }
+
+    /**
+     * this methods handles the calling for the player command discardleader
+     * @param commandSlice command by the player
+     */
+    private void discardLeader(String[] commandSlice){
+        int pos;
+        try {
+            pos = Integer.parseInt(commandSlice[1]);
+            getController().sendMessage(new DiscardLeader(pos));
+        } catch (NumberFormatException e) {
+            System.err.println("You must insert a number.");
+        }
+    }
+
+    /**
+     * this methods handles the calling for the player command takeRes
+     * @param commandSlice command by the player
+     */
+    private void takeRes(String[] commandSlice){
+        int depot;
+        try{
+            depot=Integer.parseInt(commandSlice[1]);
+            getController().sendMessage(new TakeRes(depot));
+        }catch(NumberFormatException e){
+            System.err.println("you must insert a number");
         }
     }
 

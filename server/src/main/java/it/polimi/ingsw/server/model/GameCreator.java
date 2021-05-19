@@ -9,9 +9,7 @@ import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * This class is the creator of the right instance of the game; its purpose is also to read JSON files with the cards
@@ -67,6 +65,7 @@ public class GameCreator {
         this.leaderDeck = new Stack<LeaderCard>() {{
             addAll(Arrays.asList(leaderDeck));
         }};
+        Collections.shuffle(this.leaderDeck);
         this.developmentGrid = new DevelopmentGrid(developmentCards);
     }
 
