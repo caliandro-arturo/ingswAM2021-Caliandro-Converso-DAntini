@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  */
 public class LeaderHand {
-    private ArrayList<LeaderCard> hand = new ArrayList<>();
+    private ArrayList<LeaderCard> hand;
 
     public LeaderHand(ArrayList<LeaderCard> hand) {
         this.hand = hand;
@@ -35,18 +35,6 @@ public class LeaderHand {
     public String toString(){
         StringBuilder tempArt = new StringBuilder();
         StringBuilder handArt= new StringBuilder();
-        String emptyCard =
-                        "┌─────────────────┐\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "└─────────────────┘\n";
-
 
         switch(hand.size()){
             case(0):
@@ -62,14 +50,14 @@ public class LeaderHand {
                 }
                 return handArt.toString();
             case(3):
-                tempArt.append(hand.get(0).toString()).append(hand.get(2).toString()).append(hand.get(2).toString());
+                tempArt.append(hand.get(0).toString()).append(hand.get(1).toString()).append(hand.get(2).toString());
                 String[] handArt3 = tempArt.toString().split("\n");
                 for(int i=0; i<10; i++){
                     handArt.append(handArt3[i]).append(" "+handArt3[i+10]).append(" "+handArt3[i+20]).append("\n");
                 }
                 return handArt.toString();
             case(4):
-                tempArt.append(hand.get(0).toString()).append(hand.get(2).toString()).append(hand.get(2).toString()).
+                tempArt.append(hand.get(0).toString()).append(hand.get(1).toString()).append(hand.get(2).toString()).
                 append(hand.get(3).toString());
                 String[] handArt4 = tempArt.toString().split("\n");
                 for(int i=0; i<10; i++){
