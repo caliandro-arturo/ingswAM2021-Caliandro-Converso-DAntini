@@ -17,11 +17,6 @@ public class WhiteMarbleConversion implements LeaderPower {
     }
 
     @Override
-    public void getPower(Game game, Player player) {
-        game.getViewAdapter().sendMessage(player, "Convert the white marble in");
-    }
-
-    @Override
     public void activatePower(Player player) {
         player.addWhiteAlt(getResource());
     }

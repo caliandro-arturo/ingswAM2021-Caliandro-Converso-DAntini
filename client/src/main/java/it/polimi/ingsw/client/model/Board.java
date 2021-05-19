@@ -21,7 +21,7 @@ public class Board {
 
     public Board() {
         this.developmentPlace = new DevelopmentPlace();
-        this.faithTrack = new FaithTrack(0);
+        this.faithTrack = new FaithTrack();
         this.strongbox = new Strongbox();
         this.warehouseStore = new WarehouseStore();
         this.leaderCards = new ArrayList<>();

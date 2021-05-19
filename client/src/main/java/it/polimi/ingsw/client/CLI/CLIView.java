@@ -203,7 +203,7 @@ public class CLIView extends View {
                 break;
             }
             case "board": {
-                System.out.println(getModel().getFullBoard());
+                System.out.println(getModel().getBoard());
             }
             case "hand": {
                 System.out.println(getModel().getLeaderHand());
@@ -242,6 +242,7 @@ public class CLIView extends View {
      * refresh the cli after a change
      */
     private void refresh(){
+        //TODO save current state
         try {
             if (System.getProperty("os.name").contains("Windows"))
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();

@@ -7,11 +7,6 @@ package it.polimi.ingsw.server.model;
 public interface LeaderPower {
 
     /**
-     * show on screen the type of power
-     */
-    void getPower(Game game, Player player);
-
-    /**
      * when the card is deploy activates the power of the leader
      * @param player current player
      */

@@ -18,6 +18,14 @@ public class LeaderCardTest {
     private Player player;
     private Player playerFalse;
     public AdditionalProductionPower production;
+    Requirements type1;
+    ColorCost cost;
+    Requirements type2;
+    Requirements type3;
+    LeaderPower power1;
+    LeaderPower power2;
+    LeaderPower power3;
+    LeaderPower power4;
 
     @BeforeAll
     void setUp(){
@@ -26,14 +34,15 @@ public class LeaderCardTest {
         Color[] colors1 = new Color[]{Color.GREEN};
         Integer[] quantity = new Integer[]{2,1};
         Integer[] quantity1 = new Integer[]{1};
-        Requirements type1 = new ColorCost(colors,quantity);
-        Requirements type2 = new ResourceCost(cost1);
-        Requirements type3 = new LevelCost(colors1,quantity1,2);
+        cost = new ColorCost(colors,quantity);
+        type1 = cost;
+        type2 = new ResourceCost(cost1);
+        type3 = new LevelCost(colors1,quantity1,2);
         production = new AdditionalProductionPower(Resource.SERF);
-        LeaderPower power1 = production;
-        LeaderPower power2 = new WhiteMarbleConversion(Resource.COIN);
-        LeaderPower power3 = new SpecialWarehouse(Resource.COIN,2);
-        LeaderPower power4 = new SaleOnDevelopment(Resource.SHIELD);
+        power1 = production;
+        power2 = new WhiteMarbleConversion(Resource.COIN);
+        power3 = new SpecialWarehouse(Resource.COIN,2);
+        power4 = new SaleOnDevelopment(Resource.SHIELD);
         player = new Player("Test");
         playerFalse = new Player("TestFalse");
         Board board = new Board();
@@ -83,8 +92,21 @@ public class LeaderCardTest {
     }
 
     @Test
-    public void testPrint(){
-        System.out.println(cardPower1);
+    public void testIdentifier(){
+        assertEquals(2, cost.getCost().get(Color.GREEN));
+        assertEquals(1, cost.getCost().get(Color.BLUE));
+        String[] arguments = type1.identifier();
+        String[] quantity = arguments[2].split("\\s");
+        assertEquals(2,quantity.length);
+        String[] colors = arguments[1].split("\\s");
+        if(colors[0].equals("GREEN")) {
+            assertEquals("BLUE", colors[1]);
+            assertEquals("1",quantity[1]);
+            assertEquals("2",quantity[0]);
+        } else {
+            assertEquals("GREEN", colors[1]);
+            assertEquals("1",quantity[0]);
+            assertEquals("2",quantity[1]);
+        }
     }
-
 }

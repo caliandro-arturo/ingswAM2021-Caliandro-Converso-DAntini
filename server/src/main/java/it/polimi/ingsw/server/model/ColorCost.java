@@ -41,16 +41,6 @@ public class ColorCost implements Requirements {
     }
 
     @Override
-    public void getRequirements(Game game, Player player) {
-        game.getViewAdapter().sendMessage(player,"to deploy this card you must have: ");
-        for (Map.Entry<Color,Integer> entry: cost.entrySet()){
-            if (entry.getValue()>0) {
-                game.getViewAdapter().sendMessage(player,entry.getValue() + "" + entry.getKey() + "Card");
-            }
-        }
-    }
-
-    @Override
     public String[] identifier() {
         StringBuilder arguments = new StringBuilder();
         StringBuilder quantity = new StringBuilder();

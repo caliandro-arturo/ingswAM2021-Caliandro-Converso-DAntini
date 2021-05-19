@@ -19,7 +19,7 @@ class PersonalBoardTest {
 
 
     private final Strongbox strongbox = new Strongbox();
-    private final FaithTrack track = new FaithTrack(1);
+    private final FaithTrack track = new FaithTrack();
     private final Board personalBoard = new Board();
 
     LeaderCard card1;

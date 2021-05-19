@@ -13,11 +13,6 @@ public interface Requirements {
     boolean checkRequirements(Player player);
 
     /**
-     * show on screen the requirements for the card
-     */
-    void getRequirements(Game game, Player player);
-
-    /**
      * Identifier for message to client
      */
     String[] identifier();

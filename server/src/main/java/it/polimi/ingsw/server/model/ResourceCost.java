@@ -21,11 +21,6 @@ public class ResourceCost implements Requirements {
     }
 
     @Override
-    public void getRequirements(Game game, Player player) {
-        game.getViewAdapter().sendMessage(player, "to deploy this card you must have: ");
-    }
-
-    @Override
     public String[] identifier() {
         return new String[]{"resourceCost", cost.getResource().toString(), 
                 Integer.toString(cost.getQuantity())} ;

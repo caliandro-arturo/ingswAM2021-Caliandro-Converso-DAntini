@@ -46,12 +46,6 @@ public class LevelCost extends ColorCost implements Requirements {
     }
 
     @Override
-    public void getRequirements(Game game, Player player) {
-        super.getRequirements(game,player);
-        game.getViewAdapter().sendMessage(player,"of level" );
-    }
-
-    @Override
     public String[] identifier(){
         ArrayList<String> arguments = new ArrayList<>(Arrays.asList(super.identifier()));
         arguments.set(0, "levelCost");

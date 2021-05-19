@@ -102,8 +102,8 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                 requirement = new ResourceCost(new UtilityProductionAndCost(Integer.parseInt(msg.getRequirements().
                         get(i)[2]), Utility.mapRepresentationResource.get(msg.getRequirements().get(i)[1])));
             } else {
-                String[] colors = msg.getRequirements().get(i)[1].split("\\s*");
-                String[] quantity = msg.getRequirements().get(i)[2].split("\\s*");
+                String[] colors = msg.getRequirements().get(i)[1].split("\\s");
+                String[] quantity = msg.getRequirements().get(i)[2].split("\\s");
                 ArrayList<Color> colorArrayList = new ArrayList<>();
                 ArrayList<Integer> quantityArrayList = new ArrayList<>();
                 for (int k = 0; k < colors.length; k++) {
@@ -235,7 +235,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(UseLeader msg) {
         LeaderHand leaderHand = model.getLeaderHand();
-        model.getFullBoard().getLeaderCards().add(leaderHand.getHand().get(msg.getIDCard()-1));
+        model.getBoard().getLeaderCards().add(leaderHand.getHand().get(msg.getIDCard()-1));
         leaderHand.removeCardFromHand(msg.getIDCard());
     }
 

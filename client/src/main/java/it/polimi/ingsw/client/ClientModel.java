@@ -14,7 +14,6 @@ public class ClientModel {
     private DevelopmentGrid developmentGrid;
     private Market market;
     private LeaderHand leaderHand;
-    private FullBoard fullBoard;
     private HashMap<String, Board> boards = new HashMap<>();
     private String currentTurnPhase;
     private boolean gameStarted = false;
@@ -59,10 +58,6 @@ public class ClientModel {
         return leaderHand;
     }
 
-    public FullBoard getFullBoard() {
-        return fullBoard;
-    }
-
     public Board getOtherPlayerBoard(String playerUsername) {
         return boards.get(playerUsername);
     }
@@ -74,7 +69,6 @@ public class ClientModel {
     public void setPlayerUsername(String playerUsername) {
         this.playerUsername = playerUsername;
         boards.put(playerUsername,new Board());
-        fullBoard = new FullBoard(getBoard(),developmentGrid,market, null);
     }
 
     public void setNumOfPlayers(int numOfPlayers) {

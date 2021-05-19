@@ -8,18 +8,13 @@ import java.util.HashMap;
  * light version of FaithTrack class for representation purposes
  */
 public class FaithTrack {
-    private int position;
+    private int position = 1;
     private int positionB = 0;
     private HashMap<Integer, Boolean> vaticanMap = new HashMap<Integer, Boolean>(){{
         put(1, false);
         put(2, false);
         put(3, false);
     }};
-
-
-    public FaithTrack(int position){
-        this.position = position;
-    }
 
     public void addPosition(){
         this.position++;
