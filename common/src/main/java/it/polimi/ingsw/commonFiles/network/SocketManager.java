@@ -22,7 +22,7 @@ public abstract class SocketManager {
 
     public SocketManager(Socket socket) throws IOException {
         this.socket = socket;
-        socket.setSoTimeout(timeout);
+        //socket.setSoTimeout(timeout);
         objOut = new ObjectOutputStream(socket.getOutputStream());
         objIn = new ObjectInputStream(socket.getInputStream());
     }
