@@ -121,6 +121,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         }
         model.setLeaderHand(new LeaderHand(leaderCards));
         model.setGameStarted(true);
+        controller.show("discardleader");
     }
 
     /**
@@ -154,6 +155,24 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                     msg.getCosts().get(i),msg.getProductions().get(i));
         }
         model.setDevelopmentGrid(new DevelopmentGrid(grid));
+    }
+
+    /**
+     * initialize board in client
+     * @param msg contains users username
+     */
+    @Override
+    public void visit(InitBoards msg) {
+        model.setBoards(msg.getUsernames());
+    }
+
+    /**
+     * set the position of the player
+     * @param msg contains the position
+     */
+    @Override
+    public void visit(TablePosition msg) {
+        model.setPosition(msg.getPosition());
     }
 
     //------------------------------------------------------------------------------------------------------------------

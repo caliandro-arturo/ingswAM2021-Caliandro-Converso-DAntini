@@ -41,14 +41,6 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
         controller.showError("The game is full. Reconnecting to another game...");
     }
 
-    public void visit(TablePosition msg) {
-
-    }
-    public void visit(AskPositionWarehouse msg){
-        controller.show("choose position for this resource :" );
-    }
-
-    public void visit(ResourceUpdate msg){}
     public void visit(TurnPhaseAnnouncement msg) {
         controller.getModel().setCurrentTurnPhase(msg.getTurnPhaseName());
         controller.show("turnphase");

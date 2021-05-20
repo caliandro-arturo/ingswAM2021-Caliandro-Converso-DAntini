@@ -68,7 +68,12 @@ public class ClientModel {
 
     public void setPlayerUsername(String playerUsername) {
         this.playerUsername = playerUsername;
-        boards.put(playerUsername,new Board());
+    }
+
+    public void setBoards(ArrayList<String> usernames){
+        for (String user: usernames){
+            boards.put(user,new Board());
+        }
     }
 
     public void setNumOfPlayers(int numOfPlayers) {

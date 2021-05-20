@@ -9,7 +9,6 @@ import it.polimi.ingsw.commonFiles.utility.CLIColor;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Prints on {@link System#out} ASCII characters representing the game, updates.
@@ -41,7 +40,7 @@ public class CLIView extends View {
                 break;
             }
             case "choose": {
-                chose(commandSlice);
+                choose(commandSlice);
                 break;
             }
             case "activateprod": {
@@ -93,7 +92,9 @@ public class CLIView extends View {
      */
     @Override
     public void show(String element) {
-        switch (element) {
+        refresh();
+        String[] target = element.split("\\s*,\\s*");
+        switch (target[0]) {
             case "asknickname": {
                 System.out.println("Insert your nickname by typing SETNICK: <your nickname>:");
                 break;
@@ -106,16 +107,33 @@ public class CLIView extends View {
                 System.out.println("Waiting creation of the game...");
                 break;
             }
+            case "discardleader":{
+                System.out.println("Discard two leader card by using the command discardleader: <pos>");
+                System.out.println(getModel().getLeaderHand());
+                break;
+            }
             case "turnphase": {
                 System.out.println("Next turn phase: " + getModel().getCurrentTurnPhase());
                 break;
             }
             case "board": {
-                System.out.println(getModel().getBoard());
+                if (target.length == 1) {
+                    System.out.println(getModel().getBoard());
+                } else {
+                    System.out.println(getModel().getOtherPlayerBoard(target[1]));
+                }
                 break;
             }
             case "hand": {
                 System.out.println(getModel().getLeaderHand());
+                break;
+            }
+            case "market":{
+                System.out.println(getModel().getMarket());
+                break;
+            }
+            case "devgrid":{
+                System.out.println(getModel().getDevelopmentGrid());
                 break;
             }
             default:
@@ -151,13 +169,25 @@ public class CLIView extends View {
 
     private void showHandler(String[] commandSlice){
         String target = commandSlice[1].toLowerCase();
-        switch (target) {
-            case "myboard": {
-                show("board");
+        String[] boardCmd = target.split("\\s*,\\s*");
+        switch (boardCmd[0]) {
+            case "board": {
+                if (boardCmd.length==1) {
+                    show("board");
+                } else {
+                    show(target);
+                }
                 break;
             }
             case "hand": {
-                show(target);
+                show("hand");
+                break;
+            }
+            case "market": {
+                show("market");
+                break;
+            } case "devgrid":{
+                show("devgrid");
                 break;
             }
         }
@@ -187,10 +217,10 @@ public class CLIView extends View {
     }
 
     /**
-     * this methods handles the calling for the player command chose
+     * this methods handles the calling for the player command choose
      * @param commandSlice command by the player
      */
-    private void chose(String[] commandSlice){
+    private void choose(String[] commandSlice){
         if (!commandSlice[1].isEmpty() || commandSlice[1].matches("\\s*"))
             getController().sendMessage(new ChooseTurnPhase(commandSlice[1]));
         else System.err.println("You must insert a turn phase.");
@@ -347,7 +377,6 @@ public class CLIView extends View {
      * refresh the cli after a change
      */
     private void refresh(){
-        //TODO save current state
         try {
             if (System.getProperty("os.name").contains("Windows"))
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -356,7 +385,11 @@ public class CLIView extends View {
         } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());
         }
-        show("board");
+    }
+
+    private void refresh(String previousShow){
+        refresh();
+        show(previousShow);
     }
 
     private void clear() {

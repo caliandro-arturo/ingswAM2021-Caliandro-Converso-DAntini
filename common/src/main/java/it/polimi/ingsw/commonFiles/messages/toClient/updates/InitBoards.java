@@ -1,17 +1,19 @@
 package it.polimi.ingsw.commonFiles.messages.toClient.updates;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessage;
 import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
 
-public class TablePosition extends Message implements GameUpdate {
-    private final int position;
-    public TablePosition(int number) {
-        this.position = number;
+import java.util.ArrayList;
+
+public class InitBoards extends Message implements GameUpdate {
+    private ArrayList<String> usernames = new ArrayList<>();
+
+    public InitBoards(ArrayList<String> usernames) {
+        this.usernames = usernames;
     }
 
-    public int getPosition() {
-        return position;
+    public ArrayList<String> getUsernames() {
+        return usernames;
     }
 
     @Override

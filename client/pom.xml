@@ -105,7 +105,6 @@
                                 </transformer>
                             </transformers>
                             <outputFile>..\out\client.jar</outputFile>
-                            <minimizeJar>true</minimizeJar>
                         </configuration>
                     </execution>
                 </executions>

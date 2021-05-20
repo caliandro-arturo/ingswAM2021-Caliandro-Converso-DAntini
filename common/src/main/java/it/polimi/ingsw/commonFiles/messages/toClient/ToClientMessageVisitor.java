@@ -11,8 +11,5 @@ public interface ToClientMessageVisitor {
     void visit(GameUpdate msg);
     void visit(Ok msg);
     void visit(GameIsFull msg);
-    void visit(TablePosition msg);
-    void visit(AskPositionWarehouse msg);
-    void visit(ResourceUpdate msg);
     void visit(TurnPhaseAnnouncement msg);
 }

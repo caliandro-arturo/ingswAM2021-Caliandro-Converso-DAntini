@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitBoards;
+
 import java.util.Stack;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +23,12 @@ public class MultiplayerGame extends Game {
         getViewAdapter().sendTable();
         ArrayList<Player> players = getPlayers();
         Collections.shuffle(players);
-        players.forEach(p -> getViewAdapter().notifyPlayerTurnNumber(p, players.indexOf(p) + 1));
+        ArrayList<String> usernames = new ArrayList<>();
+        players.forEach(p -> {
+            usernames.add(p.getUsername());
+            getViewAdapter().notifyPlayerTurnNumber(p, players.indexOf(p));
+        });
+        getViewAdapter().sendMessage(new InitBoards(usernames));
         setPlayersToWait(new ArrayList<>(players));
         setCurrentPlayer(players.get(0));
         for(Player p : players) {
