@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
 import it.polimi.ingsw.commonFiles.messages.toServer.actions.*;
@@ -70,6 +71,10 @@ public class CLIView extends View {
             }
             case "takeres":{
                 takeRes(commandSlice);
+                break;
+            }
+            case "getres": {
+                getRes(commandSlice);
                 break;
             }
             case "show":{
@@ -168,6 +173,7 @@ public class CLIView extends View {
     private void showHandler(String[] commandSlice){
         String target = commandSlice[1].toLowerCase();
         String[] boardCmd = target.split("\\s*,\\s*");
+        clear();
         switch (boardCmd[0]) {
             case "board": {
                 if (boardCmd.length==1) {
@@ -371,6 +377,18 @@ public class CLIView extends View {
         }
     }
 
+
+    private void getRes(String[] commandSlice) {
+        if (commandSlice[1].trim().isEmpty()) {
+            System.err.println("Missing parameter: you must insert a resource name.");
+            return;
+        }
+        Resource res = Utility.mapResource.get(commandSlice[1].toLowerCase());
+        if (res == null)
+            System.err.println("Wrong parameter: you must insert a resource name.");
+        else getController().sendMessage(new GetResource(res));
+    }
+
     /**
      * refresh the cli after a change
      */
@@ -387,6 +405,10 @@ public class CLIView extends View {
 
     @Override
     public void refresh(String... viewsToRefresh){
+        if (viewsToRefresh.length == 1 && viewsToRefresh[0].equals("")) {
+            clear();
+            return;
+        }
         for (String s : viewsToRefresh)
             if (currentView.equals(s)) {
                 clear();

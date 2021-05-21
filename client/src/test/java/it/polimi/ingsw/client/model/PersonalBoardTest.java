@@ -66,5 +66,7 @@ class PersonalBoardTest {
         System.out.println(personalBoard);
         personalBoard.removeResourcesFromHand(resources);
         System.out.println(personalBoard);
+        personalBoard.getLeaderCards().clear();
+        System.out.println(personalBoard);
     }
 }

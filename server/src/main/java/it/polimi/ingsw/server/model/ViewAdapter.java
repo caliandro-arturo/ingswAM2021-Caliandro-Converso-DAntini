@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
 import it.polimi.ingsw.commonFiles.messages.toClient.InitialResourcesAmount;
+import it.polimi.ingsw.commonFiles.messages.toClient.TurnPhaseAnnouncement;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.*;
 import it.polimi.ingsw.commonFiles.model.Production;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
@@ -141,7 +142,7 @@ public class ViewAdapter {
     }
 
     public void announceTurnPhase(Player player, String turnPhaseName) {
-        /*virtualView.sendMessage(player, new TurnPhaseAnnouncement(turnPhaseName));*/
+        virtualView.sendMessage(player, new TurnPhaseAnnouncement(turnPhaseName));
     }
 
     /**

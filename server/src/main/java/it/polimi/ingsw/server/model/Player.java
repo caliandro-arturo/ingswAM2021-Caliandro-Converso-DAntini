@@ -191,10 +191,11 @@ public class Player {
                         for (Resource r : board.getResHand())
                             try {
                                 board.discardResource(r);
-                            } catch (Exception ignore) {}
+                            } catch (Exception ignore) {
+                            }
                 }
+                game.nextTurnPhase("EndTurnPhase");
             }
-            game.nextTurnPhase("EndTurnPhase");
     }
 
     public void addWhiteAlt(Resource resource) {
@@ -213,13 +214,15 @@ public class Player {
      * @param leader the leader the player decides to discard
      *
      */
-    public void discardLeaderCard(LeaderCard leader){
-        if(!game.isStarted() && leaderCards.size()>2)
-            leaderCards.remove(leader);
-        else if(leaderCards.size()>0) {
-            leaderCards.remove(leader);
+    public void discardLeaderCard(LeaderCard leader) throws IllegalArgumentException {
+        if (game.getCurrentTurnPhase() == null)
+            if (leaderCards.size() == 2) {
+                throw new IllegalArgumentException("You cannot discard any more cards.");
+            } else if (leaderCards.isEmpty())
+                throw new IllegalArgumentException("You cannot discard any more cards.");
+        leaderCards.remove(leader);
+        if (game.getCurrentTurnPhase() != null)
             game.getCurrentPlayer().getBoard().getFaithTrack().increasePosition();
-        }
     }
 
 

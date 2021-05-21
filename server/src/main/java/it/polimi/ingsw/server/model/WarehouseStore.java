@@ -84,6 +84,6 @@ public class WarehouseStore {
             return resToTake;
         }
         else
-            throw new IllegalArgumentException("this shelf is already empty");
+            throw new IllegalArgumentException("This shelf is empty.");
     }
 }

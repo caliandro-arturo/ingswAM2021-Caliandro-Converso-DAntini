@@ -17,6 +17,7 @@ public class CLI extends UI {
     public void run() {
         //todo insert startup prints here
         setView(new CLIView());
+        getView().refresh("");
         System.out.println("Insert server hostname:port (or just press Enter to set default values):");
         try {
             configureConnection(stdIn.readLine());

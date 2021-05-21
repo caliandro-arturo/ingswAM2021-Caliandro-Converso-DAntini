@@ -37,6 +37,7 @@ public class MultiplayerGame extends Game {
             getViewAdapter().sendLeaderHand(p);
             for (int i = 0; i < initialFaithPoints[players.indexOf(p)]; i++)
                 p.getBoard().getFaithTrack().increasePosition();
+            p.setInitialResources(initialResources[players.indexOf(p)]);
             getViewAdapter().notifyInitialResourcesAmount(p, initialResources[players.indexOf(p)]);
         }
     }

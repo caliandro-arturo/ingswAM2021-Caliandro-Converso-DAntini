@@ -135,7 +135,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     public void visit(DiscardLeader discardLeader) {
         try{
             controllerAdapter.discardLeader(getPlayer(discardLeader.getPlayer()), discardLeader.getPos());
-        } catch (IllegalArgumentException e){
+        } catch (Exception e){
             denyMove(discardLeader,e.getMessage());
             return;
         }
@@ -146,7 +146,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     public void visit(TakeRes msg) {
         try{
             controllerAdapter.takeOutResource(getPlayer(msg.getPlayer()), msg.getDepot());
-        } catch (GameException.IllegalMove e){
+        } catch (Exception e){
             denyMove(msg, e.getMessage());
             return;
         }

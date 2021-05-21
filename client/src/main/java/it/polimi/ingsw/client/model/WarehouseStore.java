@@ -35,6 +35,12 @@ public class WarehouseStore {
         res.get(--pos).remove(resource);
     }
 
+    public Resource removeRes(int pos){
+        Resource resource = res.get(--pos).get(0);
+        res.get(pos).remove(0);
+        return resource;
+    }
+
 
     /**
      * representation method for Warehouse Store (CLI)

@@ -174,6 +174,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(TablePosition msg) {
         model.setPosition(msg.getPosition());
+        controller.getView().refresh("");
         controller.showUpdate("You are the player n." + msg.getPosition() + ".");
     }
 
@@ -184,7 +185,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public void visit(IncrementFaithTrackPosition msg) {
         String player = msg.getPlayer();
         model.getBoard(player).getFaithTrack().addPosition();
-        refresh("board, " + player);
+        refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
     @Override
@@ -252,7 +253,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                     get(msg.getProduction()));
             model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
         }
-        refresh("board, " + msg.getPlayer());
+        refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
     @Override
@@ -278,14 +279,14 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             newCard = null;
         }
         model.getDevelopmentGrid().setCard(msg.getLevel(), msg.getColor(), newCard);
-        refresh("developmentgrid", "board, " + msg.getPlayer());
+        refresh("developmentgrid", msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
     @Override
     public void visit(DeployRes msg) {
         model.getBoard(msg.getPlayer()).removeResourceFromHand(msg.getResource());
         model.getBoard(msg.getPlayer()).getWarehouseStore().setRes(msg.getResource(), msg.getDepot());
-        refresh("board, " + msg.getPlayer());
+        refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
     @Override
@@ -306,13 +307,15 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(TakeRes msg) {
-        //model.getBoard(msg.getPlayer()).getWarehouseStore().removeRes(msg.getResource(), msg.getDepot());
+        Resource res = model.getBoard(msg.getPlayer()).getWarehouseStore().removeRes(msg.getDepot());
+        model.getBoard(msg.getPlayer()).addResourceToHand(res);
+        refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
     @Override
     public void visit(GetResource msg) {
         model.getBoard(msg.getPlayer()).addResourceToHand(msg.getResource());
-        refresh("board, " + msg.getPlayer());
+        refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
     @Override

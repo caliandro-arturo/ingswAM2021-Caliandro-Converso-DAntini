@@ -199,7 +199,9 @@ public abstract class Game {
      * @param player the ready player to remove
      */
     public void setPlayerReady(Player player) {
-        if (player.getBoard().getResHand().isEmpty() && player.getLeaderCards().size() == 2) {
+        if (player.getBoard().getResHand().isEmpty() &&
+        player.getInitialResources() == 0 &&
+        player.getLeaderCards().size() == 2) {
             playersToWait.remove(player);
             if (playersToWait.isEmpty()) startGame();
         }

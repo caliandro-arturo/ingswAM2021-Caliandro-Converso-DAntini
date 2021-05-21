@@ -28,7 +28,7 @@ public class ControllerAdapter {
      * @param player the player who sent a message
      */
     private void checkIfPlayerCanDoThingsNow(Player player) throws GameException.IllegalMove {
-        if (!player.equals(game.getCurrentPlayer()))
+        if (!player.equals(game.getCurrentPlayer()) && game.getCurrentTurnPhase() != null)
             throw new GameException.IllegalMove();
     }
 
@@ -48,11 +48,8 @@ public class ControllerAdapter {
 
     /**
      * Checks if the player can do a Leader action.
-     * @param player the player who wants to use the leader
-     * @return {@code true} if the player is the current player and the current turn phase
-     * is a UseLeaderPhase; {@code false} otherwise
      */
-    private void checkIfIsLeaderPhase(Player player) throws GameException.IllegalMove {
+    private void checkIfIsLeaderPhase() throws GameException.IllegalMove {
         if (!game.getCurrentTurnPhase().equals(game.getTurnPhase("UseLeader")) &&
                 !game.getCurrentTurnPhase().equals(game.getTurnPhase("UseAgainLeader")))
             throw new GameException.IllegalMove();
@@ -66,7 +63,7 @@ public class ControllerAdapter {
      * @param resource the initial resource to give to the player
      */
     public void takeInitialResource(Player player, Resource resource) throws GameException.IllegalMove {
-        if (game.isStarted() || player.getInitialResources() == 0)
+        if (game.getCurrentTurnPhase() != null || player.getInitialResources() == 0)
             throw new GameException.IllegalMove();
         player.getBoard().addResource(resource);
         player.setInitialResources(player.getInitialResources() - 1);
@@ -92,7 +89,7 @@ public class ControllerAdapter {
      */
     public void useLeader(Player player, int leaderCardNumber) throws IllegalArgumentException, GameException.IllegalMove {
         checkIfPlayerCanDoThingsNow(player);
-        checkIfIsLeaderPhase(player);
+        checkIfIsLeaderPhase();
         player.useLeader(player.getLeaderCards().get(leaderCardNumber - 1));
     }
 
@@ -101,9 +98,10 @@ public class ControllerAdapter {
      *
      * @param player the player who asked to discard the leader
      */
-    public void discardLeader(Player player, int leaderCardNumber) throws IllegalArgumentException {
+    public void discardLeader(Player player, int leaderCardNumber) throws IllegalArgumentException, GameException.IllegalMove {
+        checkIfPlayerCanDoThingsNow(player);
         player.discardLeaderCard(player.getLeaderCards().get(leaderCardNumber - 1));
-        if (!game.isStarted() && !game.getPlayersToWait().contains(player))
+        if (game.getCurrentTurnPhase() == null && game.getPlayersToWait().contains(player))
             game.setPlayerReady(player);
     }
 
@@ -147,7 +145,7 @@ public class ControllerAdapter {
      */
     public void takeOutResource(Player player, int pos) throws GameException.IllegalMove {
         checkIfPlayerCanDoThingsNow(player);
-        if (game.isStarted() || !game.getPlayersToWait().contains(player))
+        if (!game.getPlayersToWait().contains(player))
             throw new GameException.IllegalMove();
         player.getBoard().takeOutResource(pos);
     }
@@ -161,9 +159,8 @@ public class ControllerAdapter {
      */
     public void deployResource(Player player, Resource resource, int pos) throws GameException.IllegalMove {
         checkIfPlayerCanDoThingsNow(player);
-        if (game.isStarted()) throw new GameException.IllegalMove();
         player.getBoard().deployResource(resource, pos);
-        if (!game.isStarted() && !game.getPlayersToWait().contains(player))
+        if (game.getPlayersToWait().contains(player))
             game.setPlayerReady(player);
     }
 
@@ -193,6 +190,8 @@ public class ControllerAdapter {
      */
     public void nextTurnPhase(Player player) throws GameException.IllegalMove {
         checkIfPlayerCanDoThingsNow(player);
+        if (game.getCurrentTurnPhase() == null)
+            throw new GameException.IllegalMove();
         if (!player.getBoard().getResHand().isEmpty())
             throw new GameException.IllegalMove();
         else if (!(game.getCurrentTurnPhase().isFinished()))

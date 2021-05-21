@@ -154,7 +154,7 @@ class PlayerTest {
     }
 
     @Test
-    void LeaderTest(){
+    void LeaderTest() {
         Player minnie = new Player("minnie");
         try {
             testGame.addPlayer(minnie);

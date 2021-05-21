@@ -34,39 +34,13 @@ public class GameTest {
     Player testPlayer3 = new Player("Test3");
     Player testPlayer4 = new Player("Test4");
     Game multiTest;
-    ViewAdapter testView = new ViewAdapter(multiTest) {
-        @Override
-        public void sendMessage(Player player, Message message) {
-        }
-
-        @Override
-        public void sendMessage(Message message) {
-        }
-
-        @Override
-        public void notifyPlayerTurnNumber(Player player, int number) {
-        }
-
-        @Override
-        public void notifyInitialResourcesAmount(Player player, int resourceQuantity) {
-        }
-
-        @Override
-        public void sendLeaderHand(Player player){
-
-        }
-
-        @Override
-        public void sendTable(){
-
-        }
-    };
     Game singleTest;
 
     @BeforeAll
     void setUp() {
         multiTest = new MultiplayerGame(testPlayer1, 4, null, leaderDeck, testGrid);
-        multiTest.setViewAdapter(testView);
+        ViewAdapterForTest.setUp();
+        multiTest.setViewAdapter(ViewAdapterForTest.testView);
         singleTest = new SinglePlayerGame(testPlayer0, 1, null, leaderDeck, testGrid);
         multiTest.setStarted(false);
         try {
@@ -89,6 +63,7 @@ public class GameTest {
         multiTest.setUpPlayers();
         testPlayer1.getBoard().addResource(Resource.COIN);
         testPlayer1.getBoard().addResource(Resource.COIN);
+        testPlayer1.setInitialResources(0);
         multiTest.setPlayerReady(testPlayer1);
         assertTrue(multiTest.getPlayersToWait().contains(testPlayer1));
         testPlayer1.getLeaderCards().remove(0);
@@ -103,6 +78,9 @@ public class GameTest {
         testPlayer3.getLeaderCards().remove(0);
         testPlayer4.getLeaderCards().remove(0);
         testPlayer4.getLeaderCards().remove(0);
+        testPlayer2.setInitialResources(0);
+        testPlayer3.setInitialResources(0);
+        testPlayer4.setInitialResources(0);
         multiTest.setPlayerReady(testPlayer2);
         multiTest.setPlayerReady(testPlayer3);
         multiTest.setPlayerReady(testPlayer4);
