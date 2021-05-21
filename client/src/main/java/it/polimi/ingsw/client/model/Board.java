@@ -80,10 +80,8 @@ public class Board {
         for (int i=0; i<store.length; i++){
             if (store[i]==0){
                 strongbox.removeResources(resources.get(i));
-            } else if (store[i] <=3){
-                warehouseStore.removeRes(resources.get(i));
             } else {
-                //TODO leader warehouse not accessible
+                warehouseStore.removeRes(store[i], resources.get(i));
             }
         }
     }

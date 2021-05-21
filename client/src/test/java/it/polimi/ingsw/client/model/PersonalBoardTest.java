@@ -58,9 +58,9 @@ class PersonalBoardTest {
         warehouseStore.setRes(Resource.COIN,3);
         personalBoard.setLeaderCards(card1);
         personalBoard.setLeaderCards(card2);
-        warehouseStore.removeRes(Resource.COIN);
-        warehouseStore.removeRes(Resource.SERF);
-        warehouseStore.removeRes(Resource.SHIELD);
+        warehouseStore.removeRes(3,Resource.COIN);
+        warehouseStore.removeRes(2,Resource.SERF);
+        warehouseStore.removeRes(1,Resource.SHIELD);
         ArrayList<Resource> resources = new ArrayList<>(Arrays.asList(Resource.COIN, Resource.STONE));
         personalBoard.addResourcesToHand(resources);
         System.out.println(personalBoard);

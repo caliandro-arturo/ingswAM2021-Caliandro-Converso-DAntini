@@ -28,12 +28,11 @@ public class WarehouseStore {
 
     /**
      * removes the first instance of the searched resource
+     * @param pos store selected
      * @param resource the resource you want to remove
      */
-    public void removeRes( Resource resource){
-        for(ArrayList a: res){
-            a.remove(resource);
-        }
+    public void removeRes( int pos, Resource resource){
+        res.get(--pos).remove(resource);
     }
 
 
