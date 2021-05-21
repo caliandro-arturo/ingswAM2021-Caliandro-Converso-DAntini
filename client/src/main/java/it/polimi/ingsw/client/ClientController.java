@@ -27,6 +27,10 @@ public class ClientController {
         updateHandler = new ClientUpdateHandler(this, model);
     }
 
+    public View getView() {
+        return view;
+    }
+
     public ClientModel getModel() {
         return model;
     }
@@ -36,11 +40,15 @@ public class ClientController {
      *
      * @param msg the message to read
      */
-    public synchronized void readMessage(ToClientMessage msg) {
-        msg.accept(clientMessageVisitor);
+    public synchronized void readMessage(Message msg) {
+        if (msg instanceof ToClientMessage)
+            ((ToClientMessage) msg).accept(clientMessageVisitor);
+        else if (msg instanceof ToServerMessage)
+            manageUpdate((ToServerMessage) msg);
     }
 
     public synchronized void sendMessage(ToServerMessage message) {
+        message.setPlayer(model.getPlayerUsername());
         addToConfirm(message);
         try {
             socketManager.sendMessage((Message) message);
@@ -60,6 +68,10 @@ public class ClientController {
 
     public void showUpdate(String update) {
         view.showUpdate(update);
+    }
+
+    public void manageUpdate(ToServerMessage msg) {
+        msg.accept(updateHandler);
     }
 
     public void manageUpdate(GameUpdate msg) {

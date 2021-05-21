@@ -53,6 +53,8 @@ class PlayerTest {
         DevelopmentCard[] totcard = new DevelopmentCard[]{cglv1, cglv2, cglv3, cblv1, card1, cblv3, cylv1, cylv2, cylv3, cplv1, cplv2, cplv3};
         d1 = new DevelopmentGrid(totcard);
         testGame = new MultiplayerGame(pippo,4,null,null,d1);
+        ViewAdapterForTest.setUp();
+        testGame.setViewAdapter(ViewAdapterForTest.testView);
         pippo.getBoard().addActiveLeader(new LeaderCard(3,
                 new ColorCost(new Color[]{Color.BLUE},new Integer[]{2}),
                 new AdditionalProductionPower(Resource.COIN)));
@@ -92,6 +94,7 @@ class PlayerTest {
     void victoryPointsTest() {
         Player player = new Player("test");
         MultiplayerGame game = new MultiplayerGame(player,1,null,null,null);
+        game.setViewAdapter(ViewAdapterForTest.testView);
         player.getBoard().getFaithTrack().increasePosition();
         player.getBoard().getFaithTrack().increasePosition();
         player.getBoard().getFaithTrack().increasePosition();

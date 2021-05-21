@@ -2,11 +2,8 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.TablePosition;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitLeaderHand;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitMarket;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.LastTurn;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitDevGrid;
+import it.polimi.ingsw.commonFiles.messages.toClient.InitialResourcesAmount;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.*;
 import it.polimi.ingsw.commonFiles.model.Production;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import it.polimi.ingsw.server.VirtualView;
@@ -20,15 +17,23 @@ public class ViewAdapter {
     /**
      * To avoid redundancy, this class is initialized with a reference to the game as attribute.
      */
-    private final Game game;
+    private Game game;
     private VirtualView virtualView;
 
     public ViewAdapter(Game game) {
         this.game = game;
     }
 
+    public ViewAdapter() {
+
+    }
+
     public void setVirtualView(VirtualView virtualView) {
         this.virtualView = virtualView;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     /**
@@ -67,7 +72,14 @@ public class ViewAdapter {
      * @param resourceQuantity the number of resources the player has to choose
      */
     public void notifyInitialResourcesAmount(Player player, int resourceQuantity) {
+        virtualView.sendMessage(player, new InitialResourcesAmount(resourceQuantity));
+    }
 
+    /**
+     *
+     */
+    public void notifyNewTurn(Player player) {
+        sendMessage(new NewTurn(player.getUsername()));
     }
 
     /**
@@ -202,5 +214,14 @@ public class ViewAdapter {
             victoryPoints.add(leaderCard.getVictoryPoints());
         }
         sendMessage(player,new InitLeaderHand(victoryPoints,requirements,leaderPowers));
+    }
+
+    /**
+     * Sends an update to increase the player's position on his faith track on the connected clients.
+     *
+     * @param player the player that has changed his position on the faith track
+     */
+    public void incrementFaithTrackPosition(Player player) {
+        sendMessage(new IncrementFaithTrackPosition(player.getUsername()));
     }
 }

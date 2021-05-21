@@ -32,10 +32,6 @@ public class ClientHandler extends SocketManager implements Runnable {
         return player;
     }
 
-    public VirtualView getVirtualView() {
-        return virtualView;
-    }
-
     public void setPlayerName(String nickname) {
         this.player = nickname;
     }
@@ -54,6 +50,7 @@ public class ClientHandler extends SocketManager implements Runnable {
                 name = Integer.toString(socket.getPort());
             System.err.println(name + " left.");
         }
+        setConnected(false);
         virtualView.remove(this);
         shutdown();
     }
@@ -73,11 +70,10 @@ public class ClientHandler extends SocketManager implements Runnable {
         else if (player == null) {
             try {
                 sendMessage(new ErrorMessage(message, "You must create a player first."));
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ignore) {
             }
             return;
-        } else message.setPlayer(player);
+        }
         virtualView.readMessage(message);
     }
 

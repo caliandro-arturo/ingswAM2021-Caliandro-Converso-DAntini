@@ -5,6 +5,7 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * this class implements all the methods used by a player
@@ -20,6 +21,7 @@ public class Player {
     private int whiteMarbleChoices = 0;
     private int initialResources = 0;
     private int processedResources;
+    private boolean isConnected = true;
 
     /**
      * customised constructor for player that initialises all attributes a player needs
@@ -27,7 +29,7 @@ public class Player {
      */
     public Player(String username){
         this.username = username;
-        this.board = new Board();
+        this.board = new Board(this);
         this.leaderCards = new ArrayList<>();
         this.whiteAlt = new ArrayList<>();
         this.sale = new ArrayList<>();
@@ -52,6 +54,10 @@ public class Player {
     public Game getGame() {
         return game;
     }
+    public boolean isConnected() {
+        return isConnected;
+    }
+
     /**
      * in the last turn this method sum all the victory points the player is entitled to
      * <p> index 0 faith path VP
@@ -140,9 +146,58 @@ public class Player {
         this.initialResources = initialResources;
     }
 
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+        if (!connected)
+            if (game.getCurrentTurnPhase() == null) {
+                if (!game.isReady(this)) {
+                    while (initialResources > 0) {
+                        //selects random storable resources
+                        Resource randomResource = Resource.values()[new Random().nextInt(5)];
+                        if (Utility.isStorable(randomResource)) {
+                            board.getResHand().add(randomResource);
+                            initialResources--;
+                        }
+                    }
+                    for (Resource r : board.getResHand())
+                        //deploys resources in the player's hand in the first free depot
+                        for (WarehouseStore w : board.getStore()) {
+                            try {
+                                board.deployResource(r, board.getStore().indexOf(w) + 1);
+                            } catch (Exception e) {
+                                continue;
+                            }
+                            break;
+                        }
+                    while (leaderCards.size() > 2)
+                        leaderCards.remove(0);
+                }
+                game.setPlayerReady(this);
+            }
+        else if (this.equals(game.getCurrentPlayer())) {
+                if (!board.getResHand().isEmpty()) {
+                    //tries to deploy resources from the hand
+                    for (Resource r : board.getResHand())
+                        for (WarehouseStore w : board.getStore()) {
+                            try {
+                                board.deployResource(r, board.getStore().indexOf(w) + 1);
+                            } catch (Exception e) {
+                                continue;
+                            }
+                            break;
+                        }
+                    //if there is not free depot, discard resources.
+                    if (!board.getResHand().isEmpty())
+                        for (Resource r : board.getResHand())
+                            try {
+                                board.discardResource(r);
+                            } catch (Exception ignore) {}
+                }
+            }
+            game.nextTurnPhase("EndTurnPhase");
+    }
+
     public void addWhiteAlt(Resource resource) {
-
-
         whiteAlt.add(resource);
     }
     public void changeWhiteMarbleChoicesNumber(int variation){

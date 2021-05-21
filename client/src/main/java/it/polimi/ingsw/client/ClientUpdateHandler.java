@@ -10,6 +10,7 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handles model updates and service communications.
@@ -21,6 +22,10 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public ClientUpdateHandler(ClientController controller, ClientModel model) {
         this.controller = controller;
         this.model = model;
+    }
+
+    private void refresh(String... elements) {
+        controller.getView().refresh(elements);
     }
 
     /*messages from server*/
@@ -38,6 +43,11 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      */
     public void visit(PlayerLeft msg) {
         controller.showUpdate(msg.getName() + " has left the game.");
+    }
+
+    @Override
+    public void visit(ResourceUpdate msg) {
+
     }
 
     /**
@@ -58,15 +68,6 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public void visit(LastTurn msg) {
         if (!model.isLast())
             controller.showUpdate("Last turns: " + msg.getReason());
-    }
-
-
-    /**
-     * updates the hand of the player with the recently bought resources from the market
-     * @param msg
-     */
-    public void visit(ResourceUpdate msg){
-        model.getBoard().setResHand(msg.getResHandUpdate());
     }
 
     /**
@@ -121,7 +122,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         }
         model.setLeaderHand(new LeaderHand(leaderCards));
         model.setGameStarted(true);
-        controller.show("discardleader");
+        controller.show("hand");
     }
 
     /**
@@ -173,6 +174,24 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(TablePosition msg) {
         model.setPosition(msg.getPosition());
+        controller.showUpdate("You are the player n." + msg.getPosition() + ".");
+    }
+
+    /**
+     * Increases the position of the cross in the player's faith track
+     */
+    @Override
+    public void visit(IncrementFaithTrackPosition msg) {
+        String player = msg.getPlayer();
+        model.getBoard(player).getFaithTrack().addPosition();
+        refresh("board, " + player);
+    }
+
+    @Override
+    public void visit(NewTurn msg) {
+        if (msg.getPlayer().equals(model.getPlayerUsername()))
+            controller.showUpdate("It's your turn.");
+        else controller.showUpdate("It's " + msg.getPlayer() + "'s turn.");
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -193,6 +212,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(UseMarket msg) {
         model.getMarket().reinsertExtraMarble(msg.getRowOrColumn(),msg.getNum());
+        refresh("market");
     }
 
     /**
@@ -206,49 +226,66 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(StartProduction msg) {
-        ArrayList<Resource> resources = new ArrayList<Resource>();
+        ArrayList<Resource> resources = new ArrayList<>();
         for (String s : msg.getCostResource()) {
             resources.add(Utility.mapResource.get(s));
         }
         model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
         if (msg.getID() == 0){
-            model.getBoard().getStrongbox().addResources(1,Utility.mapResource.
+            model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
                     get(msg.getProduction()));
         } else if (msg.getID()<=3){
-            UtilityProductionAndCost[] prod = model.getBoard().
+            UtilityProductionAndCost[] prod = model.getBoard(msg.getPlayer()).
                     getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getProd();
             for (int i = 0; i<prod.length; i++) {
                 if (Utility.isStorable(prod[i].getResource())) {
-                    model.getBoard().getStrongbox().addResources(prod[i].getQuantity(),
+                    model.getBoard(msg.getPlayer()).getStrongbox().addResources(prod[i].getQuantity(),
                             prod[i].getResource());
                 }else {
                     for (int k=0; k<prod[i].getQuantity(); i++){
-                        model.getBoard().getFaithTrack().addPosition();
+                        model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
                     }
                 }
             }
         } else {
-            model.getBoard().getStrongbox().addResources(1,Utility.mapResource.
+            model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
                     get(msg.getProduction()));
-            model.getBoard().getFaithTrack().addPosition();
+            model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
         }
+        refresh("board, " + msg.getPlayer());
     }
 
     @Override
     public void visit(BuyCard msg) {
         DevelopmentCard card = model.getDevelopmentGrid().
                 getCard(msg.getLevel(), Utility.mapColor.get(msg.getColor()));
-        ArrayList<Resource> resources = new ArrayList<Resource>();
+        ArrayList<Resource> resources = new ArrayList<>();
         for (int i=0; i<card.getCosts().length; i++){
             resources.add(card.getCosts()[i].getResource());
         }
         model.updateResource(msg.getStores(),resources);
-        model.getBoard().getDevelopmentPlace().setDevStack(card,msg.getSpace());
+        model.getBoard(msg.getPlayer()).getDevelopmentPlace().setDevStack(card,msg.getSpace());
+        DevelopmentCard newCard;
+        try {
+            newCard = new DevelopmentCard(
+                    msg.getLevel(),
+                    msg.getNewCardVictoryPoints(),
+                    Utility.mapColor.get(msg.getColor()),
+                    msg.getNewCardCost(),
+                    msg.getProductions()
+            );
+        } catch (NullPointerException e) {
+            newCard = null;
+        }
+        model.getDevelopmentGrid().setCard(msg.getLevel(), msg.getColor(), newCard);
+        refresh("developmentgrid", "board, " + msg.getPlayer());
     }
 
     @Override
-    public void visit(DeployRes deployRes) {
-
+    public void visit(DeployRes msg) {
+        model.getBoard(msg.getPlayer()).removeResourceFromHand(msg.getResource());
+        model.getBoard(msg.getPlayer()).getWarehouseStore().setRes(msg.getResource(), msg.getDepot());
+        refresh("board, " + msg.getPlayer());
     }
 
     @Override
@@ -256,17 +293,26 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         LeaderHand leaderHand = model.getLeaderHand();
         model.getBoard().getLeaderCards().add(leaderHand.getHand().get(msg.getIDCard()-1));
         leaderHand.removeCardFromHand(msg.getIDCard());
+        refresh("hand", "board");
     }
 
     @Override
-    public void visit(DiscardLeader msg){
+    public void visit(DiscardLeader msg) {
+        if (!msg.getPlayer().equals(model.getPlayerUsername()))
+            return;
         model.getLeaderHand().removeCardFromHand(msg.getPos());
-        model.getBoard().getFaithTrack().addPosition();
+        refresh("hand");
     }
 
     @Override
-    public void visit(TakeRes takeRes) {
+    public void visit(TakeRes msg) {
+        //model.getBoard(msg.getPlayer()).getWarehouseStore().removeRes(msg.getResource(), msg.getDepot());
+    }
 
+    @Override
+    public void visit(GetResource msg) {
+        model.getBoard(msg.getPlayer()).addResourceToHand(msg.getResource());
+        refresh("board, " + msg.getPlayer());
     }
 
     @Override

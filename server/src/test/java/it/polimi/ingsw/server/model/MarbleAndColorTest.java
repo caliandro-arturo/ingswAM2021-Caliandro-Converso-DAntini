@@ -16,22 +16,14 @@ class MarbleAndColorTest {
      */
     int i = 0;
     List<Resource> resources = new ArrayList<>();
-    Board testBoard = new Board() {
+    Player testPlayer = new Player("test");
+    Board testBoard = new Board(testPlayer) {
         @Override
         public void addResource(Resource resource) {
             resources.add(resource);
         }
     };
-    Player testPlayer = new Player("test");
-    Game testGame = new Game(testPlayer, 1, null, null, null) {
-        @Override
-        public void setUpPlayers() {
-        }
-
-        @Override
-        public void endGame() {
-        }
-    };
+    Game testGame;
     ViewAdapter testCaller = new ViewAdapter(testGame) {
         /**
          * Selects the first resource in whiteAlt the first time, and the second resource the second time it is called.
@@ -40,11 +32,24 @@ class MarbleAndColorTest {
         public void askWhiteMarbleResource() {
             testBoard.addResource(testPlayer.getWhiteAlt().get(i++));
         }
+
+        @Override
+        public void incrementFaithTrackPosition(Player player) {
+        }
     };
 
     @BeforeEach
     void setUp() {
         testPlayer.setBoard(testBoard);
+         testGame = new Game(testPlayer, 1, null, null, null) {
+            @Override
+            public void setUpPlayers() {
+            }
+
+            @Override
+            public void endGame() {
+            }
+        };
         testGame.setCurrentPlayer(testPlayer);
         testGame.setViewAdapter(testCaller);
     }

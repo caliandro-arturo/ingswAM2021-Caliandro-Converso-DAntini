@@ -6,7 +6,7 @@ import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 
 class PersonalBoardTest {
     private final WarehouseStore warehouseStore = new WarehouseStore();
@@ -61,6 +61,10 @@ class PersonalBoardTest {
         warehouseStore.removeRes(Resource.COIN);
         warehouseStore.removeRes(Resource.SERF);
         warehouseStore.removeRes(Resource.SHIELD);
-
-        System.out.println(personalBoard); }
+        ArrayList<Resource> resources = new ArrayList<>(Arrays.asList(Resource.COIN, Resource.STONE));
+        personalBoard.addResourcesToHand(resources);
+        System.out.println(personalBoard);
+        personalBoard.removeResourcesFromHand(resources);
+        System.out.println(personalBoard);
+    }
 }

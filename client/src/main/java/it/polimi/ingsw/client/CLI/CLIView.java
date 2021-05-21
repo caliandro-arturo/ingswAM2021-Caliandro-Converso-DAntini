@@ -15,6 +15,7 @@ import java.util.ArrayList;
  * It also processes user commands with {@link CLIView#process(String input)}.
  */
 public class CLIView extends View {
+    private String currentView;
 
     /**
      * Reads and processes user commands.
@@ -92,7 +93,7 @@ public class CLIView extends View {
      */
     @Override
     public void show(String element) {
-        refresh();
+        currentView = element;
         String[] target = element.split("\\s*,\\s*");
         switch (target[0]) {
             case "asknickname": {
@@ -107,7 +108,7 @@ public class CLIView extends View {
                 System.out.println("Waiting creation of the game...");
                 break;
             }
-            case "discardleader":{
+            case "discardleader": {
                 System.out.println("Discard two leader card by using the command discardleader: <pos>");
                 System.out.println(getModel().getLeaderHand());
                 break;
@@ -120,7 +121,7 @@ public class CLIView extends View {
                 if (target.length == 1) {
                     System.out.println(getModel().getBoard());
                 } else {
-                    System.out.println(getModel().getOtherPlayerBoard(target[1]));
+                    System.out.println(getModel().getBoard(target[1]));
                 }
                 break;
             }
@@ -162,9 +163,6 @@ public class CLIView extends View {
         System.out.println(CLIColor.ANSI_BRIGHT_GREEN
                 + update
                 + CLIColor.ANSI_RESET);
-        if (getModel().isGameStarted()){
-            refresh();
-        }
     }
 
     private void showHandler(String[] commandSlice){
@@ -376,7 +374,7 @@ public class CLIView extends View {
     /**
      * refresh the cli after a change
      */
-    private void refresh(){
+    private void clear(){
         try {
             if (System.getProperty("os.name").contains("Windows"))
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -387,11 +385,13 @@ public class CLIView extends View {
         }
     }
 
-    private void refresh(String previousShow){
-        refresh();
-        show(previousShow);
-    }
-
-    private void clear() {
+    @Override
+    public void refresh(String... viewsToRefresh){
+        for (String s : viewsToRefresh)
+            if (currentView.equals(s)) {
+                clear();
+                show(currentView);
+                return;
+            }
     }
 }

@@ -47,4 +47,12 @@ public abstract class View {
      * @param update the update to show
      */
     public abstract void showUpdate(String update);
+
+
+    /**
+     * Refresh the visual representation of an element if it's currently shown.
+     *
+     * @param elements the element to refresh if shown
+     */
+    public abstract void refresh(String... elements);
 }

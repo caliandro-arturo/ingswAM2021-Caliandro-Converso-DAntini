@@ -22,7 +22,7 @@ public class ClientSocketManager extends SocketManager {
     public void readMessage(Message message) {
         if (message instanceof Ok)
             controller.confirmMove(message.getId());
-        else controller.readMessage((ToClientMessage) message);
+        else controller.readMessage(message);
     }
 
     public void setController(ClientController controller) {

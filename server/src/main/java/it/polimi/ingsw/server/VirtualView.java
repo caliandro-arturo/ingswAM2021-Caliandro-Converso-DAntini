@@ -6,6 +6,7 @@ import it.polimi.ingsw.commonFiles.messages.toClient.GameIsFull;
 import it.polimi.ingsw.commonFiles.messages.toClient.WaitGameCreation;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.NewPlayer;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
+import it.polimi.ingsw.commonFiles.network.SocketManager;
 import it.polimi.ingsw.server.model.GameException;
 import it.polimi.ingsw.server.model.Player;
 
@@ -140,6 +141,10 @@ public class VirtualView {
      * @param client the client to remove
      */
     public synchronized void remove(ClientHandler client) {
+        if (controller.isGameStarted()) {
+            controller.getPlayer(client.getPlayer()).setConnected(false);
+            return;
+        }
         if (!waitingList.remove(client)) clientMap.remove(client.getPlayer());
         if (client.getSocket().equals(firstPlayer)) {
             Optional<Map.Entry<String, ClientHandler>> nextFirstPlayer = clientMap.entrySet().stream().findFirst();
@@ -216,8 +221,10 @@ public class VirtualView {
      * @param message the message to send
      */
     public void sendMessage(Message message) {
-        for (String player : clientMap.keySet())
-            sendMessage(player, message);
+        for (String player : clientMap.keySet()) {
+            if (clientMap.get(player).isConnected())
+                sendMessage(player, message);
+        }
     }
 
     /**

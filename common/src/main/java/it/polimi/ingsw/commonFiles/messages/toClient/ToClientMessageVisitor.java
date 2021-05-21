@@ -12,4 +12,5 @@ public interface ToClientMessageVisitor {
     void visit(Ok msg);
     void visit(GameIsFull msg);
     void visit(TurnPhaseAnnouncement msg);
+    void visit(InitialResourcesAmount initialResourcesAmount);
 }

@@ -20,11 +20,21 @@ public abstract class SocketManager {
 
     private boolean isConnected = true;
 
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+    }
+
     public SocketManager(Socket socket) throws IOException {
         this.socket = socket;
-        //socket.setSoTimeout(timeout);
+        socket.setSoTimeout(timeout);
         objOut = new ObjectOutputStream(socket.getOutputStream());
         objIn = new ObjectInputStream(socket.getInputStream());
+
+
     }
 
     public void receiveMessages() throws SocketTimeoutException, SocketException {

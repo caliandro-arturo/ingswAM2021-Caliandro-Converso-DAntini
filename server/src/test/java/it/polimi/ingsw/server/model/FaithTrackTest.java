@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FaithTrackTest {
     private FaithTrack track;
     private Player playerTest = new Player(("pippo"));
+
     Game multiplayerGame = new Game(playerTest, 4, null, null, null){
         @Override
         public void setUpPlayers() {
@@ -25,6 +26,8 @@ class FaithTrackTest {
 
     @BeforeEach
     void setUp() throws GameException.GameAlreadyFull, GameException.NicknameAlreadyTaken {
+        ViewAdapterForTest.setUp();
+        multiplayerGame.setViewAdapter(ViewAdapterForTest.testView);
         track = playerTest.getBoard().getFaithTrack();
         multiplayerGame.addPlayer( new Player("pluto"));
         multiplayerGame.addPlayer( new Player("topolino"));
@@ -37,10 +40,6 @@ class FaithTrackTest {
         Player pluto = multiplayerGame.getPlayer(1);
         Player topolino = multiplayerGame.getPlayer(2);
         Player minnie = multiplayerGame.getPlayer(3);
-        pippo.setGame(multiplayerGame);
-        pluto.setGame(multiplayerGame);
-        topolino.setGame(multiplayerGame);
-        minnie.setGame(multiplayerGame);
 
         assertEquals(1,track.getPosition());
         assertEquals(0, track.getScoreCard());

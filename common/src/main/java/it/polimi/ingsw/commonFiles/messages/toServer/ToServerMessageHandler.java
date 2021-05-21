@@ -14,4 +14,5 @@ public interface ToServerMessageHandler {
     void visit(Next next);
     void visit(ChooseTurnPhase chooseTurnPhase);
     void visit(TakeRes takeRes);
+    void visit(GetResource getResource);
 }

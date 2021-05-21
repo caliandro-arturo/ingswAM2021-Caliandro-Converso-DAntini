@@ -13,6 +13,7 @@ import java.util.*;
  */
 public class Board {
 
+    private final Player player;
     private ArrayList<WarehouseStore> store;
     private FaithTrack faithTrack;
     private final Strongbox strongbox;
@@ -61,11 +62,11 @@ public class Board {
         this.resHand = resHand;
     }
 
-
     /**
      * this is a specific constructor that initialise the board and its elements
      */
-    public Board() {
+    public Board(Player player) {
+        this.player = player;
         this.resHand = new ArrayList<>();
         this.store = new ArrayList<WarehouseStore>() {{
             addAll(Arrays.asList(
@@ -74,7 +75,7 @@ public class Board {
                     new WarehouseStore(3)
             ));
         }};
-        this.faithTrack = new FaithTrack();
+        this.faithTrack = new FaithTrack(player);
         this.strongbox = new Strongbox();
         this.developmentSpace = new DevelopmentPlace[3];
         this.productionList = new ArrayList<Production>(){{

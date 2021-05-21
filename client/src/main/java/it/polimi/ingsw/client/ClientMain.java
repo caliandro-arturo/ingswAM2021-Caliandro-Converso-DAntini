@@ -10,26 +10,31 @@ import java.io.InputStreamReader;
 public class ClientMain {
 
     public static void main(String[] args) {
+        boolean isRunning = false;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Insert CLI or GUI to start the game.");
-        try {
-            switch (in.readLine()) {
-                case "CLI": {
-                    CLI.main(null);
-                    break;
+        do {
+            try {
+                switch (in.readLine().toUpperCase().trim()) {
+                    case "CLI": {
+                        CLI.main(null);
+                        isRunning = true;
+                        break;
+                    }
+                    case "GUI": {
+                        GUI.main(null);
+                        isRunning = true;
+                        break;
+                    }
+                    default: {
+                        System.err.println("You must select between CLI or GUI.");
+                    }
                 }
-                case "GUI": {
-                    GUI.main(null);
-                    break;
-                }
-                default: {
-                    System.err.println("You must select between CLI or GUI.");
-                }
+            } catch (IOException e) {
+                System.err.println("Closing server...");
+                System.exit(1);
             }
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
+        } while (!isRunning);
         System.exit(0);
     }
 }

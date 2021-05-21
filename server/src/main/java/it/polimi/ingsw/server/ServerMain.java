@@ -13,7 +13,6 @@ public class ServerMain {
     private final int port;
     private final List<VirtualView> virtualViews = new ArrayList<>();
     private VirtualView currentView;
-    private final List<Socket> connectedClients = new ArrayList<>();
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
     public ServerMain(int port) {
@@ -56,7 +55,6 @@ public class ServerMain {
                 } catch (IOException ignore) {
                 }
             }
-            connectedClients.add(socket);
             System.out.println("Accepted "
                     + socket.getInetAddress().getCanonicalHostName()
                     + " at port "

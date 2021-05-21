@@ -3,15 +3,20 @@ package it.polimi.ingsw.commonFiles.messages.toServer.actions;
 import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessage;
 import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessageHandler;
 import it.polimi.ingsw.commonFiles.messages.Message;
+import it.polimi.ingsw.commonFiles.model.Production;
+import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class BuyCard extends Message implements ToServerMessage {
-    private int level;
-    private String color;
-    private int space;
-    private int[] stores;
+    private final int level;
+    private final String color;
+    private final int space;
+    private final int[] stores;
+    private UtilityProductionAndCost[] newCardCost;
+    private int newCardVictoryPoints;
+    private Production productions;
 
     public BuyCard(int level, String color, int space, ArrayList<Integer> stores) {
         this.level = level;
@@ -34,6 +39,24 @@ public class BuyCard extends Message implements ToServerMessage {
 
     public int[] getStores() {
         return stores;
+    }
+
+    public UtilityProductionAndCost[] getNewCardCost() {
+        return newCardCost;
+    }
+
+    public int getNewCardVictoryPoints() {
+        return newCardVictoryPoints;
+    }
+
+    public Production getProductions() {
+        return productions;
+    }
+
+    public void setNewCard(UtilityProductionAndCost[] cost, int victoryPoints, Production productions) {
+        newCardCost = cost;
+        newCardVictoryPoints = victoryPoints;
+        this.productions = productions;
     }
 
     @Override

@@ -10,6 +10,8 @@ public interface UpdateHandler {
     void visit(InitLeaderHand msg);
     void visit(InitMarket msg);
     void visit(InitDevGrid msg);
+    void visit(IncrementFaithTrackPosition msg);
     void visit(InitBoards msg);
     void visit(TablePosition msg);
+    void visit(NewTurn msg);
 }

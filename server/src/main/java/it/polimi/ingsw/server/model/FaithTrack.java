@@ -6,8 +6,13 @@ package it.polimi.ingsw.server.model;
  */
 public class FaithTrack {
 
+    private Player player;
     private int position = 1;
     private int scoreCard = 0;
+
+    public FaithTrack(Player player) {
+        this.player = player;
+    }
 
     public void setPosition(int position) { this.position = position;    }
     public void setScoreCard(int scoreCard) { this.scoreCard = scoreCard;    }
@@ -15,6 +20,9 @@ public class FaithTrack {
     public int getScoreCard() { return scoreCard; }
     private Game game;
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
     public void setGame(Game game) {
         this.game = game;
@@ -31,6 +39,7 @@ public class FaithTrack {
     public void increasePosition(){
         if(this.position<24) {
             this.position++;
+            game.getViewAdapter().incrementFaithTrackPosition(player);
             checkPosition();
         }
     }

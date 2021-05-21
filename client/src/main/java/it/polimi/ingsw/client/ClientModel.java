@@ -58,7 +58,7 @@ public class ClientModel {
         return leaderHand;
     }
 
-    public Board getOtherPlayerBoard(String playerUsername) {
+    public Board getBoard(String playerUsername) {
         return boards.get(playerUsername);
     }
 

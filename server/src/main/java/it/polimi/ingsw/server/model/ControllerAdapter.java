@@ -164,7 +164,7 @@ public class ControllerAdapter {
         if (game.isStarted()) throw new GameException.IllegalMove();
         player.getBoard().deployResource(resource, pos);
         if (!game.isStarted() && !game.getPlayersToWait().contains(player))
-            game.setPlayerReady(player);                                    //todo fix throws
+            game.setPlayerReady(player);
     }
 
     /**
@@ -261,7 +261,7 @@ public class ControllerAdapter {
      * @param devSpace space
      * @param box box from where take the resource
      */
-    public void buyCard(Player player,int level,String colorString,int devSpace, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
+    public DevelopmentCard buyCard(Player player,int level,String colorString,int devSpace, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
         checkIfMoveIsValid(player,"BuyDevelopmentCard");
         Color color = Utility.mapColor.get(colorString);
         if (level<1 || level>3 )
@@ -280,6 +280,7 @@ public class ControllerAdapter {
             throw e;
         }
         game.getCurrentTurnPhase().setFinished(true);
+        return game.getDevelopmentGrid().getDeck(level, color).getTopCard();
     }
 }
 

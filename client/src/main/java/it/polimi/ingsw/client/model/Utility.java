@@ -39,6 +39,14 @@ public class Utility {
         put("GREY" , Color.GREY);
         put("RED" , Color.RED);
     }};
+    public static HashMap<Color, Resource> colorResourceMap = new HashMap<Color, Resource>(){{
+        put(Color.BLUE, Resource.SHIELD);
+        put(Color.PURPLE, Resource.SERF);
+        put(Color.GREY, Resource.STONE);
+        put(Color.YELLOW, Resource.COIN);
+        put(Color.RED, Resource.FAITH);
+        put(Color.WHITE, null);
+    }};
     public static ArrayList<Resource> storableResources = new ArrayList<Resource>(){{
         addAll(Arrays.asList(Resource.STONE,Resource.SERF,Resource.COIN,Resource.SHIELD));
     }};

@@ -1,6 +1,11 @@
 package it.polimi.ingsw.client.model;
 
+import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Market {
     private Marble extraMarble;
@@ -29,6 +34,29 @@ public class Market {
             extraMarble = temp;
         }
     }
+
+    public Marble[] getRowOrColumn(char rowOrColumn, int num) {
+        num--;
+        Marble[] marbleArray;
+        if (rowOrColumn == 'r') {
+            marbleArray = new Marble[columns];
+            System.arraycopy(grid[num], 0, marbleArray, 0, columns);
+        }
+        else {
+            marbleArray = new Marble[rows];
+            for (int i = 0; i < rows; i++)
+                marbleArray[i] = grid[i][num];
+        }
+        return marbleArray;
+    }
+
+    public List<Resource> marbleArrayToResourceList(char rowOrColumn, int num) {
+        List<Resource> resources = new ArrayList<>();
+        Arrays.stream(getRowOrColumn(rowOrColumn, num)).forEach(marble -> resources.add(Utility.colorResourceMap.get(marble.getColor())));
+        resources.removeIf(r -> r == null || r.equals(Resource.FAITH));
+        return resources;
+    }
+
     @Override
     public String toString() {
         return  "┌──────────────┐\n" +

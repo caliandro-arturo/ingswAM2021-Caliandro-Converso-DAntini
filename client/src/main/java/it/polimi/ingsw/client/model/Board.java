@@ -6,6 +6,7 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * light version of Board class for representation purposes
@@ -17,7 +18,7 @@ public class Board {
     private Strongbox strongbox ;
     private WarehouseStore warehouseStore;
     private ArrayList<LeaderCard> leaderCards;
-    private ArrayList<Resource> resHand;
+    private final ResourceHand resHand  = new ResourceHand();
 
     public Board() {
         this.developmentPlace = new DevelopmentPlace();
@@ -25,7 +26,6 @@ public class Board {
         this.strongbox = new Strongbox();
         this.warehouseStore = new WarehouseStore();
         this.leaderCards = new ArrayList<>();
-        this.resHand = new ArrayList<>();
     }
 
     public ArrayList<LeaderCard> getLeaderCards() {
@@ -40,8 +40,20 @@ public class Board {
         this.developmentPlace = developmentPlace;
     }
 
-    public void setResHand(ArrayList<Resource> resHand) {
-        this.resHand = resHand;
+    public void addResourcesToHand(List<Resource> resources) {
+        resHand.addResources(resources);
+    }
+    
+    public void addResourceToHand(Resource resource) {
+        resHand.addResource(resource);
+    }
+
+    public void removeResourcesFromHand(List<Resource> resources) {
+        resHand.removeResources(resources);
+    }
+    
+    public void removeResourceFromHand(Resource resource) {
+        resHand.removeResource(resource);
     }
 
     public DevelopmentPlace getDevelopmentPlace() {
@@ -135,6 +147,11 @@ public class Board {
         boardArt.append(boxArt[4]).append("     ╩══════════╩       "+devPlaceArt[13]+"      "+leaderArt[18]+" │\n");
         boardArt.append(boxArt[5]).append("                                        " +
                 "                                                             "+leaderArt[19]+" │\n");
+        if (!resHand.isEmpty()) {
+            boardArt.append("│  Resources hand: ").append(resHand)
+                    .append(StringUtility.center("", 145 - 16 - StringUtility.realLength(resHand.toString())))
+                    .append("│\n");
+        }
         boardArt.append("└───────────────────────────────────────────────────────────────────────────────────────" +
                 "────────────────────────────────────────────────────────────┘\n");
 

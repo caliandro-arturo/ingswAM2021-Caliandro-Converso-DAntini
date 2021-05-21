@@ -182,7 +182,6 @@ public abstract class Game {
      *
      * @param player the player to add to the game
      */
-    @Deprecated
     public void addPlayer(String player) {
         players.put(player, new Player(player));
         players.get(player).setGame(this);
@@ -211,6 +210,7 @@ public abstract class Game {
      */
     public void startGame() {
         setStarted(true);
+        getViewAdapter().notifyNewTurn(getCurrentPlayer());
         setCurrentTurnPhase(getTurnPhase("UseLeader"));
         currentTurnPhase.start();
     }

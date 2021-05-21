@@ -15,7 +15,7 @@ public class SinglePlayerGame extends Game {
         super(player, playersNum, market, leaderDeck, developmentGrid);
         Player lorenzo = new Player("Lorenzo");
         //TODO
-        FaithTrack lorenzoTrack = new FaithTrack() {
+        FaithTrack lorenzoTrack = new FaithTrack(lorenzo) {
             @Override
             public boolean isInVatican(int papalSpace) {
                 return false;

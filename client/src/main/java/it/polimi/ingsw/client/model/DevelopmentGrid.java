@@ -19,12 +19,18 @@ public class DevelopmentGrid{
     public void setGrid(ArrayList<DevelopmentCard> grid) {
         for (DevelopmentCard developmentCard : grid) {
             this.grid[developmentCard.getLevel()][Utility.colorPosition.
-                    get(Utility.mapColor.get(developmentCard.getColor()))] = developmentCard;
+                    get(developmentCard.getColor())] = developmentCard;
         }
     }
 
     public DevelopmentCard getCard(int level, Color color){
         return grid[level-1][Utility.colorPosition.get(color) -1 ];
+    }
+
+    public void setCard(int level, String color, DevelopmentCard newCard) {
+        if (newCard == null) {
+            //todo handle null cards
+        } else grid[level][Utility.colorPosition.get(Utility.mapColor.get(color))] = newCard;
     }
 
     @Override
@@ -81,7 +87,7 @@ public class DevelopmentGrid{
     private String assertVictoryPoints(int row){
         StringBuilder victoryPoints = new StringBuilder(new String(" "));
         for (int i = 0; i<4; i++){
-            victoryPoints.append("│").append(StringUtility.center(String.format(String.format("%2d", grid[row][i].getVictoryPoints())),14));
+            victoryPoints.append("│").append(StringUtility.center(String.format("%2d", grid[row][i].getVictoryPoints()),14));
         }
         victoryPoints.append("│");
         return victoryPoints.toString();

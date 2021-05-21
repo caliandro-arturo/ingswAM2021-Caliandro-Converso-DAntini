@@ -26,7 +26,7 @@ public class MultiplayerGame extends Game {
         ArrayList<String> usernames = new ArrayList<>();
         players.forEach(p -> {
             usernames.add(p.getUsername());
-            getViewAdapter().notifyPlayerTurnNumber(p, players.indexOf(p));
+            getViewAdapter().notifyPlayerTurnNumber(p, players.indexOf(p) + 1);
         });
         getViewAdapter().sendMessage(new InitBoards(usernames));
         setPlayersToWait(new ArrayList<>(players));

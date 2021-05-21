@@ -22,4 +22,9 @@ public class GUIView extends View {
     public void showUpdate(String update) {
 
     }
+
+    @Override
+    public void refresh(String... elements) {
+
+    }
 }

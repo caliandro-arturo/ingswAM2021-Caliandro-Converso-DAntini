@@ -87,7 +87,7 @@ public class Market {
         else if(rowOrColumn == 'c' && num > columns)
             throw new IllegalArgumentException("Maximum number accepted for columns is " + columns + ".");
         num--;
-        Marble[] marbleArray = null;
+        Marble[] marbleArray;
         if (rowOrColumn == 'r') {
             marbleArray = new Marble[columns];
             System.arraycopy(tray[num], 0, marbleArray, 0, columns);

@@ -22,6 +22,7 @@ public class Controller {
     private final VirtualView virtualView;
     private final ServerMessageVisitor messageVisitor = new ServerMessageVisitor(this);
     private Game model;
+    private boolean isGameStarted = false;
 
     public Controller(VirtualView virtualView) {
         this.virtualView = virtualView;
@@ -29,6 +30,10 @@ public class Controller {
 
     public VirtualView getVirtualView() {
         return virtualView;
+    }
+
+    public boolean isGameStarted() {
+        return isGameStarted;
     }
 
     /**
@@ -82,6 +87,7 @@ public class Controller {
     }
 
     public void startGame() {
+        isGameStarted = true;
         virtualView.sendMessage(new GameStarted());
         try {
             List<String> toAdd = new ArrayList<>(

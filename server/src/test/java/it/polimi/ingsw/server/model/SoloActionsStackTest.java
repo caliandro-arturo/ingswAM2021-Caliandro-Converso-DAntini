@@ -48,6 +48,8 @@ class SoloActionsStackTest {
         decks.get(3).push(new DevelopmentCard(1,1, Color.PURPLE, null,null));
         decks.get(3).push(new DevelopmentCard(1,1, Color.PURPLE, null,null));
         game = new SinglePlayerGame(player, 1,null, null, testGrid);
+        ViewAdapterForTest.setUp();
+        game.setViewAdapter(ViewAdapterForTest.testView);
         soloActionPhase = new SoloActionPhase(game);
         //Lorenzo Actions ordered for testing purposes
         soloActionPhase.getSoloActions().set(0, SoloAction.DELGREEN);

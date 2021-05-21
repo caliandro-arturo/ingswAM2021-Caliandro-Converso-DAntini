@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.Controller;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
 import it.polimi.ingsw.server.VirtualView;
 import it.polimi.ingsw.server.model.ControllerAdapter;
+import it.polimi.ingsw.server.model.DevelopmentCard;
 import it.polimi.ingsw.server.model.GameException;
 import it.polimi.ingsw.server.model.Player;
 
@@ -45,6 +46,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
 
     private void confirmMove(Message message) {
         controller.getVirtualView().getClientMap().get(message.getPlayer()).confirmMove(message);
+        controller.getVirtualView().sendMessageToOthers(message.getPlayer(), message);
     }
 
     private void denyMove(Message message, String error) {
@@ -62,6 +64,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             controllerAdapter.useMarket(player, rowOrColumn, num);
         } catch (IllegalArgumentException | GameException.IllegalMove e) {
             denyMove(msg, e.getMessage());
+            return;
         }
         confirmMove(msg);
         sendMessageToOthers(player, msg);
@@ -69,7 +72,6 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
 
     /**
      *
-     * @param startProduction
      */
     @Override
     public void visit(StartProduction startProduction) {
@@ -88,18 +90,22 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             }
         }catch (GameException.IllegalMove e){
             denyMove(startProduction,e.getMessage());
+            return;
         }
         confirmMove(startProduction);
     }
 
     @Override
     public void visit(BuyCard buyCard) {
+        DevelopmentCard newCard;
         try {
-            controllerAdapter.buyCard(getPlayer(buyCard.getPlayer()), buyCard.getLevel(), buyCard.getColor(), buyCard.getSpace(),
+            newCard = controllerAdapter.buyCard(getPlayer(buyCard.getPlayer()), buyCard.getLevel(), buyCard.getColor(), buyCard.getSpace(),
                     buyCard.getStores());
         } catch (GameException.IllegalMove e) {
             denyMove(buyCard, e.getMessage());
+            return;
         }
+        buyCard.setNewCard(newCard.getCost(), newCard.getLevel(), newCard.getProduction());
         confirmMove(buyCard);
     }
 
@@ -109,6 +115,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             controllerAdapter.deployResource(getPlayer(msg.getPlayer()),msg.getResource(), msg.getDepot());
         }catch( GameException.IllegalMove e){
             denyMove(msg, e.getMessage());
+            return;
         }
         confirmMove(msg);
     }
@@ -119,6 +126,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             controllerAdapter.useLeader(getPlayer(useLeader.getPlayer()), useLeader.getIDCard());
         } catch (GameException.IllegalMove e){
             denyMove(useLeader,e.getMessage());
+            return;
         }
         confirmMove(useLeader);
     }
@@ -129,6 +137,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             controllerAdapter.discardLeader(getPlayer(discardLeader.getPlayer()), discardLeader.getPos());
         } catch (IllegalArgumentException e){
             denyMove(discardLeader,e.getMessage());
+            return;
         }
         confirmMove(discardLeader);
     }
@@ -139,6 +148,21 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             controllerAdapter.takeOutResource(getPlayer(msg.getPlayer()), msg.getDepot());
         } catch (GameException.IllegalMove e){
             denyMove(msg, e.getMessage());
+            return;
+        }
+        confirmMove(msg);
+    }
+
+    /**
+     * Handles the taking of an initial resource by a player.
+     */
+    @Override
+    public void visit(GetResource msg) {
+        try {
+            controllerAdapter.takeInitialResource(getPlayer(msg.getPlayer()), msg.getResource());
+        } catch (GameException.IllegalMove e) {
+            denyMove(msg, e.getMessage());
+            return;
         }
         confirmMove(msg);
     }
@@ -152,6 +176,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             controllerAdapter.nextTurnPhase(getPlayer(next.getPlayer()));
         } catch (GameException.IllegalMove e) {
             denyMove(next, e.getMessage());
+            return;
         }
         confirmMove(next);
     }
@@ -167,11 +192,12 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             controllerAdapter.startChosenTurnPhase(player, turnPhase);
         } catch (GameException.IllegalMove e) {
             denyMove(msg, e.getMessage());
+            return;
         }
         confirmMove(msg);
     }
 
-    //----------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
 
     /* These methods are dedicated to the initial phases of games (creation of game, nickname setting).
      * For this reason, error handling is implemented differently than the others above.

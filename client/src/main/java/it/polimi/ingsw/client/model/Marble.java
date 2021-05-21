@@ -9,6 +9,10 @@ public class Marble {
         this.color = color;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
     @Override
     public String toString() {
         if (Utility.colorMap.get(color)!=null) {

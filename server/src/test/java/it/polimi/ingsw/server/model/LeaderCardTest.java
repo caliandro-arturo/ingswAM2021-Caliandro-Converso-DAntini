@@ -45,8 +45,8 @@ public class LeaderCardTest {
         power4 = new SaleOnDevelopment(Resource.SHIELD);
         player = new Player("Test");
         playerFalse = new Player("TestFalse");
-        Board board = new Board();
-        Board boardFalse = new Board();
+        Board board = new Board(player);
+        Board boardFalse = new Board(playerFalse);
         player.setBoard(board);
         playerFalse.setBoard(boardFalse);
         cardPower1 = new LeaderCard(1,type1,power1);
