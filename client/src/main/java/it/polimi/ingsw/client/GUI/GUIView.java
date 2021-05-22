@@ -27,4 +27,14 @@ public class GUIView extends View {
     public void refresh(String... elements) {
 
     }
+
+    @Override
+    public void setToDo(String toDo) {
+
+    }
+
+    @Override
+    public void resetToDo() {
+
+    }
 }

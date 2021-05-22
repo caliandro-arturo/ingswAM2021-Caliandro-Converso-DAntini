@@ -25,8 +25,6 @@ public class Market {
      * @param marbles list of marbles that goes into the market
      */
     public Market(int rows, int columns, ArrayList<Marble> marbles) {
-        /*if(rows * columns != marbles.size())
-            System.out.println("error");*/
         this.rows = rows;
         this.columns = columns;
         tray = new Marble[rows][columns];

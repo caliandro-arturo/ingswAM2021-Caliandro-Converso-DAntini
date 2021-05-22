@@ -6,7 +6,6 @@ import it.polimi.ingsw.commonFiles.messages.toClient.GameIsFull;
 import it.polimi.ingsw.commonFiles.messages.toClient.WaitGameCreation;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.NewPlayer;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
-import it.polimi.ingsw.commonFiles.network.SocketManager;
 import it.polimi.ingsw.server.model.GameException;
 import it.polimi.ingsw.server.model.Player;
 
@@ -61,7 +60,7 @@ public class VirtualView {
      * @return {@code true} if the nickname is still available; {@code false} otherwise
      */
     public boolean isNickAvailable(String nickname) {
-        return clientMap.keySet().stream().noneMatch(nickname::equals);
+        return clientMap.keySet().stream().noneMatch(nickname::equalsIgnoreCase);
     }
 
     /**
@@ -120,8 +119,9 @@ public class VirtualView {
             throw new GameException.NicknameAlreadyTaken();
         waitingList.remove(clientHandler);
         clientMap.put(nickname, clientHandler);
+        setNickname.setClient(null);
         clientHandler.setPlayerName(nickname);
-        clientHandler.confirmMove(setNickname);
+        sendMessage(nickname, setNickname);
         sendMessageToOthers(nickname, new NewPlayer(nickname));
         if (!hasBeenSet) {
             if (clientHandler.getSocket().equals(firstPlayer))
@@ -170,17 +170,14 @@ public class VirtualView {
      * @param expectedNumberOfClients the number of players allowed in this virtual view
      */
     public synchronized void removeExtraClients(int expectedNumberOfClients) {
-        waitingList.forEach(c -> {
-            waitingList.remove(c);
-            c.reassign();
-        });
-        ArrayList<String> players = new ArrayList<>(clientMap.keySet());
+        ArrayList<ClientHandler> players = new ArrayList<>(clientMap.values());
+        players.addAll(waitingList);
         while (connectedClients() > expectedNumberOfClients) {
-            String playerToRemove = players.get(expectedNumberOfClients);
+            ClientHandler playerToRemove = players.get(expectedNumberOfClients);
             sendMessage(playerToRemove, new GameIsFull());
-            remove(clientMap.get(playerToRemove));
-            clientMap.get(playerToRemove).reassign();
-            players.remove(expectedNumberOfClients);
+            remove(playerToRemove);
+            playerToRemove.reassign();
+            players.remove(playerToRemove);
         }
     }
 
@@ -189,7 +186,7 @@ public class VirtualView {
      *
      * @param message the message to read
      */
-    public synchronized void readMessage(Message message) {
+    public void readMessage(Message message) {
         controller.readMessage(message);
     }
 
@@ -211,7 +208,7 @@ public class VirtualView {
         try {
             client.sendMessage(message);
         } catch (IOException e) {
-            //fixme handle this
+            e.printStackTrace();
         }
     }
 

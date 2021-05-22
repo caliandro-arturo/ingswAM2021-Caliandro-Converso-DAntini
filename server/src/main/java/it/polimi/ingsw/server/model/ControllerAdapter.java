@@ -77,9 +77,12 @@ public class ControllerAdapter {
      */
     public void startChosenTurnPhase(Player player, String turnPhase) throws GameException.IllegalMove {
         checkIfMoveIsValid(player, "ChooseAction");
-        if (!selectablePhases.contains(turnPhase))
-            throw new GameException.IllegalMove();
-        game.nextTurnPhase(turnPhase);
+        for (String turn : selectablePhases)
+            if (turn.equalsIgnoreCase(turnPhase)) {
+                game.nextTurnPhase(turnPhase);
+                return;
+            }
+        throw new GameException.IllegalMove();
     }
 
     /**

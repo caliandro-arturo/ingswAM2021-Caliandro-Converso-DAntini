@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.commonFiles.messages.toClient.Ok;
-import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessage;
 import it.polimi.ingsw.commonFiles.network.SocketManager;
 
 import java.io.IOException;
@@ -20,9 +18,7 @@ public class ClientSocketManager extends SocketManager {
 
     @Override
     public void readMessage(Message message) {
-        if (message instanceof Ok)
-            controller.confirmMove(message.getId());
-        else controller.readMessage(message);
+        controller.readMessage(message);
     }
 
     public void setController(ClientController controller) {

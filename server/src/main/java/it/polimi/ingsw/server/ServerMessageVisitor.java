@@ -1,13 +1,9 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
-import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
-import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessageHandler;
-import it.polimi.ingsw.commonFiles.messages.toServer.actions.*;
+import it.polimi.ingsw.commonFiles.messages.toClient.AskWhiteMarble;
+import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.server.Controller;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
-import it.polimi.ingsw.server.VirtualView;
 import it.polimi.ingsw.server.model.ControllerAdapter;
 import it.polimi.ingsw.server.model.DevelopmentCard;
 import it.polimi.ingsw.server.model.GameException;
@@ -40,13 +36,8 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         controller.sendMessage(getPlayer(player), message);
     }
 
-    private void sendMessageToOthers(Player p, Message msg) {
-        controller.getVirtualView().sendMessageToOthers(p,msg);
-    }
-
     private void confirmMove(Message message) {
-        controller.getVirtualView().getClientMap().get(message.getPlayer()).confirmMove(message);
-        controller.getVirtualView().sendMessageToOthers(message.getPlayer(), message);
+        controller.getVirtualView().sendMessage(message.getPlayer(), message);
     }
 
     private void denyMove(Message message, String error) {
@@ -67,7 +58,8 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             return;
         }
         confirmMove(msg);
-        sendMessageToOthers(player, msg);
+        if (player.getWhiteMarbleChoices() > 0)
+            sendMessage(player, new AskWhiteMarble(player.getWhiteMarbleChoices()));
     }
 
     /**
@@ -135,7 +127,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     public void visit(DiscardLeader discardLeader) {
         try{
             controllerAdapter.discardLeader(getPlayer(discardLeader.getPlayer()), discardLeader.getPos());
-        } catch (Exception e){
+        } catch (IllegalArgumentException | GameException.IllegalMove e){
             denyMove(discardLeader,e.getMessage());
             return;
         }
@@ -167,6 +159,16 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         confirmMove(msg);
     }
 
+    @Override
+    public void visit(ChooseWhiteMarble msg) {
+        try {
+            controllerAdapter.giveChosenWhiteMarbleResource(getPlayer(msg.getPlayer()), msg.getLeaderPosition());
+        } catch (Exception e) {
+            denyMove(msg, e.getMessage());
+        }
+        confirmMove(msg);
+    }
+
     /**
      * Handles requests to go to the next turn phase.
      */
@@ -176,9 +178,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             controllerAdapter.nextTurnPhase(getPlayer(next.getPlayer()));
         } catch (GameException.IllegalMove e) {
             denyMove(next, e.getMessage());
-            return;
         }
-        confirmMove(next);
     }
 
     /**
@@ -192,9 +192,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             controllerAdapter.startChosenTurnPhase(player, turnPhase);
         } catch (GameException.IllegalMove e) {
             denyMove(msg, e.getMessage());
-            return;
         }
-        confirmMove(msg);
     }
 
     //------------------------------------------------------------------------------------------------------------------

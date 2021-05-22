@@ -2,7 +2,6 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameSet;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameStarted;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
 import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessage;
@@ -59,22 +58,22 @@ public class Controller {
             sendMessage(player, new ErrorMessage(setGame, e.getMessage()));
             return;
         }
-        virtualView.getClientMap().get(playerNick).confirmMove(setGame);
         messageVisitor.setControllerAdapter(model.getControllerAdapter());
         model.getViewAdapter().setVirtualView(virtualView);
         virtualView.setHasBeenSet(true);
-        virtualView.sendMessage(new GameSet(playersNum));
         if (virtualView.isFull()) {
             virtualView.removeExtraClients(playersNum);
+            virtualView.sendMessage(setGame);
             startGame();
         }
+        else virtualView.sendMessage(setGame);
     }
 
     public int gamePlayersNum() {
         return model.getPlayersNum();
     }
 
-    public void readMessage(Message message) {
+    public synchronized void readMessage(Message message) {
         ((ToServerMessage) message).accept(messageVisitor);
     }
 

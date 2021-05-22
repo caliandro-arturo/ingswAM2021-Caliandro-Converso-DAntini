@@ -16,9 +16,9 @@ public class CLI extends UI {
      *
      */
     public void run() {
-        //todo insert startup prints here
         setView(new CLIView());
         getView().refresh("");
+        //todo insert startup prints here
         System.out.println("Insert server hostname:port (or just press Enter to set default values):");
         try {
             configureConnection(stdIn.readLine());
@@ -33,11 +33,9 @@ public class CLI extends UI {
     }
 
     private void inputReader() {
-        String input;
         do {
             try {
-                input = stdIn.readLine();
-                getView().process(input);
+                getView().process(stdIn.readLine());
             } catch (IOException e) {
                 e.printStackTrace();
                 System.exit(1);

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
+import it.polimi.ingsw.commonFiles.messages.toClient.CreateGame;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
-import it.polimi.ingsw.commonFiles.messages.toClient.Ok;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.PlayerLeft;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
 import it.polimi.ingsw.commonFiles.network.SocketManager;
@@ -61,6 +61,13 @@ public class ClientHandler extends SocketManager implements Runnable {
 
     public void reassign() {
         serverMain.reinsertToTheFirstFreeVirtualView(this);
+        if (player == null) {
+            //todo fix nickname request
+        } else  try {
+            sendMessage(new CreateGame());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -75,13 +82,5 @@ public class ClientHandler extends SocketManager implements Runnable {
             return;
         }
         virtualView.readMessage(message);
-    }
-
-    public void confirmMove(Message move) {
-        try {
-            sendMessage(new Ok(move));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

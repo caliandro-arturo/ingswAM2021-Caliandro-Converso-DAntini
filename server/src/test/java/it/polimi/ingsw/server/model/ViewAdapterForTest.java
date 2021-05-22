@@ -30,15 +30,7 @@ public class ViewAdapterForTest {
             }
 
             @Override
-            public void askWhiteMarbleResource() {
-            }
-
-            @Override
             public void askLeaderAction() {
-            }
-
-            @Override
-            public void askTurnPhaseAction() {
             }
 
             @Override

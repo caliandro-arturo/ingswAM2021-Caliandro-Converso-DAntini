@@ -1,7 +1,6 @@
 package it.polimi.ingsw.commonFiles.messages.toClient.updates;
 
 public interface UpdateHandler {
-    void visit(GameSet msg);
     void visit(GameStarted msg);
     void visit(LastTurn msg);
     void visit(NewPlayer msg);
@@ -14,4 +13,5 @@ public interface UpdateHandler {
     void visit(InitBoards msg);
     void visit(TablePosition msg);
     void visit(NewTurn msg);
+    void visit(TurnPhaseAnnouncement msg);
 }

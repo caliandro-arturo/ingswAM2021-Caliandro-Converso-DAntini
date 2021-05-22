@@ -55,4 +55,12 @@ public abstract class View {
      * @param elements the element to refresh if shown
      */
     public abstract void refresh(String... elements);
+
+    /**
+     * Reminds the player what he must do in a certain moment.
+     * @param toDo the action to do
+     */
+    public abstract void setToDo(String toDo);
+
+    public abstract void resetToDo();
 }

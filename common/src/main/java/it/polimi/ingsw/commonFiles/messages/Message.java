@@ -15,13 +15,9 @@ import java.io.Serializable;
  */
 public abstract class Message implements Serializable {
     private String player;
-    private final int id = this.hashCode();
 
     public String getPlayer() {
         return player;
-    }
-    public int getId() {
-        return id;
     }
 
     public void setPlayer(String player) {
