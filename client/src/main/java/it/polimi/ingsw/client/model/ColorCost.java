@@ -5,8 +5,8 @@ import it.polimi.ingsw.commonFiles.utility.StringUtility;
 import java.util.ArrayList;
 
 public class ColorCost implements Requirements{
-    private ArrayList<Color> colors;
-    private ArrayList <Integer> quantity;
+    private final ArrayList<Color> colors;
+    private final ArrayList <Integer> quantity;
 
     public ColorCost(ArrayList<Color> colors, ArrayList<Integer> quantity) {
         this.colors = colors;
@@ -19,10 +19,6 @@ public class ColorCost implements Requirements{
 
     public ArrayList<Integer> getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(ArrayList<Integer> quantity) {
-        this.quantity = quantity;
     }
 
     @Override

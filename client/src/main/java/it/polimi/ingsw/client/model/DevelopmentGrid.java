@@ -28,9 +28,7 @@ public class DevelopmentGrid{
     }
 
     public void setCard(int level, String color, DevelopmentCard newCard) {
-        if (newCard == null) {
-            //todo handle null cards
-        } else grid[level][Utility.colorPosition.get(Utility.mapColor.get(color))] = newCard;
+        grid[level][Utility.colorPosition.get(Utility.mapColor.get(color))] = newCard;
     }
 
     @Override
@@ -56,36 +54,45 @@ public class DevelopmentGrid{
     }
 
     private String assertLengthCost(int row) {
-        StringBuilder costs = new StringBuilder(new String(" "));
+        StringBuilder costs = new StringBuilder(" ");
         for (int i = 0; i < 4; i++) {
-            costs.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].getCosts()), 14));
+            if (grid[row][i].getCosts() != null)
+                costs.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].getCosts()), 14));
+            else
+                costs.append("│").append(StringUtility.center("", 14));
         }
         costs.append("│");
         return costs.toString();
     }
 
     private String assertLengthProductionCost(int row){
-        StringBuilder productionCost = new StringBuilder(new String(" "));
+        StringBuilder productionCost = new StringBuilder(" ");
         for (int i = 0; i<4; i++) {
-            productionCost.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].
-                    getProduction().getCost()),14));
+            if (grid[row][i].getProduction() != null)
+                productionCost.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].
+                        getProduction().getCost()), 14));
+            else
+                productionCost.append("│").append(StringUtility.center("", 14));
         }
         productionCost.append("│");
         return productionCost.toString();
     }
 
     private String assertLengthProductionValue(int row){
-        StringBuilder productionValue = new StringBuilder(new String(" "));
+        StringBuilder productionValue = new StringBuilder(" ");
         for (int i = 0; i<4; i++) {
-            productionValue.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].
+            if (grid[row][i].getProduction() != null)
+                productionValue.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].
                     getProduction().getProd()),14));
+            else
+                productionValue.append("│").append(StringUtility.center("", 14));
         }
         productionValue.append("│");
         return productionValue.toString();
     }
 
     private String assertVictoryPoints(int row){
-        StringBuilder victoryPoints = new StringBuilder(new String(" "));
+        StringBuilder victoryPoints = new StringBuilder(" ");
         for (int i = 0; i<4; i++){
             victoryPoints.append("│").append(StringUtility.center(String.format("%2d", grid[row][i].getVictoryPoints()),14));
         }

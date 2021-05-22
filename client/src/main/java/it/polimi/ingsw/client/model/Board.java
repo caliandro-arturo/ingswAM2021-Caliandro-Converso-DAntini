@@ -14,9 +14,9 @@ import java.util.List;
 
 public class Board {
     private DevelopmentPlace developmentPlace;
-    private FaithTrack faithTrack;
-    private Strongbox strongbox ;
-    private WarehouseStore warehouseStore;
+    private final FaithTrack faithTrack;
+    private final Strongbox strongbox ;
+    private final WarehouseStore warehouseStore;
     private ArrayList<LeaderCard> leaderCards;
     private final ResourceHand resHand  = new ResourceHand();
 
@@ -92,7 +92,7 @@ public class Board {
      */
     @Override
     public String toString(){
-        StringBuilder boardArt = new StringBuilder("");
+        StringBuilder boardArt = new StringBuilder();
         String[] wareArt = warehouseStore.toString().split("\n");
         String[] boxArt = strongbox.toString().split("\n");
         String[] faithArt = faithTrack.toString().split("\n");
@@ -127,24 +127,23 @@ public class Board {
         for(int k=0; k<4; k++){
             boardArt.append("│");
             if(k==2)
-                boardArt.append("  "+faithArt[k]+"   "+leaderArt[k]);
+                boardArt.append("  ").append(faithArt[k]).append("   ").append(leaderArt[k]);
             else
             boardArt.append(StringUtility.center(faithArt[k],127)).append(leaderArt[k]);
             boardArt.append(" │\n");
         }
-        boardArt.append("│  "+faithArt[4]+"     "+leaderArt[4]+" │\n");
+        boardArt.append("│  ").append(faithArt[4]).append("     ").append(leaderArt[4]).append(" │\n");
 
         for(int i = 0; i<9;i++){
             boardArt.append(wareArt[i].concat("                        "+devPlaceArt[i])).append("      ").append(leaderArt[i+5]);
             boardArt.append(" │\n");
         }
-        boardArt.append(boxArt[0]).append("     ╦══════════╦       "+devPlaceArt[9]).append("      ").append(leaderArt[14]).append(" │\n");
-        boardArt.append(boxArt[1]).append("     ║ 1"+b+"--┐    ║       "+devPlaceArt[10]+"      "+leaderArt[15]+" │\n");
-        boardArt.append(boxArt[2]).append("     ║     ├>1"+b+" ║       "+devPlaceArt[11]+"      "+leaderArt[16]+" │\n");
-        boardArt.append(boxArt[3]).append("     ║ 1"+b+"--┘    ║       "+devPlaceArt[12]+"      "+leaderArt[17]+" │\n");
-        boardArt.append(boxArt[4]).append("     ╩══════════╩       "+devPlaceArt[13]+"      "+leaderArt[18]+" │\n");
-        boardArt.append(boxArt[5]).append("                                        " +
-                "                                                             "+leaderArt[19]+" │\n");
+        boardArt.append(boxArt[0]).append("     ╦══════════╦       ").append(devPlaceArt[9]).append("      ").append(leaderArt[14]).append(" │\n");
+        boardArt.append(boxArt[1]).append("     ║ 1").append(b).append("--┐    ║       ").append(devPlaceArt[10]).append("      ").append(leaderArt[15]).append(" │\n");
+        boardArt.append(boxArt[2]).append("     ║     ├>1").append(b).append(" ║       ").append(devPlaceArt[11]).append("      ").append(leaderArt[16]).append(" │\n");
+        boardArt.append(boxArt[3]).append("     ║ 1").append(b).append("--┘    ║       ").append(devPlaceArt[12]).append("      ").append(leaderArt[17]).append(" │\n");
+        boardArt.append(boxArt[4]).append("     ╩══════════╩       ").append(devPlaceArt[13]).append("      ").append(leaderArt[18]).append(" │\n");
+        boardArt.append(boxArt[5]).append("                                        " + "                                                             ").append(leaderArt[19]).append(" │\n");
         if (!resHand.isEmpty()) {
             boardArt.append("│  Resources hand: ").append(resHand)
                     .append(StringUtility.center("", 145 - 16 - StringUtility.realLength(resHand.toString())))

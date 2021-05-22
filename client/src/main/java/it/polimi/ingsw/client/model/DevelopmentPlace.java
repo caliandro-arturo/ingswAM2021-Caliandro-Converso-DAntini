@@ -91,7 +91,7 @@ public class DevelopmentPlace {
         temp3=devString[2].toString().split("\n");
 
         for (int j = 0; j < 14; j++) {
-            devPlaceArt.append(temp1[j]+space).append(temp2[j]+space).append(temp3[j]);
+            devPlaceArt.append(temp1[j]).append(space).append(temp2[j]).append(space).append(temp3[j]);
             devPlaceArt.append("\n");
         }
         return devPlaceArt.toString();

@@ -1,9 +1,10 @@
 package it.polimi.ingsw.client.CLI;
 
-import it.polimi.ingsw.client.*;
-import it.polimi.ingsw.commonFiles.network.SocketManager;
+import it.polimi.ingsw.client.UI;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * CLI version of the client.

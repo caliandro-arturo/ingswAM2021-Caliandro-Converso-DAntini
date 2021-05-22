@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class FaithTrack {
     private int position = 1;
     private int positionB = 0;
-    private HashMap<Integer, Boolean> vaticanMap = new HashMap<Integer, Boolean>(){{
+    private final HashMap<Integer, Boolean> vaticanMap = new HashMap<Integer, Boolean>(){{
         put(1, false);
         put(2, false);
         put(3, false);
@@ -34,16 +34,16 @@ public class FaithTrack {
      */
     @Override
     public String toString() {
-        StringBuilder faithArt = new StringBuilder("");
+        StringBuilder faithArt = new StringBuilder();
         String f = "     ";
         int ft=1;
 
         String cross = CLIColor.ANSI_RED +"╬" + CLIColor.ANSI_RESET;
         String crossB = CLIColor.ANSI_RESET+"\u001B[40m" +"╬" + CLIColor.ANSI_RESET;
 
-        faithArt.append(CLIColor.ANSI_GREEN+"           │VP:1│         │VP:2│         │VP:4│").
+        faithArt.append(CLIColor.ANSI_GREEN + "           │VP:1│         │VP:2│         │VP:4│").
                 append("         │VP:6│         │VP:9│        │VP:12│").
-                append("         │VP:16│        │VP:20│"+CLIColor.ANSI_RESET+"\n");
+                append("         │VP:16│        │VP:20│" + CLIColor.ANSI_RESET + "\n");
         faithArt.append(" ");
         for (int i = 1; i < 25; i++) {
             if (i > 4 && i < 9 || i > 11 && i < 17 || i > 18) {
@@ -103,11 +103,13 @@ public class FaithTrack {
 
         for (Boolean key: vaticanMap.values()){
             if(key){
-                faithArt.append(f+f+f+f+f+CLIColor.ANSI_YELLOW+"  FT:"+ft+"  "+CLIColor.ANSI_GREEN+"V"+
-                        CLIColor.ANSI_YELLOW+"   (┼)"+CLIColor.ANSI_RESET);
+                faithArt.append(f).append(f).append(f).append(f).append(f).append(CLIColor.ANSI_YELLOW).append("  FT:").
+                        append(ft).append("  ").append(CLIColor.ANSI_GREEN).append("V").append(CLIColor.ANSI_YELLOW).
+                        append("   (┼)").append(CLIColor.ANSI_RESET);
             }else
-                faithArt.append(f+f+f+f+f+CLIColor.ANSI_YELLOW+"  FT:"+ft+"  "+CLIColor.ANSI_RED+"X"+
-                        CLIColor.ANSI_YELLOW+"   (┼)"+CLIColor.ANSI_RESET);
+                faithArt.append(f).append(f).append(f).append(f).append(f).append(CLIColor.ANSI_YELLOW).append("  FT:").
+                        append(ft).append("  ").append(CLIColor.ANSI_RED).append("X").append(CLIColor.ANSI_YELLOW).
+                        append("   (┼)").append(CLIColor.ANSI_RESET);
             ft++;
         }
 
