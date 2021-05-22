@@ -117,7 +117,11 @@ public abstract class Game {
     }
 
     public void setPlayersToWait(ArrayList<Player> playersToWait) {
-        this.playersToWait = playersToWait;
+        playersToWait.forEach(this::setPlayerToWait);
+    }
+
+    public void setPlayerToWait(Player player) {
+        playersToWait.add(player);
     }
 
     //booleans management
@@ -212,6 +216,7 @@ public abstract class Game {
      */
     public void startGame() {
         setStarted(true);
+        setCurrentPlayer(getPlayer(0));
         getViewAdapter().notifyNewTurn(getCurrentPlayer());
         setCurrentTurnPhase(getTurnPhase("UseLeader"));
         currentTurnPhase.start();

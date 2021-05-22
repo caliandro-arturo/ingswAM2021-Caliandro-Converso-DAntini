@@ -29,8 +29,8 @@ public class UseLeaderPhase extends TurnPhase {
     @Override
     public TurnPhase nextTurnPhase() {
         if(isFirst)
-            return getGame().getTurnPhase("ChooseActionPhase");
+            return getGame().getTurnPhase("ChooseAction");
         else
-            return getGame().getTurnPhase("EndTurnGame");
+            return getGame().getTurnPhase("EndTurn");
     }
 }

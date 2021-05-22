@@ -1,15 +1,16 @@
 package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.client.model.Board;
 import it.polimi.ingsw.client.model.Utility;
-import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
-import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
-import it.polimi.ingsw.commonFiles.messages.toServer.actions.*;
+import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
+import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * Prints on {@link System#out} ASCII characters representing the game, updates.
@@ -17,6 +18,19 @@ import java.util.ArrayList;
  */
 public class CLIView extends View {
     private String currentView;
+    private String toDo = "";
+
+    @Override
+    public void setToDo(String toDo) {
+        this.toDo += toDo + '\n';
+        if (currentView != null)
+            refresh(currentView);
+    }
+
+    @Override
+    public void resetToDo() {
+        toDo = "";
+    }
 
     /**
      * Reads and processes user commands.
@@ -52,6 +66,9 @@ public class CLIView extends View {
             case "usemarket": {
                 useMarket(commandSlice);
                 break;
+            }
+            case "choosewhite": {
+                chooseWhite(commandSlice);
             }
             case "buydevcard": {
                 buyDevCard(commandSlice);
@@ -98,7 +115,6 @@ public class CLIView extends View {
      */
     @Override
     public void show(String element) {
-        currentView = element;
         String[] target = element.split("\\s*,\\s*");
         switch (target[0]) {
             case "asknickname": {
@@ -113,32 +129,46 @@ public class CLIView extends View {
                 System.out.println("Waiting creation of the game...");
                 break;
             }
-            case "discardleader": {
-                System.out.println("Discard two leader card by using the command discardleader: <pos>");
-                System.out.println(getModel().getLeaderHand());
-                break;
-            }
             case "turnphase": {
                 System.out.println("Next turn phase: " + getModel().getCurrentTurnPhase());
                 break;
             }
             case "board": {
+                clear();
+                printHead();
                 if (target.length == 1) {
                     System.out.println(getModel().getBoard());
+                    currentView = element;
                 } else {
-                    System.out.println(getModel().getBoard(target[1]));
+                    Optional<Board> board = Optional.ofNullable(getModel().getBoard(target[1]));
+                    board.ifPresentOrElse(b -> {
+                        System.out.println(b);
+                        currentView = element;
+                    }, () -> {
+                        show(currentView);
+                        System.err.println("Player not found.");
+                    });
                 }
                 break;
             }
             case "hand": {
+                clear();
+                printHead();
+                currentView = element;
                 System.out.println(getModel().getLeaderHand());
                 break;
             }
             case "market":{
+                clear();
+                printHead();
+                currentView = element;
                 System.out.println(getModel().getMarket());
                 break;
             }
             case "devgrid":{
+                clear();
+                printHead();
+                currentView = element;
                 System.out.println(getModel().getDevelopmentGrid());
                 break;
             }
@@ -173,7 +203,6 @@ public class CLIView extends View {
     private void showHandler(String[] commandSlice){
         String target = commandSlice[1].toLowerCase();
         String[] boardCmd = target.split("\\s*,\\s*");
-        clear();
         switch (boardCmd[0]) {
             case "board": {
                 if (boardCmd.length==1) {
@@ -225,9 +254,11 @@ public class CLIView extends View {
      * @param commandSlice command by the player
      */
     private void choose(String[] commandSlice){
-        if (!commandSlice[1].isEmpty() || commandSlice[1].matches("\\s*"))
-            getController().sendMessage(new ChooseTurnPhase(commandSlice[1]));
-        else System.err.println("You must insert a turn phase.");
+        if (commandSlice[1].isEmpty()) {
+            System.err.println("You must insert a turn phase.");
+            return;
+        }
+        getController().sendMessage(new ChooseTurnPhase(commandSlice[1].trim().toLowerCase()));
     }
 
     /**
@@ -308,6 +339,10 @@ public class CLIView extends View {
             System.err.println("Wrong parameter");
     }
 
+    private void chooseWhite(String[] commandSlice) {
+        //todo handle white marble choice
+    }
+
     /**
      * this methods handles the calling for the player command useleader
      * @param commandSlice command by the player
@@ -328,24 +363,10 @@ public class CLIView extends View {
      */
     private void deployRes(String[] commandSlice){
         String[] args = commandSlice[1].split("\\s*,\\s*");
-        String argument = args[0].toLowerCase();
         try {
-            switch (argument) {
-                case "serf":
-                    getController().sendMessage(new DeployRes(Resource.SERF, Integer.parseInt(args[1])));
-                    break;
-                case "shield":
-                    getController().sendMessage(new DeployRes(Resource.SHIELD, Integer.parseInt(args[1])));
-                    break;
-                case "coin":
-                    getController().sendMessage(new DeployRes(Resource.COIN, Integer.parseInt(args[1])));
-                    break;
-                case "stone":
-                    getController().sendMessage(new DeployRes(Resource.STONE, Integer.parseInt(args[1])));
-                    break;
-            }
+            getController().sendMessage(new DeployRes(Utility.mapResource.get(args[0].toLowerCase()), Integer.parseInt(args[1])));
         } catch (NumberFormatException e) {
-            System.err.println("Wrong parameter");
+            System.err.println("Wrong parameter: you must insert a resource name.");
         }
     }
 
@@ -404,16 +425,22 @@ public class CLIView extends View {
     }
 
     @Override
-    public void refresh(String... viewsToRefresh){
-        if (viewsToRefresh.length == 1 && viewsToRefresh[0].equals("")) {
-            clear();
-            return;
-        }
+    public void refresh(String... viewsToRefresh) {
         for (String s : viewsToRefresh)
-            if (currentView.equals(s)) {
+            if (s.equals("") || currentView.equals(s)) {
                 clear();
-                show(currentView);
-                return;
+                break;
             }
+        if (currentView != null) show(currentView);
+    }
+    
+    private void printHead() {
+        if (getModel() == null) return;
+        if (getModel().getCurrentPlayerInTheGame() != null)
+            System.out.println(StringUtility.center(getModel().getCurrentPlayerInTheGame() + "'s turn", 160, '-'));
+        if (getModel().getCurrentTurnPhase() != null)
+            System.out.println(StringUtility.center(getModel().getCurrentTurnPhase(), 160, '-'));
+        if (toDo != null)
+            System.out.println(toDo);
     }
 }

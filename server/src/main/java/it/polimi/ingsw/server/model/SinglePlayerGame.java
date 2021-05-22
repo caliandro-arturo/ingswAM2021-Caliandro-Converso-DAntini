@@ -1,5 +1,9 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitBoards;
+
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Stack;
 
 public class SinglePlayerGame extends Game {
@@ -41,7 +45,7 @@ public class SinglePlayerGame extends Game {
         for (int i = 0; i < 4; i++)
             getPlayer(0).getLeaderCards().add(getLeaderDeck().pop());
         getViewAdapter().sendLeaderHand(getPlayer(0));
-        setCurrentPlayer(getPlayer(0));
+        setPlayerToWait(getPlayer(0));
     }
 
     @Override

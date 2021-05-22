@@ -7,7 +7,7 @@ public class MarketPhase extends TurnPhase {
 
     @Override
     public void start() {
-        getGame().getViewAdapter().sendMessage(getGame().getCurrentPlayer(), getName());
+        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName());
     }
 
     @Override

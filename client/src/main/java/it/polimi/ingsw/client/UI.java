@@ -33,8 +33,8 @@ public abstract class UI {
     public abstract void run();
 
     public void configureConnection(String hostNameAndPort) {
-        String hostName;
-        int portNumber;
+        String hostName = null;
+        int portNumber = 0;
         if (hostNameAndPort.equals("")) {
             Map<String, String> socketId = null;
             try {
@@ -46,19 +46,24 @@ public abstract class UI {
             hostName = socketId.get("serverName");
             portNumber = Integer.parseInt(socketId.get("serverPort"));
         } else {
-            String[] parser = hostNameAndPort.split("\\s*:\\s*");
-            hostName = parser[0];
-            portNumber = Integer.parseInt(parser[1]);
+            String[] parser = hostNameAndPort.trim().split("\\s*:\\s*");
+            try {
+                hostName = parser[0];
+                portNumber = Integer.parseInt(parser[1]);
+            } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+                showError("Wrong parameter: you must insert hostname:port.");
+                System.exit(0);
+            }
         }
         System.out.println("Connecting to " + hostName + " at port " + portNumber + "...");
         try {
             connectToServer(hostName, portNumber);
         } catch (UnknownHostException e) {
             showError("Don't know about host " + hostName);
-            System.exit(1);
+            System.exit(0);
         } catch (IOException e) {
             showError("Couldn't get I/O for the connection to " + hostName);
-            System.exit(1);
+            System.exit(0);
         }
     }
 

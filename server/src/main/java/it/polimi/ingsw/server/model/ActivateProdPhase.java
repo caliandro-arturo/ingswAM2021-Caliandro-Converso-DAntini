@@ -7,7 +7,7 @@ public class ActivateProdPhase extends TurnPhase {
 
     @Override
     public void start() {
-
+        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName());
     }
 
     @Override

@@ -1,9 +1,10 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
+import it.polimi.ingsw.commonFiles.messages.toClient.AskWhiteMarble;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
 import it.polimi.ingsw.commonFiles.messages.toClient.InitialResourcesAmount;
-import it.polimi.ingsw.commonFiles.messages.toClient.TurnPhaseAnnouncement;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.TurnPhaseAnnouncement;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.*;
 import it.polimi.ingsw.commonFiles.model.Production;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
@@ -91,24 +92,10 @@ public class ViewAdapter {
     }
 
     /**
-     * Sends the request to the current player that has used the Market and in his selected row/column there is at least
-     * one white Marble. This is called only when the current player has two deployed leaders with White Marble
-     * Conversion power, and he has to choose which Resource to take from the white Marble.
-     */
-    public void askWhiteMarbleResource() {
-    }
-
-    /**
      * Sends the request to the current player to choose between deploying a leader, discarding a leader or skipping the
      * turn phase.
      */
     public void askLeaderAction() {
-    }
-
-    /**
-     * Sends the request to the current player to choose the main action to do in his turn.
-     */
-    public void askTurnPhaseAction() {
     }
 
     /**

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.commonFiles.messages.toServer.actions;
+package it.polimi.ingsw.commonFiles.messages.toServer;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessage;

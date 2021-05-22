@@ -4,15 +4,16 @@ import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InitBoards extends Message implements GameUpdate {
-    private ArrayList<String> usernames = new ArrayList<>();
+    private final List<String> usernames;
 
-    public InitBoards(ArrayList<String> usernames) {
+    public InitBoards(List<String> usernames) {
         this.usernames = usernames;
     }
 
-    public ArrayList<String> getUsernames() {
+    public List<String> getUsernames() {
         return usernames;
     }
 

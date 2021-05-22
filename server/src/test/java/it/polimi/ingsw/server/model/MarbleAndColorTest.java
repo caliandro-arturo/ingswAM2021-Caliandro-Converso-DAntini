@@ -25,14 +25,6 @@ class MarbleAndColorTest {
     };
     Game testGame;
     ViewAdapter testCaller = new ViewAdapter(testGame) {
-        /**
-         * Selects the first resource in whiteAlt the first time, and the second resource the second time it is called.
-         */
-        @Override
-        public void askWhiteMarbleResource() {
-            testBoard.addResource(testPlayer.getWhiteAlt().get(i++));
-        }
-
         @Override
         public void incrementFaithTrackPosition(Player player) {
         }
@@ -77,9 +69,6 @@ class MarbleAndColorTest {
         whiteMarble.pick(testGame);
         assertEquals(Resource.SERF, resources.get(4));
         testPlayer.addWhiteAlt(Resource.STONE);
-        whiteMarble.pick(testGame);
-        assertEquals(Resource.SERF, resources.get(5));
-        whiteMarble.pick(testGame);
-        assertEquals(Resource.STONE, resources.get(6));
+        assertEquals(5, resources.size());
     }
 }

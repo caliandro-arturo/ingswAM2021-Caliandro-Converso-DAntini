@@ -5,9 +5,12 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ClientModel {
     private String playerUsername;
+    private String currentPlayerInTheGame;
+    private String currentTurnPhase;
     private int numOfPlayers;
     private int position;           //position on the table (for turns order)
     private boolean isLast;
@@ -15,27 +18,26 @@ public class ClientModel {
     private Market market;
     private LeaderHand leaderHand;
     private HashMap<String, Board> boards = new HashMap<>();
-    private String currentTurnPhase;
-    private boolean gameStarted = false;
+    private boolean gameStarted = false;                                //true if leader cards are distributed
 
     public boolean isGameStarted(){
         return gameStarted;
-    }
-
-    public void setGameStarted(boolean gameStarted) {
-        this.gameStarted = gameStarted;
     }
 
     public String getPlayerUsername() {
         return playerUsername;
     }
 
-    public int getNumOfPlayers() {
-        return numOfPlayers;
+    public String getCurrentPlayerInTheGame() {
+        return currentPlayerInTheGame;
     }
 
-    public int getPosition() {
-        return position;
+    public String getCurrentTurnPhase() {
+        return currentTurnPhase;
+    }
+
+    public int getNumOfPlayers() {
+        return numOfPlayers;
     }
 
     public boolean isLast() {
@@ -62,18 +64,26 @@ public class ClientModel {
         return boards.get(playerUsername);
     }
 
-    public String getCurrentTurnPhase() {
-        return currentTurnPhase;
+
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
 
     public void setPlayerUsername(String playerUsername) {
         this.playerUsername = playerUsername;
     }
 
-    public void setBoards(ArrayList<String> usernames){
-        for (String user: usernames){
-            boards.put(user,new Board());
-        }
+    public void setCurrentPlayerInTheGame(String currentPlayerInTheGame) {
+        this.currentPlayerInTheGame = currentPlayerInTheGame;
+    }
+
+    public void setCurrentTurnPhase(String currentTurnPhase) {
+        this.currentTurnPhase = currentTurnPhase;
+    }
+
+    public void setBoards(List<String> usernames){
+        usernames.forEach(this::setBoards);
     }
 
     public void setNumOfPlayers(int numOfPlayers) {
@@ -108,7 +118,4 @@ public class ClientModel {
         boards.put(username,new Board());
     }
 
-    public void setCurrentTurnPhase(String currentTurnPhase) {
-        this.currentTurnPhase = currentTurnPhase;
-    }
 }

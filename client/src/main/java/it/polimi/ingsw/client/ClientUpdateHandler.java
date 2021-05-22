@@ -2,15 +2,11 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.*;
-import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
-import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
-import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessageHandler;
-import it.polimi.ingsw.commonFiles.messages.toServer.actions.*;
+import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Handles model updates and service communications.
@@ -28,6 +24,18 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         controller.getView().refresh(elements);
     }
 
+    public void setToDo(String toDo) {
+        controller.getView().setToDo(toDo);
+    }
+
+    public void resetToDo() {
+        controller.getView().resetToDo();
+    }
+
+    private void showUpdate(String update) {
+        controller.showUpdate(update);
+    }
+
     /*messages from server*/
 
     /**
@@ -35,14 +43,14 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      */
     public void visit(NewPlayer msg) {
         model.setBoards(msg.getName());
-        controller.showUpdate(msg.getName() + " has entered the game.");
+        showUpdate(msg.getName() + " has entered the game.");
     }
 
     /**
      * Handles the exit of a player from the game.
      */
     public void visit(PlayerLeft msg) {
-        controller.showUpdate(msg.getName() + " has left the game.");
+        showUpdate(msg.getName() + " left the game.");
     }
 
     @Override
@@ -53,21 +61,26 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     /**
      * Handles the game setting.
      */
-    public void visit(GameSet msg) {
-        model.setNumOfPlayers(msg.getPlayersNum());
-        controller.showUpdate("The game has been set: " + model.getNumOfPlayers() + " allowed players.");
+    public void visit(SetGame msg) {
+        model.setNumOfPlayers(msg.getNumberOfPlayers());
+        if (msg.getNumberOfPlayers() == 1) {
+            model.setBoards(model.getPlayerUsername());
+            model.getBoard().getFaithTrack().setPositionB(1);
+        }
+        showUpdate("The game has been set: " + model.getNumOfPlayers() + " allowed players.");
     }
 
     /**
      * Handles the start of the game.
      */
     public void visit(GameStarted msg) {
-        controller.showUpdate("The game is starting now...");
+        refresh("");
+        showUpdate("The game is starting now...");
     }
 
     public void visit(LastTurn msg) {
         if (!model.isLast())
-            controller.showUpdate("Last turns: " + msg.getReason());
+            showUpdate("Last turns: " + msg.getReason());
     }
 
     /**
@@ -122,6 +135,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         }
         model.setLeaderHand(new LeaderHand(leaderCards));
         model.setGameStarted(true);
+        setToDo("Discard two leader card by using the command discardleader: <pos>");
         controller.show("hand");
     }
 
@@ -174,8 +188,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(TablePosition msg) {
         model.setPosition(msg.getPosition());
-        controller.getView().refresh("");
-        controller.showUpdate("You are the player n." + msg.getPosition() + ".");
+        showUpdate("You are the player #" + msg.getPosition() + ".");
     }
 
     /**
@@ -191,8 +204,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(NewTurn msg) {
         if (msg.getPlayer().equals(model.getPlayerUsername()))
-            controller.showUpdate("It's your turn.");
-        else controller.showUpdate("It's " + msg.getPlayer() + "'s turn.");
+            showUpdate("It's your turn.");
+        else showUpdate("It's " + msg.getPlayer() + "'s turn.");
+        model.setCurrentPlayerInTheGame(msg.getPlayer());
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -204,7 +218,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(SetNickname msg) {
         model.setPlayerUsername(msg.getNickname());
-        controller.showUpdate("Your nickname has been set.");
+        showUpdate("Your nickname has been set.");
     }
 
     /**
@@ -214,16 +228,13 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public void visit(UseMarket msg) {
         model.getMarket().reinsertExtraMarble(msg.getRowOrColumn(),msg.getNum());
         refresh("market");
+        resetToDo();
+        setToDo("You have used the market: deploy or discard the resources in your hand.");
     }
 
-    /**
-     * Sets the game inserting the number of players in the model.
-     */
     @Override
-    public void visit(SetGame msg) {
-        model.setNumOfPlayers(msg.getNumberOfPlayers());
+    public void visit(ChooseWhiteMarble chooseWhiteMarble) {
     }
-
 
     @Override
     public void visit(StartProduction msg) {
@@ -303,6 +314,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             return;
         model.getLeaderHand().removeCardFromHand(msg.getPos());
         refresh("hand");
+        showUpdate("Leader card #" + msg.getPos() + " discarded.");
     }
 
     @Override
@@ -310,23 +322,33 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         Resource res = model.getBoard(msg.getPlayer()).getWarehouseStore().removeRes(msg.getDepot());
         model.getBoard(msg.getPlayer()).addResourceToHand(res);
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
+        if (model.getPlayerUsername().equals(msg.getPlayer()))
+            showUpdate("Resource taken.");
     }
 
     @Override
     public void visit(GetResource msg) {
         model.getBoard(msg.getPlayer()).addResourceToHand(msg.getResource());
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
+        if (model.getPlayerUsername().equals(msg.getPlayer()))
+            showUpdate("A " + msg.getResource().name().toLowerCase() + " has been added to your hand. " +
+                    "Remember to deploy it ;)");
     }
 
     @Override
     public void visit(Next msg) {
     }
 
+    @Override
+    public void visit(ChooseTurnPhase chooseTurnPhase) {
+    }
+
     /**
-     * Sets the current turn phase to the one selected by the player.
+     * Sets the current turn phase to the next.
      */
     @Override
-    public void visit(ChooseTurnPhase msg) {
+    public void visit(TurnPhaseAnnouncement msg) {
         model.setCurrentTurnPhase(msg.getTurnPhaseName());
+        refresh();
     }
 }

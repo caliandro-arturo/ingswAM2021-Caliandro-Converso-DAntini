@@ -76,6 +76,7 @@ public class ServerMain {
                 .orElseGet(() -> {
                     currentView = new VirtualView(this, socket);
                     virtualViews.add(currentView);
+
                     return currentView;
                 });
     }

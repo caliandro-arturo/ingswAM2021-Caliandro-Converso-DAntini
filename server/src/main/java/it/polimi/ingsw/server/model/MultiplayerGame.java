@@ -15,7 +15,7 @@ public class MultiplayerGame extends Game {
     public MultiplayerGame(Player player, int playersNum, Market market, Stack<LeaderCard> leaderDeck,
                            DevelopmentGrid developmentGrid) {
         super(player, playersNum, market, leaderDeck, developmentGrid);
-        getTurnPhases().put("EndTurnPhase", new PassTurnPhase(this));
+        getTurnPhases().put("EndTurn", new PassTurnPhase(this));
     }
 
     @Override
@@ -30,7 +30,6 @@ public class MultiplayerGame extends Game {
         });
         getViewAdapter().sendMessage(new InitBoards(usernames));
         setPlayersToWait(new ArrayList<>(players));
-        setCurrentPlayer(players.get(0));
         for(Player p : players) {
             for (int i = 0; i < 4; i++)
                 p.getLeaderCards().add(getLeaderDeck().pop());

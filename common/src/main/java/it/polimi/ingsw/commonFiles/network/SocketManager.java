@@ -33,8 +33,6 @@ public abstract class SocketManager {
         socket.setSoTimeout(timeout);
         objOut = new ObjectOutputStream(socket.getOutputStream());
         objIn = new ObjectInputStream(socket.getInputStream());
-
-
     }
 
     public void receiveMessages() throws SocketTimeoutException, SocketException {

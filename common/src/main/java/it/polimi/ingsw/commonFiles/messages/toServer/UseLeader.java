@@ -1,13 +1,20 @@
-package it.polimi.ingsw.commonFiles.messages.toServer.actions;
+package it.polimi.ingsw.commonFiles.messages.toServer;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessage;
 import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessageHandler;
 
-/**
- * Message sent to go to the next turn phase.
- */
-public class Next extends Message implements ToServerMessage {
+public class UseLeader extends Message implements ToServerMessage {
+    int IDCard;
+
+    public UseLeader(int IDCard) {
+        this.IDCard = IDCard;
+    }
+
+    public int getIDCard() {
+        return IDCard;
+    }
+
     @Override
     public void accept(ToServerMessageHandler v) {
         v.visit(this);

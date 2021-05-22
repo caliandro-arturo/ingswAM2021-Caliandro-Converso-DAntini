@@ -17,7 +17,6 @@ public class ClientController {
     private final ClientSocketManager socketManager;
     private final ClientMessageVisitor clientMessageVisitor = new ClientMessageVisitor(this);
     private final ClientUpdateHandler updateHandler;
-    private final HashMap<Integer, ToServerMessage> messageBuffer = new HashMap<>();
 
     public ClientController(View view, ClientSocketManager socketManager) {
         this.view = view;
@@ -49,12 +48,10 @@ public class ClientController {
 
     public synchronized void sendMessage(ToServerMessage message) {
         message.setPlayer(model.getPlayerUsername());
-        addToConfirm(message);
         try {
             socketManager.sendMessage((Message) message);
         } catch (IOException e) {
             showError("Connection error.");
-            messageBuffer.remove(message.hashCode());
         }
     }
 
@@ -76,17 +73,5 @@ public class ClientController {
 
     public void manageUpdate(GameUpdate msg) {
         msg.accept(updateHandler);
-    }
-
-    public void confirmMove(int id) {
-        getFromBuffer(id).accept(updateHandler);
-    }
-
-    public void addToConfirm(ToServerMessage msg) {
-        messageBuffer.put(msg.hashCode(), msg);
-    }
-
-    public ToServerMessage getFromBuffer(int id) {
-        return messageBuffer.remove(id);
     }
 }

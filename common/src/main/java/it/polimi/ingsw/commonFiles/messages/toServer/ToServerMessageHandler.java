@@ -1,7 +1,5 @@
 package it.polimi.ingsw.commonFiles.messages.toServer;
 
-import it.polimi.ingsw.commonFiles.messages.toServer.actions.*;
-
 public interface ToServerMessageHandler {
     void visit(SetGame setGame);
     void visit(SetNickname setNickname);
@@ -15,4 +13,5 @@ public interface ToServerMessageHandler {
     void visit(ChooseTurnPhase chooseTurnPhase);
     void visit(TakeRes takeRes);
     void visit(GetResource getResource);
+    void visit(ChooseWhiteMarble chooseWhiteMarble);
 }
