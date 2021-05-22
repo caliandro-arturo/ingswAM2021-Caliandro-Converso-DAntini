@@ -2,3 +2,7 @@
 target/
 ingswAM2021-Caliandro-Converso-DAntini.iml
 /out/
+/AM36.iml
+/client/client.iml
+/common/common.iml
+/server/server.iml
