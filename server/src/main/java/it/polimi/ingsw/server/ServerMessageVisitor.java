@@ -159,14 +159,19 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         confirmMove(msg);
     }
 
+    /**
+     * Handles the choice of the leader to use when a white marble has been picked.
+     */
     @Override
     public void visit(ChooseWhiteMarble msg) {
         try {
             controllerAdapter.giveChosenWhiteMarbleResource(getPlayer(msg.getPlayer()), msg.getLeaderPosition());
-        } catch (Exception e) {
+        } catch (IllegalArgumentException | GameException.IllegalMove e) {
             denyMove(msg, e.getMessage());
         }
-        confirmMove(msg);
+        Message message = new GetResource(getPlayer(msg.getPlayer()).getWhiteAlt().get(msg.getLeaderPosition() - 1));
+        message.setPlayer(msg.getPlayer());
+        confirmMove(message);
     }
 
     /**
