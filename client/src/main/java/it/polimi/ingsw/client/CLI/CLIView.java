@@ -69,6 +69,7 @@ public class CLIView extends View {
             }
             case "choosewhite": {
                 chooseWhite(commandSlice);
+                break;
             }
             case "buydevcard": {
                 buyDevCard(commandSlice);
@@ -82,11 +83,11 @@ public class CLIView extends View {
                 discardLeader(commandSlice);
                 break;
             }
-            case "deployres":{
+            case "deployres": {
                 deployRes(commandSlice);
                 break;
             }
-            case "takeres":{
+            case "takeres": {
                 takeRes(commandSlice);
                 break;
             }
@@ -199,6 +200,7 @@ public class CLIView extends View {
                 + update
                 + CLIColor.ANSI_RESET);
     }
+
 
     private void showHandler(String[] commandSlice){
         String target = commandSlice[1].toLowerCase();
@@ -324,7 +326,7 @@ public class CLIView extends View {
     }
 
     /**
-     * this methods handles the calling for the player command usemarket
+     * this method handles the calling for the player command usemarket
      * @param commandSlice command by the player
      */
     private void useMarket(String[] commandSlice){
@@ -339,8 +341,15 @@ public class CLIView extends View {
             System.err.println("Wrong parameter");
     }
 
+    /**
+     * Sends the message to choose the leader to use for the white marble power.
+     */
     private void chooseWhite(String[] commandSlice) {
-        //todo handle white marble choice
+        try {
+            getController().sendMessage(new ChooseWhiteMarble(Integer.parseInt(commandSlice[1].trim())));
+        } catch (NumberFormatException e) {
+            System.err.println("You must insert a leader position (1 or 2).");
+        }
     }
 
     /**

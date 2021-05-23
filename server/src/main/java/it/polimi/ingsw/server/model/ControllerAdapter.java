@@ -131,11 +131,11 @@ public class ControllerAdapter {
      */
     public void giveChosenWhiteMarbleResource(Player player, int num)
             throws IllegalArgumentException, GameException.IllegalMove {
-        checkIfMoveIsValid(player, "UseMarket");
-        if (player.getWhiteMarbleChoices() == 0)
+        checkIfPlayerCanDoThingsNow(player);
+        if (!game.getCurrentTurnPhase().equals(game.getTurnPhase("UseMarket")) || player.getWhiteMarbleChoices() == 0)
             throw new GameException.IllegalMove();
         else if (num != 1 && num != 2)
-            throw new IllegalArgumentException("the number must be 1 or 2.");
+            throw new IllegalArgumentException("The number must be one between 1 and 2.");
         game.getCurrentPlayer().getBoard().addResource(player.getWhiteAlt().get(num - 1));
         player.changeWhiteMarbleChoicesNumber(-1);
     }

@@ -233,7 +233,8 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     }
 
     @Override
-    public void visit(ChooseWhiteMarble chooseWhiteMarble) {
+    public void visit(ChooseWhiteMarble msg) {
+        //not used: instead of this message, the server sends a GetResource one.
     }
 
     @Override
