@@ -44,7 +44,7 @@ public class CLIView extends View {
      */
     @Override
     public void process(String input) {
-        String[] commandSlice = input.split("\\s*:\\s*");
+        String[] commandSlice = input.split("\\s*:\\s*", 2);
         switch (commandSlice[0].toLowerCase()) {
             //each case is an identifier
             case "setnick": {
