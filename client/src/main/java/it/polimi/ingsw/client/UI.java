@@ -46,7 +46,7 @@ public abstract class UI {
             hostName = socketId.get("serverName");
             portNumber = Integer.parseInt(socketId.get("serverPort"));
         } else {
-            String[] parser = hostNameAndPort.trim().split("\\s*:\\s*");
+            String[] parser = hostNameAndPort.trim().split("\\s*:\\s*", 2);
             try {
                 hostName = parser[0];
                 portNumber = Integer.parseInt(parser[1]);

@@ -79,7 +79,7 @@ public class ControllerAdapter {
         checkIfMoveIsValid(player, "ChooseAction");
         for (String turn : selectablePhases)
             if (turn.equalsIgnoreCase(turnPhase)) {
-                game.nextTurnPhase(turnPhase);
+                game.nextTurnPhase(turn);
                 return;
             }
         throw new GameException.IllegalMove();
