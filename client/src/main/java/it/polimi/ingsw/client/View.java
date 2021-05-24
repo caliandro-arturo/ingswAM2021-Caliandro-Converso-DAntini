@@ -48,6 +48,12 @@ public abstract class View {
      */
     public abstract void showUpdate(String update);
 
+    /**
+     * Shows the player position on the table.
+     *
+     * @param position the position of the player
+     */
+    public abstract void showTablePosition(int position);
 
     /**
      * Refresh the visual representation of an element if it's currently shown.

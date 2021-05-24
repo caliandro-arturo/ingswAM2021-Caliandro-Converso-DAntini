@@ -42,4 +42,9 @@ public class GUIView extends View {
     public void displayEndingScore(String[] categories, int[] scores, int ranking) {
 
     }
+
+    @Override
+    public void showTablePosition(int position) {
+
+    }
 }

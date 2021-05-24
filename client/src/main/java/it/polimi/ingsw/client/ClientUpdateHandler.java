@@ -184,13 +184,14 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     }
 
     /**
-     * set the position of the player
+     * Set the position of the player and shows it.
+     *
      * @param msg contains the position
      */
     @Override
     public void visit(TablePosition msg) {
         model.setPosition(msg.getPosition());
-        showUpdate("You are the player #" + msg.getPosition() + ".");
+        controller.getView().showTablePosition(msg.getPosition());
     }
 
     /**
@@ -339,7 +340,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
         if (model.getPlayerUsername().equals(msg.getPlayer()))
             showUpdate("A " + msg.getResource().name().toLowerCase() + " has been added to your hand. " +
-                    "Remember to deploy it ;)");
+                    "Remember to deploy it!");
     }
 
     @Override
