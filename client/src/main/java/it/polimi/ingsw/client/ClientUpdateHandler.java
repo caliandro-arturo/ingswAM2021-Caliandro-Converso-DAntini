@@ -7,6 +7,7 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handles model updates and service communications.
@@ -77,6 +78,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         refresh("");
         showUpdate("The game is starting now...");
     }
+
 
     public void visit(LastTurn msg) {
         if (!model.isLast())
@@ -226,6 +228,10 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      */
     @Override
     public void visit(UseMarket msg) {
+        if (msg.getPlayer().equals(model.getPlayerUsername())) {
+            model.getBoard().addResourcesToHand(model.getMarket().
+                    marbleArrayToResourceList(msg.getRowOrColumn(),msg.getNum()));
+        }
         model.getMarket().reinsertExtraMarble(msg.getRowOrColumn(),msg.getNum());
         refresh("market");
         resetToDo();

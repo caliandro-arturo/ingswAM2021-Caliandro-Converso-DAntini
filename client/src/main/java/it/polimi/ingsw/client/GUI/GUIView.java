@@ -37,4 +37,9 @@ public class GUIView extends View {
     public void resetToDo() {
 
     }
+
+    @Override
+    public void displayEndingScore(String[] categories, int[] scores, int ranking) {
+
+    }
 }

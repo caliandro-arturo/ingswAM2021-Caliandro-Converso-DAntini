@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.model.Resource;
+import it.polimi.ingsw.commonFiles.utility.CLIColor;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
 public class WhiteMarbleConversion implements LeaderPower{
@@ -21,7 +22,7 @@ public class WhiteMarbleConversion implements LeaderPower{
 
     @Override
     public String toString() {
-        return "│" + StringUtility.center(Color.WHITE + " -> " + resource,17) +"│\n";
+        return "│" + StringUtility.center( "@" + " -> " + resource,17) +"│\n";
     }
 
 }

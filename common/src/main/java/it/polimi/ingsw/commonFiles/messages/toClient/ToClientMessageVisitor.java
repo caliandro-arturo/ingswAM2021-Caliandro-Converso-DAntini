@@ -1,7 +1,6 @@
 package it.polimi.ingsw.commonFiles.messages.toClient;
 
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.TurnPhaseAnnouncement;
 
 public interface ToClientMessageVisitor {
     void visit(CreateGame createGame);
@@ -11,4 +10,5 @@ public interface ToClientMessageVisitor {
     void visit(GameIsFull gameIsFull);
     void visit(InitialResourcesAmount initialResourcesAmount);
     void visit(AskWhiteMarble askWhiteMarble);
+    void visit(DisplayEndingScores displayEndingScores);
 }

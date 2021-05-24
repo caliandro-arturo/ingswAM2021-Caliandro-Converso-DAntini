@@ -452,4 +452,38 @@ public class CLIView extends View {
         if (toDo != null)
             System.out.println(toDo);
     }
+
+    @Override
+    public void displayEndingScore(String[] categories, int[] scores, int ranking) {
+        StringBuilder endingTable = new StringBuilder("╔══════════════════╗ \n");
+        endingTable.append("║").append(StringUtility.center(getModel().getPlayerUsername() + "'s score", 18)).
+                append("║ \n");
+        endingTable.append("╠══════════════════╣ \n");
+        endingTable.append("║");
+        switch (ranking) {
+            case (1) :{
+                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "st", 18));
+                break;
+            }
+            case (2) :{
+                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "nd", 18));
+                break;
+            }
+            case (3) :{
+                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "rd", 18));
+                break;
+            }
+            default: {
+                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "th", 18));
+                break;
+            }
+        }
+        endingTable.append("║ \n");
+        for (int i = 0; i < categories.length; i++){
+            endingTable.append("║").append(StringUtility.center(categories[i] + ": " + scores[i], 18)).
+                    append("║ \n");
+        }
+        endingTable.append("╚══════════════════╝ \n");
+        System.out.println(endingTable);
+    }
 }

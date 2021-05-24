@@ -63,4 +63,6 @@ public abstract class View {
     public abstract void setToDo(String toDo);
 
     public abstract void resetToDo();
+
+    public abstract void displayEndingScore(String[] categories, int[] scores, int ranking);
 }

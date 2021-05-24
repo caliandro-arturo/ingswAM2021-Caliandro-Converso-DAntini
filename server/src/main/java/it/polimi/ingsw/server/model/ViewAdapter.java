@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.AskWhiteMarble;
+import it.polimi.ingsw.commonFiles.messages.toClient.DisplayEndingScores;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
 import it.polimi.ingsw.commonFiles.messages.toClient.InitialResourcesAmount;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.TurnPhaseAnnouncement;
@@ -116,6 +117,7 @@ public class ViewAdapter {
      * Notifies that the game is over and returns the final score and rank
      */
     public void notifyGameEnded(Player player, int ranking, int[] points) {
+        sendMessage(player, new DisplayEndingScores(points,ranking));
     }
 
     /**

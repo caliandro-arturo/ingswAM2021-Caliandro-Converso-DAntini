@@ -62,4 +62,9 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
                 (msg.getWhiteMarblesToChoose() > 1 ? "s" : "") +
                 " of the market. Type CHOOSEWHITE: <leader number> to choose the leader.");
     }
+
+    @Override
+    public void visit(DisplayEndingScores msg) {
+        controller.getView().displayEndingScore(msg.getNames(), msg.getPoints(), msg.getRanking());
+    }
 }

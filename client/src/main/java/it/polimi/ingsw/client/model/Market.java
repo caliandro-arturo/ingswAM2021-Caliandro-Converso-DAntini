@@ -52,7 +52,8 @@ public class Market {
 
     public List<Resource> marbleArrayToResourceList(char rowOrColumn, int num) {
         List<Resource> resources = new ArrayList<>();
-        Arrays.stream(getRowOrColumn(rowOrColumn, num)).forEach(marble -> resources.add(Utility.colorResourceMap.get(marble.getColor())));
+        Arrays.stream(getRowOrColumn(rowOrColumn, num)).forEach(marble -> resources.add(Utility.colorResourceMap.
+                get(marble.getColor())));
         resources.removeIf(r -> r == null || r.equals(Resource.FAITH));
         return resources;
     }
