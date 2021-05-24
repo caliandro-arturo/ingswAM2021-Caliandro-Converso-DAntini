@@ -9,13 +9,19 @@ import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
  */
 public class TurnPhaseAnnouncement extends Message implements GameUpdate {
     private final String turnPhaseName;
+    private final String turnPhaseToDo;
 
-    public TurnPhaseAnnouncement(String turnPhaseName) {
+    public TurnPhaseAnnouncement(String turnPhaseName, String turnPhaseToDo) {
         this.turnPhaseName = turnPhaseName;
+        this.turnPhaseToDo = turnPhaseToDo;
     }
 
     public String getTurnPhaseName() {
         return turnPhaseName;
+    }
+
+    public String getTurnPhaseToDo() {
+        return turnPhaseToDo;
     }
 
     @Override

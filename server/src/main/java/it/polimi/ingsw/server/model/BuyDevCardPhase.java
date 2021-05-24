@@ -7,7 +7,7 @@ public class BuyDevCardPhase extends TurnPhase {
 
     @Override
     public void start() {
-        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName());
+        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName(), getPhaseInfo());
     }
 
     @Override

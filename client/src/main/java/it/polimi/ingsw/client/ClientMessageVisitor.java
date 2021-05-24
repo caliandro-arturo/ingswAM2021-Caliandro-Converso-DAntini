@@ -14,12 +14,12 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
         this.controller = controller;
     }
 
-    private void setToDo(String toDo) {
-        controller.getView().setToDo(toDo);
+    private void setToDo(String id, String toDo) {
+        controller.getView().setToDo(id, toDo);
     }
 
-    private void resetToDo() {
-        controller.getView().resetToDo();
+    private void deleteToDo(String id) {
+        controller.getView().deleteToDo(id);
     }
 
     @Override
@@ -48,16 +48,8 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
     }
 
     @Override
-    public void visit(InitialResourcesAmount msg) {
-        if (msg.getResourcesAmount() > 0)
-            setToDo("You have " + msg.getResourcesAmount() + " initial resource" +
-                    (msg.getResourcesAmount() > 1 ? "s" : "") +
-                    ". Type GETRES: <resource name> to get a resource.");
-    }
-
-    @Override
     public void visit(AskWhiteMarble msg) {
-        setToDo("You have to choose which leader to use to gain the resource from the " +
+        setToDo("chooseleader", "You have to choose which leader to use to gain the resource from the " +
                 msg.getWhiteMarblesToChoose() + " white marble" +
                 (msg.getWhiteMarblesToChoose() > 1 ? "s" : "") +
                 " of the market. Type CHOOSEWHITE: <leader number> to choose the leader.");

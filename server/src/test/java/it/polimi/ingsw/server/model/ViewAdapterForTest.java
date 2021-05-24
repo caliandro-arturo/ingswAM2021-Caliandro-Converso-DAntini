@@ -50,7 +50,7 @@ public class ViewAdapterForTest {
             }
 
             @Override
-            public void announceTurnPhase(Player player, String turnPhaseName) {
+            public void announceTurnPhase(Player player, String turnPhaseName, String turnPhaseInfo) {
             }
 
             @Override

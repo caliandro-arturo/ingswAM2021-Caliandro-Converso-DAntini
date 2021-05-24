@@ -3,22 +3,21 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ClientModel {
     private String playerUsername;
     private String currentPlayerInTheGame;
     private String currentTurnPhase;
     private int numOfPlayers;
-    private int position;           //position on the table (for turns order)
+    private int position;                                                   //position on the table (for turns order)
     private boolean isLast;
     private DevelopmentGrid developmentGrid;
     private Market market;
     private LeaderHand leaderHand;
-    private HashMap<String, Board> boards = new HashMap<>();
-    private boolean gameStarted = false;                                //true if leader cards are distributed
+    private int resourcesToGet = 0;
+    private final HashMap<String, Board> boards = new LinkedHashMap<>();
+    private boolean gameStarted = false;                                    //true if leader cards are distributed
 
     public boolean isGameStarted(){
         return gameStarted;
@@ -26,6 +25,10 @@ public class ClientModel {
 
     public String getPlayerUsername() {
         return playerUsername;
+    }
+
+    public Set<String> getPlayersUsernames() {
+        return boards.keySet();
     }
 
     public String getCurrentPlayerInTheGame() {
@@ -60,11 +63,13 @@ public class ClientModel {
         return leaderHand;
     }
 
+    public int getResourcesToGet() {
+        return resourcesToGet;
+    }
+
     public Board getBoard(String playerUsername) {
         return boards.get(playerUsername);
     }
-
-
 
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
@@ -108,6 +113,14 @@ public class ClientModel {
 
     public void setLeaderHand(LeaderHand leaderHand) {
         this.leaderHand = leaderHand;
+    }
+
+    public void setResourcesToGet(int resourcesToGet) {
+        this.resourcesToGet = resourcesToGet;
+    }
+
+    public void decrementResourcesToGet() {
+        resourcesToGet--;
     }
 
     public void updateResource(int[] cost, ArrayList<Resource> resource){

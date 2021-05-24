@@ -29,12 +29,12 @@ public class GUIView extends View {
     }
 
     @Override
-    public void setToDo(String toDo) {
+    public void setToDo(String id, String toDo) {
 
     }
 
     @Override
-    public void resetToDo() {
+    public void deleteToDo(String id) {
 
     }
 

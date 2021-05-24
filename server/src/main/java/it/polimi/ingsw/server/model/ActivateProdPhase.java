@@ -7,12 +7,12 @@ public class ActivateProdPhase extends TurnPhase {
 
     @Override
     public void start() {
-        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName());
+        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName(), getPhaseInfo());
     }
 
     @Override
     public String getPhaseInfo() {
-        return null;
+        return "Activate one or more productions to collect";
     }
 
     @Override

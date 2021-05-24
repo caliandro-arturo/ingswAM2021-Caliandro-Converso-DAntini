@@ -14,7 +14,7 @@ public class UseLeaderPhase extends TurnPhase {
             getGame().nextTurnPhase();
             return;
         }
-        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName());
+        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName(), getPhaseInfo());
         getGame().getViewAdapter().askLeaderAction();
     }
 

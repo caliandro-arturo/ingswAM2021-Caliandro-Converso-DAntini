@@ -1,13 +1,13 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.*;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitialResourcesAmount;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.*;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Handles model updates and service communications.
@@ -25,12 +25,12 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         controller.getView().refresh(elements);
     }
 
-    public void setToDo(String toDo) {
-        controller.getView().setToDo(toDo);
+    public void setToDo(String id, String toDo) {
+        controller.getView().setToDo(id, toDo);
     }
 
-    public void resetToDo() {
-        controller.getView().resetToDo();
+    public void deleteToDo(String id) {
+        controller.getView().deleteToDo(id);
     }
 
     private void showUpdate(String update) {
@@ -137,7 +137,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         }
         model.setLeaderHand(new LeaderHand(leaderCards));
         model.setGameStarted(true);
-        setToDo("Discard two leader card by using the command discardleader: <pos>");
+        setToDo("discardleader", "Discard two leader card by using the command discardleader: <pos>");
         controller.show("hand");
     }
 
@@ -194,6 +194,16 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         controller.getView().showTablePosition(msg.getPosition());
     }
 
+    @Override
+    public void visit(InitialResourcesAmount msg) {
+        if (msg.getResourcesAmount() > 0) {
+            model.setResourcesToGet(msg.getResourcesAmount());
+            setToDo("getresource", "You have " + msg.getResourcesAmount() + " initial resource" +
+                    (msg.getResourcesAmount() > 1 ? "s" : "") +
+                    ". Type GETRES: <resource name> to get a resource.");
+        }
+    }
+
     /**
      * Increases the position of the cross in the player's faith track
      */
@@ -206,9 +216,6 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(NewTurn msg) {
-        if (msg.getPlayer().equals(model.getPlayerUsername()))
-            showUpdate("It's your turn.");
-        else showUpdate("It's " + msg.getPlayer() + "'s turn.");
         model.setCurrentPlayerInTheGame(msg.getPlayer());
     }
 
@@ -232,11 +239,11 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         if (msg.getPlayer().equals(model.getPlayerUsername())) {
             model.getBoard().addResourcesToHand(model.getMarket().
                     marbleArrayToResourceList(msg.getRowOrColumn(),msg.getNum()));
+            deleteToDo("turnaction");
+            showUpdate( "You have used the market: deploy or discard the resources in your hand.");
         }
         model.getMarket().reinsertExtraMarble(msg.getRowOrColumn(),msg.getNum());
         refresh("market");
-        resetToDo();
-        setToDo("You have used the market: deploy or discard the resources in your hand.");
     }
 
     @Override
@@ -321,6 +328,8 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         if (!msg.getPlayer().equals(model.getPlayerUsername()))
             return;
         model.getLeaderHand().removeCardFromHand(msg.getPos());
+        if (model.getLeaderHand().getHand().size() == 2)
+            deleteToDo("discardleader");
         refresh("hand");
         showUpdate("Leader card #" + msg.getPos() + " discarded.");
     }
@@ -337,6 +346,10 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(GetResource msg) {
         model.getBoard(msg.getPlayer()).addResourceToHand(msg.getResource());
+        if (msg.getPlayer().equals(model.getPlayerUsername())) {
+            model.decrementResourcesToGet();
+            if (model.getResourcesToGet() == 0) deleteToDo("getresource");
+        }
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
         if (model.getPlayerUsername().equals(msg.getPlayer()))
             showUpdate("A " + msg.getResource().name().toLowerCase() + " has been added to your hand. " +
@@ -357,6 +370,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(TurnPhaseAnnouncement msg) {
         model.setCurrentTurnPhase(msg.getTurnPhaseName());
-        refresh();
+        if (model.getPlayerUsername().equals(model.getCurrentPlayerInTheGame()))
+            setToDo("turnaction", msg.getTurnPhaseToDo());
     }
 }

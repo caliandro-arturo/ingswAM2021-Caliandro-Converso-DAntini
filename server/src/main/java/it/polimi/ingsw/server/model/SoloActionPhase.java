@@ -10,15 +10,15 @@ public class SoloActionPhase extends TurnPhase {
 
     @Override
     public void start() {
-        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName());
+        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName(), getPhaseInfo());
         soloActions.pick(getGame());
         this.nextTurnPhase();
     }
 
     @Override
     public String getPhaseInfo() {
-        return "In this turn phase you have to reveal a Solo Action token from the pile " +
-                "and there will be an effect based on the token you have picked.";
+        return "In this turn phase a Solo Action token will be revealed from the pile " +
+                "and there will be an effect.";
     }
     @Override
     public TurnPhase nextTurnPhase() {

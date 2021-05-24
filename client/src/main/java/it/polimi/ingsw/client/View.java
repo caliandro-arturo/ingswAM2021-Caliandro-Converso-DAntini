@@ -66,9 +66,9 @@ public abstract class View {
      * Reminds the player what he must do in a certain moment.
      * @param toDo the action to do
      */
-    public abstract void setToDo(String toDo);
+    public abstract void setToDo(String id, String toDo);
 
-    public abstract void resetToDo();
+    public abstract void deleteToDo(String id);
 
     public abstract void displayEndingScore(String[] categories, int[] scores, int ranking);
 }

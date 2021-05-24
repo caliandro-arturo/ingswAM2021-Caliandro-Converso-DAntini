@@ -14,4 +14,5 @@ public interface UpdateHandler {
     void visit(TablePosition msg);
     void visit(NewTurn msg);
     void visit(TurnPhaseAnnouncement msg);
+    void visit(InitialResourcesAmount msg);
 }

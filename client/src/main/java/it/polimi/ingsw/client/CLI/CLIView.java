@@ -10,6 +10,8 @@ import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -18,18 +20,32 @@ import java.util.Optional;
  */
 public class CLIView extends View {
     private String currentView;
-    private String toDo = "";
+    /**
+     * Actions that the player must do in a specific moment of the game.
+     */
+    private final Map<String, String> toDo = new LinkedHashMap<>();
 
+    /**
+     * Adds, or replaces, an action that the player must do.
+     * @param id the id for the action, to use when the action must be deleted
+     * @param toDo the action to do
+     */
     @Override
-    public void setToDo(String toDo) {
-        this.toDo += toDo + '\n';
+    public void setToDo(String id, String toDo) {
+        this.toDo.put(id, toDo);
         if (currentView != null)
             refresh(currentView);
     }
 
+    /**
+     * Removes an action from the {@link CLIView#toDo} list.
+     * @param id the id of the action to remove
+     */
     @Override
-    public void resetToDo() {
-        toDo = "";
+    public void deleteToDo(String id) {
+        toDo.remove(id);
+        if (currentView != null)
+            refresh(currentView);
     }
 
     /**
@@ -173,6 +189,15 @@ public class CLIView extends View {
                 System.out.println(getModel().getDevelopmentGrid());
                 break;
             }
+            case "players": {
+                System.out.println("");
+                getModel().getPlayersUsernames().forEach(p -> {
+                    if (p.equals(getModel().getPlayerUsername()))
+                        System.out.println(CLIColor.ANSI_BRIGHT_GREEN + p + CLIColor.ANSI_RESET);
+                    else System.out.println(p);
+                });
+                break;
+            }
             default:
                 System.out.println(element);
                 break;
@@ -238,6 +263,12 @@ public class CLIView extends View {
                 show("devgrid");
                 break;
             }
+            case "players": {
+                show("players");
+                break;
+            }
+            default:
+                showError("Cannot show \"" + commandSlice[1] + "\".");
         }
     }
 
@@ -344,7 +375,7 @@ public class CLIView extends View {
      */
     private void useMarket(String[] commandSlice){
         String[] args = commandSlice[1].split("\\s*,\\s*");
-        if (args[0].matches("[rc]")) {
+        if (args[0].toLowerCase().matches("[rc]")) {
             try {
                 getController().sendMessage(new UseMarket(args[0].charAt(0), Integer.parseInt(args[1])));
             } catch (NumberFormatException e) {
@@ -355,7 +386,7 @@ public class CLIView extends View {
     }
 
     /**
-     * Sends the message to choose the leader to use for the white marble power.
+     * Handles the {@code choosewhite} command.
      */
     private void chooseWhite(String[] commandSlice) {
         try {
@@ -421,6 +452,9 @@ public class CLIView extends View {
     }
 
 
+    /**
+     * Handles the {@code getres} command.
+     */
     private void getRes(String[] commandSlice) {
         if (commandSlice[1].trim().isEmpty()) {
             System.err.println("Missing parameter: you must insert a resource name.");
@@ -433,7 +467,7 @@ public class CLIView extends View {
     }
 
     /**
-     * refresh the cli after a change
+     * Clears the screen.
      */
     private void clear(){
         try {
@@ -446,6 +480,11 @@ public class CLIView extends View {
         }
     }
 
+    /**
+     * If the current shown element appears in {@param viewsToRefresh}, clears the screen and reprints the element.
+     *
+     * @param viewsToRefresh elements that need too be refreshed
+     */
     @Override
     public void refresh(String... viewsToRefresh) {
         for (String s : viewsToRefresh)
@@ -455,15 +494,28 @@ public class CLIView extends View {
             }
         if (currentView != null) show(currentView);
     }
-    
+
+    /**
+     * Prints the "head" of the CLI, containing:
+     * <p>
+     * -the current player;
+     * <p>
+     * -the current turn phase;
+     * <p>
+     * -actions that the player must do at the time this method is called.
+     */
     private void printHead() {
         if (getModel() == null) return;
         if (getModel().getCurrentPlayerInTheGame() != null)
-            System.out.println(StringUtility.center(getModel().getCurrentPlayerInTheGame() + "'s turn", 160, '-'));
+            System.out.println(StringUtility.center(
+                    (getModel().getCurrentPlayerInTheGame().equals(getModel().getPlayerUsername()) ?
+                            (CLIColor.ANSI_BRIGHT_GREEN + "Your turn" + CLIColor.ANSI_RESET) :
+                            (getModel().getCurrentPlayerInTheGame() + "'s turn")), 149, '-'));
         if (getModel().getCurrentTurnPhase() != null)
-            System.out.println(StringUtility.center(getModel().getCurrentTurnPhase(), 160, '-'));
-        if (toDo != null)
-            System.out.println(toDo);
+            System.out.println(StringUtility.center(getModel().getCurrentTurnPhase(), 149, '-'));
+        System.out.println("");
+        toDo.forEach((id, action) -> System.out.println(action));
+        System.out.println("");
     }
 
     @Override
