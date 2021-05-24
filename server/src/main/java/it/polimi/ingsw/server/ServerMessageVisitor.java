@@ -37,7 +37,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     }
 
     private void confirmMove(Message message) {
-        controller.getVirtualView().sendMessage(message.getPlayer(), message);
+        controller.getVirtualView().sendMessage(message);
     }
 
     private void denyMove(Message message, String error) {
