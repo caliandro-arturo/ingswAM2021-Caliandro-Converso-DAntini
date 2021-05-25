@@ -13,7 +13,7 @@ import it.polimi.ingsw.server.VirtualView;
 import java.util.ArrayList;
 
 /**
- * This class contains all the methods used by the model to notify the player and/or to ask him to do an action.
+ * This class contains all the methods used by the it.polimi.ingsw.client.model to notify the player and/or to ask him to do an action.
  */
 public class ViewAdapter {
     /**

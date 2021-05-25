@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<TabPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="1108.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.Board">
+  <tabs>
+    <Tab fx:id="yourBoard" text="Your Board">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="811.0" prefWidth="1159.0">
+               <children>
+                  <ImageView fx:id="boardImg" fitHeight="674.0" fitWidth="937.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../png/Masters%20of%20Renaissance_PlayerBoard%20(11_2020)-1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="233.0" fitWidth="158.0" layoutX="365.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="crossB" fitHeight="42.0" fitWidth="45.0" layoutX="40.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../png/croceNera.png" />
+                     </image></ImageView>
+                  <ImageView fx:id="cross" fitHeight="42.0" fitWidth="42.0" layoutX="82.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../png/faith.png" />
+                     </image>
+                   </ImageView>
+                   <Button fx:id="right" layoutX="122.0" layoutY="174.0" mnemonicParsing="false" onAction="#increasePos" text="&gt;" />
+                  <Button fx:id="blackButton" layoutX="90.0" layoutY="174.0" mnemonicParsing="false" onAction="#increasePosB" text="B" />
+                  <ImageView fx:id="tile2" fitHeight="66.0" fitWidth="66.0" layoutX="231.0" layoutY="97.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../png/quadrato%20giallo.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="tile3" fitHeight="66.0" fitWidth="66.0" layoutX="460.0" layoutY="51.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../png/quadrato%20arancione.png" />
+                     </image></ImageView>
+                  <ImageView fx:id="tile4" fitHeight="66.0" fitWidth="66.0" layoutX="736.0" layoutY="94.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../png/quadrato%20rosso.png" />
+                     </image>
+                  </ImageView>
+                  <Pagination fx:id="hand" currentPageIndex="1" layoutX="954.0" layoutY="39.0" onDragDetected="#moveRes" pageCount="10" prefHeight="116.0" prefWidth="133.0" />
+                  <Button fx:id="res" layoutX="999.0" layoutY="162.0" mnemonicParsing="false" onAction="#slideRes" text="hand" />
+                  <Button layoutX="942.0" layoutY="618.0" mnemonicParsing="false" text="Market" />
+                  <ImageView fx:id="res1" fitHeight="41.0" fitWidth="47.0" layoutX="101.0" layoutY="290.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="res33" fitHeight="41.0" fitWidth="47.0" layoutX="135.0" layoutY="406.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="res32" fitHeight="41.0" fitWidth="47.0" layoutX="99.0" layoutY="406.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="res31" fitHeight="41.0" fitWidth="47.0" layoutX="59.0" layoutY="406.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="res22" fitHeight="41.0" fitWidth="47.0" layoutX="124.0" layoutY="350.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="res21" fitHeight="41.0" fitWidth="47.0" layoutX="78.0" layoutY="350.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <Button layoutX="1021.0" layoutY="618.0" mnemonicParsing="false" text="Button" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>

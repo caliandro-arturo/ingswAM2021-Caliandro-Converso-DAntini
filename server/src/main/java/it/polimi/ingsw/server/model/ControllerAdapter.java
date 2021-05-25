@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * methods of the model that can be called by {@link ServerMessageVisitor}.
+ * methods of the it.polimi.ingsw.client.model that can be called by {@link ServerMessageVisitor}.
  */
 public class ControllerAdapter {
     private final Game game;

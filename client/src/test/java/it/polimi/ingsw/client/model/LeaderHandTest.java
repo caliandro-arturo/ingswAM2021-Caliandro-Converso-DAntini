@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-class LeaderHandTest {
+/*class LeaderHandTest {
     LeaderCard card1;
     LeaderCard card2;
     LeaderCard card3;
@@ -38,4 +38,4 @@ class LeaderHandTest {
 
         System.out.println(leaderHand);
     }
-}
+}*/

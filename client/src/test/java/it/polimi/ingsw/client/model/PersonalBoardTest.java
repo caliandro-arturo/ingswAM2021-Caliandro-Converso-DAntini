@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-class PersonalBoardTest {
+/*class PersonalBoardTest {
     private final WarehouseStore warehouseStore = new WarehouseStore();
     UtilityProductionAndCost utilityProductionAndCost =
             new UtilityProductionAndCost(1, Resource.COIN);
@@ -69,4 +69,4 @@ class PersonalBoardTest {
         personalBoard.getLeaderCards().clear();
         System.out.println(personalBoard);
     }
-}
+}*/

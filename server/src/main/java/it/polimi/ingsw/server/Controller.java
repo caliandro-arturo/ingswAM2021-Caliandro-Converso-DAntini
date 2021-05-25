@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Controller element of the MVC architectural pattern: sends received messages to the message visitor and creates the
  * game. It also contains the reference to the game itself, so any virtualView + controller instances couple represents
- * respectively view and controller of only one instance of a Game (the model).
+ * respectively view and controller of only one instance of a Game (the it.polimi.ingsw.client.model).
  */
 public class Controller {
     private final VirtualView virtualView;
