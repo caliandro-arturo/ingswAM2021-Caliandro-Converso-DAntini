@@ -39,11 +39,15 @@ public class CLIView extends View {
 
     /**
      * Removes an action from the {@link CLIView#toDo} list.
+     *
      * @param id the id of the action to remove
      */
     @Override
     public void deleteToDo(String id) {
-        toDo.remove(id);
+        if (id.equals(""))
+            toDo.clear();
+        else
+            toDo.remove(id);
         if (currentView != null)
             refresh(currentView);
     }

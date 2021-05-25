@@ -217,6 +217,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(NewTurn msg) {
         model.setCurrentPlayerInTheGame(msg.getPlayer());
+        deleteToDo("");
+        if (!msg.getPlayer().equals(model.getPlayerUsername()))
+            setToDo("wait", "Wait your turn...");
     }
 
     //------------------------------------------------------------------------------------------------------------------
