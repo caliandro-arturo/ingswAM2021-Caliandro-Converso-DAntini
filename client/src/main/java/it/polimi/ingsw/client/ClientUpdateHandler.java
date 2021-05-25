@@ -236,9 +236,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      */
     @Override
     public void visit(UseMarket msg) {
+        model.getBoard(msg.getPlayer()).addResourcesToHand(model.getMarket().
+                marbleArrayToResourceList(msg.getRowOrColumn(),msg.getNum()));
         if (msg.getPlayer().equals(model.getPlayerUsername())) {
-            model.getBoard().addResourcesToHand(model.getMarket().
-                    marbleArrayToResourceList(msg.getRowOrColumn(),msg.getNum()));
             deleteToDo("turnaction");
             showUpdate( "You have used the market: deploy or discard the resources in your hand.");
         }

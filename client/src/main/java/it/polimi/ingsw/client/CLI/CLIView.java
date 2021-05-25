@@ -520,35 +520,41 @@ public class CLIView extends View {
 
     @Override
     public void displayEndingScore(String[] categories, int[] scores, int ranking) {
-        StringBuilder endingTable = new StringBuilder("╔══════════════════╗ \n");
-        endingTable.append("║").append(StringUtility.center(getModel().getPlayerUsername() + "'s score", 18)).
+        int tot = 0;
+        StringBuilder endingTable = new StringBuilder("╔════════════════════════╗ \n");
+        endingTable.append("║").append(StringUtility.center(getModel().getPlayerUsername() + "'s score", 24)).
                 append("║ \n");
-        endingTable.append("╠══════════════════╣ \n");
+        endingTable.append("╠════════════════════════╣ \n");
         endingTable.append("║");
         switch (ranking) {
             case (1) :{
-                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "st", 18));
+                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "st", 24));
                 break;
             }
             case (2) :{
-                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "nd", 18));
+                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "nd", 24));
                 break;
             }
             case (3) :{
-                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "rd", 18));
+                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "rd", 24));
                 break;
             }
             default: {
-                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "th", 18));
+                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "th", 24));
                 break;
             }
         }
         endingTable.append("║ \n");
+        endingTable.append("╠════════════════════════╣ \n");
         for (int i = 0; i < categories.length; i++){
-            endingTable.append("║").append(StringUtility.center(categories[i] + ": " + scores[i], 18)).
+            endingTable.append("║").append(StringUtility.center(categories[i] + ": " + scores[i], 24)).
                     append("║ \n");
+            endingTable.append("╠════════════════════════╣ \n");
+            tot += scores[i];
         }
-        endingTable.append("╚══════════════════╝ \n");
+        endingTable.append("║").append(StringUtility.center("tot VP: " + tot, 24)).
+                append("║ \n");
+        endingTable.append("╚════════════════════════╝ \n");
         System.out.println(endingTable);
     }
 }
