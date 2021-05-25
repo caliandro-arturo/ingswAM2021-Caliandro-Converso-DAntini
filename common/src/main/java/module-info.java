@@ -1,4 +1,4 @@
-module common {
+module it.polimi.ingsw.common {
     requires com.google.gson;
     exports it.polimi.ingsw.commonFiles.model;
     exports it.polimi.ingsw.commonFiles.messages;
