@@ -11,11 +11,19 @@ public class ClientMain {
 
     public static void main(String[] args) {
         boolean isRunning = false;
+        String choice = null;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Insert CLI or GUI to start the game.");
+        if (args.length > 0) choice = args[0].toUpperCase().trim();
+        else {
+            System.out.println("Insert CLI or GUI to start the game.");
+            try {
+                choice = in.readLine().toUpperCase().trim();
+            } catch (IOException ignore) {
+            }
+        }
         do {
             try {
-                switch (in.readLine().toUpperCase().trim()) {
+                switch (choice) {
                     case "CLI": {
                         CLI.main(null);
                         isRunning = true;
@@ -28,6 +36,7 @@ public class ClientMain {
                     }
                     default: {
                         System.err.println("You must select between CLI or GUI.");
+                        choice = in.readLine().toUpperCase().trim();
                     }
                 }
             } catch (IOException e) {

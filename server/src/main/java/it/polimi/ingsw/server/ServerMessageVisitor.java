@@ -4,6 +4,7 @@ import it.polimi.ingsw.commonFiles.messages.toClient.AskWhiteMarble;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
+import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.server.model.ControllerAdapter;
 import it.polimi.ingsw.server.model.DevelopmentCard;
 import it.polimi.ingsw.server.model.GameException;
@@ -63,7 +64,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     }
 
     /**
-     *
+     * Calls a startProduction method based on the production indicated in the message.
      */
     @Override
     public void visit(StartProduction startProduction) {
@@ -87,6 +88,9 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         confirmMove(startProduction);
     }
 
+    /**
+     * Calls {@link ControllerAdapter#buyCard(Player player, int, String, int, int[])}.
+     */
     @Override
     public void visit(BuyCard buyCard) {
         DevelopmentCard newCard;
@@ -101,12 +105,18 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         confirmMove(buyCard);
     }
 
+    /**
+     * Calls {@link ControllerAdapter#discardResource(Player, Resource)}.
+     */
     @Override
-    public void visit(DeployRes msg){
-        try{
-            controllerAdapter.deployResource(getPlayer(msg.getPlayer()),msg.getResource(), msg.getDepot());
-        }catch( GameException.IllegalMove e){
+    public void visit(DeployRes msg) {
+        try {
+            controllerAdapter.deployResource(getPlayer(msg.getPlayer()), msg.getResource(), msg.getDepot());
+        } catch (IllegalArgumentException | GameException.IllegalMove e) {
             denyMove(msg, e.getMessage());
+            return;
+        } catch (IndexOutOfBoundsException e) {
+            denyMove(msg, "The indicated depot does not exist.");
             return;
         }
         confirmMove(msg);

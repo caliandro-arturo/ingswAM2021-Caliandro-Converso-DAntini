@@ -281,10 +281,14 @@ public class CLIView extends View {
      * @param commandSlice command by the player
      */
     private void setNick(String[] commandSlice){
-        if (!commandSlice[1].isEmpty() && !commandSlice[1].matches("\\s*")) {
-            System.out.println("Creating nickname...");
-            getController().sendMessage(new SetNickname(commandSlice[1]));
-        } else System.err.println("Nickname not valid.");
+        if (commandSlice[1].trim().isEmpty()) {
+            System.err.println("Wrong syntax: use the format \"SETNICK: <nickname>\".");
+            return;
+        } else if (getController().getModel().getPlayerUsername() != null) {
+            System.err.println("You have already chosen your nickname.");
+            return;
+        }
+        getController().sendMessage(new SetNickname(commandSlice[1]));
     }
 
     /**
@@ -420,11 +424,18 @@ public class CLIView extends View {
      */
     private void deployRes(String[] commandSlice){
         String[] args = commandSlice[1].split("\\s*,\\s*");
-        try {
-            getController().sendMessage(new DeployRes(Utility.mapResource.get(args[0].toLowerCase()), Integer.parseInt(args[1])));
-        } catch (NumberFormatException e) {
-            System.err.println("Wrong parameter: you must insert a resource name.");
+        if (args.length != 2) {
+            System.err.println("Wrong syntax: use the format \"DEPLOYRES: <resource name, depot position number>\".");
+            return;
         }
+        Optional<Resource> toGet = Optional.ofNullable(Utility.mapResource.get(args[0].trim().toLowerCase()));
+        toGet.ifPresentOrElse(res -> {
+            try {
+                getController().sendMessage(new DeployRes(res, Integer.parseInt(args[1])));
+            } catch (NumberFormatException e) {
+                System.err.println("Wrong parameter: you must insert the position in which you want to deploy the resource.");
+            }
+                }, () -> System.err.println("Wrong parameter: you must insert a resource name."));
     }
 
     /**

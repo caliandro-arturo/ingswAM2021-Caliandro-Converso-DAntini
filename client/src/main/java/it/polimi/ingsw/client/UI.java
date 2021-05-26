@@ -17,9 +17,14 @@ public abstract class UI {
     private View view;
     private ClientSocketManager socketManager;
     private Thread messageReader;
+    private boolean isConnected;
 
     public View getView() {
         return view;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
     }
 
     public void setView(View view) {
@@ -33,15 +38,15 @@ public abstract class UI {
     public abstract void run();
 
     public void configureConnection(String hostNameAndPort) {
-        String hostName = null;
-        int portNumber = 0;
+        String hostName;
+        int portNumber;
         if (hostNameAndPort.equals("")) {
-            Map<String, String> socketId = null;
+            Map<String, String> socketId;
             try {
                 socketId = JSONReader.readMap("clientConfig.json");
             } catch (IOException e) {
                 showError("Config file not found.");
-                System.exit(1);
+                return;
             }
             hostName = socketId.get("serverName");
             portNumber = Integer.parseInt(socketId.get("serverPort"));
@@ -52,18 +57,17 @@ public abstract class UI {
                 portNumber = Integer.parseInt(parser[1]);
             } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
                 showError("Wrong parameter: you must insert hostname:port.");
-                System.exit(0);
+                return;
             }
         }
         System.out.println("Connecting to " + hostName + " at port " + portNumber + "...");
         try {
             connectToServer(hostName, portNumber);
+            isConnected = true;
         } catch (UnknownHostException e) {
             showError("Don't know about host " + hostName);
-            System.exit(0);
         } catch (IOException e) {
             showError("Couldn't get I/O for the connection to " + hostName);
-            System.exit(0);
         }
     }
 

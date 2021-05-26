@@ -10,8 +10,7 @@ import java.io.InputStreamReader;
  * CLI version of the client.
  */
 public class CLI extends UI {
-    BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-
+    private final BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
     /**
      *
      */
@@ -20,12 +19,13 @@ public class CLI extends UI {
         getView().refresh("");
         //todo insert startup prints here
         System.out.println("Insert server hostname:port (or just press Enter to set default values):");
-        try {
-            configureConnection(stdIn.readLine());
-        } catch (IOException e) {
-            showError(e.getMessage());
-            System.exit(1);
-        }
+        do {
+            try {
+                configureConnection(stdIn.readLine());
+            } catch (IOException e) {
+                showError(e.getMessage());
+            }
+        } while (!isConnected());
         initializeClient();
         //reading user input
         getView().show("asknickname");
