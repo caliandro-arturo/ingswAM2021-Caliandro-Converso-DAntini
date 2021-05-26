@@ -4,21 +4,21 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="1108.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.Board">
+<TabPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="1108.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.GamePanel">
   <tabs>
     <Tab fx:id="yourBoard" text="Your Board">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="811.0" prefWidth="1159.0">
                <children>
-                  <ImageView fx:id="boardImg" fitHeight="674.0" fitWidth="937.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="boardImg" fitHeight="674.0" fitWidth="937.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../png/Masters%20of%20Renaissance_PlayerBoard%20(11_2020)-1.png" />
+                        <Image url="@../png/board.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="233.0" fitWidth="158.0" layoutX="365.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="crossB" fitHeight="42.0" fitWidth="45.0" layoutX="40.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../png/croceNera.png" />
+                        <Image url="@../png/blackCross.png" />
                      </image></ImageView>
                   <ImageView fx:id="cross" fitHeight="42.0" fitWidth="42.0" layoutX="82.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -45,12 +45,19 @@
                   <Button fx:id="res" layoutX="999.0" layoutY="162.0" mnemonicParsing="false" onAction="#slideRes" text="hand" />
                   <Button layoutX="942.0" layoutY="618.0" mnemonicParsing="false" text="Market" />
                   <ImageView fx:id="res1" fitHeight="41.0" fitWidth="47.0" layoutX="101.0" layoutY="290.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="res33" fitHeight="41.0" fitWidth="47.0" layoutX="135.0" layoutY="406.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="res32" fitHeight="41.0" fitWidth="47.0" layoutX="99.0" layoutY="406.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="res31" fitHeight="41.0" fitWidth="47.0" layoutX="59.0" layoutY="406.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="res22" fitHeight="41.0" fitWidth="47.0" layoutX="124.0" layoutY="350.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="res21" fitHeight="41.0" fitWidth="47.0" layoutX="78.0" layoutY="350.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="res3_3" fitHeight="41.0" fitWidth="47.0" layoutX="135.0" layoutY="406.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="res3_2" fitHeight="41.0" fitWidth="47.0" layoutX="99.0" layoutY="406.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="res3_1" fitHeight="41.0" fitWidth="47.0" layoutX="59.0" layoutY="406.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="res2_2" fitHeight="41.0" fitWidth="47.0" layoutX="118.0" layoutY="348.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="res2_1" fitHeight="41.0" fitWidth="47.0" layoutX="78.0" layoutY="350.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
                   <Button layoutX="1021.0" layoutY="618.0" mnemonicParsing="false" text="Button" />
+                  <ImageView fx:id="boardProdCost1" fitHeight="41.0" fitWidth="47.0" layoutX="239.0" layoutY="469.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="boardProdCost2" fitHeight="41.0" fitWidth="47.0" layoutX="238.0" layoutY="501.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="boardProdProduct" fitHeight="41.0" fitWidth="47.0" layoutX="297.0" layoutY="487.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="strongboxResource1" fitHeight="41.0" fitWidth="47.0" layoutX="36.0" layoutY="501.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="strongboxResource3" fitHeight="41.0" fitWidth="47.0" layoutX="34.0" layoutY="577.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="strongboxResource2" fitHeight="41.0" fitWidth="47.0" layoutX="112.0" layoutY="501.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="strongboxResource4" fitHeight="41.0" fitWidth="47.0" layoutX="111.0" layoutY="577.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
                </children></AnchorPane>
       </content>
     </Tab>

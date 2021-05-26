@@ -1,8 +1,14 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.View;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 public class GUIView extends View {
+    @FXML
+    TextField text;
+
     @Override
     public void process(String input) {
 
@@ -46,5 +52,12 @@ public class GUIView extends View {
     @Override
     public void showTablePosition(int position) {
 
+    }
+
+    public void takeDefault(ActionEvent actionEvent) {
+    }
+
+    public void takeText(ActionEvent actionEvent) {
+        System.out.println("ciao");
     }
 }

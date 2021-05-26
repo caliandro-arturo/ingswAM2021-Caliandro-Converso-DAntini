@@ -94,15 +94,15 @@ public class Board {
      */
     public void deployResource(Resource resource, int pos) {
         pos--;
-        if(!resHand.contains(resource))
-            throw new IllegalArgumentException("you don't have this resource.");
-        else if (!store.get(pos).hasRoomForResource(resource))
-            throw new IllegalArgumentException("you can't add this resource in this depot");
-        else if(pos>3)
-            throw new IllegalArgumentException("you choose a space depot that doesn't exist");
-        else
+        if (!resHand.contains(resource))
+            throw new IllegalArgumentException("You don't have this resource.");
+        WarehouseStore depot = store.get(pos);
+        if (!depot.hasRoomForResource(resource))
+            throw new IllegalArgumentException("You can't add this resource in this depot.");
+        else {
             store.get(pos).addResource(resource);
             resHand.remove(resource);
+        }
     }
 
     /**
