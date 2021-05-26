@@ -30,6 +30,10 @@ public class ViewAdapterForTest {
             }
 
             @Override
+            public void sendLeaderUpdate(LeaderCard leaderCard) {
+            }
+
+            @Override
             public void askLeaderAction() {
             }
 

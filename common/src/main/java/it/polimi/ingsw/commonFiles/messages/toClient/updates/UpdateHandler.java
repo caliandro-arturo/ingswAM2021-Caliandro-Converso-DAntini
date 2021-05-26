@@ -15,4 +15,5 @@ public interface UpdateHandler {
     void visit(NewTurn msg);
     void visit(TurnPhaseAnnouncement msg);
     void visit(InitialResourcesAmount msg);
+    void visit(UpdateLeaderCards msg);
 }

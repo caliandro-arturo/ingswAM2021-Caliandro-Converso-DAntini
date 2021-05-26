@@ -41,7 +41,8 @@ public class ViewAdapter {
     /**
      * sends a message to a player.
      *
-     * @param message the information to send to all players
+     * @param player the player who receive the message
+     * @param message the information to send to a player
      */
     public void sendMessage(Player player, Message message) {
         virtualView.sendMessage(player, message);
@@ -156,6 +157,17 @@ public class ViewAdapter {
      */
     public void notifyLastTurn(String reason) {
         sendMessage(new LastTurn(reason));
+    }
+
+    /**
+     * send the update of leader on board after a useLeader command
+     * @param leaderCard the card to sent
+     */
+    public void sendLeaderUpdate(LeaderCard leaderCard){
+        UpdateLeaderCards updateLeaderCards = new UpdateLeaderCards(leaderCard.getVictoryPoints(),
+                leaderCard.getRequirements().identifier(), leaderCard.getLeaderPower().identifier());
+        updateLeaderCards.setPlayer(game.getCurrentPlayer().getUsername());
+        sendMessage(updateLeaderCards);
     }
 
     /**

@@ -85,6 +85,64 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             showUpdate("Last turns: " + msg.getReason());
     }
 
+    @Override
+    public void visit(UpdateLeaderCards msg) {
+        if (!msg.getPlayer().equals(model.getPlayerUsername())) {
+            model.getBoard(msg.getPlayer()).getLeaderCards().add(translator(msg.getVictoryPoints(),
+                    msg.getLeaderPower(), msg.getRequirements()));
+        }
+    }
+
+    /**
+     * translator from primitive format to object for the leader card
+     * @param victoryPoints int that display the victoryPoints
+     * @param leaderPowerString String that display the leader power to translate in object
+     * @param requirementString String that display the requirements to translate in object
+     * @return a new leader card made by the parameters
+     */
+    private LeaderCard translator(int victoryPoints, String[] leaderPowerString, String[] requirementString) {
+        LeaderPower leaderPower;
+        Requirements requirement;
+        switch (leaderPowerString[0]) {
+            case "saleOnDevelopment":
+                leaderPower = new SaleOnDevelopment(Utility.mapRepresentationResource.
+                        get(leaderPowerString[1]));
+                break;
+            case "whiteMarbleConversion":
+                leaderPower = new WhiteMarbleConversion(Utility.mapRepresentationResource.
+                        get(leaderPowerString[1]));
+                break;
+            case "specialWarehouse":
+                leaderPower = new SpecialWarehouse(Utility.mapRepresentationResource.
+                        get(leaderPowerString[1]));
+                break;
+            default:
+                leaderPower = new AdditionalProductionPower(Utility.mapRepresentationResource.
+                        get(leaderPowerString[1]));
+                break;
+        }
+        if (requirementString[0].equals("resourceCost")) {
+            requirement = new ResourceCost(new UtilityProductionAndCost(Integer.parseInt(requirementString[2]),
+                    Utility.mapRepresentationResource.get(requirementString[1])));
+        } else {
+            String[] colors = requirementString[1].split("\\s");
+            String[] quantity = requirementString[2].split("\\s");
+            ArrayList<Color> colorArrayList = new ArrayList<>();
+            ArrayList<Integer> quantityArrayList = new ArrayList<>();
+            for (int k = 0; k < colors.length; k++) {
+                colorArrayList.add(Utility.mapColor.get(colors[k]));
+                quantityArrayList.add(Integer.parseInt(quantity[k]));
+            }
+            if (requirementString[0].equals("colorCost")) {
+                requirement = new ColorCost(colorArrayList, quantityArrayList);
+            } else {
+                requirement = new LevelCost(colorArrayList, quantityArrayList,
+                        Integer.parseInt(requirementString[3]));
+            }
+        }
+            return new LeaderCard(victoryPoints, requirement, leaderPower);
+    }
+
     /**
      * initialize leaderHand in model
      * @param msg message from server with attributes
@@ -92,48 +150,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(InitLeaderHand msg) {
         ArrayList<LeaderCard> leaderCards = new ArrayList<>();
-        Requirements requirement;
-        LeaderPower leaderPower;
         for (int i = 0; i < msg.getVictoryPoints().size(); i++) {
-            int victoryPoints = msg.getVictoryPoints().get(i);
-            switch (msg.getLeaderPower().get(i)[0]) {
-                case "saleOnDevelopment":
-                    leaderPower = new SaleOnDevelopment(Utility.mapRepresentationResource.
-                            get(msg.getLeaderPower().get(i)[1]));
-                    break;
-                case "whiteMarbleConversion":
-                    leaderPower = new WhiteMarbleConversion(Utility.mapRepresentationResource.
-                            get(msg.getLeaderPower().get(i)[1]));
-                    break;
-                case "specialWarehouse":
-                    leaderPower = new SpecialWarehouse(Utility.mapRepresentationResource.
-                            get(msg.getLeaderPower().get(i)[1]));
-                    break;
-                default:
-                    leaderPower = new AdditionalProductionPower(Utility.mapRepresentationResource.
-                            get(msg.getLeaderPower().get(i)[1]));
-                    break;
-            }
-            if (msg.getRequirements().get(i)[0].equals("resourceCost")) {
-                requirement = new ResourceCost(new UtilityProductionAndCost(Integer.parseInt(msg.getRequirements().
-                        get(i)[2]), Utility.mapRepresentationResource.get(msg.getRequirements().get(i)[1])));
-            } else {
-                String[] colors = msg.getRequirements().get(i)[1].split("\\s");
-                String[] quantity = msg.getRequirements().get(i)[2].split("\\s");
-                ArrayList<Color> colorArrayList = new ArrayList<>();
-                ArrayList<Integer> quantityArrayList = new ArrayList<>();
-                for (int k = 0; k < colors.length; k++) {
-                    colorArrayList.add(Utility.mapColor.get(colors[k]));
-                    quantityArrayList.add(Integer.parseInt(quantity[k]));
-                }
-                if (msg.getRequirements().get(i)[0].equals("colorCost")) {
-                    requirement = new ColorCost(colorArrayList, quantityArrayList);
-                } else {
-                    requirement = new LevelCost(colorArrayList,quantityArrayList,
-                            Integer.parseInt(msg.getRequirements().get(i)[3]));
-                }
-            }
-            leaderCards.add(new LeaderCard(victoryPoints,requirement,leaderPower));
+            leaderCards.add(translator(msg.getVictoryPoints().get(i),msg.getLeaderPower().get(i),
+                    msg.getRequirements().get(i)));
         }
         model.setLeaderHand(new LeaderHand(leaderCards));
         model.setGameStarted(true);
@@ -320,9 +339,11 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(UseLeader msg) {
-        LeaderHand leaderHand = model.getLeaderHand();
-        model.getBoard().getLeaderCards().add(leaderHand.getHand().get(msg.getIDCard()-1));
-        leaderHand.removeCardFromHand(msg.getIDCard());
+        if(msg.getPlayer().equals(model.getPlayerUsername())) {
+            LeaderHand leaderHand = model.getLeaderHand();
+            model.getBoard().getLeaderCards().add(leaderHand.getHand().get(msg.getIDCard() - 1));
+            leaderHand.removeCardFromHand(msg.getIDCard());
+        }
         refresh("hand", "board");
     }
 

@@ -280,6 +280,7 @@ public class Player {
             if (leader.getRequirements().checkRequirements(game.getCurrentPlayer())) {
                 leader.getLeaderPower().activatePower(game.getCurrentPlayer());
                 board.addActiveLeader(leader);
+                game.getViewAdapter().sendLeaderUpdate(leader);
             }else
                 throw new IllegalArgumentException("you don't have these requirements");
         }else
