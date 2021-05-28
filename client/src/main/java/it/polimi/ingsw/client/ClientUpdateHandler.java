@@ -88,19 +88,21 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(UpdateLeaderCards msg) {
         if (!msg.getPlayer().equals(model.getPlayerUsername())) {
-            model.getBoard(msg.getPlayer()).getLeaderCards().add(translator(msg.getVictoryPoints(),
+            model.getBoard(msg.getPlayer()).getLeaderCards().add(translator(msg.getID(), msg.getVictoryPoints(),
                     msg.getLeaderPower(), msg.getRequirements()));
         }
     }
 
     /**
      * translator from primitive format to object for the leader card
+     *
+     * @param ID identifier
      * @param victoryPoints int that display the victoryPoints
      * @param leaderPowerString String that display the leader power to translate in object
      * @param requirementString String that display the requirements to translate in object
      * @return a new leader card made by the parameters
      */
-    private LeaderCard translator(int victoryPoints, String[] leaderPowerString, String[] requirementString) {
+    private LeaderCard translator(int ID, int victoryPoints, String[] leaderPowerString, String[] requirementString) {
         LeaderPower leaderPower;
         Requirements requirement;
         switch (leaderPowerString[0]) {
@@ -140,7 +142,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                         Integer.parseInt(requirementString[3]));
             }
         }
-            return new LeaderCard(victoryPoints, requirement, leaderPower);
+            return new LeaderCard(ID, victoryPoints, requirement, leaderPower);
     }
 
     /**
@@ -151,7 +153,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public void visit(InitLeaderHand msg) {
         ArrayList<LeaderCard> leaderCards = new ArrayList<>();
         for (int i = 0; i < msg.getVictoryPoints().size(); i++) {
-            leaderCards.add(translator(msg.getVictoryPoints().get(i),msg.getLeaderPower().get(i),
+            leaderCards.add(translator(msg.getIDs().get(i), msg.getVictoryPoints().get(i),msg.getLeaderPower().get(i),
                     msg.getRequirements().get(i)));
         }
         model.setLeaderHand(new LeaderHand(leaderCards));
@@ -184,10 +186,11 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public void visit(InitDevGrid msg) {
         DevelopmentCard[][] grid = new DevelopmentCard[3][4];
         for(int i=0; i<12; i++){
+            int ID = msg.getIDs().get(i);
             int level = msg.getLevels().get(i);
             Color color = Utility.mapColor.get(msg.getColors().get(i));
             int victoryPoints = msg.getVictoryPoints().get(i);
-            grid[level-1][Utility.colorPosition.get(color)] = new DevelopmentCard(level,victoryPoints,color,
+            grid[level-1][Utility.colorPosition.get(color)] = new DevelopmentCard(ID, level,victoryPoints,color,
                     msg.getCosts().get(i),msg.getProductions().get(i));
         }
         model.setDevelopmentGrid(new DevelopmentGrid(grid));
@@ -317,6 +320,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         DevelopmentCard newCard;
         try {
             newCard = new DevelopmentCard(
+                    msg.getID(),
                     msg.getLevel(),
                     msg.getNewCardVictoryPoints(),
                     Utility.mapColor.get(msg.getColor()),

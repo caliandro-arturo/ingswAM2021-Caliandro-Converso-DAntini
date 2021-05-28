@@ -25,10 +25,10 @@ class LeaderHandTest {
         LeaderPower power1 = production;
 
 
-        card1 = new LeaderCard(1, type1,power1);
-        card2 = new LeaderCard(2, type1, power1);
-        card3 = new LeaderCard(3, type1, power1);
-        card4 = new LeaderCard(4, type1, power1);
+        card1 = new LeaderCard(0,1, type1,power1);
+        card2 = new LeaderCard(0,2, type1, power1);
+        card3 = new LeaderCard(0,3, type1, power1);
+        card4 = new LeaderCard(0,4, type1, power1);
         leaderCards.add(card1);
         //leaderCards.add(card2);
         //leaderCards.add(card3);

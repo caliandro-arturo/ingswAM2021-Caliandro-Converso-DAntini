@@ -4,9 +4,6 @@ import it.polimi.ingsw.commonFiles.model.Production;
 import it.polimi.ingsw.commonFiles.model.ProductionPower;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
-import java.util.Arrays;
-import java.util.Locale;
-
 /**
  * this class represent a special type of card (Development type)
  *
@@ -14,6 +11,7 @@ import java.util.Locale;
  * color -> color of the card
  * cost -> cost in resource of the card
  * productionPower -> the power of production of the card
+ * ID -> identifier of the card
  *
  */
 public class DevelopmentCard {
@@ -22,8 +20,10 @@ public class DevelopmentCard {
     private final Color color;
     private final UtilityProductionAndCost[] cost;
     private final Production productionPower;
+    private final int ID;
 
-    public DevelopmentCard(int victoryPoints, int level, Color color, UtilityProductionAndCost[] cost, ProductionPower productionPower){
+    public DevelopmentCard(int victoryPoints,int ID, int level, Color color, UtilityProductionAndCost[] cost, ProductionPower productionPower){
+        this.ID = ID;
         this.victoryPoints = victoryPoints;
         this.level = level;
         this.color = color;
@@ -34,7 +34,7 @@ public class DevelopmentCard {
     public int getVictoryPoints() {
         return victoryPoints;
     }
-
+    public int getID(){return ID;}
     public Color getColor(){
         return color;
     }

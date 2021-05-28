@@ -7,6 +7,7 @@ public class UpdateLeaderCards extends Message implements GameUpdate {
     private int victoryPoints;
     private String[] requirements;
     private String[] leaderPower;
+    private int ID;
 
     public int getVictoryPoints() {
         return victoryPoints;
@@ -20,7 +21,11 @@ public class UpdateLeaderCards extends Message implements GameUpdate {
         return leaderPower;
     }
 
-    public UpdateLeaderCards(int victoryPoints, String[] requirements, String[] leaderPower) {
+    public int getID() {
+        return ID;
+    }
+
+    public UpdateLeaderCards(int ID, int victoryPoints, String[] requirements, String[] leaderPower) {
         this.victoryPoints = victoryPoints;
         this.requirements = requirements;
         this.leaderPower = leaderPower;

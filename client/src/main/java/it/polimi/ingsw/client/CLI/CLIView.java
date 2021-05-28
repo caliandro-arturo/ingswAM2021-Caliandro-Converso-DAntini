@@ -194,7 +194,7 @@ public class CLIView extends View {
                 break;
             }
             case "players": {
-                System.out.println("");
+                System.out.println();
                 getModel().getPlayersUsernames().forEach(p -> {
                     if (p.equals(getModel().getPlayerUsername()))
                         System.out.println(CLIColor.ANSI_BRIGHT_GREEN + p + CLIColor.ANSI_RESET);
@@ -528,9 +528,9 @@ public class CLIView extends View {
                             (getModel().getCurrentPlayerInTheGame() + "'s turn")), 149, '-'));
         if (getModel().getCurrentTurnPhase() != null)
             System.out.println(StringUtility.center(getModel().getCurrentTurnPhase(), 149, '-'));
-        System.out.println("");
+        System.out.println();
         toDo.forEach((id, action) -> System.out.println(action));
-        System.out.println("");
+        System.out.println();
     }
 
     @Override

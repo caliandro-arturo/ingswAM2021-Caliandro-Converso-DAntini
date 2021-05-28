@@ -5,6 +5,7 @@
             "victoryPoints": 1,
             "level": 1,
             "color": "GREEN",
+            "ID" : 1,
             "cost": [
                 {
                     "resource": "shield",
@@ -31,6 +32,7 @@
             "victoryPoints": 1,
             "level": 1,
             "color": "PURPLE",
+            "ID": 2,
             "cost": [
                 {
                     "resource": "serf",
@@ -57,6 +59,7 @@
             "victoryPoints": 1,
             "level": 1,
             "color": "BLUE",
+            "ID" : 3,
             "cost": [ 
                 {
                     "resource": "coin",
@@ -83,6 +86,7 @@
             "victoryPoints": 1,
             "level": 1,
             "color": "YELLOW",
+            "ID": 4,
             "cost": [
                 {
                     "resource": "stone",
@@ -109,6 +113,7 @@
             "victoryPoints": 2,
             "level": 1,
             "color": "GREEN",
+            "ID": 5,
             "cost": [
                 {
                     "resource": "serf",
@@ -143,6 +148,7 @@
             "victoryPoints": 2,
             "level": 1,
             "color": "PURPLE",
+            "ID": 6,
             "cost": [
                 {
                     "resource": "shield",
@@ -177,6 +183,7 @@
             "victoryPoints": 2,
             "level": 1,
             "color": "BLUE",
+            "ID": 7,
             "cost": [
                 {
                     "resource": "coin",
@@ -211,6 +218,7 @@
             "victoryPoints": 2,
             "level": 1,
             "color": "YELLOW",
+            "ID": 8,
             "cost": [
                 {
                     "resource": "shield",
@@ -247,6 +255,7 @@
             "victoryPoints": 3,
             "level": 1,
             "color": "GREEN",
+            "ID": 9,
             "cost": [ 
                 {
                     "resource": "shield",
@@ -281,6 +290,7 @@
             "victoryPoints": 3,
             "level": 1,
             "color": "PURPLE",
+            "ID": 10,
             "cost": [
                 {
                     "resource": "serf",
@@ -315,6 +325,7 @@
             "victoryPoints": 3,
             "level": 1,
             "color": "BLUE",
+            "ID": 11,
             "cost": [
                 {
                     "resource": "coin",
@@ -349,6 +360,7 @@
             "victoryPoints": 3,
             "level": 1,
             "color": "YELLOW",
+            "ID": 12,
             "cost": [
                 {
                     "resource": "stone",
@@ -383,6 +395,7 @@
             "victoryPoints": 4,
             "level": 1,
             "color": "GREEN",
+            "ID": 13,
             "cost": [
                 {
                     "resource": "shield",
@@ -421,6 +434,7 @@
             "victoryPoints": 4,
             "level": 1,
             "color" : "PURPLE",
+            "ID": 14,
             "cost": [
                 {
                     "resource": "serf",
@@ -459,6 +473,7 @@
             "victoryPoints": 4,
             "level": 1,
             "color": "BLUE",
+            "ID": 15,
             "cost": [
                 {
                     "resource": "coin",
@@ -497,6 +512,7 @@
             "victoryPoints": 4,
             "level": 1,
             "color": "YELLOW",
+            "ID": 16,
             "cost": [
                 {
                     "resource": "stone",
@@ -535,6 +551,7 @@
             "victoryPoints": 5,
             "level": 2,
             "color": "GREEN",
+            "ID": 17,
             "cost": [ 
                 {
                     "resource": "shield",
@@ -561,6 +578,7 @@
             "victoryPoints": 5,
             "level": 2,
             "color": "PURPLE",
+            "ID": 18,
             "cost": [ 
                 {
                     "resource": "serf",
@@ -587,6 +605,7 @@
             "victoryPoints": 5,
             "level": 2,
             "color": "BLUE",
+            "ID": 19,
             "cost": [ 
                 {
                     "resource": "coin",
@@ -613,6 +632,7 @@
             "victoryPoints": 5,
             "level": 2,
             "color": "YELLOW",
+            "ID": 20,
             "cost": [
                 {
                     "resource": "stone",
@@ -639,6 +659,7 @@
             "victoryPoints": 6,
             "level": 2,
             "color": "GREEN",
+            "ID": 21,
             "cost": [ 
                 {
                     "resource": "shield",
@@ -674,6 +695,7 @@
             "victoryPoints": 6,
             "level": 2,
             "color": "PURPLE",
+            "ID": 22,
             "cost": [
                 {
                     "resource" : "serf",
@@ -708,6 +730,7 @@
             "victoryPoints": 6,
             "level": 2,
             "color": "BLUE",
+            "ID": 23,
             "cost": [
                 {
                     "resource": "coin",
@@ -742,6 +765,7 @@
             "victoryPoints": 6,
             "level": 2,
             "color": "YELLOW",
+            "ID": 24,
             "cost": [
                 {
                     "resource": "shield",
@@ -776,6 +800,7 @@
             "victoryPoints": 7,
             "level": 2,
             "color": "GREEN",
+            "ID": 25,
             "cost": [
                 {
                     "resource": "shield",
@@ -806,6 +831,7 @@
             "victoryPoints": 7,
             "level": 2,
             "color": "PURPLE",
+            "ID": 26,
             "cost": [
                 {
                     "resource": "serf",
@@ -836,6 +862,7 @@
             "victoryPoints": 7,
             "level": 2,
             "color": "BLUE",
+            "ID": 27,
             "cost": [
                 {
                     "resource": "coin",
@@ -866,6 +893,7 @@
             "victoryPoints": 7,
             "level": 2,
             "color": "YELLOW",
+            "ID": 28,
             "cost": [
                 {
                     "resource": "stone",
@@ -896,6 +924,7 @@
             "victoryPoints": 8,
             "level": 2,
             "color": "GREEN",
+            "ID": 29,
             "cost": [
                 {
                     "resource": "shield",
@@ -931,6 +960,7 @@
             "victoryPoints": 8,
             "level": 2,
             "color": "PURPLE",
+            "ID": 30,
             "cost": [
                 {
                     "resource": "shield",
@@ -965,6 +995,7 @@
             "victoryPoints": 8,
             "level": 2,
             "color": "BLUE",
+            "ID": 31,
             "cost": [
                 {
                     "resource": "coin",
@@ -995,6 +1026,7 @@
             "victoryPoints": 8,
             "level": 2,
             "color": "YELLOW",
+            "ID": 32,
             "cost": [
                 {
                     "resource": "stone",
@@ -1029,6 +1061,7 @@
             "victoryPoints": 9,
             "level": 3,
             "color": "GREEN",
+            "ID": 33,
             "cost": [
                 {
                     "resource": "shield",
@@ -1059,6 +1092,7 @@
             "victoryPoints": 9,
             "level": 3,
             "color": "PURPLE",
+            "ID": 34,
             "cost": [ 
                 {
                     "resource": "serf",
@@ -1089,6 +1123,7 @@
             "victoryPoints": 9,
             "level": 3,
             "color": "BLUE",
+            "ID": 35,
             "cost" : [
                 {
                     "resource": "coin",
@@ -1119,6 +1154,7 @@
             "victoryPoints": 9,
             "level": 3,
             "color": "YELLOW",
+            "ID": 36,
             "cost": [ 
                 {
                     "resource": "stone",
@@ -1149,6 +1185,7 @@
             "victoryPoints": 10,
             "level": 3,
             "color": "GREEN",
+            "ID": 37,
             "cost": [
                 {
                     "resource": "shield",
@@ -1191,6 +1228,7 @@
             "victoryPoints": 10,
             "level": 3,
             "color": "PURPLE",
+            "ID": 38,
             "cost": [
                 {
                     "resource": "serf",
@@ -1234,6 +1272,7 @@
             "victoryPoints": 10,
             "level": 3,
             "color": "BLUE",
+            "ID": 39,
             "cost": [
                 {
                     "resource": "coin",
@@ -1276,6 +1315,7 @@
             "victoryPoints": 10,
             "level": 3,
             "color": "YELLOW",
+            "ID": 40,
             "cost": [
                 {
                     "resource": "stone",
@@ -1318,6 +1358,7 @@
             "victoryPoints": 11,
             "level": 3,
             "color": "GREEN",
+            "ID": 41,
             "cost": [
                 {
                     "resource": "shield",
@@ -1348,6 +1389,7 @@
             "victoryPoints": 11,
             "level": 3,
             "color": "PURPLE",
+            "ID": 42,
             "cost": [
                 {
                     "resource": "serf",
@@ -1378,6 +1420,7 @@
             "victoryPoints": 11,
             "level": 3,
             "color": "BLUE",
+            "ID": 43,
             "cost": [
                 {
                     "resource": "coin",
@@ -1407,6 +1450,7 @@
         {
             "victoryPoints": 11,
             "level": 3,
+            "ID": 44,
             "color": "YELLOW",
             "cost": [
                 {
@@ -1438,6 +1482,7 @@
             "victoryPoints": 12,
             "level": 3,
             "color": "GREEN",
+            "ID": 45,
             "cost": [
                 {
                     "resource": "shield",
@@ -1472,6 +1517,7 @@
             "victoryPoints": 12,
             "level": 3,
             "color": "PURPLE",
+            "ID": 46,
             "cost": [
                 {
                     "resource": "serf",
@@ -1507,6 +1553,7 @@
             "victoryPoints": 12,
             "level": 3,
             "color": "BLUE",
+            "ID": 47,
             "cost": [ 
                 {
                     "resource": "coin",
@@ -1541,6 +1588,7 @@
             "victoryPoints": 12,
             "level": 3,
             "color": "YELLOW",
+            "ID": 48,
             "cost": [
                 {
                     "resource": "stone",

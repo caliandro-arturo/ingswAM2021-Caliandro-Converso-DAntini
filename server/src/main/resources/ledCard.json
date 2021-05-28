@@ -3,6 +3,7 @@
         
         {
             "victoryPoints": 2,
+            "ID": 49,
             "colorCost": {
                 "blue": 0,
                 "purple": 0,
@@ -16,6 +17,7 @@
 
         {
             "victoryPoints": 2,
+            "ID": 50,
             "colorCost": {
                 "yellow": 0,
                 "green": 0,
@@ -29,6 +31,7 @@
 
         {
             "victoryPoints": 2,
+            "ID": 51,
             "colorCost": {
                 "purple": 0,
                 "yellow": 0,
@@ -42,6 +45,7 @@
 
         {
             "victoryPoints": 2,
+            "ID": 52,
             "colorCost": {
                 "blue": 0,
                 "green": 0,
@@ -55,6 +59,7 @@
 
         {
             "victoryPoints": 3,
+            "ID": 53,
             "resourceCost":{
                 "resource": "coin",
                 "quantity": 5
@@ -66,6 +71,7 @@
 
         {
             "victoryPoints": 3,
+            "ID": 54,
             "resourceCost":{
                 "resource": "stone",
                 "quantity": 5
@@ -77,6 +83,7 @@
 
         {
             "victoryPoints": 3,
+            "ID": 55,
             "resourceCost":{
                 "resource": "serf",
                 "quantity": 5
@@ -88,6 +95,7 @@
 
         {
             "victoryPoints": 3,
+            "ID": 56,
             "resourceCost":{
                 "resource": "shield",
                 "quantity": 5
@@ -99,6 +107,7 @@
 
         {
             "victoryPoints": 5,
+            "ID": 57,
             "colorCost": {
                 "purple": 0,
                 "green": 0,
@@ -112,6 +121,7 @@
 
         {
             "victoryPoints": 5,
+            "ID": 58,
             "colorCost": {
                 "blue": 0,
                 "yellow": 0,
@@ -125,6 +135,7 @@
 
         {
             "victoryPoints": 5,
+            "ID": 59,
             "colorCost": {
                 "purple": 0,
                 "green": 0,
@@ -138,6 +149,7 @@
 
         {
             "victoryPoints": 5,
+            "ID": 60,
             "colorCost": {
                 "blue": 0,
                 "yellow": 0,
@@ -151,6 +163,7 @@
 
         {
             "victoryPoints": 4,
+            "ID": 61,
             "levelCost": {
                 "color": "YELLOW",
                 "quantity": 1,
@@ -163,6 +176,7 @@
 
         {
             "victoryPoints": 4,
+            "ID": 62,
             "levelCost": {
                 "color": "BLUE",
                 "quantity": 1,
@@ -175,6 +189,7 @@
 
         {
             "victoryPoints": 4,
+            "ID": 63,
             "levelCost": {
                 "color": "PURPLE",
                 "quantity": 1,
@@ -187,6 +202,7 @@
 
         {
             "victoryPoints": 4,
+            "ID": 64,
             "levelCost": {
                 "color": "GREEN",
                 "quantity": 1,

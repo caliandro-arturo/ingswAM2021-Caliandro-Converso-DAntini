@@ -33,29 +33,29 @@ class PlayerTest {
         UtilityProductionAndCost[] costs = new UtilityProductionAndCost[]{cost};
         UtilityProductionAndCost[] prods = new UtilityProductionAndCost[]{prod};
         ProductionPower production1 = new ProductionPower(costs,prods);
-        DevelopmentCard card = new DevelopmentCard(1,1, Color.BLUE,costs,production1);
+        DevelopmentCard card = new DevelopmentCard(1,0,1, Color.BLUE,costs,production1);
         pippo.getBoard().addCard(card,1);
-        card1 = new DevelopmentCard(2,2,Color.BLUE,costs,production1);
+        card1 = new DevelopmentCard(2,0,2,Color.BLUE,costs,production1);
         UtilityProductionAndCost utilitytest = new UtilityProductionAndCost(1, Resource.COIN);
         utilityarray = new UtilityProductionAndCost[]{utilitytest};
         ProductionPower production2 = new ProductionPower(utilityarray, utilityarray);
-        DevelopmentCard cglv1 = new DevelopmentCard(1, 1, Color.GREEN, utilityarray, production2);
-        DevelopmentCard cglv2 = new DevelopmentCard(1, 2, Color.GREEN, utilityarray, production2);
-        DevelopmentCard cglv3 = new DevelopmentCard(1, 3, Color.GREEN, utilityarray, production2);
-        DevelopmentCard cblv1 = new DevelopmentCard(1, 1, Color.BLUE, utilityarray, production2);
-        DevelopmentCard cblv3 = new DevelopmentCard(1, 3, Color.BLUE, utilityarray, production2);
-        DevelopmentCard cylv1 = new DevelopmentCard(1, 1, Color.YELLOW, utilityarray, production2);
-        DevelopmentCard cylv2 = new DevelopmentCard(1, 2, Color.YELLOW, utilityarray, production2);
-        DevelopmentCard cylv3 = new DevelopmentCard(1, 3, Color.YELLOW, utilityarray, production2);
-        DevelopmentCard cplv1 = new DevelopmentCard(1, 1, Color.PURPLE, utilityarray, production2);
-        DevelopmentCard cplv2 = new DevelopmentCard(1, 2, Color.PURPLE, utilityarray, production2);
-        DevelopmentCard cplv3 = new DevelopmentCard(1, 3, Color.PURPLE, utilityarray, production2);
+        DevelopmentCard cglv1 = new DevelopmentCard(1, 0,1, Color.GREEN, utilityarray, production2);
+        DevelopmentCard cglv2 = new DevelopmentCard(1, 0,2, Color.GREEN, utilityarray, production2);
+        DevelopmentCard cglv3 = new DevelopmentCard(1, 0,3, Color.GREEN, utilityarray, production2);
+        DevelopmentCard cblv1 = new DevelopmentCard(1, 0,1, Color.BLUE, utilityarray, production2);
+        DevelopmentCard cblv3 = new DevelopmentCard(1, 0,3, Color.BLUE, utilityarray, production2);
+        DevelopmentCard cylv1 = new DevelopmentCard(1, 0,1, Color.YELLOW, utilityarray, production2);
+        DevelopmentCard cylv2 = new DevelopmentCard(1, 0,2, Color.YELLOW, utilityarray, production2);
+        DevelopmentCard cylv3 = new DevelopmentCard(1, 0,3, Color.YELLOW, utilityarray, production2);
+        DevelopmentCard cplv1 = new DevelopmentCard(1, 0,1, Color.PURPLE, utilityarray, production2);
+        DevelopmentCard cplv2 = new DevelopmentCard(1, 0,2, Color.PURPLE, utilityarray, production2);
+        DevelopmentCard cplv3 = new DevelopmentCard(1, 0,3, Color.PURPLE, utilityarray, production2);
         DevelopmentCard[] totcard = new DevelopmentCard[]{cglv1, cglv2, cglv3, cblv1, card1, cblv3, cylv1, cylv2, cylv3, cplv1, cplv2, cplv3};
         d1 = new DevelopmentGrid(totcard);
         testGame = new MultiplayerGame(pippo,4,null,null,d1);
         ViewAdapterForTest.setUp();
         testGame.setViewAdapter(ViewAdapterForTest.testView);
-        pippo.getBoard().addActiveLeader(new LeaderCard(3,
+        pippo.getBoard().addActiveLeader(new LeaderCard(0,3,
                 new ColorCost(new Color[]{Color.BLUE},new Integer[]{2}),
                 new AdditionalProductionPower(Resource.COIN)));
     }
@@ -99,9 +99,9 @@ class PlayerTest {
         player.getBoard().getFaithTrack().increasePosition();
         player.getBoard().getFaithTrack().increasePosition();
         ProductionPower productionPower = new ProductionPower(utilityarray,utilityarray);
-        player.getBoard().addCard(new DevelopmentCard(2,1,Color.BLUE,null, productionPower), 2);
+        player.getBoard().addCard(new DevelopmentCard(2,0,1,Color.BLUE,null, productionPower), 2);
         //2 VP in [1]
-        player.getBoard().addActiveLeader(new LeaderCard(3,
+        player.getBoard().addActiveLeader(new LeaderCard(0,3,
                new ColorCost(new Color[]{Color.BLUE},new Integer[]{2}),
                 new AdditionalProductionPower(Resource.COIN)));
         //3 VP in [2]
@@ -144,7 +144,7 @@ class PlayerTest {
         UtilityProductionAndCost[] costs = new UtilityProductionAndCost[]{coin};
         int[] box = {0,0};
         pluto.getBoard().addCard(new DevelopmentCard(1,
-                1,Color.BLUE, null ,new ProductionPower(costs,costs)),1);
+                0,1,Color.BLUE, null ,new ProductionPower(costs,costs)),1);
         try {
             pluto.startDevProduction(1, box);
         } catch (IllegalArgumentException e) {
@@ -160,10 +160,10 @@ class PlayerTest {
             testGame.addPlayer(minnie);
         }catch (Exception e){}
         testGame.setCurrentPlayer(minnie);
-        LeaderCard leaderCard1 = new LeaderCard(1,
+        LeaderCard leaderCard1 = new LeaderCard(0,1,
                 new ResourceCost(new UtilityProductionAndCost(1,Resource.COIN)),
                 new WhiteMarbleConversion(Resource.COIN));
-        LeaderCard leaderCard2 = new LeaderCard(1,
+        LeaderCard leaderCard2 = new LeaderCard(0,1,
                 new ResourceCost(new UtilityProductionAndCost(1,Resource.COIN)),
                 new WhiteMarbleConversion(Resource.SHIELD));
         minnie.addLeaderCards(leaderCard1);
@@ -193,11 +193,11 @@ class PlayerTest {
             topolino.startLeaderProduction(0,Resource.SHIELD,1);
             topolino.startBoardProduction(new int[]{0,1},new String[]{"shield","faith"},Resource.SHIELD);
         });
-        topolino.addLeaderCards(new LeaderCard(1,
+        topolino.addLeaderCards(new LeaderCard(0,1,
                 new ResourceCost(new UtilityProductionAndCost(0,Resource.COIN)),
                 new AdditionalProductionPower(Resource.STONE)));
         topolino.getBoard().getDevelopmentSpace()[0].getDevelopmentCards().push(new DevelopmentCard(
-                1,1,Color.BLUE,null,new ProductionPower(
+                1,0,1,Color.BLUE,null,new ProductionPower(
                         new UtilityProductionAndCost[]{new UtilityProductionAndCost(1,Resource.COIN)},
                 new UtilityProductionAndCost[]{new UtilityProductionAndCost(1,Resource.COIN)})));
         assertThrows(IllegalArgumentException.class,()->{

@@ -50,8 +50,6 @@ public class ViewAdapter {
 
     /**
      * Sends a text to the player.
-     * @param player
-     * @param message
      * @deprecated create a specific method to send specific messages.
      */
     @Deprecated
@@ -164,8 +162,9 @@ public class ViewAdapter {
      * @param leaderCard the card to sent
      */
     public void sendLeaderUpdate(LeaderCard leaderCard){
-        UpdateLeaderCards updateLeaderCards = new UpdateLeaderCards(leaderCard.getVictoryPoints(),
-                leaderCard.getRequirements().identifier(), leaderCard.getLeaderPower().identifier());
+        UpdateLeaderCards updateLeaderCards = new UpdateLeaderCards(leaderCard.getID(),
+                leaderCard.getVictoryPoints(),leaderCard.getRequirements().identifier(),
+                leaderCard.getLeaderPower().identifier());
         updateLeaderCards.setPlayer(game.getCurrentPlayer().getUsername());
         sendMessage(updateLeaderCards);
     }
@@ -180,14 +179,16 @@ public class ViewAdapter {
         ArrayList<String> colors = new ArrayList<>();
         ArrayList<UtilityProductionAndCost[]> costs = new ArrayList<>();
         ArrayList<Production> productions = new ArrayList<>();
+        ArrayList<Integer> IDs = new ArrayList<>();
         for (DevelopmentCard card : cards){
+            IDs.add(card.getID());
             level.add(card.getLevel());
             victoryPoints.add(card.getVictoryPoints());
             colors.add(card.getColorString());
             costs.add(card.getCost());
             productions.add(card.getProduction());
         }
-        sendMessage(new InitDevGrid(colors,costs,level,victoryPoints,productions));
+        sendMessage(new InitDevGrid(IDs,colors,costs,level,victoryPoints,productions));
         Market market = game.getMarket();
         String extraMarble = market.getExtraMarble().getColorString();
         String[][] tray = new String[market.getRows()][market.getColumns()];
@@ -209,12 +210,14 @@ public class ViewAdapter {
         ArrayList<String[]> requirements = new ArrayList<>();
         ArrayList<String[]> leaderPowers = new ArrayList<>();
         ArrayList<Integer> victoryPoints = new ArrayList<>();
+        ArrayList<Integer> IDs = new ArrayList<>();
         for (LeaderCard leaderCard : cards){
+            IDs.add(leaderCard.getID());
             requirements.add(leaderCard.getRequirements().identifier());
             leaderPowers.add(leaderCard.getLeaderPower().identifier());
             victoryPoints.add(leaderCard.getVictoryPoints());
         }
-        sendMessage(player,new InitLeaderHand(victoryPoints,requirements,leaderPowers));
+        sendMessage(player,new InitLeaderHand(IDs, victoryPoints,requirements,leaderPowers));
     }
 
     /**

@@ -13,9 +13,9 @@ class BoardTest {
 
     private Board board;
     private Player pippo = new Player(("pippo"));
-    private DevelopmentCard level1card = new DevelopmentCard(1, 1, null, null, null);
-    private DevelopmentCard level2card = new DevelopmentCard(1, 2, null, null, null);
-    private DevelopmentCard level3card = new DevelopmentCard(1, 3, null, null, null);
+    private DevelopmentCard level1card = new DevelopmentCard(1, 0,1, null, null, null);
+    private DevelopmentCard level2card = new DevelopmentCard(1, 0,2, null, null, null);
+    private DevelopmentCard level3card = new DevelopmentCard(1, 0,3, null, null, null);
 
     Game testGame = new Game(pippo, 4, null, null, null) {
         @Override

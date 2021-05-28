@@ -101,7 +101,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             denyMove(buyCard, e.getMessage());
             return;
         }
-        buyCard.setNewCard(newCard.getCost(), newCard.getLevel(), newCard.getProduction());
+        buyCard.setNewCard(newCard.getID(), newCard.getCost(), newCard.getLevel(), newCard.getProduction());
         confirmMove(buyCard);
     }
 

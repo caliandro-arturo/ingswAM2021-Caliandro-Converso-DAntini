@@ -13,14 +13,20 @@ public class InitDevGrid extends Message implements GameUpdate {
     private ArrayList<Integer> levels;
     private ArrayList<Integer> victoryPoints;
     private ArrayList<Production> productions;
+    private ArrayList<Integer> IDs;
 
-    public InitDevGrid(ArrayList<String> colors, ArrayList<UtilityProductionAndCost[]> costs, ArrayList<Integer> levels,
+    public InitDevGrid(ArrayList<Integer> IDs, ArrayList<String> colors, ArrayList<UtilityProductionAndCost[]> costs, ArrayList<Integer> levels,
                        ArrayList<Integer> victoryPoints, ArrayList<Production> productions) {
+        this.IDs = IDs;
         this.colors = colors;
         this.costs = costs;
         this.levels = levels;
         this.victoryPoints = victoryPoints;
         this.productions = productions;
+    }
+
+    public ArrayList<Integer> getIDs() {
+        return IDs;
     }
 
     public ArrayList<String> getColors() {

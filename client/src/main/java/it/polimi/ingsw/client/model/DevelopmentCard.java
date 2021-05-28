@@ -8,17 +8,23 @@ import java.util.Arrays;
 
 public class DevelopmentCard {
     private int level;
+    private int ID;
     private int victoryPoints;
     private Color color;
     private UtilityProductionAndCost[] costs;
     private Production production;
 
-    public DevelopmentCard(int level, int victoryPoints, Color color, UtilityProductionAndCost[] costs, Production production) {
+    public DevelopmentCard(int ID, int level, int victoryPoints, Color color, UtilityProductionAndCost[] costs, Production production) {
+        this.ID = ID;
         this.level = level;
         this.victoryPoints = victoryPoints;
         this.color = color;
         this.costs = costs;
         this.production = production;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public int getLevel() {

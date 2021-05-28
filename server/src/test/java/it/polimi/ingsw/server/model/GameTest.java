@@ -16,12 +16,12 @@ import java.util.Stack;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GameTest {
     DevelopmentGrid testGrid = new DevelopmentGrid(new DevelopmentCard[]{
-            new DevelopmentCard(1, 1, Color.GREEN, null, null)});
+            new DevelopmentCard(1, 0,1, Color.GREEN, null, null)});
 
-    LeaderCard cardPower1 = new LeaderCard(1, null, null);
-    LeaderCard cardPower2 = new LeaderCard(1, null, null);
-    LeaderCard cardPower3 = new LeaderCard(1, null, null);
-    LeaderCard cardPower4 = new LeaderCard(1, null, null);
+    LeaderCard cardPower1 = new LeaderCard(0,1, null, null);
+    LeaderCard cardPower2 = new LeaderCard(0,1, null, null);
+    LeaderCard cardPower3 = new LeaderCard(0,1, null, null);
+    LeaderCard cardPower4 = new LeaderCard(0,1, null, null);
     Stack<LeaderCard> leaderDeck = new Stack<LeaderCard>() {{
         addAll(Arrays.asList(cardPower1, cardPower2, cardPower3, cardPower4,
                 cardPower1, cardPower2, cardPower3, cardPower4,

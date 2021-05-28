@@ -21,7 +21,7 @@ class SoloActionsStackTest {
         put(Color.PURPLE, 3);
     }};
     DevelopmentGrid testGrid = new DevelopmentGrid(new DevelopmentCard[]{
-            new DevelopmentCard(1, 1, Color.GREEN, null, null)
+            new DevelopmentCard(1, 0,1, Color.GREEN, null, null)
     }) {
         @Override
         public void removeCard(Color color) {
@@ -36,17 +36,17 @@ class SoloActionsStackTest {
     @BeforeEach
     void setUp() {
         decks.add(new Stack<>());
-        decks.get(0).push(new DevelopmentCard(1,1, Color.GREEN,  null,null));
-        decks.get(0).push(new DevelopmentCard(1,1, Color.GREEN,  null,null));
+        decks.get(0).push(new DevelopmentCard(1,0,1, Color.GREEN,  null,null));
+        decks.get(0).push(new DevelopmentCard(1,0,1, Color.GREEN,  null,null));
         decks.add(new Stack<>());
-        decks.get(1).push(new DevelopmentCard(1,1, Color.BLUE,   null,null));
-        decks.get(1).push(new DevelopmentCard(1,1, Color.BLUE,   null,null));
+        decks.get(1).push(new DevelopmentCard(1,0,1, Color.BLUE,   null,null));
+        decks.get(1).push(new DevelopmentCard(1,0,1, Color.BLUE,   null,null));
         decks.add(new Stack<>());
-        decks.get(2).push(new DevelopmentCard(1,1, Color.YELLOW, null,null));
-        decks.get(2).push(new DevelopmentCard(1,1, Color.YELLOW, null,null));
+        decks.get(2).push(new DevelopmentCard(1,0,1, Color.YELLOW, null,null));
+        decks.get(2).push(new DevelopmentCard(1,0,1, Color.YELLOW, null,null));
         decks.add(new Stack<>());
-        decks.get(3).push(new DevelopmentCard(1,1, Color.PURPLE, null,null));
-        decks.get(3).push(new DevelopmentCard(1,1, Color.PURPLE, null,null));
+        decks.get(3).push(new DevelopmentCard(1,0,1, Color.PURPLE, null,null));
+        decks.get(3).push(new DevelopmentCard(1,0,1, Color.PURPLE, null,null));
         game = new SinglePlayerGame(player, 1,null, null, testGrid);
         ViewAdapterForTest.setUp();
         game.setViewAdapter(ViewAdapterForTest.testView);
