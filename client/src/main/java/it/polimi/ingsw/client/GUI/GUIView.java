@@ -35,6 +35,76 @@ public class GUIView extends View {
     }
 
     @Override
+    public void showHandler(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void setNick(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void setGame(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void choose(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void activateProduction(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void buyDevCard(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void useMarket(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void chooseWhite(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void useLeader(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void deployRes(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void discardLeader(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void takeRes(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void getRes(String[] commandSlice) {
+
+    }
+
+    @Override
+    public void printHead() {
+
+    }
+
+    @Override
     public void deleteToDo(String id) {
 
     }

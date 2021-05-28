@@ -244,7 +244,8 @@ public class CLIView extends View {
         }
     }
 
-    private void showHandler(String[] commandSlice){
+    @Override
+    public void showHandler(String[] commandSlice){
         String target = commandSlice[1].toLowerCase();
         String[] boardCmd = target.split("\\s*,\\s*");
         switch (boardCmd[0]) {
@@ -280,7 +281,8 @@ public class CLIView extends View {
      * this methods handles the calling for the player command setnick
      * @param commandSlice command by the player
      */
-    private void setNick(String[] commandSlice){
+    @Override
+    public void setNick(String[] commandSlice){
         if (commandSlice[1].trim().isEmpty()) {
             System.err.println("Wrong syntax: use the format \"SETNICK: <nickname>\".");
             return;
@@ -295,7 +297,8 @@ public class CLIView extends View {
      * this methods handles the calling for the player command setgame
      * @param commandSlice command by the player
      */
-    private void setGame(String[] commandSlice){
+    @Override
+    public void setGame(String[] commandSlice){
         try {
             getController().sendMessage(new SetGame(Integer.parseInt(commandSlice[1])));
         } catch (NumberFormatException e) {
@@ -307,7 +310,8 @@ public class CLIView extends View {
      * this methods handles the calling for the player command choose
      * @param commandSlice command by the player
      */
-    private void choose(String[] commandSlice){
+    @Override
+    public void choose(String[] commandSlice){
         if (commandSlice[1].isEmpty()) {
             System.err.println("You must insert a turn phase.");
             return;
@@ -318,9 +322,11 @@ public class CLIView extends View {
     /**
      * this methods control if the command is write in a good way than
      * handles the calling for the player command activeprod
+     *
      * @param commandSlice command by the player
      */
-    private void activateProduction(String[] commandSlice){
+    @Override
+    public void activateProduction(String[] commandSlice) {
         String[] arguments = commandSlice[1].split("\\s*,\\s*");
         String[] elements;
         ArrayList<Integer> cost = new ArrayList<>();
@@ -358,7 +364,7 @@ public class CLIView extends View {
      * handles the calling for the player command buydevcard
      * @param commandSlice command by the player
      */
-    private void buyDevCard(String[] commandSlice){
+    public void buyDevCard(String[] commandSlice){
         String[] arguments = commandSlice[1].split("\\s*,\\s*");
         int level, space;
         String color;
@@ -381,7 +387,8 @@ public class CLIView extends View {
      * this method handles the calling for the player command usemarket
      * @param commandSlice command by the player
      */
-    private void useMarket(String[] commandSlice){
+    @Override
+    public void useMarket(String[] commandSlice){
         String[] args = commandSlice[1].split("\\s*,\\s*");
         if (args[0].toLowerCase().matches("[rc]")) {
             try {
@@ -396,7 +403,8 @@ public class CLIView extends View {
     /**
      * Handles the {@code choosewhite} command.
      */
-    private void chooseWhite(String[] commandSlice) {
+    @Override
+    public void chooseWhite(String[] commandSlice) {
         try {
             getController().sendMessage(new ChooseWhiteMarble(Integer.parseInt(commandSlice[1].trim())));
         } catch (NumberFormatException e) {
@@ -408,7 +416,8 @@ public class CLIView extends View {
      * this methods handles the calling for the player command useleader
      * @param commandSlice command by the player
      */
-    private void useLeader(String[] commandSlice){
+    @Override
+    public void useLeader(String[] commandSlice){
         int pos;
         try {
             pos = Integer.parseInt(commandSlice[1]);
@@ -422,7 +431,8 @@ public class CLIView extends View {
      * this methods handles the calling for the player command deployRes
      * @param commandSlice command by the player
      */
-    private void deployRes(String[] commandSlice){
+    @Override
+    public void deployRes(String[] commandSlice){
         String[] args = commandSlice[1].split("\\s*,\\s*");
         if (args.length != 2) {
             System.err.println("Wrong syntax: use the format \"DEPLOYRES: <resource name, depot position number>\".");
@@ -442,7 +452,8 @@ public class CLIView extends View {
      * this methods handles the calling for the player command discardleader
      * @param commandSlice command by the player
      */
-    private void discardLeader(String[] commandSlice){
+    @Override
+    public void discardLeader(String[] commandSlice){
         int pos;
         try {
             pos = Integer.parseInt(commandSlice[1]);
@@ -456,7 +467,8 @@ public class CLIView extends View {
      * this methods handles the calling for the player command takeRes
      * @param commandSlice command by the player
      */
-    private void takeRes(String[] commandSlice){
+    @Override
+    public void takeRes(String[] commandSlice){
         int depot;
         try{
             depot=Integer.parseInt(commandSlice[1]);
@@ -470,7 +482,8 @@ public class CLIView extends View {
     /**
      * Handles the {@code getres} command.
      */
-    private void getRes(String[] commandSlice) {
+    @Override
+    public void getRes(String[] commandSlice) {
         if (commandSlice[1].trim().isEmpty()) {
             System.err.println("Missing parameter: you must insert a resource name.");
             return;
@@ -519,7 +532,8 @@ public class CLIView extends View {
      * <p>
      * -actions that the player must do at the time this method is called.
      */
-    private void printHead() {
+    @Override
+    public void printHead() {
         if (getModel() == null) return;
         if (getModel().getCurrentPlayerInTheGame() != null)
             System.out.println(StringUtility.center(

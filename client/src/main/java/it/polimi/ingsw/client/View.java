@@ -68,6 +68,34 @@ public abstract class View {
      */
     public abstract void setToDo(String id, String toDo);
 
+    public abstract void showHandler(String[] commandSlice);
+
+    public abstract void setNick(String[] commandSlice);
+
+    public abstract void setGame(String[] commandSlice);
+
+    public abstract void choose(String[] commandSlice);
+
+    public abstract void activateProduction(String[] commandSlice);
+
+    public abstract void buyDevCard(String[] commandSlice);
+
+    public abstract void useMarket(String[] commandSlice);
+
+    public abstract void chooseWhite(String[] commandSlice);
+
+    public abstract void useLeader(String[] commandSlice);
+
+    public abstract void deployRes(String[] commandSlice);
+
+    public abstract void discardLeader(String[] commandSlice);
+
+    public abstract void takeRes(String[] commandSlice);
+
+    public abstract void getRes(String[] commandSlice);
+
+    public abstract void printHead();
+
     public abstract void deleteToDo(String id);
 
     public abstract void displayEndingScore(String[] categories, int[] scores, int ranking);
