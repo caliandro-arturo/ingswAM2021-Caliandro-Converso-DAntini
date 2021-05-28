@@ -14,11 +14,20 @@ public class App extends Application {
     private static Stage stage;
     private static GUI gui;
 
+
+    @FXML
+    public static Label out;
+
     @FXML
     public static Label error;
 
+
     public void setGui(GUI gui) {
         App.gui = gui;
+    }
+
+    public static void setOut(Label out) {
+        App.out = out;
     }
 
     public static void setError(Label error) {
@@ -32,7 +41,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         App.stage = stage;
-        setScene("board", "Masters of Renaissance");
+        stage.setOnCloseRequest(e -> System.exit(0));
+        setScene("launcher", "Masters of Renaissance");
     }
 
     public static void setScene(String fxmlFile, String sceneTitle) {

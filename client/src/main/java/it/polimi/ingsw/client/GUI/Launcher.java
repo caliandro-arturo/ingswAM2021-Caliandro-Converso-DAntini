@@ -14,11 +14,12 @@ public class Launcher extends SceneHandler {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        App.setError(getOut());
     }
 
     public void takeText(ActionEvent actionEvent) {
         if (text.getText().equals("")) {
-            getError().setText("You must insert an ip address first.");
+            getOut().setText("You must insert an ip address first.");
             return;
         }
         configureConnection(text.getText());

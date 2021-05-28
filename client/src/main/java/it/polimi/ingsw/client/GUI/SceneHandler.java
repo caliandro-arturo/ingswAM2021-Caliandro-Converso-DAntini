@@ -11,19 +11,19 @@ public abstract class SceneHandler implements Initializable {
     private GUI gui;
 
     @FXML
-    private Label error;
+    private Label out;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        App.setError(error);
+        App.setOut(out);
     }
 
     public GUI getGui() {
         return gui;
     }
 
-    public Label getError() {
-        return error;
+    public Label getOut() {
+        return out;
     }
 
     public void setGui(GUI gui) {

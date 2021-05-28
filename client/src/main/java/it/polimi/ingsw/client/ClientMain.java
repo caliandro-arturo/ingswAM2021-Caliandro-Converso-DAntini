@@ -20,6 +20,7 @@ public class ClientMain {
             try {
                 choice = in.readLine().toUpperCase().trim();
             } catch (IOException ignore) {
+                return;
             }
         }
         do {

@@ -69,7 +69,7 @@
                         <ImageView fx:id="res21" fitHeight="41.0" fitWidth="47.0" layoutX="78.0" layoutY="350.0" onDragDropped="#acceptMove" onDragOver="#acceptMove" pickOnBounds="true" preserveRatio="true" />
                         <Button layoutX="948.0" layoutY="453.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="141.0" text="Button" />
                         <Label layoutX="836.0" layoutY="507.0" text="Label" />
-                        <Label fx:id="infoBox" layoutX="76.0" layoutY="669.0" prefHeight="39.0" prefWidth="861.0" />
+                        <Label fx:id="out" layoutX="76.0" layoutY="669.0" prefHeight="39.0" prefWidth="861.0" />
                         <Label layoutX="14.0" layoutY="675.0" text="Info:">
                            <font>
                               <Font size="19.0" />

@@ -33,7 +33,7 @@
             <Insets top="170.0" />
          </StackPane.margin>
       </Button>
-      <Label fx:id="error" alignment="CENTER" layoutX="231.0" layoutY="197.0" prefHeight="27.0" prefWidth="443.0" textFill="#d1ddca" StackPane.alignment="CENTER">
+      <Label fx:id="out" alignment="CENTER" layoutX="231.0" layoutY="197.0" prefHeight="27.0" prefWidth="443.0" textFill="#d1ddca" StackPane.alignment="CENTER">
          <font>
             <Font name="Harrington" size="19.0" />
          </font>

@@ -34,7 +34,7 @@
                 prefHeight="28.0" prefWidth="72.0" text="Default"/>
         <Button fx:id="connect" layoutX="368.0" layoutY="262.0" mnemonicParsing="false" onAction="#takeText"
                 prefHeight="28.0" prefWidth="72.0" text="Connect"/>
-        <Label fx:id="error" layoutX="84.0" layoutY="304.0" prefHeight="28.0" prefWidth="448.0" textFill="WHITE">
+        <Label fx:id="out" layoutX="84.0" layoutY="304.0" prefHeight="28.0" prefWidth="448.0" textFill="WHITE">
             <font>
                 <Font name="Harrington" size="19.0"/>
             </font>
