@@ -32,7 +32,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         App.stage = stage;
-        setScene("launcher", "Masters of Renaissance");
+        setScene("board", "Masters of Renaissance");
     }
 
     public static void setScene(String fxmlFile, String sceneTitle) {
