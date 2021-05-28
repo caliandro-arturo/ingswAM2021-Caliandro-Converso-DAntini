@@ -17,7 +17,7 @@ public abstract class UI {
     private View view;
     private ClientSocketManager socketManager;
     private Thread messageReader;
-    private boolean isConnected;
+    private boolean isConnected = false;
 
     public View getView() {
         return view;
@@ -60,15 +60,17 @@ public abstract class UI {
                 return;
             }
         }
-        System.out.println("Connecting to " + hostName + " at port " + portNumber + "...");
+        show("Connecting to " + hostName + " at port " + portNumber + "...");
         try {
             connectToServer(hostName, portNumber);
-            isConnected = true;
         } catch (UnknownHostException e) {
             showError("Don't know about host " + hostName);
+            return;
         } catch (IOException e) {
             showError("Couldn't get I/O for the connection to " + hostName);
+            return;
         }
+        isConnected = true;
     }
 
     public void connectToServer(String hostName, int port) throws IOException {

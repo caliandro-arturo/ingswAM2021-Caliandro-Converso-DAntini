@@ -8,8 +8,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class ClientMain {
+    private UI ui;
 
-    public static void main(String[] args) {
+    public void run(String[] args) {
         boolean isRunning = false;
         String choice = null;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -25,12 +26,12 @@ public class ClientMain {
             try {
                 switch (choice) {
                     case "CLI": {
-                        CLI.main(null);
+                        ui = new CLI();
                         isRunning = true;
                         break;
                     }
                     case "GUI": {
-                        GUI.main(null);
+                        ui = new GUI();
                         isRunning = true;
                         break;
                     }
@@ -40,10 +41,19 @@ public class ClientMain {
                     }
                 }
             } catch (IOException e) {
-                System.err.println("Closing server...");
+                System.err.println("Closing client..");
                 System.exit(1);
             }
         } while (!isRunning);
+        try {
+            ui.run();
+        } catch (Exception ignore) {
+        }
+        System.err.println("Closing client..");
         System.exit(0);
+    }
+
+    public static void main(String[] args) {
+        new ClientMain().run(args);
     }
 }

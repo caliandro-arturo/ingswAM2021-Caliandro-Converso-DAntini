@@ -36,9 +36,8 @@ public class CLI extends UI {
         do {
             try {
                 getView().process(stdIn.readLine());
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(1);
+            } catch (IOException ignore) {
+                break;
             }
         } while (true);
     }
