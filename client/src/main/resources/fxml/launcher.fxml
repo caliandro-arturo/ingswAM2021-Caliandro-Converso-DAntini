@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="369.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.GUIView">
-   <children>
-      <ImageView fitHeight="427.0" fitWidth="600.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@/png/begin.png" />
-         </image>
-      </ImageView>
-      <Label layoutX="329.0" layoutY="111.0" prefHeight="27.0" prefWidth="103.0" text="Welcome to" textFill="#d1ddca">
-         <font>
-            <Font name="Harrington" size="19.0" />
-         </font></Label>
-      <Label layoutX="46.0" layoutY="215.0" prefHeight="28.0" prefWidth="508.0" text="Select an IP Address or tap Default to start a new game" textFill="#c1c6c2">
-         <font>
-            <Font name="Harrington" size="21.0" />
-         </font></Label>
-      <TextField fx:id="text" layoutX="107.0" layoutY="262.0" prefHeight="28.0" prefWidth="201.0" text="xxx.xxx.x.x:x.x" />
-
-      <Button fx:id="defaultt" layoutX="411.0" layoutY="263.0" mnemonicParsing="false" onAction="#takeDefault" prefHeight="28.0" prefWidth="72.0" text="Default" />
-      <Button fx:id="submit" layoutX="329.0" layoutY="262.0" mnemonicParsing="false" onAction="#takeText" prefHeight="28.0" prefWidth="60.0" text="Submit" />
-      <Label layoutX="432.0" layoutY="111.0" prefHeight="27.0" prefWidth="97.0" text="our Game " textFill="#d1ddca">
-         <font>
-            <Font name="Harrington" size="19.0" />
-         </font>
-      </Label>
-   </children>
+<AnchorPane fx:controller="it.polimi.ingsw.client.GUI.Launcher" prefHeight="369.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ImageView fitHeight="427.0" fitWidth="600.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../png/begin.png"/>
+            </image>
+        </ImageView>
+        <Label layoutX="349.0" layoutY="114.0" prefHeight="27.0" prefWidth="182.0" text="Welcome to our game"
+               textFill="#d1ddca">
+            <font>
+                <Font name="Harrington" size="19.0"/>
+            </font>
+        </Label>
+        <Label layoutX="84.0" layoutY="213.0" prefHeight="28.0" prefWidth="448.0"
+               text="Select an IP Address or press Default to connect" textFill="#c1c6c2">
+            <font>
+                <Font name="Harrington" size="21.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="text" layoutX="84.0" layoutY="262.0" prefHeight="28.0" prefWidth="260.0"
+                   promptText="127.0.0.1:1234"/>
+        <Button fx:id="default" layoutX="460.0" layoutY="262.0" mnemonicParsing="false" onAction="#takeDefault"
+                prefHeight="28.0" prefWidth="72.0" text="Default"/>
+        <Button fx:id="connect" layoutX="368.0" layoutY="262.0" mnemonicParsing="false" onAction="#takeText"
+                prefHeight="28.0" prefWidth="72.0" text="Connect"/>
+        <Label fx:id="error" layoutX="84.0" layoutY="304.0" prefHeight="28.0" prefWidth="448.0" textFill="WHITE">
+            <font>
+                <Font name="Harrington" size="19.0"/>
+            </font>
+        </Label>
+    </children>
 </AnchorPane>
