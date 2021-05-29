@@ -277,6 +277,11 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     }
 
     @Override
+    public void visit(Back back) {
+
+    }
+
+    @Override
     public void visit(StartProduction msg) {
         ArrayList<Resource> resources = new ArrayList<>();
         for (String s : msg.getCostResource()) {

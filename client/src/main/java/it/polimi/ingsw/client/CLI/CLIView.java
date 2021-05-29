@@ -75,6 +75,10 @@ public class CLIView extends View {
                 setGame(commandSlice);
                 break;
             }
+            case "back": {
+                back();
+                break;
+            }
             case "choose": {
                 choose(commandSlice);
                 break;
@@ -275,6 +279,14 @@ public class CLIView extends View {
             default:
                 showError("Cannot show \"" + commandSlice[1] + "\".");
         }
+    }
+
+    /**
+     * this method handle the calling for back message
+     */
+    @Override
+    public void back() {
+        getController().sendMessage(new Back());
     }
 
     /**

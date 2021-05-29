@@ -14,4 +14,5 @@ public interface ToServerMessageHandler {
     void visit(TakeRes takeRes);
     void visit(GetResource getResource);
     void visit(ChooseWhiteMarble chooseWhiteMarble);
+    void visit(Back back);
 }

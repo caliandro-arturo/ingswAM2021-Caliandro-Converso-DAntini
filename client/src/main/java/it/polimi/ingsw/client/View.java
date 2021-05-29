@@ -98,5 +98,7 @@ public abstract class View {
 
     public abstract void deleteToDo(String id);
 
+    public abstract void back();
+
     public abstract void displayEndingScore(String[] categories, int[] scores, int ranking);
 }

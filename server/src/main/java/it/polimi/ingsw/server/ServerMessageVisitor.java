@@ -63,6 +63,17 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             sendMessage(player, new AskWhiteMarble(player.getWhiteMarbleChoices()));
     }
 
+    @Override
+    public void visit(Back back){
+        try {
+            controllerAdapter.back(back.getPlayer());
+        } catch (GameException.IllegalMove e){
+            denyMove(back, e.getMessage());
+            return;
+        }
+
+    }
+
     /**
      * Calls a startProduction method based on the production indicated in the message.
      */

@@ -256,6 +256,15 @@ public class ControllerAdapter {
     }
 
     /**
+     *
+     * @throws GameException.IllegalMove
+     */
+    public void back(String username) throws GameException.IllegalMove{
+        checkIfPlayerCanDoThingsNow(game.getPlayer(username));
+        game.back(selectablePhases);
+    }
+
+    /**
      * controls for buycard
      * @param player current player
      * @param level level of the card

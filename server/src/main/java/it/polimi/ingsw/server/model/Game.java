@@ -161,6 +161,25 @@ public abstract class Game {
         return turnPhases.get(name);
     }
 
+    /**
+     * command used by the player
+     *
+     * @param validPhases the phases which the player can go back
+     * @throws GameException.IllegalMove if the player can't do this action
+     */
+    public void back(ArrayList<String> validPhases) throws GameException.IllegalMove {
+        ArrayList<TurnPhase> validTurn = new ArrayList<>();
+        for (String turn: validPhases){
+            validTurn.add(turnPhases.get(turn));
+        }
+        if (validTurn.contains(currentTurnPhase) && !currentTurnPhase.isFinished()){
+            setCurrentTurnPhase(turnPhases.get("ChooseAction"));
+            viewAdapter.announceTurnPhase(currentPlayer,getCurrentTurnPhase().getName(),
+                    getCurrentTurnPhase().getPhaseInfo());
+        } else
+            throw new GameException.IllegalMove();
+    }
+
 
     /**
      * Checks if a player is ready.

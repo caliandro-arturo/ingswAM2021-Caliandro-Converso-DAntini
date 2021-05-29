@@ -110,6 +110,11 @@ public class GUIView extends View {
     }
 
     @Override
+    public void back() {
+
+    }
+
+    @Override
     public void displayEndingScore(String[] categories, int[] scores, int ranking) {
 
     }
