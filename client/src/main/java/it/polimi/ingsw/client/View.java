@@ -100,5 +100,7 @@ public abstract class View {
 
     public abstract void back();
 
+    public abstract void discardRes(String[] commandSlice);
+
     public abstract void displayEndingScore(String[] categories, int[] scores, int ranking);
 }

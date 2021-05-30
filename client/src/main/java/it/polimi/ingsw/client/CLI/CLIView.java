@@ -115,6 +115,10 @@ public class CLIView extends View {
                 takeRes(commandSlice);
                 break;
             }
+            case "discardres": {
+                discardRes(commandSlice);
+                break;
+            }
             case "getres": {
                 getRes(commandSlice);
                 break;
@@ -282,11 +286,25 @@ public class CLIView extends View {
     }
 
     /**
-     * this method handle the calling for back message
+     * this method handle the calling for the player command back
      */
     @Override
     public void back() {
         getController().sendMessage(new Back());
+    }
+
+    /**
+     * this method handle the calling for the player command discardres
+     */
+    @Override
+    public void discardRes(String[] commandSlice) {
+        if (Utility.mapResource.get(commandSlice[1]) != null){
+            if (Utility.isStorable(Utility.mapResource.get(commandSlice[1]))){
+                getController().sendMessage(new DiscardRes(Utility.mapResource.get(commandSlice[1])));
+            } else
+                System.err.println("You can't discard faith");
+        } else
+            System.err.println("Invalid resource");
     }
 
     /**

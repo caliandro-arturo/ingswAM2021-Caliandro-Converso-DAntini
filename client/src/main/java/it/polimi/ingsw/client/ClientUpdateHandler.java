@@ -313,6 +313,11 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     }
 
     @Override
+    public void visit(DiscardRes discardRes) {
+        model.getBoard(discardRes.getPlayer()).removeResourceFromHand(discardRes.getResource());
+    }
+
+    @Override
     public void visit(BuyCard msg) {
         DevelopmentCard card = model.getDevelopmentGrid().
                 getCard(msg.getLevel(), Utility.mapColor.get(msg.getColor()));

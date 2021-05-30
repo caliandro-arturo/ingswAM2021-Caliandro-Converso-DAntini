@@ -174,7 +174,9 @@ public class ControllerAdapter {
      * @param resource the resource to discard
      */
     public void discardResource(Player player, Resource resource) throws GameException.IllegalMove {
-        checkIfMoveIsValid(player, "UseMarket");
+        TurnPhase actual = game.getTurnPhase("UseMarket");
+        if (!actual.equals(game.getCurrentTurnPhase()))
+            throw new GameException.IllegalMove();
         player.getBoard().discardResource(resource);
     }
 
@@ -257,7 +259,7 @@ public class ControllerAdapter {
 
     /**
      *
-     * @throws GameException.IllegalMove
+     * @throws GameException.IllegalMove when it's not Market,Production or buyCard phase
      */
     public void back(String username) throws GameException.IllegalMove{
         checkIfPlayerCanDoThingsNow(game.getPlayer(username));

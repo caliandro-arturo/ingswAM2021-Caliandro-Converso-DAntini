@@ -115,6 +115,11 @@ public class GUIView extends View {
     }
 
     @Override
+    public void discardRes(String[] commandSlice) {
+
+    }
+
+    @Override
     public void displayEndingScore(String[] categories, int[] scores, int ranking) {
 
     }

@@ -69,9 +69,19 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             controllerAdapter.back(back.getPlayer());
         } catch (GameException.IllegalMove e){
             denyMove(back, e.getMessage());
-            return;
         }
 
+    }
+
+    @Override
+    public void visit(DiscardRes discardRes) {
+        try {
+            controllerAdapter.discardResource(getPlayer(discardRes.getPlayer()),discardRes.getResource());
+        }  catch (GameException.IllegalMove e) {
+            denyMove(discardRes,e.getMessage());
+            return;
+        }
+        confirmMove(discardRes);
     }
 
     /**

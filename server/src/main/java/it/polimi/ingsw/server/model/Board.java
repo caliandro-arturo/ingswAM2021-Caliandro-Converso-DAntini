@@ -125,8 +125,7 @@ public class Board {
             resHand.remove(resource);
             for (Player player : game.getPlayers()) {
                 if (!player.equals(game.getCurrentPlayer()))
-                    player.getBoard().getFaithTrack()
-                            .setPosition(player.getBoard().getFaithTrack().getPosition()+1);
+                    player.getBoard().getFaithTrack().increasePosition();
             }
             for (Player player : game.getPlayers()) {
                 if (!player.equals(game.getCurrentPlayer()))
