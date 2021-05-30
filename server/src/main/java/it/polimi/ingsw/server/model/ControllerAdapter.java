@@ -148,7 +148,7 @@ public class ControllerAdapter {
      */
     public void takeOutResource(Player player, int pos) throws GameException.IllegalMove {
         checkIfPlayerCanDoThingsNow(player);
-        if (!game.getPlayersToWait().contains(player))
+        if (!game.getPlayersToWait().isEmpty() && !game.getPlayersToWait().contains(player))
             throw new GameException.IllegalMove();
         player.getBoard().takeOutResource(pos);
     }
