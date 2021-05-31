@@ -56,6 +56,10 @@ public abstract class Game {
         return new ArrayList<>(players.values());
     }
 
+    public HashMap<String, Player> getPlayersMap() {
+        return players;
+    }
+
     public Player getPlayer(int num) {
         return new ArrayList<>(players.values()).get(num);
     }

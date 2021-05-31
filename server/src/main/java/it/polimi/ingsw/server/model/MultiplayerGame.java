@@ -2,10 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitBoards;
 
-import java.util.Stack;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Arrays;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MultiplayerGame extends Game {
@@ -21,21 +18,30 @@ public class MultiplayerGame extends Game {
     @Override
     public void setUpPlayers() {
         getViewAdapter().sendTable();
+        //shuffling players
+        ArrayList<Map.Entry<String, Player>> playersEntryList = new ArrayList<>(getPlayersMap().entrySet());
+        Collections.shuffle(playersEntryList);
+        getPlayersMap().clear();
+        playersEntryList.forEach(p -> getPlayersMap().put(p.getKey(), p.getValue()));
+        //notifying players about their position
         ArrayList<Player> players = getPlayers();
-        Collections.shuffle(players);
         ArrayList<String> usernames = new ArrayList<>();
         players.forEach(p -> {
             usernames.add(p.getUsername());
             getViewAdapter().notifyPlayerTurnNumber(p, players.indexOf(p) + 1);
         });
+        //sending player names to all
         getViewAdapter().sendMessage(new InitBoards(usernames));
         setPlayersToWait(new ArrayList<>(players));
         for(Player p : players) {
+            //assigning leader cards
             for (int i = 0; i < 4; i++)
                 p.getLeaderCards().add(getLeaderDeck().pop());
             getViewAdapter().sendLeaderHand(p);
+            //assigning initial faith points
             for (int i = 0; i < initialFaithPoints[players.indexOf(p)]; i++)
                 p.getBoard().getFaithTrack().increasePosition();
+            //assigning initial resource values
             p.setInitialResources(initialResources[players.indexOf(p)]);
             getViewAdapter().notifyInitialResourcesAmount(p, initialResources[players.indexOf(p)]);
         }
