@@ -21,8 +21,7 @@ public class App extends Application {
     @FXML
     public static Label error;
 
-
-    public void setGui(GUI gui) {
+    public static void setGui(GUI gui) {
         App.gui = gui;
     }
 
@@ -34,7 +33,8 @@ public class App extends Application {
         App.error = error;
     }
 
-    public void run() {
+    public static void run() {
+        gui.setView(new GUIView());
         launch("");
     }
 

@@ -14,11 +14,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!--<maven.compiler.release>11</maven.compiler.release>-->
-        <maven.compiler.source>9</maven.compiler.source>
-        <maven.compiler.target>9</maven.compiler.target>
         <javafx.version>16</javafx.version>
         <javafx.maven.plugin.version>0.0.6</javafx.maven.plugin.version>
+
     </properties>
 
 
@@ -26,7 +24,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>5.8.0-M1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -38,19 +36,22 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>16</version>
+            <version>${javafx.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
-            <version>16</version>
+            <version>${javafx.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>16</version>
+            <version>${javafx.version}</version>
+            <scope>compile</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>16</version>
@@ -67,7 +68,7 @@
             <artifactId>javafx-graphics</artifactId>
             <version>16</version>
             <classifier>mac</classifier>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>
@@ -96,18 +97,39 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <argLine>--add-opens it.polimi.ingsw.client/it.polimi.ingsw.client.CLI=ALL-UNNAMED
+                        --add-opens it.polimi.ingsw.client/it.polimi.ingsw.client.model=ALL-UNNAMED
+                    </argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
+                <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>module-info.class</exclude>
+                                <exclude>META-INF/**</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                    <artifactSet>
+                        <excludes>
+                            <exclude>org.openjfx:**</exclude>
+                        </excludes>
+                    </artifactSet>
+                </configuration>
                 <executions>
                     <execution>
                         <id>client</id>

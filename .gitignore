@@ -1,7 +1,8 @@
 .idea/
 target/
 ingswAM2021-Caliandro-Converso-DAntini.iml
-/out/
+/out.client.jar
+/out.server.jar
 /AM36.iml
 /client/client.iml
 /common/common.iml

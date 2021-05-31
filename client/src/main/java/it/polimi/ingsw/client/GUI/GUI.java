@@ -4,15 +4,12 @@ import it.polimi.ingsw.client.UI;
 
 public class GUI extends UI {
 
-    private final App app = new App();
-
     public void run() {
-        setView(new GUIView());
-        app.setGui(this);
-        app.run();
+        App.setGui(this);
+        App.run();
     }
 
     public static void main(String[] args) {
-        new GUI().run();
+        App.run();
     }
 }
