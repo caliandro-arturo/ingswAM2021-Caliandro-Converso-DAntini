@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class App extends Application {
-    private static Stage stage;
+    public static Stage stage;
     private static GUI gui;
 
 

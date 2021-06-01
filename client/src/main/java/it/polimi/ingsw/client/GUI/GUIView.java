@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
 import javafx.application.Platform;
 
 public class GUIView extends View {
@@ -21,7 +22,7 @@ public class GUIView extends View {
 
     @Override
     public void showUpdate(String update) {
-        //Platform.runLater(() -> App.out.setText(update));
+        Platform.runLater(() -> App.out.setText(update));
     }
 
     @Override
@@ -41,7 +42,7 @@ public class GUIView extends View {
 
     @Override
     public void setNick(String[] commandSlice) {
-
+        getController().sendMessage(new SetNickname(commandSlice[0]));
     }
 
     @Override
