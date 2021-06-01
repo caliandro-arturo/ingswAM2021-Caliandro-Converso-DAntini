@@ -19,7 +19,7 @@ import java.util.Optional;
  * It also processes user commands with {@link CLIView#process(String input)}.
  */
 public class CLIView extends View {
-    private String currentView;
+    private String currentView = "";
     /**
      * Actions that the player must do in a specific moment of the game.
      */
@@ -545,12 +545,13 @@ public class CLIView extends View {
      */
     @Override
     public void refresh(String... viewsToRefresh) {
-        for (String s : viewsToRefresh)
+        for (String s : viewsToRefresh) {
             if (s.equals("") || currentView.equals(s)) {
                 clear();
                 break;
             }
-        if (currentView != null) show(currentView);
+        }
+        if (!currentView.equals("")) show(currentView);
     }
 
     /**
