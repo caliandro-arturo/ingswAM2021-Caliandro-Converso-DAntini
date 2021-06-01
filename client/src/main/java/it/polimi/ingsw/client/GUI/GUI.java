@@ -10,6 +10,6 @@ public class GUI extends UI {
     }
 
     public static void main(String[] args) {
-        App.run();
+        new GUI().run();
     }
 }

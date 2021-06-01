@@ -35,7 +35,7 @@ public class App extends Application {
 
     public static void run() {
         gui.setView(new GUIView());
-        launch("");
+        launch();
     }
 
     @Override
