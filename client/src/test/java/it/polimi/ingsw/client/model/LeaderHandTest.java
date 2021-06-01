@@ -30,8 +30,8 @@ class LeaderHandTest {
         card3 = new LeaderCard(0,3, type1, power1);
         card4 = new LeaderCard(0,4, type1, power1);
         leaderCards.add(card1);
-        //leaderCards.add(card2);
-        //leaderCards.add(card3);
+        leaderCards.add(card2);
+        leaderCards.add(card3);
         leaderCards.add(card4);
         leaderHand = new LeaderHand(leaderCards);
 

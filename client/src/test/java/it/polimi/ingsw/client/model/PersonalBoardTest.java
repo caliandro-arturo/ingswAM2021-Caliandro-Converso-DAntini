@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/*class PersonalBoardTest {
+class PersonalBoardTest {
     private final WarehouseStore warehouseStore = new WarehouseStore();
     UtilityProductionAndCost utilityProductionAndCost =
             new UtilityProductionAndCost(1, Resource.COIN);
     UtilityProductionAndCost[] costs = new UtilityProductionAndCost[]{utilityProductionAndCost};
     ProductionPower productionPower = new ProductionPower(costs, costs);
-    DevelopmentCard developmentCard = new DevelopmentCard(2, 3, Color.GREEN,costs,productionPower );
+    DevelopmentCard developmentCard = new DevelopmentCard(1 ,2, 3, Color.GREEN,costs,productionPower );
     DevelopmentPlace developmentPlace = new DevelopmentPlace();
 
 
@@ -38,8 +38,8 @@ import java.util.Arrays;
         quantity.add(2);
         Requirements type1 = new ColorCost(colors,quantity);
         LeaderPower power1 = production;
-        card1 = new LeaderCard(1, type1,power1);
-        card2 = new LeaderCard(1, type1,power1);
+        card1 = new LeaderCard(1, 1, type1,power1);
+        card2 = new LeaderCard(1, 1, type1,power1);
         developmentPlace.setDevStack(developmentCard,1);
         developmentPlace.setDevStack(developmentCard,1);
         developmentPlace.setDevStack(developmentCard,1);
@@ -69,4 +69,4 @@ import java.util.Arrays;
         personalBoard.getLeaderCards().clear();
         System.out.println(personalBoard);
     }
-}*/
+}

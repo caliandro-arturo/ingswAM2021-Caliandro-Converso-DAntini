@@ -1,26 +1,32 @@
 package it.polimi.ingsw.client.model;
 
-/*class DevelopmentPlaceTest {
+import it.polimi.ingsw.commonFiles.model.Production;
+import it.polimi.ingsw.commonFiles.model.ProductionPower;
+import it.polimi.ingsw.commonFiles.model.Resource;
+import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
+import org.junit.jupiter.api.Test;
+
+class DevelopmentPlaceTest {
     UtilityProductionAndCost utilityProductionAndCost =
-            new UtilityProductionAndCost(it.polimi.ingsw.client.model.Resource.SHIELD, 1);
+            new UtilityProductionAndCost(1, Resource.SHIELD);
     UtilityProductionAndCost[] costs = new UtilityProductionAndCost[]{utilityProductionAndCost};
-    DevelopmentCard developmentCard = new DevelopmentCard(2, Color.GREEN, 3, costs,costs, costs);
+    DevelopmentCard developmentCard = new DevelopmentCard(2, 1, 1, Color.GREEN, costs, new ProductionPower(costs,costs));
     DevelopmentPlace developmentPlace = new DevelopmentPlace();
 
     @Test
     public void printTest(){
 
-        //developmentPlace.setDevStack(developmentCard,1);
-        //developmentPlace.setDevStack(developmentCard,1);
+        developmentPlace.setDevStack(developmentCard,1);
+        developmentPlace.setDevStack(developmentCard,1);
         developmentPlace.setDevStack(developmentCard,1);
         developmentPlace.setDevStack(developmentCard,2);
-        //developmentPlace.setDevStack(developmentCard,2);
+        developmentPlace.setDevStack(developmentCard,2);
         developmentPlace.setDevStack(developmentCard,2);
         developmentPlace.setDevStack(developmentCard,3);
-        //developmentPlace.setDevStack(developmentCard,3);
+        developmentPlace.setDevStack(developmentCard,3);
         developmentPlace.setDevStack(developmentCard,3);
 
 
         System.out.println(developmentPlace);
     }
-}*/
+}

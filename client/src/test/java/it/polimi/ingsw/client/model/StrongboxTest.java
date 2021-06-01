@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.model;
 
-/*class StrongboxTest {
+import org.junit.jupiter.api.Test;
+
+class StrongboxTest {
     private Strongbox strongbox = new Strongbox();
     @Test
     public void printTest(){
@@ -12,4 +14,4 @@ package it.polimi.ingsw.client.model;
 
     }
 
-}*/
+}
