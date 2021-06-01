@@ -46,4 +46,10 @@ public class Strongbox {
         return boxArt;
     }
 
+    //for testing purpose
+
+
+    public void setResources(int quantity, int depot) {
+        this.resources[depot] = quantity;
+    }
 }

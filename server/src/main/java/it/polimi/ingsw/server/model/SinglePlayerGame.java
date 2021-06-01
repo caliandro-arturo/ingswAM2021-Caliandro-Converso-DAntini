@@ -21,8 +21,7 @@ public class SinglePlayerGame extends Game {
         //TODO
         FaithTrack lorenzoTrack = new FaithTrack(lorenzo) {
             @Override
-            public boolean isInVatican(int papalSpace) {
-                return false;
+            public void isInVatican(int papalSpace) {
             }
 
             @Override

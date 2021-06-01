@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.VaticanReport;
+
 /**
  * this class represents the faith path,
  * each faith path is connected with a Composition link to the Board
@@ -64,28 +66,38 @@ public class FaithTrack {
      * this method check if a player is in a papal space and adds victory points to it
      * @param papalSpace identify the Pope space we are checking for
      */
-    public boolean isInVatican(int papalSpace){
+    public void isInVatican(int papalSpace){
+        VaticanReport vaticanReport = new VaticanReport();
+        vaticanReport.setPlayer(player.getUsername());
         switch(papalSpace){
-            case 8:
-                if(position>4 && position<9) {
+            case 8: {
+                vaticanReport.setNum(1);
+                if (position > 4 && position < 9) {
                     scoreCard += 2;
-                    return true;
-                }else
-                    return false;
-            case 16:
-                if(position>11 && position<17) {
+                    vaticanReport.setPassed(true);
+                } else
+                    vaticanReport.setPassed(false);
+                break;
+            }
+            case 16: {
+                vaticanReport.setNum(2);
+                if (position > 11 && position < 17) {
                     scoreCard += 3;
-                    return true;
-                }else
-                    return false;
-            case 24:
-                if(position>18 && position<25) {
+                    vaticanReport.setPassed(true);
+                } else
+                    vaticanReport.setPassed(false);
+                break;
+            }
+            case 24: {
+                vaticanReport.setNum(3);
+                if (position > 18 && position < 25) {
                     scoreCard += 4;
-                    return true;
-                }
-
+                    vaticanReport.setPassed(true);
+                } else
+                    vaticanReport.setPassed(false);
+                break;
+            }
         }
-        return false;
-
+        game.getViewAdapter().sendMessage(vaticanReport);
     }
 }

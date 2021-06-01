@@ -244,6 +244,18 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             setToDo("wait", "Wait your turn...");
     }
 
+    @Override
+    public void visit(VaticanReport msg) {
+        if (msg.getPlayer().equals(model.getPlayerUsername())) {
+            model.getBoard().getFaithTrack().setVaticanMap(msg.getNum(), msg.isPassed());
+            if (msg.isPassed())
+                showUpdate("You passed the vatican report number " + msg.getNum());
+            else
+                showUpdate("You didn't pass the vatican report number " + msg.getNum());
+        } else
+            model.getBoard(msg.getPlayer()).getFaithTrack().setVaticanMap(msg.getNum(), msg.isPassed());
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     /*messages from client*/
 
