@@ -12,17 +12,15 @@ public class GUIView extends View {
 
     @Override
     public void show(String element) {
+        switch (element) {
+            case "hand": {}
+        }
         //Platform.runLater(() -> App.out.setText(element));
     }
 
     @Override
     public void showError(String error) {
         Platform.runLater(() -> App.error.setText(error));
-    }
-
-    @Override
-    public void showUpdate(String update) {
-        Platform.runLater(() -> App.out.setText(update));
     }
 
     @Override
@@ -127,6 +125,81 @@ public class GUIView extends View {
 
     @Override
     public void showTablePosition(int position) {
+
+    }
+
+    @Override
+    public void showNicknameSet() {
+        Platform.runLater(() -> App.out.setText("Your nickname has been set."));
+    }
+
+    @Override
+    public void showResume() {
+
+    }
+
+    @Override
+    public void showCreateGame() {
+        Launcher launcher = (Launcher) App.controller;
+        launcher.setCurrentPane(launcher.createGamePane);
+    }
+
+    @Override
+    public void showGameSet(int playersNum) {
+
+    }
+
+    @Override
+    public void showWaitGameCreation() {
+        Launcher launcher = (Launcher) App.controller;
+        launcher.waitLabel.setText("Waiting the creation of the game...");
+        launcher.setCurrentPane(launcher.waitPane);
+    }
+
+    @Override
+    public void showWaitGameStart() {
+        Launcher launcher = (Launcher) App.controller;
+        Platform.runLater(() -> launcher.waitLabel.setText("Waiting the start of the game..."));
+        launcher.setCurrentPane(launcher.waitPane);
+    }
+
+    @Override
+    public void showGameStarted() {
+        App.setScene("board", "Masters of Renaissance");
+    }
+
+    @Override
+    public void showNewPlayer(String playerNick) {
+
+    }
+
+    @Override
+    public void showPlayerLeft(String playerNick) {
+
+    }
+
+    @Override
+    public void showGotResource(String resource) {
+
+    }
+
+    @Override
+    public void showResourceTaken() {
+
+    }
+
+    @Override
+    public void showMarketUsed() {
+
+    }
+
+    @Override
+    public void showVaticanReport(int reportNum, boolean isPassed) {
+
+    }
+
+    @Override
+    public void showLastTurns(String reason) {
 
     }
 }

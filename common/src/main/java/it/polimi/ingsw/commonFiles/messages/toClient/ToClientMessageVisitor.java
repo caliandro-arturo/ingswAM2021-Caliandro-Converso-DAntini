@@ -11,4 +11,5 @@ public interface ToClientMessageVisitor {
     void visit(GameIsFull gameIsFull);
     void visit(AskWhiteMarble askWhiteMarble);
     void visit(DisplayEndingScores displayEndingScores);
+    void visit(WaitGameStart waitGameStart);
 }

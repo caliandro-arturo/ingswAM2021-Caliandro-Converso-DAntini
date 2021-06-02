@@ -33,7 +33,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         controller.getView().deleteToDo(id);
     }
 
-    private void showUpdate(String update) {
+    private void showUpdate(String... update) {
         controller.showUpdate(update);
     }
 
@@ -43,15 +43,14 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      * Handles the entry of a new player.
      */
     public void visit(NewPlayer msg) {
-        model.setBoards(msg.getName());
-        showUpdate(msg.getName() + " has entered the game.");
+        showUpdate("newplayer", msg.getName());
     }
 
     /**
      * Handles the exit of a player from the game.
      */
     public void visit(PlayerLeft msg) {
-        showUpdate(msg.getName() + " left the game.");
+        showUpdate("playerleft", msg.getName());
     }
 
     @Override
@@ -68,7 +67,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             model.setBoards(model.getPlayerUsername());
             model.getBoard().getFaithTrack().setPositionB(1);
         }
-        showUpdate("The game has been set: " + model.getNumOfPlayers() + " allowed players.");
+        showUpdate("gameset", Integer.toString(model.getNumOfPlayers()));
     }
 
     /**
@@ -76,13 +75,13 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      */
     public void visit(GameStarted msg) {
         refresh("");
-        showUpdate("The game is starting now...");
+        showUpdate("gamestarted");
     }
 
 
     public void visit(LastTurn msg) {
-        if (!model.isLast())
-            showUpdate("Last turns: " + msg.getReason());
+        model.setLast(true);
+        showUpdate("lastturns", msg.getReason());
     }
 
     @Override
@@ -248,10 +247,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public void visit(VaticanReport msg) {
         if (msg.getPlayer().equals(model.getPlayerUsername())) {
             model.getBoard().getFaithTrack().setVaticanMap(msg.getNum(), msg.isPassed());
-            if (msg.isPassed())
-                showUpdate("You passed the vatican report number " + msg.getNum());
-            else
-                showUpdate("You didn't pass the vatican report number " + msg.getNum());
+            showUpdate("vatican", Integer.toString(msg.getNum()), Boolean.toString(msg.isPassed()));
         } else
             model.getBoard(msg.getPlayer()).getFaithTrack().setVaticanMap(msg.getNum(), msg.isPassed());
     }
@@ -265,7 +261,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(SetNickname msg) {
         model.setPlayerUsername(msg.getNickname());
-        showUpdate("Your nickname has been set.");
+        showUpdate("nicknameset");
     }
 
     /**
@@ -277,7 +273,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                 marbleArrayToResourceList(msg.getRowOrColumn(),msg.getNum()));
         if (msg.getPlayer().equals(model.getPlayerUsername())) {
             deleteToDo("turnaction");
-            showUpdate( "You have used the market: deploy or discard the resources in your hand.");
+            showUpdate("marketused");
         }
         model.getMarket().reinsertExtraMarble(msg.getRowOrColumn(),msg.getNum());
         refresh("market");
@@ -381,7 +377,6 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         if (model.getLeaderHand().getHand().size() == 2)
             deleteToDo("discardleader");
         refresh("hand");
-        showUpdate("Leader card #" + msg.getPos() + " discarded.");
     }
 
     @Override
@@ -390,7 +385,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         model.getBoard(msg.getPlayer()).addResourceToHand(res);
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
         if (model.getPlayerUsername().equals(msg.getPlayer()))
-            showUpdate("Resource taken.");
+            showUpdate("resourcetaken");
     }
 
     @Override
@@ -402,8 +397,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         }
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
         if (model.getPlayerUsername().equals(msg.getPlayer()))
-            showUpdate("A " + msg.getResource().name().toLowerCase() + " has been added to your hand. " +
-                    "Remember to deploy it!");
+            showUpdate("gotresource", msg.getResource().name().toLowerCase());
     }
 
     @Override

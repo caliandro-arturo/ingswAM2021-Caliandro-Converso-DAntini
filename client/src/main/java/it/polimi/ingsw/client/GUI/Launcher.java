@@ -5,6 +5,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
@@ -27,13 +28,13 @@ public class Launcher extends SceneHandler {
     public AnchorPane connectionPane;
 
     @FXML
-    private AnchorPane mainPane;
-
-    @FXML
     private TextField hostname;
 
     @FXML
     private TextField nameTextField;
+
+    @FXML
+    public Label waitLabel;
 
     private AnchorPane currentPane;
 
@@ -58,7 +59,6 @@ public class Launcher extends SceneHandler {
     }
 
     private void configureConnection(String hostname) {
-
         getGui().configureConnection(hostname);
         if (getGui().isConnected()) {
             getGui().initializeClient();
@@ -84,6 +84,7 @@ public class Launcher extends SceneHandler {
         fadeIn.setToValue(100);
         currentPane.setDisable(true);
         SequentialTransition trans = new SequentialTransition(fadeOut, fadeIn);
+        currentPane = pane;
         trans.play();
         pane.setDisable(false);
     }

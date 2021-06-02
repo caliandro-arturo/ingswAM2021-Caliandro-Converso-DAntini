@@ -4,6 +4,7 @@ import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.CreateGame;
 import it.polimi.ingsw.commonFiles.messages.toClient.GameIsFull;
 import it.polimi.ingsw.commonFiles.messages.toClient.WaitGameCreation;
+import it.polimi.ingsw.commonFiles.messages.toClient.WaitGameStart;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.NewPlayer;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
 import it.polimi.ingsw.server.model.GameException;
@@ -126,7 +127,10 @@ public class VirtualView {
         if (!hasBeenSet) {
             if (clientHandler.getSocket().equals(firstPlayer))
                 sendMessage(nickname, new CreateGame());
-            else sendMessage(nickname, new WaitGameCreation());
+            else if (!hasBeenSet)
+                sendMessage(nickname, new WaitGameCreation());
+            else
+                sendMessage(nickname, new WaitGameStart());
         } else {
             if (isFull())
                 controller.startGame();

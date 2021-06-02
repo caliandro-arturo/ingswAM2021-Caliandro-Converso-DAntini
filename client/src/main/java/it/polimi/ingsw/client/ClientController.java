@@ -63,7 +63,7 @@ public class ClientController {
         view.showError(error);
     }
 
-    public void showUpdate(String update) {
+    public void showUpdate(String... update) {
         view.showUpdate(update);
     }
 
