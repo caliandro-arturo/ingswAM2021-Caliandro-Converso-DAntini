@@ -11,10 +11,18 @@ public class FaithTrack {
     private int position = 1;
     private int positionB = 0;
     private final HashMap<Integer, Boolean> vaticanMap = new HashMap<Integer, Boolean>(){{
-        put(1, false);
-        put(2, false);
-        put(3, false);
+        put(1, null);
+        put(2, null);
+        put(3, null);
     }};
+
+    public HashMap<Integer, Boolean> getVaticanMap() {
+        return vaticanMap;
+    }
+
+    public void setVaticanMap(int num, boolean passed){
+        vaticanMap.replace(num,passed);
+    }
 
     public void addPosition(){
         this.position++;
@@ -102,7 +110,11 @@ public class FaithTrack {
 
 
         for (Boolean key: vaticanMap.values()){
-            if(key){
+            if (key == null){
+                faithArt.append(f).append(f).append(f).append(f).append(f).append(CLIColor.ANSI_YELLOW).append("  FT:").
+                        append(ft).append("  ").append(CLIColor.ANSI_GREY).append("-").append(CLIColor.ANSI_YELLOW).
+                        append("   (┼)").append(CLIColor.ANSI_RESET);
+            }else if(key){
                 faithArt.append(f).append(f).append(f).append(f).append(f).append(CLIColor.ANSI_YELLOW).append("  FT:").
                         append(ft).append("  ").append(CLIColor.ANSI_GREEN).append("V").append(CLIColor.ANSI_YELLOW).
                         append("   (┼)").append(CLIColor.ANSI_RESET);

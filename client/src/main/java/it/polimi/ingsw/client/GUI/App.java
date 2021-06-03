@@ -11,9 +11,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class App extends Application {
-    private static Stage stage;
+    public static Stage stage;
     private static GUI gui;
-
+    public static SceneHandler controller;
 
     @FXML
     public static Label out;
@@ -39,7 +39,7 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         App.stage = stage;
         stage.setOnCloseRequest(e -> System.exit(0));
         setScene("board", "Masters of Renaissance");
@@ -54,7 +54,8 @@ public class App extends Application {
             System.err.println(e.getMessage());
             return;
         }
-        ((SceneHandler) fxmlLoader.getController()).setGui(gui);
+        controller = fxmlLoader.getController();
+        controller.setGui(gui);
         stage.setTitle(sceneTitle);
         stage.setScene(scene);
         stage.show();

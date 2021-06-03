@@ -1,6 +1,9 @@
 package it.polimi.ingsw.client.model;
 
-/*class WarehouseStoreTest {
+import it.polimi.ingsw.commonFiles.model.Resource;
+import org.junit.jupiter.api.Test;
+
+class WarehouseStoreTest {
     private final WarehouseStore warehouseStore = new WarehouseStore();
 
 
@@ -13,4 +16,4 @@ package it.polimi.ingsw.client.model;
         System.out.println(warehouseStore);
     }
 
-}*/
+}

@@ -24,7 +24,7 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
 
     @Override
     public void visit(CreateGame msg) {
-        controller.show("creategame");
+        controller.showUpdate("creategame");
     }
 
     @Override
@@ -34,7 +34,12 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
 
     @Override
     public void visit(WaitGameCreation msg) {
-        controller.show("waitgamecreation");
+        controller.showUpdate("waitgamecreation");
+    }
+
+    @Override
+    public void visit(WaitGameStart waitGameStart) {
+        controller.showUpdate("waitgamestart");
     }
 
     @Override
@@ -52,7 +57,7 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
         setToDo("chooseleader", "You have to choose which leader to use to gain the resource from the " +
                 msg.getWhiteMarblesToChoose() + " white marble" +
                 (msg.getWhiteMarblesToChoose() > 1 ? "s" : "") +
-                " of the market. Type CHOOSEWHITE: <leader number> to choose the leader.");
+                " of the market.");
     }
 
     @Override

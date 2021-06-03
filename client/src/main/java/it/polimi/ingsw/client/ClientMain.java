@@ -12,7 +12,7 @@ public class ClientMain {
 
     public void run(String[] args) {
         boolean isRunning = false;
-        String choice = null;
+        String choice;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         if (args.length > 0) choice = args[0].toUpperCase().trim();
         else {

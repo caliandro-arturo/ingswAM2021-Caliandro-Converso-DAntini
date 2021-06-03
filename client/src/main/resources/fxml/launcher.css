@@ -1,0 +1,16 @@
+.root {
+    -fx-background-image: url('../png/begin.png');
+    -fx-background-size: 100% 100%;
+}
+#createGamePane > #playersNumButtons > .button {
+    -fx-background-color: linear-gradient(#3381a7, #024e65);
+    -fx-text-fill: linear-gradient(#ff8400, #ffdc00);
+    -fx-font-size: 30;
+    -fx-font-family: Harrington;
+}
+#createGamePane > #playersNumButtons > .button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
+}
+#createGamePane > #playersNumButtons > .button:hover:pressed {
+    -fx-background-color: linear-gradient(#036e90, #04627d);
+}

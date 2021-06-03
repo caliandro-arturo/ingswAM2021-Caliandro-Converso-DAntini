@@ -46,7 +46,52 @@ public abstract class View {
      *
      * @param update the update to show
      */
-    public abstract void showUpdate(String update);
+    public void showUpdate(String... update) {
+        switch (update[0]) {
+            case "nicknameset" -> showNicknameSet();
+            case "resume" -> showResume();
+            case "creategame" -> showCreateGame();
+            case "gameset" -> showGameSet(Integer.parseInt(update[1]));
+            case "waitgamecreation" -> showWaitGameCreation();
+            case "waitgamestart" -> showWaitGameStart();
+            case "gamestarted" -> showGameStarted();
+            case "newplayer" -> showNewPlayer(update[1]);
+            case "playerleft" -> showPlayerLeft(update[1]);
+            case "gotresource" -> showGotResource(update[1]);
+            case "resourcetaken" -> showResourceTaken();
+            case "marketused" -> showMarketUsed();
+            case "vatican" -> showVaticanReport(Integer.parseInt(update[1]), Boolean.parseBoolean(update[2]));
+            case "lastturns" -> showLastTurns(update[1]);
+        }
+    }
+
+    public abstract void showNicknameSet();
+
+    public abstract void showResume();
+
+    public abstract void showCreateGame();
+
+    public abstract void showGameSet(int playersNum);
+
+    public abstract void showWaitGameCreation();
+
+    public abstract void showWaitGameStart();
+
+    public abstract void showGameStarted();
+
+    public abstract void showNewPlayer(String playerNick);
+
+    public abstract void showPlayerLeft(String playerNick);
+
+    public abstract void showGotResource(String resource);
+
+    public abstract void showResourceTaken();
+
+    public abstract void showMarketUsed();
+
+    public abstract void showVaticanReport(int reportNum, boolean isPassed);
+
+    public abstract void showLastTurns(String reason);
 
     /**
      * Shows the player position on the table.

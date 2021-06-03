@@ -19,7 +19,7 @@ import java.util.Optional;
  * It also processes user commands with {@link CLIView#process(String input)}.
  */
 public class CLIView extends View {
-    private String currentView;
+    private String currentView = "";
     /**
      * Actions that the player must do in a specific moment of the game.
      */
@@ -150,10 +150,6 @@ public class CLIView extends View {
                 System.out.println("Insert your nickname by typing SETNICK: <your nickname>:");
                 break;
             }
-            case "creategame": {
-                System.out.println("You are the first player: create a game by typing SETGAME: <number of players>:");
-                break;
-            }
             case "waitgamecreation": {
                 System.out.println("Waiting creation of the game...");
                 break;
@@ -231,8 +227,7 @@ public class CLIView extends View {
      *
      * @param update the update to print out
      */
-    @Override
-    public void showUpdate(String update) {
+    private void showUpdateText(String update) {
         System.out.println(CLIColor.ANSI_BRIGHT_GREEN
                 + update
                 + CLIColor.ANSI_RESET);
@@ -545,12 +540,13 @@ public class CLIView extends View {
      */
     @Override
     public void refresh(String... viewsToRefresh) {
-        for (String s : viewsToRefresh)
+        for (String s : viewsToRefresh) {
             if (s.equals("") || currentView.equals(s)) {
                 clear();
                 break;
             }
-        if (currentView != null) show(currentView);
+        }
+        if (!currentView.equals("")) show(currentView);
     }
 
     /**
@@ -615,5 +611,78 @@ public class CLIView extends View {
                 append("║ \n");
         endingTable.append("╚════════════════════════╝ \n");
         System.out.println(endingTable);
+    }
+
+    @Override
+    public void showNicknameSet() {
+        showUpdateText("Your nickname has been set.");
+    }
+
+    @Override
+    public void showResume() {
+        showUpdateText("Welcome back, " + getModel().getPlayerUsername() + ".");
+    }
+
+    @Override
+    public void showCreateGame() {
+        showUpdateText("You are the first player: create a game by typing SETGAME: <number of players>.");
+    }
+
+    @Override
+    public void showGameSet(int playersNum) {
+        showUpdateText("The game has been set: " + playersNum + " allowed players.");
+        showWaitGameStart();
+    }
+
+    @Override
+    public void showWaitGameCreation() {
+        showUpdateText("Waiting creation of the game...");
+    }
+
+    @Override
+    public void showWaitGameStart() {
+        showUpdateText("Waiting other players...");
+    }
+
+    @Override
+    public void showGameStarted() {
+        showUpdateText("The game is starting now...");
+    }
+
+    @Override
+    public void showNewPlayer(String playerNick) {
+        showUpdateText(playerNick + " has entered the game.");
+    }
+
+    @Override
+    public void showPlayerLeft(String playerNick) {
+        showUpdateText(playerNick + " has lost the connection.");
+    }
+
+    @Override
+    public void showGotResource(String resource) {
+        showUpdateText("A " + resource + " has been added to your hand. Remember to deploy it!");
+    }
+
+    @Override
+    public void showResourceTaken() {
+        showUpdateText("Resource taken.");
+    }
+
+    @Override
+    public void showMarketUsed() {
+        showUpdateText("You have used the market: deploy or discard the resources in your hand.");
+    }
+
+    @Override
+    public void showVaticanReport(int reportNum, boolean isPassed) {
+        showUpdateText("You "
+                + (isPassed ? "passed" : "didn't pass")
+                + " the vatican report number " + reportNum + ".");
+    }
+
+    @Override
+    public void showLastTurns(String reason) {
+        showUpdateText("Last turns: " + reason);
     }
 }

@@ -1,43 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:controller="it.polimi.ingsw.client.GUI.Launcher" prefHeight="369.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@launcher.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.Launcher">
     <children>
-        <ImageView fitHeight="427.0" fitWidth="600.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../png/begin.png"/>
-            </image>
-        </ImageView>
-        <Label layoutX="349.0" layoutY="114.0" prefHeight="27.0" prefWidth="182.0" text="Welcome to our game"
-               textFill="#d1ddca">
+        <Label fx:id="out" alignment="CENTER" layoutX="54.0" layoutY="318.0" prefHeight="35.0" prefWidth="507.0" textFill="WHITE" AnchorPane.bottomAnchor="47.0">
             <font>
-                <Font name="Harrington" size="19.0"/>
+                <Font name="Harrington" size="19.0" />
             </font>
         </Label>
-        <Label layoutX="84.0" layoutY="213.0" prefHeight="28.0" prefWidth="448.0"
-               text="Select an IP Address or press Default to connect" textFill="#c1c6c2">
-            <font>
-                <Font name="Harrington" size="21.0"/>
-            </font>
-        </Label>
-        <TextField fx:id="text" layoutX="84.0" layoutY="262.0" prefHeight="28.0" prefWidth="260.0"
-                   promptText="127.0.0.1:1234"/>
-        <Button fx:id="default" layoutX="460.0" layoutY="262.0" mnemonicParsing="false" onAction="#takeDefault"
-                prefHeight="28.0" prefWidth="72.0" text="Default"/>
-        <Button fx:id="connect" layoutX="368.0" layoutY="262.0" mnemonicParsing="false" onAction="#takeText"
-                prefHeight="28.0" prefWidth="72.0" text="Connect"/>
-        <Label fx:id="out" layoutX="84.0" layoutY="304.0" prefHeight="28.0" prefWidth="448.0" textFill="WHITE">
-            <font>
-                <Font name="Harrington" size="19.0"/>
-            </font>
-        </Label>
+      <AnchorPane fx:id="waitPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="waitLabel" alignment="CENTER" layoutX="54.0" layoutY="227.0" prefHeight="35.0" prefWidth="350.0" textFill="WHITE">
+               <font>
+                  <Font name="Harrington" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="createGamePane" opacity="0.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="191.0" layoutY="187.0" prefHeight="27.0" prefWidth="219.0" text="Set the number of players:" textFill="#d1ddca">
+               <font>
+                  <Font name="Harrington" size="19.0" />
+               </font>
+            </Label>
+            <HBox fx:id="playersNumButtons" alignment="CENTER" layoutX="157.0" layoutY="237.0" prefHeight="35.0" prefWidth="286.0" spacing="20.0">
+               <children>
+                  <Button fx:id="playersNum1" mnemonicParsing="false" text="1">
+                     <font>
+                        <Font name="Harrington" size="29.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="playersNum2" mnemonicParsing="false" text="2">
+                     <font>
+                        <Font name="Harrington" size="29.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="playersNum3" mnemonicParsing="false" text="3">
+                     <font>
+                        <Font name="Harrington" size="29.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="playersNum4" mnemonicParsing="false" text="4">
+                     <font>
+                        <Font name="Harrington" size="29.0" />
+                     </font>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="nicknamePane" opacity="0.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <VBox alignment="CENTER" layoutX="186.0" layoutY="187.0" maxHeight="300.0" prefHeight="111.0" prefWidth="228.0" spacing="15.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="186.0" AnchorPane.rightAnchor="186.0" AnchorPane.topAnchor="187.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="27.0" prefWidth="159.0" text="Set your nickname" textFill="#d1ddca">
+                     <font>
+                        <Font name="Harrington" size="19.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="nameTextField" alignment="CENTER" maxWidth="400.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="228.0">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </TextField>
+                  <Button fx:id="nickConfirm" defaultButton="true" mnemonicParsing="false" onAction="#setNickname" text="Confirm" textOverrun="LEADING_WORD_ELLIPSIS" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="connectionPane" prefHeight="200.0" prefWidth="200.0">
+         <children>
+              <Label layoutX="342.0" layoutY="109.0" prefHeight="27.0" prefWidth="182.0" text="Welcome to our game" textFill="#d1ddca" AnchorPane.bottomAnchor="264.0" AnchorPane.rightAnchor="76.0" AnchorPane.topAnchor="109.0">
+                  <font>
+                      <Font name="Harrington" size="19.0" />
+                  </font>
+              </Label>
+            <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" hgap="20.0" layoutX="76.0" layoutY="200.0" prefHeight="84.0" prefWidth="448.0" rowValignment="BASELINE" vgap="15.0" AnchorPane.bottomAnchor="116.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="76.0">
+               <children>
+                    <Label prefHeight="28.0" prefWidth="448.0" text="Select an IP Address or press Default to connect" textFill="#c1c6c2">
+                        <font>
+                            <Font name="Harrington" size="21.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="hostname" prefHeight="28.0" prefWidth="260.0" promptText="127.0.0.1:1234" />
+                    <Button fx:id="connect" defaultButton="true" mnemonicParsing="false" onAction="#connect" prefHeight="28.0" prefWidth="72.0" text="Connect" />
+                    <Button fx:id="default" mnemonicParsing="false" onAction="#connectDefault" prefHeight="28.0" prefWidth="72.0" text="Default" />
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </FlowPane>
+         </children>
+      </AnchorPane>
     </children>
 </AnchorPane>
