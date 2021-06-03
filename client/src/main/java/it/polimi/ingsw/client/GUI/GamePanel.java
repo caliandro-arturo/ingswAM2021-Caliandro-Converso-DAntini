@@ -1,5 +1,9 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.model.Color;
+import it.polimi.ingsw.client.model.DevelopmentCard;
+import it.polimi.ingsw.client.model.Marble;
+import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -7,13 +11,13 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.net.URL;
+import java.util.*;
 
 public class GamePanel extends SceneHandler {
     @FXML
@@ -23,8 +27,6 @@ public class GamePanel extends SceneHandler {
 
     @FXML
     private BorderPane mainPane;
-    @FXML
-    private TabPane boardPane;
 
     @FXML
     private Tab yourBoard;
@@ -90,10 +92,10 @@ public class GamePanel extends SceneHandler {
     private GridPane marketTray;
 
     @FXML
-    private ImageView mb00;
+    private ImageView mb00 ;
 
     @FXML
-    private ImageView mb10;
+    private ImageView mb10 ;
 
     @FXML
     private ImageView mb20;
@@ -180,6 +182,12 @@ public class GamePanel extends SceneHandler {
     private Pane devGridPane;
 
     @FXML
+    private Pane boardPane;
+
+    @FXML
+    private StackPane stackPane;
+
+    @FXML
     private Button buyCardButton;
 
     @FXML
@@ -218,71 +226,122 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ImageView devcard32;
 
+    @FXML
+    private Button handButton;
+
+    private Image blueMarble;
+    private Image greyMarble;
+    private Image purpleMarble;
+    private Image redMarble;
+    private Image whiteMarble;
+    private Image yellowMarble;
+    private Image coin;
+    private Image serf;
+    private Image shield;
+    private Image stone;
+
+    private ArrayList<ImageView> handList;
+
+    private ArrayList<ImageView> resSpots;
+    private ImageView[][] marketSpots;
+    private ArrayList<ImageView> leaderCardSpots;
+    private ImageView[][] devCardSpots;
+    private ArrayList<ImageView> marketReinsertSpots;
 
 
-    Image coin = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/coin.png")));
-    Image serf = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/serf.png")));
-    Image shield = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/shield.png")));
-    Image stone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/stone.png")));
-    Image blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
-    Image greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
-    Image purpleMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/purple_marble.png")));
-    Image redMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/red_marble.png")));
-    Image whiteMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/white_marble.png")));
-    Image yellowMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/yellow_marble.png")));
+    private HashMap<Color, Image> colorImageMap;
+    private HashMap<Resource, Image> resourceImageMap;
 
-    Image card49 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/49.png")));
-    Image card50 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/50.png")));
-    Image card51 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/51.png")));
-    Image card52 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/52.png")));
-    Image card53 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/53.png")));
-    Image card54 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/54.png")));
-    Image card55 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/55.png")));
-    Image card56 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/56.png")));
-    Image card57 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/57.png")));
-    Image card58 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/58.png")));
-    Image card59 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/59.png")));
-    Image card60 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/60.png")));
-    Image card61 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/61.png")));
-    Image card62 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/62.png")));
-    Image card63 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/63.png")));
-    Image card64 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/64.png")));
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
 
-    ImageView imageView = new ImageView(coin);
-    ImageView imageView1 = new ImageView(serf);
-    ImageView imageView2 = new ImageView(shield);
-    ImageView imageView3 = new ImageView(stone);
+        blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
+        greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
+        purpleMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/purple_marble.png")));
+        redMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/red_marble.png")));
+        whiteMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/white_marble.png")));
+        yellowMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/yellow_marble.png")));
+        coin = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/coin.png")));
+        serf = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/serf.png")));
+        shield = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/shield.png")));
+        stone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/stone.png")));
+        handList = new ArrayList<>();
+        resSpots = new ArrayList<>(Arrays.asList(res1, res21, res22, res31, res32, res33));
+        marketReinsertSpots = new ArrayList<>(Arrays.asList(row0, row1, row2, col0, col1, col2, col3));
+        marketSpots = new ImageView[][]{
+                {mb00, mb10, mb20, mb30},
+                {mb01, mb11, mb21, mb31},
+                {mb02, mb12, mb22, mb32}
+        };
+        leaderCardSpots = new ArrayList<>(Arrays.asList(leadCard1, leadCard2,leadCard3,leadCard4));
+        devCardSpots = new ImageView[][]{
+                {devcard00, devcard10, devcard20, devcard30},
+                {devcard01, devcard11, devcard21, devcard31},
+                {devcard02, devcard12, devcard22, devcard32}
+        };
+        resourceImageMap = new HashMap<>(){{
+            put(Resource.SHIELD, shield);
+            put(Resource.COIN, coin);
+            put(Resource.SERF,serf);
+            put(Resource.STONE, stone);
+        }};
+        colorImageMap = new HashMap<>(){{
+            put(Color.BLUE, blueMarble);
+            put(Color.GREY, greyMarble);
+            put(Color.PURPLE, purpleMarble);
+            put(Color.RED, redMarble);
+            put(Color.WHITE, whiteMarble);
+            put(Color.YELLOW, yellowMarble);
+        }};
 
-    ArrayList<ImageView> handList = new ArrayList<>(){{
-        add(imageView);
-        add(imageView1);
-        add(imageView2);
-        add(imageView3);
-        add(imageView);
-        add(imageView1);
-        add(imageView2);
-        add(imageView3);
-    }};
+    }
 
-    ArrayList<ImageView> resPlaces = new ArrayList<>();
-
-    ArrayList<ImageView> marbles = new ArrayList<>();
-
-    ArrayList<ImageView> marketSpots = new ArrayList<>();
-
-    public void buildCardArray(){
-        ArrayList<ImageView> devCardsArray = new ArrayList<>();
-        for(int i=0; i<48; i++){
-            devCardsArray.add(new ImageView());
-            String imgD = i+".png";
-            devCardsArray.get(i).setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(imgD))));
+    /**
+     * requires as a parameter the development card grid and set the devCardSpots with the
+     * relative card images
+     * @param devGrid
+     */
+    public void setDevGridPng(DevelopmentCard[][] devGrid){
+        for(int row=0; row<devGrid.length; row++){
+            for(int col=0; col<devGrid[row].length; col++){
+                devCardSpots[row][col].setImage(getCardPng(devGrid[row][col].getID()));
+            }
         }
-        ArrayList<ImageView> leadCardArray = new ArrayList<>();
-        for(int j=48; j<64;j++){
-            leadCardArray.add(new ImageView());
-            String imgL = j+".png";
-            leadCardArray.get(j).setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(imgL))));
+
+    }
+
+    /**
+     * requires as parameter the handlist and set the handList of images of resources
+     * @param hand
+     */
+    public void setHandList(ArrayList<Resource> hand){
+        for(Resource res: hand){
+            handList.add(new ImageView(resourceImageMap.get(res)));
         }
+    }
+
+    /**
+     * requires as a parameter the marble tray of the market and set the marketSpots
+     * so the market is set with the relatives marbles Images
+     * @param tray : the Marble tray of the market and the extra marble
+     */
+    public void setMarketPng(Marble[][] tray, Marble exMarble){
+        for(int row=0; row< tray.length; row++){
+            for(int col=0; col< tray[row].length; col++){
+                marketSpots[row][col].setImage(colorImageMap.get(tray[row][col].getColor()));
+            }
+        }
+        mbEx.setImage(colorImageMap.get(exMarble.getColor()));
+    }
+    /**
+     * can be used to get the card image for giving the cardId as a parameter
+     * @param cardId
+     * @return
+     */
+
+    public Image getCardPng(int cardId){
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/"+cardId+".png")));
     }
 
     @FXML
@@ -339,7 +398,9 @@ public class GamePanel extends SceneHandler {
 
     @FXML
     public void slideRes(ActionEvent event){
-        fillHand(handList);
+        if(!handList.isEmpty()){
+            fillHand(handList);
+        }
     }
 
     public void fillHand(ArrayList<ImageView> handList){
@@ -347,14 +408,10 @@ public class GamePanel extends SceneHandler {
             view.setFitHeight(70);
             view.setFitWidth(70);
         }
-        hand.setPageFactory(handList::get);
-        resPlaces.add(res1);
-        resPlaces.add(res21);
-        resPlaces.add(res22);
-        resPlaces.add(res31);
-        resPlaces.add(res32);
-        resPlaces.add(res33);
-        hand.setMaxPageIndicatorCount(handList.size());
+        if(!handList.isEmpty()){
+            hand.setPageFactory(handList::get);
+        }else
+            hand.setPageFactory(null);
         hand.setPageCount(handList.size());
 
     }
@@ -370,7 +427,7 @@ public class GamePanel extends SceneHandler {
             event1.consume();
         });
 
-        for(ImageView warSpot: resPlaces){
+        for(ImageView warSpot: resSpots){
             warSpot.setOnDragOver(new EventHandler<DragEvent>() {
                 @Override
                 public void handle(DragEvent dragEvent) {
@@ -381,13 +438,12 @@ public class GamePanel extends SceneHandler {
             });
         }
 
-        for(ImageView warSpot: resPlaces){
+        for(ImageView warSpot: resSpots){
             warSpot.setOnDragDropped(new EventHandler<DragEvent>() {
                 @Override
                 public void handle(DragEvent dragEvent) {
                     warSpot.setImage(dragEvent.getDragboard().getImage());
                     fillHand(handList);
-                    hand.setMaxPageIndicatorCount(hand.getPageCount()-1);
                     dragEvent.consume();
                 }
             });
@@ -397,13 +453,8 @@ public class GamePanel extends SceneHandler {
 
     @FXML
     public void showMarket(ActionEvent actionEvent){
-        marketPane.toFront();
-        marketPane.setOpacity(1);
-        goBack(boardPane);
-        chooseCardPane.toBack();
-        chooseCardPane.setOpacity(0);
-        devGridPane.toBack();
-        devGridPane.setOpacity(0);
+        goFront(marketPane);
+
         mb00.setImage(yellowMarble);
         mb10.setImage(redMarble);
         mb20.setImage(yellowMarble);
@@ -417,129 +468,75 @@ public class GamePanel extends SceneHandler {
         mb22.setImage(yellowMarble);
         mb32.setImage(purpleMarble);
         mbEx.setImage(whiteMarble);
-        marbles.add(mb00);
-        marbles.add(mb10);
-        marbles.add(mb20);
-        marbles.add(mb30);
-        marbles.add(mb01);
-        marbles.add(mb11);
-        marbles.add(mb21);
-        marbles.add(mb31);
-        marbles.add(mb02);
-        marbles.add(mb12);
-        marbles.add(mb22);
-        marbles.add(mb32);
-        marketSpots.add(col0);
-        marketSpots.add(col1);
-        marketSpots.add(col2);
-        marketSpots.add(col3);
-        marketSpots.add(row0);
-        marketSpots.add(row1);
-        marketSpots.add(row2);
     }
 
     @FXML
     void showDevGrid(ActionEvent event) {
-        devGridPane.toFront();
-        devGridPane.setOpacity(1);
-        goBack(boardPane);
-        marketPane.toBack();
-        marketPane.setOpacity(0);
-        chooseCardPane.toBack();
-        chooseCardPane.setOpacity(0);
-        devcard00.setImage(card50);
-        devcard01.setImage(card50);
-        devcard02.setImage(card50);
-        devcard10.setImage(card50);
-        devcard11.setImage(card50);
-        devcard12.setImage(card50);
-        devcard20.setImage(card50);
-        devcard21.setImage(card50);
-        devcard22.setImage(card50);
-        devcard30.setImage(card50);
-        devcard31.setImage(card50);
-        devcard32.setImage(card50);
+        goFront(devGridPane);
     }
 
     @FXML
     public void showChooseCards(ActionEvent actionEvent){
-        chooseCardPane.toFront();
-        chooseCardPane.setOpacity(1);
-        goBack(boardPane);
-        marketPane.toBack();
-        marketPane.setOpacity(0);
-        devGridPane.toBack();
-        devGridPane.setOpacity(0);
-        leadCard1.setImage(card51);
-        leadCard2.setImage(card50);
-        leadCard3.setImage(card53);
-        leadCard4.setImage(card54);
+        goFront(chooseCardPane);
     }
 
-    public void goBack(TabPane pane){
-        pane.toBack();
-        pane.setDisable(true);
-        pane.setOpacity(0.5);
-    }
-
-
-    public void goFront(TabPane pane){
-        pane.setDisable(false);
+    public void goFront(Pane pane){
+        for(int i=0; i<stackPane.getChildren().size(); i++){
+            if(!stackPane.getChildren().get(i).equals(pane)){
+                stackPane.getChildren().get(i).toBack();
+                stackPane.getChildren().get(i).setOpacity(0);
+                stackPane.getChildren().get(i).setDisable(true);
+            }
+        }
+        handButton.setDisable(true);
+        boardPane.toFront();
+        boardPane.setDisable(true);
+        boardPane.setOpacity(0.5);
+        pane.toFront();
         pane.setOpacity(1);
+        pane.setDisable(false);
+
+    }
+
+    public void closePopUp(){
+        boardPane.toFront();
+        boardPane.setOpacity(1);
+        boardPane.setDisable(false);
+        handButton.setDisable(false);
     }
     @FXML
     public void buyResources(ActionEvent actionEvent) {
-        marketPane.toBack();
-        goFront(boardPane);
+        closePopUp();
     }
     @FXML
     public void buyCard(ActionEvent event){
-        devGridPane.toBack();
-        goFront(boardPane);
+        closePopUp();
     }
     @FXML
     public void chooseCard(ActionEvent actionEvent){
-        chooseCardPane.toBack();
-        goFront(boardPane);
+        closePopUp();
     }
 
 
     @FXML
     public void moveMarble() {
-        for(ImageView m: marbles){
-            m.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Dragboard db = m.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putImage(m.getImage());
-                db.setContent(content);
-                event.consume();
-            }
-        });}
+                mbEx.setOnDragDetected(event -> {
+                    Dragboard db = mbEx.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(mbEx.getImage());
+                    db.setContent(content);
+                    event.consume();
+                });
 
-        for(ImageView s: marketSpots){
-            s.setOnDragOver(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
+            for (ImageView marketSpot : marketReinsertSpots) {
+                marketSpot.setOnDragOver(dragEvent -> {
                     dragEvent.acceptTransferModes(TransferMode.MOVE);
                     dragEvent.consume();
-                }
-
-            });
+                });
+            }
+            for (ImageView marketSpot : marketReinsertSpots) {
+                //TODO: insert here the call to the function for reinsert the extra marble with col/row , int
+                marketSpot.setOnDragDropped(dragEvent -> marketSpot.setImage(dragEvent.getDragboard().getImage()));
+            }
         }
-
-        for(ImageView s: marketSpots){
-            s.setOnDragDropped(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    s.setImage(dragEvent.getDragboard().getImage());
-                }
-            });
-        }
-
-
-
-    }
-
 }

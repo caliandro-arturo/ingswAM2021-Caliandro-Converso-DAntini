@@ -23,10 +23,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-
 <BorderPane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.GamePanel">
    <center>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="927.0" BorderPane.alignment="CENTER">
+      <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="927.0" BorderPane.alignment="CENTER">
          <children>
             <Pane fx:id="marketPane" layoutX="700.0" layoutY="200.0" prefHeight="574.0" prefWidth="911.0" StackPane.alignment="CENTER">
                <children>
@@ -37,7 +36,7 @@
                      </image>
                   </ImageView>
                   <Button fx:id="buy" layoutX="661.0" layoutY="412.0" mnemonicParsing="false" onAction="#buyResources" text="Buy" />
-                  <ImageView fx:id="mbEx" fitHeight="40.0" fitWidth="40.0" layoutX="609.0" layoutY="191.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="mbEx" fitHeight="40.0" fitWidth="40.0" layoutX="609.0" layoutY="191.0" onDragDetected="#moveMarble" pickOnBounds="true" preserveRatio="true" />
                   <Label layoutX="379.0" layoutY="74.0" prefHeight="52.0" prefWidth="330.0" text="Choose a row or a column">
                      <font>
                         <Font name="Harrington" size="25.0" />
@@ -58,14 +57,14 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ImageView fx:id="mb00" fitHeight="40.0" fitWidth="40.0" onDragDetected="#moveMarble" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="col2" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <ImageView fx:id="col3" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <ImageView fx:id="col1" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <ImageView fx:id="col0" fitHeight="40.0" fitWidth="40.0" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
-                        <ImageView fx:id="row2" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                        <ImageView fx:id="row0" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
-                        <ImageView fx:id="row1" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <ImageView fx:id="mb00" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="col2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <ImageView fx:id="col3" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <ImageView fx:id="col1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ImageView fx:id="col0" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
+                        <ImageView fx:id="row2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                        <ImageView fx:id="row0" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
+                        <ImageView fx:id="row1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                         <ImageView fx:id="mb32" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                         <ImageView fx:id="mb22" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <ImageView fx:id="mb12" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -147,56 +146,60 @@
                   <Button fx:id="buyCardButton" layoutX="789.0" layoutY="663.0" mnemonicParsing="false" onAction="#buyCard" prefHeight="25.0" prefWidth="82.0" text="Buy" />
                </children>
             </Pane>
-            <TabPane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="923.0" tabClosingPolicy="UNAVAILABLE">
-               <tabs>
-                  <Tab fx:id="yourBoard" text="Your Board">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="674.0" prefWidth="923.0">
-                           <children>
-                              <ImageView fx:id="boardImg" fitHeight="723.0" fitWidth="937.0" layoutX="-8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-20.0" AnchorPane.leftAnchor="-8.0" AnchorPane.topAnchor="0.0">
-                                 <image>
-                                    <Image url="@../png/board.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="crossB" fitHeight="42.0" fitWidth="45.0" layoutX="31.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/black cross.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="cross" fitHeight="42.0" fitWidth="42.0" layoutX="73.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/faith.png" />
-                                 </image>
-                              </ImageView>
-                              <Button fx:id="right" layoutX="122.0" layoutY="174.0" mnemonicParsing="false" onAction="#increasePos" text="&gt;" />
-                              <Button fx:id="blackButton" layoutX="74.0" layoutY="174.0" mnemonicParsing="false" onAction="#increasePos" text="B" />
-                              <ImageView fx:id="tile2" fitHeight="66.0" fitWidth="66.0" layoutX="222.0" layoutY="97.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/yellow square.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="tile3" fitHeight="66.0" fitWidth="66.0" layoutX="452.0" layoutY="51.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/orange square.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="tile4" fitHeight="66.0" fitWidth="66.0" layoutX="727.0" layoutY="94.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/red square.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="res1" fitHeight="41.0" fitWidth="47.0" layoutX="94.0" layoutY="290.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fx:id="res33" fitHeight="41.0" fitWidth="47.0" layoutX="137.0" layoutY="406.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fx:id="res32" fitHeight="41.0" fitWidth="47.0" layoutX="91.0" layoutY="406.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fx:id="res31" fitHeight="41.0" fitWidth="47.0" layoutX="47.0" layoutY="406.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fx:id="res22" fitHeight="41.0" fitWidth="47.0" layoutX="114.0" layoutY="346.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fx:id="res21" fitHeight="41.0" fitWidth="47.0" layoutX="69.0" layoutY="345.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </Tab>
-               </tabs>
-            </TabPane>
+            <Pane fx:id="boardPane">
+               <children>
+                  <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="923.0" tabClosingPolicy="UNAVAILABLE">
+                     <tabs>
+                        <Tab fx:id="yourBoard" text="Your Board">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="674.0" prefWidth="923.0">
+                                 <children>
+                                    <ImageView fx:id="boardImg" fitHeight="723.0" fitWidth="937.0" layoutX="-8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-20.0" AnchorPane.leftAnchor="-8.0" AnchorPane.topAnchor="0.0">
+                                       <image>
+                                          <Image url="@../png/board.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="crossB" fitHeight="42.0" fitWidth="45.0" layoutX="31.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/black cross.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="cross" fitHeight="42.0" fitWidth="42.0" layoutX="73.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/faith.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Button fx:id="right" layoutX="122.0" layoutY="174.0" mnemonicParsing="false" onAction="#increasePos" text="&gt;" />
+                                    <Button fx:id="blackButton" layoutX="74.0" layoutY="174.0" mnemonicParsing="false" onAction="#increasePos" text="B" />
+                                    <ImageView fx:id="tile2" fitHeight="66.0" fitWidth="66.0" layoutX="222.0" layoutY="97.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/yellow square.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="tile3" fitHeight="66.0" fitWidth="66.0" layoutX="452.0" layoutY="51.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/orange square.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="tile4" fitHeight="66.0" fitWidth="66.0" layoutX="727.0" layoutY="94.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/red square.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="res1" fitHeight="41.0" fitWidth="47.0" layoutX="94.0" layoutY="290.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="res33" fitHeight="41.0" fitWidth="47.0" layoutX="137.0" layoutY="406.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="res32" fitHeight="41.0" fitWidth="47.0" layoutX="91.0" layoutY="406.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="res31" fitHeight="41.0" fitWidth="47.0" layoutX="47.0" layoutY="406.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="res22" fitHeight="41.0" fitWidth="47.0" layoutX="114.0" layoutY="346.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="res21" fitHeight="41.0" fitWidth="47.0" layoutX="69.0" layoutY="345.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
+               </children>
+            </Pane>
          </children>
       </StackPane>
    </center>
@@ -205,8 +208,8 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="519.0" prefWidth="278.0">
                <children>
-                  <Pagination fx:id="hand" currentPageIndex="1" layoutX="19.0" layoutY="134.0" maxPageIndicatorCount="0" onDragDetected="#moveRes" pageCount="8" prefHeight="151.0" prefWidth="204.0" />
-                  <Button fx:id="res" layoutX="100.0" layoutY="303.0" mnemonicParsing="false" onAction="#slideRes" text="hand" />
+                  <Pagination fx:id="hand" layoutX="19.0" layoutY="134.0" maxPageIndicatorCount="0" onDragDetected="#moveRes" pageCount="0" prefHeight="151.0" prefWidth="204.0" />
+                  <Button fx:id="handButton" layoutX="100.0" layoutY="303.0" mnemonicParsing="false" onAction="#slideRes" text="hand" />
                   <Button fx:id="marketBtn" layoutY="387.0" mnemonicParsing="false" onAction="#showMarket" prefHeight="54.0" prefWidth="155.0" text="Market" />
                   <Button fx:id="cardsButton" layoutY="335.0" mnemonicParsing="false" onAction="#showChooseCards" prefHeight="52.0" prefWidth="155.0" text="Choose Cards" />
                   <Button fx:id="gridButton" layoutY="441.0" mnemonicParsing="false" onAction="#showDevGrid" prefHeight="54.0" prefWidth="155.0" text="Development Grid" />
@@ -265,6 +268,6 @@
       </TextFlow>
    </bottom>
    <top>
-      <TitledPane prefHeight="23.0" prefWidth="1171.0" text="Master of Rrenaissance" BorderPane.alignment="CENTER" />
+      <TitledPane prefHeight="23.0" prefWidth="1171.0" text="Masters of Renaissance" BorderPane.alignment="CENTER" />
    </top>
 </BorderPane>
