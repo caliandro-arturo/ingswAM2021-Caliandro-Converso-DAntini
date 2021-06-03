@@ -42,7 +42,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         App.stage = stage;
         stage.setOnCloseRequest(e -> System.exit(0));
-        setScene("launcher", "Masters of Renaissance");
+        setScene("board", "Masters of Renaissance");
     }
 
     public static void setScene(String fxmlFile, String sceneTitle) {

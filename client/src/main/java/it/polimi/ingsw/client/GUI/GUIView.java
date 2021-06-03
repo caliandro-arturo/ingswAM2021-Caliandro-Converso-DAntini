@@ -5,8 +5,10 @@ import javafx.application.Platform;
 
 public class GUIView extends View {
 
+
     @Override
     public void process(String input) {
+
     }
 
     @Override

@@ -1,14 +1,14 @@
 package it.polimi.ingsw.client.GUI;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -20,6 +20,9 @@ public class GamePanel extends SceneHandler {
     TextField text;
     int pos = 1;
     int posB = 1;
+
+    @FXML
+    private BorderPane mainPane;
     @FXML
     private TabPane boardPane;
 
@@ -174,7 +177,7 @@ public class GamePanel extends SceneHandler {
     private ImageView leadCard4;
 
     @FXML
-    private AnchorPane devGridPane;
+    private Pane devGridPane;
 
     @FXML
     private Button buyCardButton;
@@ -261,34 +264,27 @@ public class GamePanel extends SceneHandler {
         add(imageView3);
     }};
 
-    ArrayList<ImageView> resPlaces = new ArrayList<>(){{
-        add(res1);
-        add(res21);
-        add(res22);
-        add(res31);
-        add(res32);
-        add(res33);
-    }};
+    ArrayList<ImageView> resPlaces = new ArrayList<>();
+
+    ArrayList<ImageView> marbles = new ArrayList<>();
+
+    ArrayList<ImageView> marketSpots = new ArrayList<>();
 
     public void buildCardArray(){
         ArrayList<ImageView> devCardsArray = new ArrayList<>();
         for(int i=0; i<48; i++){
             devCardsArray.add(new ImageView());
-            String imgD ="/png/Masters of Renaissance_Cards_FRONT_3mmBleed_1-"+i+"-1.png";
+            String imgD = i+".png";
             devCardsArray.get(i).setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(imgD))));
         }
         ArrayList<ImageView> leadCardArray = new ArrayList<>();
         for(int j=48; j<64;j++){
             leadCardArray.add(new ImageView());
-            String imgL = "/png/Masters of Renaissance_Cards_FRONT_3mmBleed_1-"+j+"-1.png";
+            String imgL = j+".png";
             leadCardArray.get(j).setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(imgL))));
         }
     }
 
-
-    public void buildLeadCardArray(){
-
-    }
     @FXML
     void increasePos(ActionEvent event) {
         int posi=0;
@@ -352,73 +348,55 @@ public class GamePanel extends SceneHandler {
             view.setFitWidth(70);
         }
         hand.setPageFactory(handList::get);
+        resPlaces.add(res1);
+        resPlaces.add(res21);
+        resPlaces.add(res22);
+        resPlaces.add(res31);
+        resPlaces.add(res32);
+        resPlaces.add(res33);
+        hand.setMaxPageIndicatorCount(handList.size());
+        hand.setPageCount(handList.size());
+
     }
     @FXML
     public void moveRes(){
         hand.setOnDragDetected(event1 -> {
             Dragboard db = hand.startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();
-            content.putString("abbiamo trasferito la risorsa");
+            Image res = handList.get(hand.getCurrentPageIndex()).getImage();
+            content.putImage(res);
             db.setContent(content);
+            handList.remove(hand.getCurrentPageIndex());
             event1.consume();
         });
-    }
 
-    @FXML
-    public void acceptMove(){
-        res1.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.ANY);
-            dragEvent.consume();
-        });
-        res1.setOnDragDropped(dragEvent -> {
-            res1.setImage(handList.get(hand.getCurrentPageIndex()).getImage());
-            dragEvent.consume();
-        });
-        res21.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.ANY);
-            dragEvent.consume();
-        });
-        res21.setOnDragDropped(dragEvent -> {
-            res21.setImage(handList.get(hand.getCurrentPageIndex()).getImage());
-            dragEvent.consume();
-        });
-        res22.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.ANY);
-            dragEvent.consume();
-        });
-        res22.setOnDragDropped(dragEvent -> {
-            res22.setImage(handList.get(hand.getCurrentPageIndex()).getImage());
-            dragEvent.consume();
-        });
-        res31.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.ANY);
-            dragEvent.consume();
-        });
-        res31.setOnDragDropped(dragEvent -> {
-            res31.setImage(handList.get(hand.getCurrentPageIndex()).getImage());
-            dragEvent.consume();
-        });
-        res32.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.ANY);
-            dragEvent.consume();
-        });
-        res32.setOnDragDropped(dragEvent -> {
-            res32.setImage(handList.get(hand.getCurrentPageIndex()).getImage());
-            dragEvent.consume();
-        });
-        res33.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.ANY);
-            dragEvent.consume();
-        });
-        res33.setOnDragDropped(dragEvent -> {
-            res33.setImage(handList.get(hand.getCurrentPageIndex()).getImage());
-            dragEvent.consume();
-        });
+        for(ImageView warSpot: resPlaces){
+            warSpot.setOnDragOver(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    dragEvent.consume();
+                }
+
+            });
+        }
+
+        for(ImageView warSpot: resPlaces){
+            warSpot.setOnDragDropped(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    warSpot.setImage(dragEvent.getDragboard().getImage());
+                    fillHand(handList);
+                    hand.setMaxPageIndicatorCount(hand.getPageCount()-1);
+                    dragEvent.consume();
+                }
+            });
+        }
+
     }
 
     @FXML
     public void showMarket(ActionEvent actionEvent){
-
         marketPane.toFront();
         marketPane.setOpacity(1);
         goBack(boardPane);
@@ -427,8 +405,37 @@ public class GamePanel extends SceneHandler {
         devGridPane.toBack();
         devGridPane.setOpacity(0);
         mb00.setImage(yellowMarble);
+        mb10.setImage(redMarble);
+        mb20.setImage(yellowMarble);
+        mb30.setImage(redMarble);
         mb01.setImage(blueMarble);
-
+        mb11.setImage(greyMarble);
+        mb21.setImage(yellowMarble);
+        mb31.setImage(whiteMarble);
+        mb02.setImage(yellowMarble);
+        mb12.setImage(purpleMarble);
+        mb22.setImage(yellowMarble);
+        mb32.setImage(purpleMarble);
+        mbEx.setImage(whiteMarble);
+        marbles.add(mb00);
+        marbles.add(mb10);
+        marbles.add(mb20);
+        marbles.add(mb30);
+        marbles.add(mb01);
+        marbles.add(mb11);
+        marbles.add(mb21);
+        marbles.add(mb31);
+        marbles.add(mb02);
+        marbles.add(mb12);
+        marbles.add(mb22);
+        marbles.add(mb32);
+        marketSpots.add(col0);
+        marketSpots.add(col1);
+        marketSpots.add(col2);
+        marketSpots.add(col3);
+        marketSpots.add(row0);
+        marketSpots.add(row1);
+        marketSpots.add(row2);
     }
 
     @FXML
@@ -495,26 +502,44 @@ public class GamePanel extends SceneHandler {
         chooseCardPane.toBack();
         goFront(boardPane);
     }
-    @FXML
-    public void acceptMarbleMove(){
-        col0.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.MOVE);
-            dragEvent.consume();
-        });col0.setOnDragOver(dragEvent ->{
-            col0.setImage(dragEvent.getDragboard().getImage());
-            dragEvent.consume();
-        });
-    }
-    @FXML
-    public void moveMarble(){
-        mb00.setOnDragDetected(event1 -> {
-            Dragboard db = mb00.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putString("abbiamo trasferito la risorsa");
-            db.setContent(content);
-            event1.consume();
-        });
-    }
 
+
+    @FXML
+    public void moveMarble() {
+        for(ImageView m: marbles){
+            m.setOnDragDetected(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Dragboard db = m.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(m.getImage());
+                db.setContent(content);
+                event.consume();
+            }
+        });}
+
+        for(ImageView s: marketSpots){
+            s.setOnDragOver(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    dragEvent.consume();
+                }
+
+            });
+        }
+
+        for(ImageView s: marketSpots){
+            s.setOnDragDropped(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    s.setImage(dragEvent.getDragboard().getImage());
+                }
+            });
+        }
+
+
+
+    }
 
 }
