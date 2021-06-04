@@ -6,7 +6,6 @@ import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitialResourcesAmo
 public interface ToClientMessageVisitor {
     void visit(CreateGame createGame);
     void visit(ErrorMessage errorMessage);
-    void visit(WaitGameCreation waitGameCreation);
     void visit(GameUpdate gameUpdate);
     void visit(GameIsFull gameIsFull);
     void visit(AskWhiteMarble askWhiteMarble);

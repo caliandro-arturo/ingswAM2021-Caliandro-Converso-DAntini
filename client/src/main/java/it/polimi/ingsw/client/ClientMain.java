@@ -42,7 +42,7 @@ public class ClientMain {
                     }
                 }
             } catch (IOException e) {
-                System.err.println("Closing client..");
+                System.err.println("Closing client...");
                 System.exit(1);
             }
         } while (!isRunning);
@@ -50,7 +50,7 @@ public class ClientMain {
             ui.run();
         } catch (Exception ignore) {
         }
-        System.err.println("Closing client..");
+        System.err.println("Closing client...");
         System.exit(0);
     }
 

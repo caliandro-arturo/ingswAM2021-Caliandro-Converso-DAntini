@@ -16,4 +16,6 @@ public interface ToServerMessageHandler {
     void visit(ChooseWhiteMarble chooseWhiteMarble);
     void visit(Back back);
     void visit(DiscardRes discardRes);
+    void visit(GamesList gamesList);
+    void visit(JoinGame joinGame);
 }

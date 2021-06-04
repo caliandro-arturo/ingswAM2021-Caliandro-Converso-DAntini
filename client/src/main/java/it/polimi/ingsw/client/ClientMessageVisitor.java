@@ -33,11 +33,6 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
     }
 
     @Override
-    public void visit(WaitGameCreation msg) {
-        controller.showUpdate("waitgamecreation");
-    }
-
-    @Override
     public void visit(WaitGameStart waitGameStart) {
         controller.showUpdate("waitgamestart");
     }

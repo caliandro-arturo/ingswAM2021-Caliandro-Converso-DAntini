@@ -4,6 +4,10 @@ import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
 import javafx.application.Platform;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class GUIView extends View {
 
 
@@ -43,6 +47,11 @@ public class GUIView extends View {
     @Override
     public void setNick(String[] commandSlice) {
         getController().sendMessage(new SetNickname(commandSlice[0]));
+    }
+
+    @Override
+    public void joinGame(String[] commandSlice) {
+
     }
 
     @Override
@@ -126,6 +135,11 @@ public class GUIView extends View {
     }
 
     @Override
+    public void showGamesList(List<String> lobbiesName, List<Integer> lobbiesCurrentConnectedClientsNumber, List<Integer> lobbiesMaxPlayersNum) {
+
+    }
+
+    @Override
     public void showTablePosition(int position) {
 
     }
@@ -133,6 +147,11 @@ public class GUIView extends View {
     @Override
     public void showNicknameSet() {
         Platform.runLater(() -> App.out.setText("Your nickname has been set."));
+    }
+
+    @Override
+    public void showGameJoined() {
+
     }
 
     @Override

@@ -1,15 +1,22 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.commonFiles.messages.toClient.CreateGame;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
+import it.polimi.ingsw.commonFiles.messages.toClient.GameRejoin;
+import it.polimi.ingsw.commonFiles.messages.toClient.WaitGameStart;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.PlayerLeft;
+import it.polimi.ingsw.commonFiles.messages.toServer.GamesList;
+import it.polimi.ingsw.commonFiles.messages.toServer.JoinGame;
+import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
 import it.polimi.ingsw.commonFiles.network.SocketManager;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Handles the connection with the client, and represents him in the virtual view.
@@ -18,14 +25,12 @@ public class ClientHandler extends SocketManager implements Runnable {
     private final ServerMain serverMain;
     private String player;
     private final Socket socket;
-    private final VirtualView virtualView;
+    private VirtualView virtualView;
 
-    public ClientHandler(ServerMain serverMain, Socket socket, VirtualView virtualView) throws IOException {
+    public ClientHandler(ServerMain serverMain, Socket socket) throws IOException {
         super(socket);
         this.serverMain = serverMain;
         this.socket = socket;
-        this.virtualView = virtualView;
-        virtualView.addToWaitingList(this);
     }
 
     public String getPlayer() {
@@ -34,6 +39,10 @@ public class ClientHandler extends SocketManager implements Runnable {
 
     public void setPlayerName(String nickname) {
         this.player = nickname;
+    }
+
+    public void setVirtualView(VirtualView virtualView) {
+        this.virtualView = virtualView;
     }
 
     public void run() {
@@ -45,13 +54,14 @@ public class ClientHandler extends SocketManager implements Runnable {
             String name;
             if (player != null) {
                 name = player;
-                virtualView.sendMessage(new PlayerLeft(name));
             } else
                 name = Integer.toString(socket.getPort());
             System.err.println(name + " left.");
         }
         setConnected(false);
-        virtualView.remove(this);
+        if (virtualView != null)
+            virtualView.remove(this);
+        serverMain.getConnectedClients().replace(player, false);
         shutdown();
     }
 
@@ -59,28 +69,142 @@ public class ClientHandler extends SocketManager implements Runnable {
         return socket;
     }
 
-    public void reassign() {
-        serverMain.reinsertToTheFirstFreeVirtualView(this);
-        if (player == null) {
-            //todo fix nickname request
-        } else  try {
-            sendMessage(new CreateGame());
-        } catch (IOException e) {
-            e.printStackTrace();
+    @Override
+    public void readMessage(Message message) {
+        if (virtualView == null) {
+            if (message instanceof SetNickname) {
+                setNickname((SetNickname) message);
+            } else if (player == null) {
+                try {
+                    sendMessage(new ErrorMessage( "You must create a player first."));
+                } catch (IOException ignore) {
+                }
+            } else if (message instanceof GamesList) {
+                sendGamesList((GamesList) message);
+            } else if (message instanceof JoinGame) {
+                addPlayerToLobby((JoinGame) message);
+            } else if (message instanceof SetGame) {
+                createGame((SetGame) message);
+            }
+        }
+        else virtualView.readMessage(message);
+    }
+
+    /**
+     * Sets the player's nickname. If the player was previously added in a game, then he is re-added to that game.
+     *
+     * @param setNickname the nickname to set
+     */
+    private void setNickname(SetNickname setNickname) {
+        String nickname = setNickname.getNickname();
+        ConcurrentHashMap<String, Boolean> connectedClients = serverMain.getConnectedClients();
+        synchronized (connectedClients) {
+            Optional<Boolean> playerIsConnected = Optional.ofNullable(serverMain.getConnectedClients().get(nickname));
+            playerIsConnected.ifPresentOrElse(i -> {
+                        if (i) {
+                            try {
+                                sendMessage(new ErrorMessage( "This nickname is already used."));
+                            } catch (IOException ignore) {
+                            }
+                        } else {
+                            Optional<VirtualView> virtualView = Optional.ofNullable(serverMain.getClientToLobbyMap().get(nickname));
+                            virtualView.ifPresentOrElse(
+                                    v -> {
+                                        v.reAddPlayer(nickname, this);
+                                        this.virtualView = v;
+                                        serverMain.getConnectedClients().replace(nickname, true);
+                                        v.sendMessage(new GameRejoin(nickname));
+                                    },
+                                    () -> {
+                                        player = nickname;
+                                        serverMain.getConnectedClients().put(nickname, true);
+                                        try {
+                                            sendMessage(setNickname);
+                                        } catch (IOException e) {
+                                            serverMain.getConnectedClients().remove(nickname);
+                                        }
+                            }
+                            );
+                        }
+                    },
+                    () -> {
+                        player = nickname;
+                        serverMain.getConnectedClients().put(nickname, true);
+                        try {
+                            sendMessage(setNickname);
+                        } catch (IOException e) {
+                            serverMain.getConnectedClients().remove(nickname);
+                        }
+                    }
+            );
         }
     }
 
-    @Override
-    public void readMessage(Message message) {
-        if (message instanceof SetNickname)
-            ((SetNickname) message).setClient(this);
-        else if (player == null) {
+    /**
+     * Sends the free games list to the player.
+     */
+    private void sendGamesList(GamesList gamesList) {
+        List<VirtualView> views = serverMain.getFreeVirtualViews();
+        synchronized (views) {
+            views.forEach(v -> gamesList.addLobby(v.getName(), v.connectedClients(), v.maxPlayersNumber()));
             try {
-                sendMessage(new ErrorMessage(message, "You must create a player first."));
+                sendMessage(gamesList);
+            } catch (IOException ignore) {
+            }
+        }
+    }
+
+    private void addPlayerToLobby(JoinGame joinGame) {
+        String lobbyName = joinGame.getGameName();
+        Optional<VirtualView> lobby = serverMain.getVirtualView(lobbyName);
+        lobby.ifPresentOrElse(
+                l -> {
+                    if (l.isFull())
+                        try {
+                            sendMessage(new ErrorMessage("This game is full."));
+                        } catch (IOException ignore) {
+                        }
+                    else  {
+                        l.addPlayer(player, this);
+                        virtualView = l;
+                        try {
+                            sendMessage(joinGame);
+                        } catch (IOException ignore) {
+                        }
+                        if (l.isFull())
+                            l.getController().startGame();
+                        else try {
+                            sendMessage(new WaitGameStart());
+                        } catch (IOException ignore) {
+                        }
+                    }
+                },
+                () -> {
+                    try {
+                        sendMessage(new ErrorMessage("There is no game called " + lobbyName + "."));
+                    } catch (IOException ignore) {
+                    }
+                }
+        );
+    }
+
+    private void createGame(SetGame setGame) {
+        VirtualView view = new VirtualView(serverMain, player);
+        try {
+            view.getController().createGame(setGame);
+        } catch (IllegalArgumentException e) {
+            try {
+                sendMessage(new ErrorMessage(e.getMessage()));
             } catch (IOException ignore) {
             }
             return;
         }
-        virtualView.readMessage(message);
+        view.addPlayer(player, this);
+        virtualView = view;
+        serverMain.addVirtualView(view);
+        try {
+            sendMessage(setGame);
+        } catch (IOException ignore) {
+        }
     }
 }

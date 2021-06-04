@@ -1,17 +1,12 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.commonFiles.messages.toClient.CreateGame;
-import it.polimi.ingsw.commonFiles.messages.toClient.GameIsFull;
-import it.polimi.ingsw.commonFiles.messages.toClient.WaitGameCreation;
-import it.polimi.ingsw.commonFiles.messages.toClient.WaitGameStart;
+import it.polimi.ingsw.commonFiles.messages.toClient.*;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.NewPlayer;
-import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
-import it.polimi.ingsw.server.model.GameException;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.PlayerLeft;
 import it.polimi.ingsw.server.model.Player;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.*;
 
 /**
@@ -19,20 +14,27 @@ import java.util.*;
  * messages.
  */
 public class VirtualView {
+    private final String name;
     private final ServerMain serverMain;
     private final Controller controller = new Controller(this);
-    private Socket firstPlayer;
-    private final List<ClientHandler> waitingList = new ArrayList<>();
     private final HashMap<String, ClientHandler> clientMap = new LinkedHashMap<>();
     private boolean hasBeenSet = false;
 
-    public VirtualView(ServerMain serverMain, Socket firstPlayer) {
+    public VirtualView(ServerMain serverMain, String name) {
         this.serverMain = serverMain;
-        this.firstPlayer = firstPlayer;
+        this.name = name;
     }
 
     public HashMap<String, ClientHandler> getClientMap() {
         return clientMap;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Controller getController() {
+        return controller;
     }
 
     /**
@@ -55,42 +57,26 @@ public class VirtualView {
     }
 
     /**
-     * Checks if the nickname is still available.
-     *
-     * @param nickname the nickname to check
-     * @return {@code true} if the nickname is still available; {@code false} otherwise
-     */
-    public boolean isNickAvailable(String nickname) {
-        return clientMap.keySet().stream().noneMatch(nickname::equalsIgnoreCase);
-    }
-
-    /**
      * Checks if the game is full.
      *
      * @return {@code true} if the game is full; {@code false} otherwise
      */
     public boolean isFull() {
-        if (hasBeenSet) return clientMap.keySet().size() + waitingList.size() >= controller.gamePlayersNum();
-        else return clientMap.keySet().size() + waitingList.size() == 4;
-    }
-
-    /**
-     * Checks if the player is the first player in the virtual view.
-     *
-     * @param player the player to check
-     * @return {@code true} if the player is the first player; {@code false} otherwise
-     */
-    public boolean isTheFirstPlayer(String player) {
-        return clientMap.get(player).getSocket().equals(firstPlayer);
+        return maxPlayersNumber() == connectedClients();
     }
 
     /**
      * Returns the number of clients connected to this virtual view.
-     *
-     * @return the number of connected clients
      */
     public int connectedClients() {
-        return clientMap.keySet().size() + waitingList.size();
+        return clientMap.keySet().size();
+    }
+
+    /**
+     * Returns the expected number of players in the game.
+     */
+    public int maxPlayersNumber() {
+        return controller.gamePlayersNum();
     }
 
     public void setHasBeenSet(boolean hasBeenSet) {
@@ -98,91 +84,38 @@ public class VirtualView {
     }
 
     /**
-     * Adds the client to {@link VirtualView#waitingList}.
+     * Creates the player for the client.
      *
-     * @param client the client to add in {@link VirtualView#waitingList}
+     * @param nickname the message that the client sent to set the nickname
      */
-    public synchronized void addToWaitingList(ClientHandler client) {
-        waitingList.add(client);
-        notify();
-    }
-
-    /**
-     * Creates the player for the client and removes it from {@link VirtualView#waitingList}.
-     *
-     * @param setNickname the message that the client sent to set the nickname
-     * @throws GameException.NicknameAlreadyTaken if the nickname has been already taken by another player
-     */
-    public void createPlayer(SetNickname setNickname) throws GameException.NicknameAlreadyTaken {
-        String nickname = setNickname.getNickname();
-        ClientHandler clientHandler = (ClientHandler)setNickname.getClient();
-        if (!isNickAvailable(nickname))
-            throw new GameException.NicknameAlreadyTaken();
-        waitingList.remove(clientHandler);
+    public void addPlayer(String nickname, ClientHandler clientHandler) {
         clientMap.put(nickname, clientHandler);
-        setNickname.setClient(null);
-        clientHandler.setPlayerName(nickname);
-        sendMessage(nickname, setNickname);
+        serverMain.getClientToLobbyMap().put(nickname, this);
         sendMessageToOthers(nickname, new NewPlayer(nickname));
-        if (!hasBeenSet) {
-            if (clientHandler.getSocket().equals(firstPlayer))
-                sendMessage(nickname, new CreateGame());
-            else if (!hasBeenSet)
-                sendMessage(nickname, new WaitGameCreation());
-            else
-                sendMessage(nickname, new WaitGameStart());
-        } else {
-            if (isFull())
-                controller.startGame();
-        }
+        if (isFull()) controller.startGame();
+    }
+
+    public void reAddPlayer(String nickname, ClientHandler clientHandler) {
+        clientMap.replace(nickname, clientHandler);
+        controller.getPlayer(nickname).setConnected(true);
     }
 
     /**
-     * Removes a client from this virtual view (from {@link VirtualView#waitingList} or from {@link
-     * VirtualView#clientMap}. If the client to remove is the firstPlayer, replaces firstPlayer value with the socket of
-     * the first next client that has entered the virtualView.
+     * Removes a client from this virtual view.
      *
      * @param client the client to remove
      */
     public synchronized void remove(ClientHandler client) {
         if (controller.isGameStarted()) {
             controller.getPlayer(client.getPlayer()).setConnected(false);
-            return;
+            clientMap.replace(client.getPlayer(), null);
+        } else {
+            clientMap.remove(client.getPlayer());
+            serverMain.getClientToLobbyMap().remove(client.getPlayer());
         }
-        if (!waitingList.remove(client)) clientMap.remove(client.getPlayer());
-        if (client.getSocket().equals(firstPlayer)) {
-            Optional<Map.Entry<String, ClientHandler>> nextFirstPlayer = clientMap.entrySet().stream().findFirst();
-            if (nextFirstPlayer.isPresent()) {
-                firstPlayer = nextFirstPlayer.get().getValue().getSocket();
-                sendMessage(nextFirstPlayer.get().getValue(), new CreateGame());
-            } else {
-                try {
-                    while (waitingList.isEmpty()) wait();
-                } catch (InterruptedException e) {
-                    System.err.println("In remove() of virtualview: " + e.getMessage());
-                    return;
-                }
-                firstPlayer = waitingList.get(0).getSocket();
-            }
-        }
-    }
-
-    /**
-     * Removes the clients present in {@link VirtualView#clientMap} or in {@link VirtualView#waitingList} if there is no
-     * place for them in the game.
-     *
-     * @param expectedNumberOfClients the number of players allowed in this virtual view
-     */
-    public synchronized void removeExtraClients(int expectedNumberOfClients) {
-        ArrayList<ClientHandler> players = new ArrayList<>(clientMap.values());
-        players.addAll(waitingList);
-        while (connectedClients() > expectedNumberOfClients) {
-            ClientHandler playerToRemove = players.get(expectedNumberOfClients);
-            sendMessage(playerToRemove, new GameIsFull());
-            remove(playerToRemove);
-            playerToRemove.reassign();
-            players.remove(playerToRemove);
-        }
+        sendMessageToOthers(client.getPlayer(), new PlayerLeft(client.getPlayer()));
+        if (clientMap.isEmpty() || clientMap.values().stream().noneMatch(Objects::nonNull))
+            serverMain.removeVirtualView(this);
     }
 
     /**
@@ -209,10 +142,10 @@ public class VirtualView {
     }
 
     public void sendMessage(ClientHandler client, Message message) {
-        try {
+        if (client != null) try {
             client.sendMessage(message);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Problem when sending messages to " + client.getPlayer() + ": " + e.getMessage());
         }
     }
 
