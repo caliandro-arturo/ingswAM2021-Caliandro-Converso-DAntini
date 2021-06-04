@@ -23,7 +23,6 @@
 }
 
 .anchor-pane{
-    -fx-background-color: linear-gradient(#c6c3b7, #858e92);
 
 }
 .table-view{
@@ -44,14 +43,13 @@
 
 }
 .split-pane{
-    -fx-background-color: linear-gradient(#6a661b, #d9b87c);
+    -fx-background-image: url('../png/back.png');
+    -fx-background-repeat: repeat;
 }
 .accordion{
     fx-background-color: linear-gradient(#908b30, #dbd6c3);
     -fx-font-size: 16;
     -fx-border-width: 5;
-    -fx-border-color: #908b30;
-    -fx-border-radius: 15px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
     -fx-font-family: Harrington;
 }
@@ -61,5 +59,12 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
     -fx-font-family: Harrington;
 }
+.root{
+    -fx-background-image: url('../png/back.png');
+    -fx-background-repeat: repeat;
+}
+#labelLeaderCards{
+    -fx-effect: dropshadow(three-pass-box, rgba(243, 235, 233, 0.6), 25, 0.85, 10, 10);
 
+}
 

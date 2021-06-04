@@ -25,24 +25,24 @@
 
 <BorderPane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.GamePanel">
    <center>
-      <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="927.0" BorderPane.alignment="CENTER">
+      <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="699.0" prefWidth="927.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="marketPane" layoutX="700.0" layoutY="200.0" prefHeight="574.0" prefWidth="911.0" StackPane.alignment="CENTER">
+            <Pane fx:id="marketPane" layoutX="700.0" layoutY="200.0" prefHeight="626.0" prefWidth="792.0" StackPane.alignment="CENTER">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dc2121" height="507.0" layoutX="362.0" layoutY="72.0" stroke="BLACK" strokeType="INSIDE" width="358.0" />
-                  <ImageView fx:id="marketView" fitHeight="453.0" fitWidth="343.0" layoutX="370.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dc2121" height="507.0" layoutX="285.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="358.0" />
+                  <ImageView fx:id="marketView" fitHeight="453.0" fitWidth="343.0" layoutX="293.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
                      <image>
                         <Image url="@../png/market.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="buy" layoutX="661.0" layoutY="412.0" mnemonicParsing="false" onAction="#buyResources" text="Buy" />
-                  <ImageView fx:id="mbEx" fitHeight="40.0" fitWidth="40.0" layoutX="609.0" layoutY="191.0" onDragDetected="#moveMarble" pickOnBounds="true" preserveRatio="true" />
-                  <Label layoutX="379.0" layoutY="74.0" prefHeight="52.0" prefWidth="330.0" text="Choose a row or a column">
+                  <Button fx:id="buy" layoutX="584.0" layoutY="436.0" mnemonicParsing="false" onAction="#buyResources" text="Buy" />
+                  <ImageView fx:id="mbEx" fitHeight="40.0" fitWidth="40.0" layoutX="532.0" layoutY="215.0" onDragDetected="#moveMarble" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="302.0" layoutY="98.0" prefHeight="52.0" prefWidth="330.0" text="Choose a row or a column">
                      <font>
                         <Font name="Harrington" size="25.0" />
                      </font>
                   </Label>
-                  <GridPane fx:id="marketTray" layoutX="468.0" layoutY="231.0" prefHeight="151.0" prefWidth="196.0">
+                  <GridPane fx:id="marketTray" layoutX="391.0" layoutY="255.0" prefHeight="151.0" prefWidth="196.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -82,8 +82,8 @@
             </Pane>
             <Pane fx:id="chooseCardPane" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#72d1e4" height="470.0" layoutX="154.0" layoutY="82.0" stroke="BLACK" strokeType="INSIDE" width="756.0" />
-                  <GridPane layoutX="164.0" layoutY="180.0" prefHeight="292.0" prefWidth="731.0">
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#72d1e4" height="470.0" layoutX="86.0" layoutY="115.0" stroke="BLACK" strokeType="INSIDE" width="756.0" />
+                  <GridPane layoutX="96.0" layoutY="213.0" prefHeight="292.0" prefWidth="731.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -100,8 +100,8 @@
                         <ImageView fx:id="leadCard4" fitHeight="290.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
                      </children>
                   </GridPane>
-                  <Button layoutX="785.0" layoutY="498.0" mnemonicParsing="false" onAction="#chooseCard" prefHeight="40.0" prefWidth="101.0" text="Choose cards" />
-                  <Label layoutX="288.0" layoutY="103.0" prefHeight="52.0" prefWidth="489.0" text="Choose here 2 of the 4 leader cards avaiable ">
+                  <Button layoutX="717.0" layoutY="531.0" mnemonicParsing="false" onAction="#chooseCard" prefHeight="40.0" prefWidth="101.0" text="Choose cards" />
+                  <Label layoutX="220.0" layoutY="136.0" prefHeight="52.0" prefWidth="489.0" text="Choose here 2 of the 4 leader cards avaiable ">
                      <font>
                         <Font name="Harrington" size="25.0" />
                      </font>
@@ -110,8 +110,8 @@
             </Pane>
             <Pane fx:id="devGridPane" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1fff9b" height="668.0" layoutX="215.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="663.0" />
-                  <GridPane layoutX="241.0" layoutY="77.0" prefHeight="577.0" prefWidth="612.0">
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1fff9b" height="668.0" layoutX="132.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="663.0" />
+                  <GridPane layoutX="158.0" layoutY="67.0" prefHeight="577.0" prefWidth="612.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -138,12 +138,12 @@
                         <ImageView fx:id="devcard32" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
-                  <Label layoutX="237.0" layoutY="35.0" prefHeight="17.0" prefWidth="621.0" text="These are the development cards. ">
+                  <Label layoutX="154.0" layoutY="25.0" prefHeight="17.0" prefWidth="621.0" text="These are the development cards. ">
                      <font>
                         <Font name="Harrington" size="25.0" />
                      </font>
                   </Label>
-                  <Button fx:id="buyCardButton" layoutX="789.0" layoutY="663.0" mnemonicParsing="false" onAction="#buyCard" prefHeight="25.0" prefWidth="82.0" text="Buy" />
+                  <Button fx:id="buyCardButton" layoutX="706.0" layoutY="653.0" mnemonicParsing="false" onAction="#buyCard" prefHeight="25.0" prefWidth="82.0" text="Buy" />
                </children>
             </Pane>
             <Pane fx:id="boardPane">
@@ -154,7 +154,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="674.0" prefWidth="923.0">
                                  <children>
-                                    <ImageView fx:id="boardImg" fitHeight="723.0" fitWidth="937.0" layoutX="-8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-20.0" AnchorPane.leftAnchor="-8.0" AnchorPane.topAnchor="0.0">
+                                    <ImageView fx:id="boardImg" fitHeight="708.0" fitWidth="937.0" layoutX="-8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="-8.0" AnchorPane.topAnchor="0.0">
                                        <image>
                                           <Image url="@../png/board.png" />
                                        </image>
@@ -204,9 +204,9 @@
       </StackPane>
    </center>
    <right>
-      <SplitPane dividerPositions="0.7074175824175825" orientation="VERTICAL" prefHeight="730.0" prefWidth="244.0" stylesheets="@../css/gamepanel.css" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.7074175824175825" orientation="VERTICAL" prefHeight="730.0" prefWidth="250.0" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="519.0" prefWidth="278.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="512.0" prefWidth="250.0">
                <children>
                   <Pagination fx:id="hand" layoutX="19.0" layoutY="134.0" maxPageIndicatorCount="0" onDragDetected="#moveRes" pageCount="0" prefHeight="151.0" prefWidth="204.0" />
                   <Button fx:id="handButton" layoutX="100.0" layoutY="303.0" mnemonicParsing="false" onAction="#slideRes" text="hand" />
@@ -270,4 +270,17 @@
    <top>
       <TitledPane prefHeight="23.0" prefWidth="1171.0" text="Masters of Renaissance" BorderPane.alignment="CENTER" />
    </top>
+   <left>
+      <Pane prefHeight="200.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="activeLeaderCard1" fitHeight="260.0" fitWidth="200.0" layoutX="25.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="activeLeaderCard2" fitHeight="260.0" fitWidth="200.0" layoutX="25.0" layoutY="441.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="labelLeaderCards" layoutX="56.0" layoutY="154.0" prefHeight="27.0" prefWidth="139.0" text="Leader Cards:">
+               <font>
+                  <Font name="Harrington" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </left>
 </BorderPane>

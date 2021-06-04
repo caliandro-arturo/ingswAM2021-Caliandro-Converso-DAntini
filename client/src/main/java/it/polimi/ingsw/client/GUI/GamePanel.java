@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -20,11 +22,13 @@ import java.net.URL;
 import java.util.*;
 
 public class GamePanel extends SceneHandler {
-    @FXML
-    TextField text;
+
     int pos = 1;
     int posB = 1;
 
+    /**
+     * list of FXML item on the board
+     */
     @FXML
     private BorderPane mainPane;
 
@@ -229,6 +233,12 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Button handButton;
 
+    @FXML
+    private ImageView activeLeaderCard1;
+
+    @FXML
+    private ImageView activeLeaderCard2;
+
     private Image blueMarble;
     private Image greyMarble;
     private Image purpleMarble;
@@ -240,18 +250,32 @@ public class GamePanel extends SceneHandler {
     private Image shield;
     private Image stone;
 
-    private ArrayList<ImageView> handList;
 
+    private ArrayList<ImageView> handListImg;
+
+    /**
+     * data structures with the imageView for the images in the board
+     * they represents the empty spots in the board
+     */
     private ArrayList<ImageView> resSpots;
     private ImageView[][] marketSpots;
     private ArrayList<ImageView> leaderCardSpots;
     private ImageView[][] devCardSpots;
     private ArrayList<ImageView> marketReinsertSpots;
 
-
+    /**
+     * map for resource and marbles.
+     * color of the marble match with the relative image
+     * resource match with the relative image
+     */
     private HashMap<Color, Image> colorImageMap;
     private HashMap<Resource, Image> resourceImageMap;
 
+    /**
+     * initialization of the images and the data structure used to collect similar objects
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
@@ -266,7 +290,7 @@ public class GamePanel extends SceneHandler {
         serf = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/serf.png")));
         shield = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/shield.png")));
         stone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/stone.png")));
-        handList = new ArrayList<>();
+        handListImg = new ArrayList<>();
         resSpots = new ArrayList<>(Arrays.asList(res1, res21, res22, res31, res32, res33));
         marketReinsertSpots = new ArrayList<>(Arrays.asList(row0, row1, row2, col0, col1, col2, col3));
         marketSpots = new ImageView[][]{
@@ -317,10 +341,23 @@ public class GamePanel extends SceneHandler {
      */
     public void setHandList(ArrayList<Resource> hand){
         for(Resource res: hand){
-            handList.add(new ImageView(resourceImageMap.get(res)));
+            handListImg.add(new ImageView(resourceImageMap.get(res)));
         }
     }
 
+    /**
+     * setter for the active leader card images
+     * @param cardID
+     */
+    public void setActiveLeaderCard(int cardID){
+        if(activeLeaderCard1.getImage()==null){
+            activeLeaderCard1.setImage(getCardPng(cardID));
+        }
+        else if(activeLeaderCard2.getImage()== null){
+            activeLeaderCard2.setImage(getCardPng(cardID));
+        }
+        //TODO : else error message FULL ACTIVE LEADER CARDS
+    }
     /**
      * requires as a parameter the marble tray of the market and set the marketSpots
      * so the market is set with the relatives marbles Images
@@ -334,18 +371,23 @@ public class GamePanel extends SceneHandler {
         }
         mbEx.setImage(colorImageMap.get(exMarble.getColor()));
     }
+
     /**
      * can be used to get the card image for giving the cardId as a parameter
      * @param cardId
      * @return
      */
-
     public Image getCardPng(int cardId){
         return new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/"+cardId+".png")));
     }
 
+    /**
+     * increase the position of the cross in the GUI
+     * @param event
+     */
     @FXML
     void increasePos(ActionEvent event) {
+        //TODO: needs to be activated NOT with a button, but updated with a faith resource
         int posi=0;
         ImageView newCross = null;
         if(event.getSource() == blackButton){
@@ -377,6 +419,10 @@ public class GamePanel extends SceneHandler {
 
     }
 
+    /**
+     * check the position and set the relative tile visiblle
+     * @param pos
+     */
     public void checkTile(int pos){
         if(pos == 9)
             tile2.setOpacity(100);
@@ -386,6 +432,10 @@ public class GamePanel extends SceneHandler {
             tile4.setOpacity(100);
     }
 
+    /**
+     * utility methods to move the cross in the faith track
+     * @param img
+     */
     public void moveUp(ImageView img){
         img.setLayoutY(img.getLayoutY()-46);
     }
@@ -396,13 +446,19 @@ public class GamePanel extends SceneHandler {
         img.setLayoutY(img.getLayoutY()+46);
     }
 
+
     @FXML
     public void slideRes(ActionEvent event){
-        if(!handList.isEmpty()){
-            fillHand(handList);
+        //TODO: needs to be activated NOT with a button, but in the end of each market usage
+        if(!handListImg.isEmpty()){
+            fillHand(handListImg);
         }
     }
 
+    /**
+     * fill the hands with the relative resource images in the pagination
+     * @param handList
+     */
     public void fillHand(ArrayList<ImageView> handList){
         for (ImageView view : handList) {
             view.setFitHeight(70);
@@ -413,17 +469,20 @@ public class GamePanel extends SceneHandler {
         }else
             hand.setPageFactory(null);
         hand.setPageCount(handList.size());
-
     }
+
+    /**
+     * methods implementing the drag and drop from handListImg to the spots of the warehouse
+     */
     @FXML
     public void moveRes(){
         hand.setOnDragDetected(event1 -> {
             Dragboard db = hand.startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();
-            Image res = handList.get(hand.getCurrentPageIndex()).getImage();
+            Image res = handListImg.get(hand.getCurrentPageIndex()).getImage();
             content.putImage(res);
             db.setContent(content);
-            handList.remove(hand.getCurrentPageIndex());
+            handListImg.remove(hand.getCurrentPageIndex());
             event1.consume();
         });
 
@@ -442,8 +501,9 @@ public class GamePanel extends SceneHandler {
             warSpot.setOnDragDropped(new EventHandler<DragEvent>() {
                 @Override
                 public void handle(DragEvent dragEvent) {
+                    //TODO: needs to add the legitimacy of the moves in the spots of the warehouse store
                     warSpot.setImage(dragEvent.getDragboard().getImage());
-                    fillHand(handList);
+                    fillHand(handListImg);
                     dragEvent.consume();
                 }
             });
@@ -451,10 +511,15 @@ public class GamePanel extends SceneHandler {
 
     }
 
+    /**
+     * shows the Market pane on the click of the relative button
+     * @param actionEvent
+     */
     @FXML
     public void showMarket(ActionEvent actionEvent){
         goFront(marketPane);
 
+        //temporary initialization of the marbles in the market
         mb00.setImage(yellowMarble);
         mb10.setImage(redMarble);
         mb20.setImage(yellowMarble);
@@ -470,16 +535,30 @@ public class GamePanel extends SceneHandler {
         mbEx.setImage(whiteMarble);
     }
 
+    /**
+     * shows the Dev Grid pane on the click of the relative button
+     * @param event
+     */
     @FXML
     void showDevGrid(ActionEvent event) {
         goFront(devGridPane);
     }
 
+    /**
+     * shows the initial phase of the choose of the 2 leader cards
+     * @param actionEvent
+     */
     @FXML
     public void showChooseCards(ActionEvent actionEvent){
+        //TODO: should be activated only in the initial phase and not with the button
         goFront(chooseCardPane);
     }
 
+    /**
+     * utility method to show in the front the pane gave as a parameter
+     * and disable the other panes in the back
+     * @param pane
+     */
     public void goFront(Pane pane){
         for(int i=0; i<stackPane.getChildren().size(); i++){
             if(!stackPane.getChildren().get(i).equals(pane)){
@@ -491,33 +570,46 @@ public class GamePanel extends SceneHandler {
         handButton.setDisable(true);
         boardPane.toFront();
         boardPane.setDisable(true);
-        boardPane.setOpacity(0.5);
+        boardPane.setEffect(new GaussianBlur());
         pane.toFront();
         pane.setOpacity(1);
         pane.setDisable(false);
 
     }
 
+    /**
+     * utility method to close the pane and bring to front the Board pane again
+     */
     public void closePopUp(){
         boardPane.toFront();
         boardPane.setOpacity(1);
         boardPane.setDisable(false);
+        boardPane.setEffect(null);
         handButton.setDisable(false);
     }
+
+
     @FXML
     public void buyResources(ActionEvent actionEvent) {
         closePopUp();
+        //TODO: add here the message
     }
+
     @FXML
     public void buyCard(ActionEvent event){
         closePopUp();
+        //TODO: add here the message
     }
+
     @FXML
     public void chooseCard(ActionEvent actionEvent){
         closePopUp();
+        //TODO: add here the message
     }
 
-
+    /**
+     * methods implementing the drag and drop in the reinsert phase of the extra marble
+     */
     @FXML
     public void moveMarble() {
                 mbEx.setOnDragDetected(event -> {
