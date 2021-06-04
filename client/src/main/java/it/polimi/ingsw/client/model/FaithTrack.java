@@ -36,6 +36,10 @@ public class FaithTrack {
         this.positionB = positionB;
     }
 
+    public void addLorenzoPositionByOne(){
+        positionB++;
+    }
+
     /**
      * representation method FaithTrack (CLI)
      * @return String with the representation

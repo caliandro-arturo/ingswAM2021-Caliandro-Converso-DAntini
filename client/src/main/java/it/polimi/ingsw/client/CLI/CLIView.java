@@ -342,6 +342,11 @@ public class CLIView extends View {
             System.err.println("Invalid resource");
     }
 
+    @Override
+    public void showLorenzoAction(String announcement) {
+        System.out.println(CLIColor.ANSI_GREEN + announcement + CLIColor.ANSI_RESET);
+    }
+
     /**
      * this methods handles the calling for the player command setnick
      * @param commandSlice command by the player
@@ -400,14 +405,14 @@ public class CLIView extends View {
             if (ID < 0)
                 throw new IllegalArgumentException("Invalid ID");
             if (ID == 0) {
-                elements = arguments[3].split("\\s*");
+                elements = arguments[3].split("\\s");
                 for (String element : elements) {
                     cost.add(Integer.parseInt(element));
                 }
-                elements = arguments[1].split("\\s*");
+                elements = arguments[1].split("\\s");
                 getController().sendMessage(new StartProduction(ID, cost, arguments[2], elements));
             } else if (ID <= 3) {
-                elements = arguments[1].split("\\s*");
+                elements = arguments[1].split("\\s");
                 for (String element : elements) {
                     cost.add(Integer.parseInt(element));
                 }
@@ -438,7 +443,7 @@ public class CLIView extends View {
             level = Integer.parseInt(arguments[0]);
             color = arguments[1];
             space = Integer.parseInt(arguments[2]);
-            arguments = arguments[3].split("\\s*");
+            arguments = arguments[3].split("\\s");
             for (String argument : arguments) {
                 stores.add(Integer.parseInt(argument));
             }

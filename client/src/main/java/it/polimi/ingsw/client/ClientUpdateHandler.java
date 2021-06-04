@@ -260,6 +260,28 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             showUpdate("newplayer", gameRejoin.getPlayer());
     }
 
+    @Override
+    public void visit(LorenzoPosition msg) {
+        model.getBoard().getFaithTrack().addLorenzoPositionByOne();
+    }
+
+    @Override
+    public void visit(LorenzoPick msg) {
+        switch (msg.getAction()) {
+            case "TWOPOSITIONS" -> {
+                showUpdate("lorenzoaction", "Lorenzo goes two positions ahead");
+            }
+            case "ONEPOSITIONRESET" -> {
+                showUpdate("lorenzoaction", "Lorenzo goes one position ahead");
+            }
+            default -> {
+                Color color = Utility.mapColor.get(msg.getAction().substring(3));
+                model.getDevelopmentGrid().lorenzoRemoveAction(color, msg.getCard(), msg.isTakenCardsOfDifferentLevel());
+                showUpdate("lorenzoaction", "Lorenzo removes two " + color.name().toLowerCase() + " cards");
+            }
+        }
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     /*messages from client*/
 

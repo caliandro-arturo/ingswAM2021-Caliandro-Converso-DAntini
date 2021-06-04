@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commonFiles.model.Card;
 import it.polimi.ingsw.server.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,10 @@ class SoloActionsStackTest {
                     decks.get(colorMap.get(color)).pop();
             }
         }
+        @Override
+        public Card lorenzoCardsUpdate(Color color, boolean flag){
+            return null;
+        }
     };
     SoloActionPhase soloActionPhase;
 
@@ -47,7 +52,12 @@ class SoloActionsStackTest {
         decks.add(new Stack<>());
         decks.get(3).push(new DevelopmentCard(1,0,1, Color.PURPLE, null,null));
         decks.get(3).push(new DevelopmentCard(1,0,1, Color.PURPLE, null,null));
-        game = new SinglePlayerGame(player, 1,null, null, testGrid);
+        game = new SinglePlayerGame(player, 1,null, null, testGrid){
+            public void nextTurnPhase() {
+                setCurrentTurnPhase(soloActionPhase);
+            }
+
+        };
         ViewAdapterForTest.setUp();
         game.setViewAdapter(ViewAdapterForTest.testView);
         soloActionPhase = new SoloActionPhase(game);

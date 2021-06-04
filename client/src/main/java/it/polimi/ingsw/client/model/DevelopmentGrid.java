@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.model;
 
 
+import it.polimi.ingsw.commonFiles.model.Card;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
 import java.util.ArrayList;
@@ -12,19 +13,40 @@ import java.util.Arrays;
 public class DevelopmentGrid{
     private DevelopmentCard[][] grid;
 
+    public DevelopmentGrid(ArrayList<DevelopmentCard> grid){
+        this.grid = new DevelopmentCard[3][4];
+        setGrid(grid);
+    }
+
     public DevelopmentGrid(DevelopmentCard[][] grid) {
         this.grid = grid;
     }
 
     public void setGrid(ArrayList<DevelopmentCard> grid) {
         for (DevelopmentCard developmentCard : grid) {
-            this.grid[developmentCard.getLevel()][Utility.colorPosition.
+            this.grid[developmentCard.getLevel()- 1][Utility.colorPosition.
                     get(developmentCard.getColor())] = developmentCard;
         }
     }
 
     public DevelopmentCard getCard(int level, Color color){
-        return grid[level-1][Utility.colorPosition.get(color) -1 ];
+        return grid[level-1][Utility.colorPosition.get(color)];
+    }
+
+    public void lorenzoRemoveAction(Color color, Card card, boolean flag){
+        for (int i = 0; i<4; i++) {
+            if (grid[i][Utility.colorPosition.get(color)] != null){
+                if (flag){
+                    grid[i][Utility.colorPosition.get(color)] = null;
+                    grid[i+1][Utility.colorPosition.get(color)] = new DevelopmentCard(card.getID(),
+                            i+2, card.getNewCardVictoryPoints(), color, card.getNewCardCost(), card.getProductions());
+                }  else {
+                    grid[i][Utility.colorPosition.get(color)] = new DevelopmentCard(card.getID(),
+                            i + 1, card.getNewCardVictoryPoints(), color, card.getNewCardCost(), card.getProductions());
+                }
+                return;
+            }
+        }
     }
 
     public void setCard(int level, String color, DevelopmentCard newCard) {
@@ -56,7 +78,7 @@ public class DevelopmentGrid{
     private String assertLengthCost(int row) {
         StringBuilder costs = new StringBuilder(" ");
         for (int i = 0; i < 4; i++) {
-            if (grid[row][i].getCosts() != null)
+            if (grid[row][i] != null)
                 costs.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].getCosts()), 14));
             else
                 costs.append("│").append(StringUtility.center("", 14));
@@ -68,7 +90,7 @@ public class DevelopmentGrid{
     private String assertLengthProductionCost(int row){
         StringBuilder productionCost = new StringBuilder(" ");
         for (int i = 0; i<4; i++) {
-            if (grid[row][i].getProduction() != null)
+            if (grid[row][i] != null)
                 productionCost.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].
                         getProduction().getCost()), 14));
             else
@@ -81,7 +103,7 @@ public class DevelopmentGrid{
     private String assertLengthProductionValue(int row){
         StringBuilder productionValue = new StringBuilder(" ");
         for (int i = 0; i<4; i++) {
-            if (grid[row][i].getProduction() != null)
+            if (grid[row][i] != null)
                 productionValue.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].
                     getProduction().getProd()),14));
             else
@@ -94,15 +116,18 @@ public class DevelopmentGrid{
     private String assertVictoryPoints(int row){
         StringBuilder victoryPoints = new StringBuilder(" ");
         for (int i = 0; i<4; i++){
-            victoryPoints.append("│").append(StringUtility.center(String.format("%2d", grid[row][i].getVictoryPoints()),14));
+            if (grid[row][i] != null)
+                victoryPoints.append("│").append(StringUtility.center(String.format("%2d", grid[row][i].getVictoryPoints()),14));
+            else
+                victoryPoints.append("│").append(StringUtility.center("", 14));
         }
         victoryPoints.append("│");
         return victoryPoints.toString();
     }
 
     private String assertInfoColor(){
-        return  "        " + grid[0][0].getColor() + grid[0][0].getColor() + "             " + grid[0][1].getColor() +
-                grid[0][1].getColor() + "             " + grid[0][2].getColor() + grid[0][2].getColor() + "             " +
-                grid[0][3].getColor() + grid[0][3].getColor() + "        ";
+        return  "        " + Color.GREEN + Color.GREEN  + "             " + Color.BLUE +
+                Color.BLUE + "             " + Color.YELLOW + Color.YELLOW + "             " +
+                Color.PURPLE + Color.PURPLE + "        ";
     }
 }

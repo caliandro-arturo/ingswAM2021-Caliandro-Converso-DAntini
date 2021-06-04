@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class GUIView extends View {
 
-
     @Override
     public void process(String input) {
 
@@ -136,6 +135,11 @@ public class GUIView extends View {
 
     @Override
     public void showGamesList(List<String> lobbiesName, List<Integer> lobbiesCurrentConnectedClientsNumber, List<Integer> lobbiesMaxPlayersNum) {
+
+    }
+
+    @Override
+    public void showLorenzoAction(String announcement) {
 
     }
 

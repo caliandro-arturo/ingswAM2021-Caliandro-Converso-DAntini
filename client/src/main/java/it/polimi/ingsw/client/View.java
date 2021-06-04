@@ -67,8 +67,11 @@ public abstract class View {
             case "marketused" -> showMarketUsed();
             case "vatican" -> showVaticanReport(Integer.parseInt(update[1]), Boolean.parseBoolean(update[2]));
             case "lastturns" -> showLastTurns(update[1]);
+            case "lorenzoaction" -> showLorenzoAction(update[1]);
         }
     }
+
+    public abstract void showLorenzoAction(String announcement);
 
     public abstract void showNicknameSet();
 

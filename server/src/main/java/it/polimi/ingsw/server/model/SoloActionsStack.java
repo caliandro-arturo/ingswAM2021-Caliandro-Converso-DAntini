@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.LorenzoPick;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
@@ -29,6 +31,17 @@ public class SoloActionsStack {
     public void pick(Game game) {
         SoloAction token = soloActions.get(actionPointer++);
         token.act(game, this);
+        if (token.name().substring(0,3).equals("DEL")) {
+            Color color = Utility.mapColor.get(token.name().substring(3));
+            boolean flag = checkIfLorenzoDiscardCardOfDifferentLevel(game.getDevelopmentGrid(), color);
+            game.getViewAdapter().sendMessage(new LorenzoPick(token.name(), flag, game.getDevelopmentGrid().
+                    lorenzoCardsUpdate(color,flag)));
+        } else
+            game.getViewAdapter().sendMessage(new LorenzoPick(token.name(), false));
+    }
+
+    private boolean checkIfLorenzoDiscardCardOfDifferentLevel(DevelopmentGrid grid, Color color){
+        return grid.lorenzoUpdate(color);
     }
 
     /**

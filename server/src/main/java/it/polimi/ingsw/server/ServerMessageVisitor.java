@@ -4,6 +4,7 @@ import it.polimi.ingsw.commonFiles.messages.toClient.AskWhiteMarble;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
+import it.polimi.ingsw.commonFiles.model.Card;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.server.model.ControllerAdapter;
 import it.polimi.ingsw.server.model.DevelopmentCard;
@@ -122,7 +123,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             denyMove(buyCard, e.getMessage());
             return;
         }
-        buyCard.setNewCard(newCard.getID(), newCard.getCost(), newCard.getLevel(), newCard.getProduction());
+        buyCard.setNewCard(new Card(newCard.getID(), newCard.getCost(), newCard.getLevel(), newCard.getProduction()));
         confirmMove(buyCard);
     }
 

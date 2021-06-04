@@ -1,7 +1,11 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commonFiles.model.Card;
+
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DevelopmentGrid {
     private final Deck[][] developmentGrid;
@@ -61,6 +65,38 @@ public class DevelopmentGrid {
         for (Map.Entry<Color,Integer> entry : Utility.colorPosition.entrySet()){
             if (entry.getKey() == color){
                 return developmentGrid[level-1][entry.getValue()].takeCard();
+            }
+        }
+        return null;
+    }
+
+    public boolean lorenzoUpdate(Color color){
+        for (int i=0; i<3; i++) {
+            if (!developmentGrid[i][Utility.colorPosition.get(color)].getDeck().isEmpty()){
+                return developmentGrid[i][Utility.colorPosition.get(color)].getDeck().size() == 1;
+            }
+        }
+        return false;
+    }
+
+    public Card lorenzoCardsUpdate(Color color, boolean flag){
+        DevelopmentCard card;
+        for (int i=0; i<3; i++) {
+            if (!developmentGrid[i][Utility.colorPosition.get(color)].getDeck().isEmpty() &&
+                    developmentGrid[i][Utility.colorPosition.get(color)].getDeck().size() != 1){
+                try {
+                    card = getDeck(i+1,color).getDeck().peek();
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    return null;
+                }
+                return new Card(card.getID(),card.getCost(),card.getVictoryPoints(), card.getProduction());
+            } else if (flag){
+                try {
+                    card = getDeck(i+2,color).getDeck().peek();
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    return null;
+                }
+                return new Card(card.getID(),card.getCost(),card.getVictoryPoints(), card.getProduction());
             }
         }
         return null;

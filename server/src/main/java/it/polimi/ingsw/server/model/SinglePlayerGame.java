@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitBoards;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.LorenzoPick;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.LorenzoPosition;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +28,11 @@ public class SinglePlayerGame extends Game {
 
             @Override
             public void increasePosition() {
-                super.increasePosition(); //TODO
+                if(getPosition()<24) {
+                    setPosition(getPosition()+1);
+                    getGame().getViewAdapter().sendMessage(new LorenzoPosition());
+                    checkPosition();
+                }
                 if (getPosition() == 24) {
                     isLost = true;
                     setOver(true);
@@ -35,7 +41,7 @@ public class SinglePlayerGame extends Game {
         };
         lorenzo.getBoard().setFaithTrack(lorenzoTrack);
         addPlayer(lorenzo);
-        getTurnPhases().put("EndTurnPhase", new SoloActionPhase(this));
+        getTurnPhases().put("EndTurn", new SoloActionPhase(this));
     }
 
     @Override

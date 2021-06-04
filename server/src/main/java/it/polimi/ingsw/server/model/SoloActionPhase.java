@@ -10,9 +10,10 @@ public class SoloActionPhase extends TurnPhase {
 
     @Override
     public void start() {
-        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName(), getPhaseInfo());
         soloActions.pick(getGame());
-        this.nextTurnPhase();
+        getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName(), getPhaseInfo());
+
+        getGame().nextTurnPhase();
     }
 
     @Override

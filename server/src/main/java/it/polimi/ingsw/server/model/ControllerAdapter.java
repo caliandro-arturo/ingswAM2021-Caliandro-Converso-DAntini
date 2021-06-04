@@ -283,7 +283,7 @@ public class ControllerAdapter {
             throw new IllegalArgumentException("Invalid Color");
         else if (game.getDevelopmentGrid().getDeck(level,color).getDeck().empty())
             throw new IllegalArgumentException("this place in empty");
-        else if (player.getBoard().getDevelopmentSpace()[devSpace-1].hasRoomForCard(level))
+        else if (!player.getBoard().getDevelopmentSpace()[devSpace-1].hasRoomForCard(level))
             throw new IllegalArgumentException("this development place is empty");
         DevelopmentCard card = game.getDevelopmentGrid().getDeck(level,color).getTopCard();
         try {

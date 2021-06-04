@@ -19,5 +19,7 @@ public interface UpdateHandler {
     void visit(InitialResourcesAmount msg);
     void visit(UpdateLeaderCards msg);
     void visit(VaticanReport msg);
+    void visit(LorenzoPick msg);
     void visit(GameRejoin gameRejoin);
+    void visit(LorenzoPosition msg);
 }
