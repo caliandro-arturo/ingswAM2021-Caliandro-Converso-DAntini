@@ -9,10 +9,7 @@ import it.polimi.ingsw.commonFiles.utility.CLIColor;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Prints on {@link System#out} ASCII characters representing the game, updates.
@@ -69,6 +66,10 @@ public class CLIView extends View {
             //each case is an identifier
             case "setnick": {
                 setNick(commandSlice);
+                break;
+            }
+            case "joingame": {
+                joinGame(commandSlice);
                 break;
             }
             case "setgame": {
@@ -206,6 +207,12 @@ public class CLIView extends View {
                 });
                 break;
             }
+            case "gameslist": {
+                if (getModel().isGameSelected())
+                    showError("You cannot do this now.");
+                else getController().sendMessage(new GamesList());
+                break;
+            }
             default:
                 System.out.println(element);
                 break;
@@ -220,6 +227,35 @@ public class CLIView extends View {
     @Override
     public void showError(String error) {
         System.err.println(error);
+    }
+
+    @Override
+    public void joinGame(String[] commandSlice) {
+        if (commandSlice[1].trim().isEmpty()) {
+            System.err.println("Wrong syntax: use the format \"JOINGAME: <game name>\".");
+            return;
+        } else if (getController().getModel().isGameSelected()) {
+            System.err.println("You have already chosen the game.");
+            return;
+        }
+        getController().sendMessage(new JoinGame(commandSlice[1]));
+    }
+
+    @Override
+    public void showGamesList(List<String> lobbiesName, List<Integer> currentPlayers, List<Integer> maxPlayersNum) {
+        if (lobbiesName.isEmpty()) System.out.println("There are no open games.");
+        else {
+            int maxSize = lobbiesName.stream().max(Comparator.comparingInt(String::length)).get().length();
+            System.out.println(CLIColor.ANSI_BRIGHT_GREEN + "List of open games:" + CLIColor.ANSI_RESET);
+            for (int i = 0; i < lobbiesName.size(); i++)
+                System.out.println(
+                    StringUtility
+                            .addPadToTheRight(CLIColor.ANSI_YELLOW + lobbiesName.get(i) + CLIColor.ANSI_RESET, maxSize + 2, ' ')
+                            + currentPlayers.get(i)
+                            + "/"
+                            + maxPlayersNum.get(i));
+
+        }
     }
 
     /**
@@ -273,6 +309,10 @@ public class CLIView extends View {
             }
             case "players": {
                 show("players");
+                break;
+            }
+            case "gameslist": {
+                show("gameslist");
                 break;
             }
             default:
@@ -615,7 +655,12 @@ public class CLIView extends View {
 
     @Override
     public void showNicknameSet() {
-        showUpdateText("Your nickname has been set.");
+        showUpdateText("Your nickname has been set. Now create a game or search for open games.");
+    }
+
+    @Override
+    public void showGameJoined() {
+        showUpdateText("You entered the game.");
     }
 
     @Override

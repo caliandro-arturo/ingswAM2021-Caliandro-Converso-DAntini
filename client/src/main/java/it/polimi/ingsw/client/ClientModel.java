@@ -18,9 +18,14 @@ public class ClientModel {
     private int resourcesToGet = 0;
     private final HashMap<String, Board> boards = new LinkedHashMap<>();
     private boolean gameStarted = false;                                    //true if leader cards are distributed
+    private boolean gameSelected = false;
 
     public boolean isGameStarted(){
         return gameStarted;
+    }
+
+    public boolean isGameSelected() {
+        return gameSelected;
     }
 
     public String getPlayerUsername() {
@@ -73,6 +78,10 @@ public class ClientModel {
 
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
+    }
+
+    public void setGameSelected(boolean gameSelected) {
+        this.gameSelected = gameSelected;
     }
 
     public void setPlayerUsername(String playerUsername) {

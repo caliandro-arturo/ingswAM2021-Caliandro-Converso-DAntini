@@ -42,7 +42,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     }
 
     private void denyMove(Message message, String error) {
-        sendMessage(message.getPlayer(), new ErrorMessage(message, error));
+        sendMessage(message.getPlayer(), new ErrorMessage( error));
     }
 
     /**
@@ -233,26 +233,26 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
 
     //------------------------------------------------------------------------------------------------------------------
 
-    /* These methods are dedicated to the initial phases of games (creation of game, nickname setting).
+    /* These methods are dedicated to the initial phases of game.
      * For this reason, error handling is implemented differently than the others above.
-     * Don't use these as references to write the other methods!
      */
     /**
      * Calls {@link Controller#createGame(SetGame)}.
      */
+    @Override
     public void visit(SetGame setGame) {
         controller.createGame(setGame);
     }
 
-    /**
-     * Calls {@link VirtualView#createPlayer(SetNickname)}.
-     */
+    @Override
     public void visit(SetNickname setNickname) {
-        VirtualView room = controller.getVirtualView();
-        try {
-            room.createPlayer(setNickname);
-        } catch (GameException.NicknameAlreadyTaken e) {
-            denyMove(setNickname, "You have already chosen your nickname.");
-        }
+    }
+
+    @Override
+    public void visit(GamesList gamesList) {
+    }
+
+    @Override
+    public void visit(JoinGame joinGame) {
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.*;
+import it.polimi.ingsw.commonFiles.messages.toClient.GameRejoin;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitialResourcesAmount;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.*;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
@@ -220,8 +221,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         if (msg.getResourcesAmount() > 0) {
             model.setResourcesToGet(msg.getResourcesAmount());
             setToDo("getresource", "You have " + msg.getResourcesAmount() + " initial resource" +
-                    (msg.getResourcesAmount() > 1 ? "s" : "") +
-                    ". Type GETRES: <resource name> to get a resource.");
+                    (msg.getResourcesAmount() > 1 ? "s" : "") + ".");
         }
     }
 
@@ -252,6 +252,14 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             model.getBoard(msg.getPlayer()).getFaithTrack().setVaticanMap(msg.getNum(), msg.isPassed());
     }
 
+    @Override
+    public void visit(GameRejoin gameRejoin) {
+        if (gameRejoin.getPlayer().equals(model.getPlayerUsername()))
+            showUpdate("resume");
+        else
+            showUpdate("newplayer", gameRejoin.getPlayer());
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     /*messages from client*/
 
@@ -262,6 +270,17 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public void visit(SetNickname msg) {
         model.setPlayerUsername(msg.getNickname());
         showUpdate("nicknameset");
+    }
+
+    @Override
+    public void visit(GamesList gamesList) {
+        controller.getView().showGamesList(gamesList.getLobbiesName(), gamesList.getLobbiesCurrentConnectedClientsNumber(), gamesList.getLobbiesMaxPlayersNum());
+    }
+
+    @Override
+    public void visit(JoinGame joinGame) {
+        model.setGameSelected(true);
+        showUpdate("gamejoined");
     }
 
     /**

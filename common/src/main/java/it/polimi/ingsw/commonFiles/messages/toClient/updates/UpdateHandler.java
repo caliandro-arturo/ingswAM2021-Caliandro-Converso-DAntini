@@ -1,5 +1,7 @@
 package it.polimi.ingsw.commonFiles.messages.toClient.updates;
 
+import it.polimi.ingsw.commonFiles.messages.toClient.GameRejoin;
+
 public interface UpdateHandler {
     void visit(GameStarted msg);
     void visit(LastTurn msg);
@@ -17,4 +19,5 @@ public interface UpdateHandler {
     void visit(InitialResourcesAmount msg);
     void visit(UpdateLeaderCards msg);
     void visit(VaticanReport msg);
+    void visit(GameRejoin gameRejoin);
 }

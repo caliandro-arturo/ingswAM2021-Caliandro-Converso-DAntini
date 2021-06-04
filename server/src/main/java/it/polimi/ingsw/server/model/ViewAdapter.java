@@ -145,7 +145,7 @@ public class ViewAdapter {
      * @see GameException
      */
     public void sendErrorMessage(Message message, String error) {
-        virtualView.sendMessage(message.getPlayer(), new ErrorMessage(message, error));
+        virtualView.sendMessage(message.getPlayer(), new ErrorMessage( error));
     }
 
     /**

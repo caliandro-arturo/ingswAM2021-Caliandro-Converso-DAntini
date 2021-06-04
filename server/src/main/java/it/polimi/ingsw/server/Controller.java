@@ -41,32 +41,13 @@ public class Controller {
      *
      * @param setGame the message with information about the game to create (the player and the number of players
      */
-    public void createGame(SetGame setGame) {
+    public void createGame(SetGame setGame) throws IllegalArgumentException {
         String playerNick = setGame.getPlayer();
         Player player = new Player(playerNick);
         int playersNum = setGame.getNumberOfPlayers();
-        if (!virtualView.isTheFirstPlayer(setGame.getPlayer())) {
-            sendMessage(player, new ErrorMessage(setGame, "You cannot create the game."));
-            return;
-        } else if (virtualView.hasBeenSet()) {
-            sendMessage(player, new ErrorMessage(setGame, "The game has already been created."));
-            return;
-        }
-        try {
-            model = new GameCreator().create(player, playersNum);
-        } catch (IllegalArgumentException e) {
-            sendMessage(player, new ErrorMessage(setGame, e.getMessage()));
-            return;
-        }
+        model = new GameCreator().create(player, playersNum);
         messageVisitor.setControllerAdapter(model.getControllerAdapter());
         model.getViewAdapter().setVirtualView(virtualView);
-        virtualView.setHasBeenSet(true);
-        if (virtualView.isFull()) {
-            virtualView.removeExtraClients(playersNum);
-            virtualView.sendMessage(setGame);
-            startGame();
-        }
-        else virtualView.sendMessage(setGame);
     }
 
     public int gamePlayersNum() {

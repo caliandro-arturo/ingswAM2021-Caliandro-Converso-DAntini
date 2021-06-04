@@ -1,5 +1,9 @@
 package it.polimi.ingsw.client;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * View element of the MVC architectural pattern applied to the client.
  */
@@ -49,6 +53,7 @@ public abstract class View {
     public void showUpdate(String... update) {
         switch (update[0]) {
             case "nicknameset" -> showNicknameSet();
+            case "gamejoined" -> showGameJoined();
             case "resume" -> showResume();
             case "creategame" -> showCreateGame();
             case "gameset" -> showGameSet(Integer.parseInt(update[1]));
@@ -66,6 +71,8 @@ public abstract class View {
     }
 
     public abstract void showNicknameSet();
+
+    public abstract void showGameJoined();
 
     public abstract void showResume();
 
@@ -117,6 +124,8 @@ public abstract class View {
 
     public abstract void setNick(String[] commandSlice);
 
+    public abstract void joinGame(String[] commandSlice);
+
     public abstract void setGame(String[] commandSlice);
 
     public abstract void choose(String[] commandSlice);
@@ -148,4 +157,6 @@ public abstract class View {
     public abstract void discardRes(String[] commandSlice);
 
     public abstract void displayEndingScore(String[] categories, int[] scores, int ranking);
+
+    public abstract void showGamesList(List<String> lobbiesName, List<Integer> lobbiesCurrentConnectedClientsNumber, List<Integer> lobbiesMaxPlayersNum);
 }

@@ -7,7 +7,7 @@ public class StringUtility {
 
     public static String center(String s, int size, char pad) {
         if (s == null)
-            return s;
+            return null;
         int realSize = realLength(s);
         if (size <= realSize) return s;
         StringBuilder sb = new StringBuilder(size);
@@ -30,5 +30,14 @@ public class StringUtility {
                     realSize -= colorLength;
         }
         return realSize;
+    }
+
+    public static String addPadToTheRight(String s, int size, char pad) {
+        int realSize = realLength(s);
+        StringBuilder sb = new StringBuilder(size);
+        sb.append(s);
+        for (int i = 0; i < size - realSize; i++)
+            sb.append(pad);
+        return sb.toString();
     }
 }

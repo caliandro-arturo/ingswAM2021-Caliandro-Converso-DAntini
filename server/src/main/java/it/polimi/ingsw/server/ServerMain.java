@@ -6,21 +6,43 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ServerMain {
     private final int port;
     private final List<VirtualView> virtualViews = new ArrayList<>();
-    private VirtualView currentView;
+    private ConcurrentHashMap<String, Boolean> connectedClients = new ConcurrentHashMap<>();
+    private HashMap<String, VirtualView> clientToLobbyMap = new HashMap<>();
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
     public ServerMain(int port) {
         this.port = port;
     }
 
-    public List<VirtualView> getVirtualViews() {
-        return virtualViews;
+    public ConcurrentHashMap<String, Boolean> getConnectedClients() {
+        return connectedClients;
+    }
+
+    public HashMap<String, VirtualView> getClientToLobbyMap() {
+        return clientToLobbyMap;
+    }
+
+    public Optional<VirtualView> getVirtualView(String name) {
+        return virtualViews.stream().filter(v -> v.getName().equals(name)).findAny();
+    }
+
+    public List<VirtualView> getFreeVirtualViews() {
+        return virtualViews.stream().filter(v -> !v.isFull()).toList();
+    }
+
+    public void addVirtualView(VirtualView view) {
+        virtualViews.add(view);
+    }
+
+    public void removeVirtualView(VirtualView view) {
+        virtualViews.remove(view);
     }
 
     /**
@@ -32,7 +54,7 @@ public class ServerMain {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Cannot start the server: " + e.getMessage());
             return;
         }
         System.out.println("Server ready");
@@ -48,7 +70,8 @@ public class ServerMain {
                 continue;
             }
             try {
-                executor.submit(new ClientHandler(this, socket, findFirstFreeVirtualView(socket)));
+                ClientHandler client = new ClientHandler(this, socket);
+                executor.submit(client);
             } catch (IOException e) {
                 try {
                     socket.close();
@@ -61,28 +84,6 @@ public class ServerMain {
                     + socket.getPort() + ".");
         } while (!serverSocket.isClosed());
         executor.shutdown();
-    }
-
-    /**
-     * Ensures that there's a free virtual view in which to add new clients. If a new virtual view is created, assigns
-     * the socket provided as parameter to the firstPlayer field.
-     *
-     * @param socket the client socket that eventually is used to set the first player of the game
-     */
-    public synchronized VirtualView findFirstFreeVirtualView(Socket socket) {
-        return virtualViews.stream()
-                .filter(v -> !v.isFull())
-                .findFirst()
-                .orElseGet(() -> {
-                    currentView = new VirtualView(this, socket);
-                    virtualViews.add(currentView);
-
-                    return currentView;
-                });
-    }
-
-    public synchronized void reinsertToTheFirstFreeVirtualView(ClientHandler clientHandler) {
-        findFirstFreeVirtualView(clientHandler.getSocket()).addToWaitingList(clientHandler);
     }
 
     public static void main(String[] args) {
