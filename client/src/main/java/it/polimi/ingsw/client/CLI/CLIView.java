@@ -231,14 +231,18 @@ public class CLIView extends View {
 
     @Override
     public void joinGame(String[] commandSlice) {
-        if (commandSlice[1].trim().isEmpty()) {
+        String lobbyName;
+        try {
+            lobbyName = commandSlice[1].trim();
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Wrong syntax: use the format \"JOINGAME: <game name>\".");
             return;
-        } else if (getController().getModel().isGameSelected()) {
+        }
+        if (getController().getModel().isGameSelected()) {
             System.err.println("You have already chosen the game.");
             return;
         }
-        getController().sendMessage(new JoinGame(commandSlice[1]));
+        getController().sendMessage(new JoinGame(lobbyName));
     }
 
     @Override
@@ -285,9 +289,15 @@ public class CLIView extends View {
 
     @Override
     public void showHandler(String[] commandSlice){
-        String target = commandSlice[1].toLowerCase();
+        String target;
+        try {
+            target = commandSlice[1].trim();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"SHOW: <arg1>, <arg2>, ...\".");
+            return;
+        }
         String[] boardCmd = target.split("\\s*,\\s*");
-        switch (boardCmd[0]) {
+        switch (boardCmd[0].toLowerCase()) {
             case "board": {
                 if (boardCmd.length==1) {
                     show("board");
@@ -333,6 +343,13 @@ public class CLIView extends View {
      */
     @Override
     public void discardRes(String[] commandSlice) {
+        String resource;
+        try {
+            resource = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"DISCARDRES: <resource name>\".");
+            return;
+        }
         if (Utility.mapResource.get(commandSlice[1]) != null){
             if (Utility.isStorable(Utility.mapResource.get(commandSlice[1]))){
                 getController().sendMessage(new DiscardRes(Utility.mapResource.get(commandSlice[1])));
@@ -353,14 +370,18 @@ public class CLIView extends View {
      */
     @Override
     public void setNick(String[] commandSlice){
-        if (commandSlice[1].trim().isEmpty()) {
+        String nickname;
+        try {
+            nickname = commandSlice[1].trim();
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Wrong syntax: use the format \"SETNICK: <nickname>\".");
             return;
-        } else if (getController().getModel().getPlayerUsername() != null) {
+        }
+        if (getController().getModel().getPlayerUsername() != null) {
             System.err.println("You have already chosen your nickname.");
             return;
         }
-        getController().sendMessage(new SetNickname(commandSlice[1]));
+        getController().sendMessage(new SetNickname(nickname));
     }
 
     /**
@@ -371,7 +392,7 @@ public class CLIView extends View {
     public void setGame(String[] commandSlice){
         try {
             getController().sendMessage(new SetGame(Integer.parseInt(commandSlice[1])));
-        } catch (NumberFormatException e) {
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             System.err.println("You must insert a number.");
         }
     }
@@ -382,11 +403,14 @@ public class CLIView extends View {
      */
     @Override
     public void choose(String[] commandSlice){
-        if (commandSlice[1].isEmpty()) {
-            System.err.println("You must insert a turn phase.");
+        String turnPhase;
+        try {
+            turnPhase = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"CHOOSE: <turnphasename>\".");
             return;
         }
-        getController().sendMessage(new ChooseTurnPhase(commandSlice[1].trim().toLowerCase()));
+        getController().sendMessage(new ChooseTurnPhase(turnPhase.trim().toLowerCase()));
     }
 
     /**
@@ -397,7 +421,14 @@ public class CLIView extends View {
      */
     @Override
     public void activateProduction(String[] commandSlice) {
-        String[] arguments = commandSlice[1].split("\\s*,\\s*");
+        String argument;
+        try {
+            argument = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"ACTIVATEPRODUCTION: <id>, <arg1>, ...\".");
+            return;
+        }
+        String[] arguments = argument.split("\\s*,\\s*");
         String[] elements;
         ArrayList<Integer> cost = new ArrayList<>();
         int ID = Integer.parseInt(arguments[0]);
@@ -435,7 +466,14 @@ public class CLIView extends View {
      * @param commandSlice command by the player
      */
     public void buyDevCard(String[] commandSlice){
-        String[] arguments = commandSlice[1].split("\\s*,\\s*");
+        String arg;
+        try {
+            arg = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"BUYDEVCARD: <arg1>, <arg2>, ...\".");
+            return;
+        }
+        String[] arguments = arg.split("\\s*,\\s*");
         int level, space;
         String color;
         ArrayList<Integer> stores = new ArrayList<>();
@@ -459,8 +497,14 @@ public class CLIView extends View {
      */
     @Override
     public void useMarket(String[] commandSlice){
+        String argument;
+        try {
+            argument = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"USEMARKET: <rowOrColumn>, <number>\".");
+        }
         String[] args = commandSlice[1].split("\\s*,\\s*");
-        if (args[0].toLowerCase().matches("[rc]")) {
+        if (args[0].toLowerCase().matches("[rc]") && args.length == 2) {
             try {
                 getController().sendMessage(new UseMarket(args[0].charAt(0), Integer.parseInt(args[1])));
             } catch (NumberFormatException e) {
@@ -477,7 +521,7 @@ public class CLIView extends View {
     public void chooseWhite(String[] commandSlice) {
         try {
             getController().sendMessage(new ChooseWhiteMarble(Integer.parseInt(commandSlice[1].trim())));
-        } catch (NumberFormatException e) {
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             System.err.println("You must insert a leader position (1 or 2).");
         }
     }
@@ -528,7 +572,7 @@ public class CLIView extends View {
         try {
             pos = Integer.parseInt(commandSlice[1]);
             getController().sendMessage(new DiscardLeader(pos));
-        } catch (NumberFormatException e) {
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             System.err.println("You must insert a number.");
         }
     }
@@ -543,7 +587,7 @@ public class CLIView extends View {
         try{
             depot=Integer.parseInt(commandSlice[1]);
             getController().sendMessage(new TakeRes(depot));
-        }catch(NumberFormatException e){
+        }catch(ArrayIndexOutOfBoundsException | NumberFormatException e){
             System.err.println("you must insert a number");
         }
     }
@@ -554,11 +598,14 @@ public class CLIView extends View {
      */
     @Override
     public void getRes(String[] commandSlice) {
-        if (commandSlice[1].trim().isEmpty()) {
-            System.err.println("Missing parameter: you must insert a resource name.");
+        String resource;
+        try {
+            resource = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"GETRES: <resource>\".");
             return;
         }
-        Resource res = Utility.mapResource.get(commandSlice[1].toLowerCase());
+        Resource res = Utility.mapResource.get(resource.toLowerCase());
         if (res == null)
             System.err.println("Wrong parameter: you must insert a resource name.");
         else getController().sendMessage(new GetResource(res));

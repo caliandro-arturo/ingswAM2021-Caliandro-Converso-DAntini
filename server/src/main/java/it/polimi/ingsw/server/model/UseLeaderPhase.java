@@ -20,10 +20,10 @@ public class UseLeaderPhase extends TurnPhase {
 
     @Override
     public String getPhaseInfo() {
-        return "In this turn phase you can deploy or discard leaders that you have in your hand.\n" +
-                "Deploy leader: if you meet the requirements of a leader, you can deploy it on your board;\n" +
-                "Discard leader: if you decide that you don't need a leader, you can discard the leader card. " +
-                "This operation gives you a Faith point.";
+        return """
+                In this turn phase you can deploy or discard leaders that you have in your hand.
+                Deploy leader: if you meet the requirements of a leader, you can deploy it on your board;
+                Discard leader: if you decide that you don't need a leader, you can discard the leader card. This operation gives you a Faith point.""";
     }
 
     @Override
