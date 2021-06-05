@@ -50,7 +50,7 @@ public class DevelopmentGrid{
     }
 
     public void setCard(int level, String color, DevelopmentCard newCard) {
-        grid[level][Utility.colorPosition.get(Utility.mapColor.get(color))] = newCard;
+        grid[level-1][Utility.colorPosition.get(Utility.mapColor.get(color))] = newCard;
     }
 
     @Override

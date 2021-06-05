@@ -26,6 +26,7 @@ public class ClientController {
         updateHandler = new ClientUpdateHandler(this, model);
     }
 
+
     public View getView() {
         return view;
     }

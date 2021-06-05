@@ -372,7 +372,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                 getCard(msg.getLevel(), Utility.mapColor.get(msg.getColor()));
         ArrayList<Resource> resources = new ArrayList<>();
         for (int i=0; i<card.getCosts().length; i++){
-            resources.add(card.getCosts()[i].getResource());
+            for (int k=0; k<card.getCosts()[i].getQuantity(); k++) {
+                resources.add(card.getCosts()[i].getResource());
+            }
         }
         model.updateResource(msg.getStores(),resources);
         model.getBoard(msg.getPlayer()).getDevelopmentPlace().setDevStack(card,msg.getSpace());

@@ -89,4 +89,10 @@ public class WarehouseStore {
         );
         return storeArt.toString();
     }
+
+    /*debug purpose----------------------------------*/
+
+    public ArrayList<ArrayList<Resource>> getRes() {
+        return res;
+    }
 }

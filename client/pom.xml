@@ -107,6 +107,7 @@
                 <configuration>
                     <argLine>--add-opens it.polimi.ingsw.client/it.polimi.ingsw.client.CLI=ALL-UNNAMED
                         --add-opens it.polimi.ingsw.client/it.polimi.ingsw.client.model=ALL-UNNAMED
+                        --add-opens it.polimi.ingsw.client/it.polimi.ingsw.client=ALL-UNNAMED
                     </argLine>
                 </configuration>
             </plugin>

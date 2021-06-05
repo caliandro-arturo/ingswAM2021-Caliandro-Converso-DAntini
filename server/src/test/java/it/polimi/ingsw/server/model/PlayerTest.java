@@ -5,21 +5,18 @@ import it.polimi.ingsw.commonFiles.model.ProductionPower;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import it.polimi.ingsw.server.model.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 class PlayerTest {
     private Player pippo= new Player("pippo");
     DevelopmentCard card1;
     DevelopmentGrid d1;
     UtilityProductionAndCost[] utilityarray;
     Game testGame;
-    @BeforeAll
+    @BeforeEach
     void setUp(){
         pippo.getBoard().getStore().get(0).addResource(Resource.COIN);
         pippo.getBoard().getStrongbox().addProdResource(Resource.COIN);
@@ -78,6 +75,21 @@ class PlayerTest {
         pippo.startLeaderProduction(0,Resource.SHIELD,1);
         assertEquals(3,pippo.getBoard().getStrongbox().getProductionBox().size());
         prod.nextTurnPhase();
+    }
+
+    @Test
+    void handlingCostTest(){
+        testGame.setCurrentPlayer(pippo);
+        UtilityProductionAndCost cost1 = new UtilityProductionAndCost(2, Resource.COIN);
+        UtilityProductionAndCost cost2 = new UtilityProductionAndCost(2, Resource.SERF);
+        pippo.getBoard().getStore().get(1).setTypeOfResource(Resource.SERF);
+        pippo.getBoard().getStore().get(1).addResource(Resource.SERF);
+        pippo.getBoard().getStore().get(1).addResource(Resource.SERF);
+        assertEquals(2,pippo.getBoard().getStrongbox().getResourceMap().get(Resource.COIN));
+        pippo.handlingCost(new UtilityProductionAndCost[]{cost1, cost2}, new int[]{1, 0, 2, 2});
+        assertEquals(0,pippo.getBoard().getStore().get(1).getQuantity());
+        assertEquals(0,pippo.getBoard().getStore().get(0).getQuantity());
+        assertEquals(1,pippo.getBoard().getStrongbox().getResourceMap().get(Resource.COIN));
     }
 
     @Test

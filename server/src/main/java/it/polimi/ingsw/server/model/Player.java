@@ -233,40 +233,11 @@ public class Player {
      * @param index the position of development place where the player wants to place the card
      */
     public void buyDevelopmentCard (DevelopmentCard card,int[] box,int index){
-        int j = 0;
         processedResources =0;
         if (box.length < card.getCost().length){
             throw new IllegalArgumentException("invalid cmd");
         }
-        for (int i=0;i<card.getCost().length;i++) {
-            Resource resource = card.getCost()[i].getResource();
-            j += card.getCost()[i].getQuantity();
-            for (; processedResources < j; processedResources++) {
-                if (box.length == card.getCost().length && card.getCost()[i].getQuantity() > 1){
-                    processedResources = processedResources -1;
-                    throw new IllegalArgumentException("invalid cmd");
-                }
-                if (box[processedResources] == 0) {
-                    if (board.getStrongbox().getResourceMap().get(resource) != 0) {
-                        board.getStrongbox().removeResource(resource);
-                    } else {
-                        throw new IllegalArgumentException("not enough resource");
-                    }
-                } else if (box[processedResources] > 3 && box[processedResources] <= 5) {
-                    if (box[processedResources] > board.getStore().size()) {
-                        processedResources = processedResources -1;
-                        throw new IllegalArgumentException("wrong store");
-                    }
-                    if (board.getStore().get(box[processedResources] - 1).getTypeOfResource() == resource &&
-                            !board.getStore().get(box[processedResources] - 1).getResources().isEmpty()) {
-                        board.getStore().get(box[processedResources] - 1).takeOutResource();
-                    } else {
-                        throw new IllegalArgumentException("not enough resource");
-                    }
-                }
-            }
-            processedResources++;
-        }
+        handlingCost(card.getCost(), box);
         board.addCard( game.getDevelopmentGrid().buyCard(card.getColor(), card.getLevel()),index);
     }
 
@@ -390,7 +361,6 @@ public class Player {
      */
     public void startDevProduction(int index,int[] box){
         ArrayList<DevelopmentCard> devCards = this.getBoard().showActiveDevCards();
-        int j = 0;
         processedResources = 0;
         if (devCards.isEmpty() || devCards.get(index-1) == null) {
             throw new IllegalArgumentException("The Development place selected is empty");
@@ -403,6 +373,22 @@ public class Player {
         if (box.length < cost.length) {
             throw new IllegalArgumentException("Invalid cmd");
         }
+        handlingCost(cost, box);
+        UtilityProductionAndCost[] productionResource = production.getProd();
+        for (UtilityProductionAndCost utilityProductionAndCost : productionResource) {
+            Resource resource = utilityProductionAndCost.getResource();
+            for (processedResources = 0; processedResources < utilityProductionAndCost.getQuantity(); processedResources++) {
+                if (resource == Resource.FAITH) {
+                    board.getFaithTrack().increasePosition();
+                } else {
+                    board.getStrongbox().addToProdBox(resource);
+                }
+            }
+        }
+    }
+
+    public void handlingCost(UtilityProductionAndCost[] cost, int[] box) throws IllegalArgumentException{
+        int j = 0;
         for (UtilityProductionAndCost utilityProductionAndCost : cost) {
             Resource resource = utilityProductionAndCost.getResource();
             j += utilityProductionAndCost.getQuantity();
@@ -417,7 +403,7 @@ public class Player {
                     } else {
                         throw new IllegalArgumentException("not enough resource");
                     }
-                } else if (box[processedResources] > 3 && box[processedResources] <= 5) {
+                } else {
                     if (box[processedResources] > board.getStore().size()) {
                         processedResources = processedResources - 1;
                         throw new IllegalArgumentException("wrong store");
@@ -428,18 +414,6 @@ public class Player {
                     } else {
                         throw new IllegalArgumentException("not enough resource");
                     }
-                }
-            }
-            processedResources++;
-        }
-        UtilityProductionAndCost[] productionResource = production.getProd();
-        for (UtilityProductionAndCost utilityProductionAndCost : productionResource) {
-            Resource resource = utilityProductionAndCost.getResource();
-            for (processedResources = 0; processedResources < utilityProductionAndCost.getQuantity(); processedResources++) {
-                if (resource == Resource.FAITH) {
-                    board.getFaithTrack().increasePosition();
-                } else {
-                    board.getStrongbox().addToProdBox(resource);
                 }
             }
         }

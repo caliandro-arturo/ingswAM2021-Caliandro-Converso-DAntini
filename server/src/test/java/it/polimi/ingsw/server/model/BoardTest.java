@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.model.Resource;
-import it.polimi.ingsw.server.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,6 +37,7 @@ class BoardTest {
         testGame.addPlayer(new Player("topolino"));
         testGame.addPlayer(new Player("minnie"));
     }
+
 
     @Test
     public void buildAndReset() {
