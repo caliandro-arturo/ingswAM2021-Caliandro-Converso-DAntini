@@ -68,6 +68,7 @@ public abstract class View {
             case "vatican" -> showVaticanReport(Integer.parseInt(update[1]), Boolean.parseBoolean(update[2]));
             case "lastturns" -> showLastTurns(update[1]);
             case "lorenzoaction" -> showLorenzoAction(update[1]);
+            case "connectionlost" -> showConnectionLost();
         }
     }
 
@@ -102,6 +103,8 @@ public abstract class View {
     public abstract void showVaticanReport(int reportNum, boolean isPassed);
 
     public abstract void showLastTurns(String reason);
+
+    public abstract void showConnectionLost();
 
     /**
      * Shows the player position on the table.

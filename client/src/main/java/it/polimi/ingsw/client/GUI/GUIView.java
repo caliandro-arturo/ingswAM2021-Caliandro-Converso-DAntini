@@ -20,7 +20,7 @@ public class GUIView extends View {
         switch (element) {
             case "hand": {}
         }
-        //Platform.runLater(() -> App.out.setText(element));
+        Platform.runLater(() -> App.out.setText(element));
     }
 
     @Override
@@ -135,6 +135,10 @@ public class GUIView extends View {
 
     @Override
     public void showGamesList(List<String> lobbiesName, List<Integer> lobbiesCurrentConnectedClientsNumber, List<Integer> lobbiesMaxPlayersNum) {
+        Launcher launcher = (Launcher) App.controller;
+        for (int i = 0; i < lobbiesName.size(); i++) {
+            launcher.lobbies.add(new Lobby(lobbiesName.get(i), lobbiesCurrentConnectedClientsNumber.get(i), lobbiesMaxPlayersNum.get(i)));
+        }
 
     }
 
@@ -151,6 +155,8 @@ public class GUIView extends View {
     @Override
     public void showNicknameSet() {
         Platform.runLater(() -> App.out.setText("Your nickname has been set."));
+        Launcher launcher = (Launcher) App.controller;
+        launcher.setCurrentPane(launcher.createOrJoinPane);
     }
 
     @Override
@@ -226,5 +232,10 @@ public class GUIView extends View {
     @Override
     public void showLastTurns(String reason) {
 
+    }
+
+    @Override
+    public void showConnectionLost() {
+        Platform.runLater(() -> App.setScene("connectionLost", "Masters of Renaissance"));
     }
 }

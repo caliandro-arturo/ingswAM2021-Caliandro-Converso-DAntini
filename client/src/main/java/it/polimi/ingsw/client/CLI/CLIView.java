@@ -782,4 +782,10 @@ public class CLIView extends View {
     public void showLastTurns(String reason) {
         showUpdateText("Last turns: " + reason);
     }
+
+    @Override
+    public void showConnectionLost() {
+        showError("Connection lost.");
+        System.exit(0);
+    }
 }

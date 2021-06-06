@@ -2,15 +2,70 @@
     -fx-background-image: url('../png/begin.png');
     -fx-background-size: 100% 100%;
 }
-#createGamePane > #playersNumButtons > .button {
+
+.label {
+    -fx-font-family: Harrington;
+    -fx-font-size: 19;
+    -fx-text-fill: white;
+}
+.button {
     -fx-background-color: linear-gradient(#3381a7, #024e65);
     -fx-text-fill: linear-gradient(#ff8400, #ffdc00);
-    -fx-font-size: 30;
+    -fx-font-size: 20;
     -fx-font-family: Harrington;
 }
-#createGamePane > #playersNumButtons > .button:hover {
+.button:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
 }
-#createGamePane > #playersNumButtons > .button:hover:pressed {
+.button:hover:pressed {
     -fx-background-color: linear-gradient(#036e90, #04627d);
+}
+
+.table-view .column-header-background,
+.table-view .column-header {
+    -fx-background-color: linear-gradient(#3381a7, #024e65);
+    -fx-font-family: Harrington;
+    -fx-min-height: 30;
+}
+
+
+.table-view {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.table-row-cell {
+    -fx-background-color: rgba(0, 0, 0, 0.08);
+}
+
+.table-view .cell {
+    -fx-font-family: Harrington;
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+}
+
+.table-view .cell:selected {
+    -fx-background-color: rgba(0, 0, 0, 0.4);
+}
+
+#playersNum {
+    -fx-alignment: bottom-center;
+}
+
+
+.table-view *.scroll-bar:horizontal *.increment-button,
+.table-view *.scroll-bar:horizontal *.decrement-button {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.table-view *.scroll-bar:horizontal *.increment-arrow,
+.table-view *.scroll-bar:horizontal *.decrement-arrow {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
 }

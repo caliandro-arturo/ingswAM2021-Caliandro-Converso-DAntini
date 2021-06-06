@@ -90,6 +90,7 @@ public abstract class SocketManager {
                 objOut.flush();
             } catch (IOException | InterruptedException ignore) {
                 isConnected = false;
+                return;
             }
         }
     }

@@ -84,10 +84,10 @@ public abstract class UI {
             try {
                 socketManager.receiveMessages();
             } catch (SocketTimeoutException e) {
-                e.printStackTrace();
+                isConnected = false;
             } catch (SocketException e) {
-                showError("Server closed :(");
-                System.exit(1);
+                showUpdate("connectionlost");
+                isConnected = false;
             }
         });
         messageReader.start();
@@ -103,6 +103,10 @@ public abstract class UI {
     }
     public void show(String toShow) {
         view.show(toShow);
+    }
+
+    public void showUpdate(String... update) {
+        view.showUpdate(update);
     }
 
     public SocketManager getSocketManager() {
