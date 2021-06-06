@@ -9,6 +9,7 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Handles model updates and service communications.
@@ -332,12 +333,12 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(StartProduction msg) {
-        ArrayList<Resource> resources = new ArrayList<>();
-        for (String s : msg.getCostResource()) {
-            resources.add(Utility.mapResource.get(s));
-        }
-        model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
         if (msg.getID() == 0){
+            ArrayList<Resource> resources = new ArrayList<>();
+            for (String s : msg.getCostResource()) {
+                resources.add(Utility.mapResource.get(s));
+            }
+            model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
             model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
                     get(msg.getProduction()));
         } else if (msg.getID()<=3){
@@ -354,6 +355,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                 }
             }
         } else {
+            model.updateResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Arrays.asList(model.getBoard().getPowerProd().get(msg.getID()-4))));
             model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
                     get(msg.getProduction()));
             model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
@@ -406,6 +408,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public void visit(UseLeader msg) {
         if(msg.getPlayer().equals(model.getPlayerUsername())) {
             LeaderHand leaderHand = model.getLeaderHand();
+            leaderHand.getHand().get(msg.getIDCard() - 1).getPower().activatePower(model.getBoard());
             model.getBoard().getLeaderCards().add(leaderHand.getHand().get(msg.getIDCard() - 1));
             leaderHand.removeCardFromHand(msg.getIDCard());
         }

@@ -41,6 +41,10 @@ public class WarehouseStore {
         return resource;
     }
 
+    public void addWarehouse(ArrayList<Resource> resources){
+        res.add(resources);
+    }
+
 
     /**
      * representation method for Warehouse Store (CLI)

@@ -15,8 +15,8 @@ public class SaleOnDevelopment implements LeaderPower{
     }
 
     @Override
-    public void activatePower() {
-
+    public void activatePower(Board board) {
+        board.setPowerSale(resource);
     }
 
     @Override

@@ -19,6 +19,7 @@ public class Board {
     private final WarehouseStore warehouseStore;
     private ArrayList<LeaderCard> leaderCards;
     private final ResourceHand resHand  = new ResourceHand();
+    private ArrayList<ArrayList<Resource>> powers;
 
     public Board() {
         this.developmentPlace = new DevelopmentPlace();
@@ -26,6 +27,35 @@ public class Board {
         this.strongbox = new Strongbox();
         this.warehouseStore = new WarehouseStore();
         this.leaderCards = new ArrayList<>();
+        this.powers = new ArrayList<>(){{
+            add(new ArrayList<>());
+            add(new ArrayList<>());
+            add(new ArrayList<>());
+        }};
+    }
+
+    public ArrayList<Resource> getPowerWhite() {
+        return powers.get(0);
+    }
+
+    public ArrayList<Resource> getPowerSale() {
+        return powers.get(1);
+    }
+
+    public ArrayList<Resource> getPowerProd() {
+        return powers.get(2);
+    }
+
+    public void setPowerWhiteMarble(Resource whiteMarble) {
+        this.powers.get(0).add(whiteMarble);
+    }
+
+    public void setPowerSale(Resource sale){
+        this.powers.get(1).add(sale);
+    }
+
+    public void setPowerProd(Resource prod){
+        this.powers.get(2).add(prod);
     }
 
     public ArrayList<LeaderCard> getLeaderCards() {

@@ -16,8 +16,8 @@ public class WhiteMarbleConversion implements LeaderPower{
     }
 
     @Override
-    public void activatePower() {
-
+    public void activatePower(Board board) {
+        board.setPowerWhiteMarble(resource);
     }
 
     @Override

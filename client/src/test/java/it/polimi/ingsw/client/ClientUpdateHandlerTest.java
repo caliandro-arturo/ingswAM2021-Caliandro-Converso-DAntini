@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.Color;
-import it.polimi.ingsw.client.model.DevelopmentCard;
-import it.polimi.ingsw.client.model.DevelopmentGrid;
-import it.polimi.ingsw.client.model.Utility;
+import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.messages.toServer.BuyCard;
+import it.polimi.ingsw.commonFiles.messages.toServer.StartProduction;
 import it.polimi.ingsw.commonFiles.model.Card;
 import it.polimi.ingsw.commonFiles.model.ProductionPower;
 import it.polimi.ingsw.commonFiles.model.Resource;
@@ -26,6 +24,37 @@ class ClientUpdateHandlerTest {
     @BeforeEach
     void setUp() {
         updateHandler = new ClientUpdateHandler(controller,model){
+            @Override
+            public void visit(StartProduction msg) {
+                if (msg.getID() == 0){
+                    ArrayList<Resource> resources = new ArrayList<>();
+                    for (String s : msg.getCostResource()) {
+                        resources.add(Utility.mapResource.get(s));
+                    }
+                    model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
+                    model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
+                            get(msg.getProduction()));
+                } else if (msg.getID()<=3){
+                    UtilityProductionAndCost[] prod = model.getBoard(msg.getPlayer()).
+                            getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getProd();
+                    for (int i = 0; i<prod.length; i++) {
+                        if (Utility.isStorable(prod[i].getResource())) {
+                            model.getBoard(msg.getPlayer()).getStrongbox().addResources(prod[i].getQuantity(),
+                                    prod[i].getResource());
+                        }else {
+                            for (int k=0; k<prod[i].getQuantity(); i++){
+                                model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
+                            }
+                        }
+                    }
+                } else {
+                    model.updateResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Arrays.asList(model.getBoard().getPowerProd().get(msg.getID()-4))));
+                    model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
+                            get(msg.getProduction()));
+                    model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
+                }
+            }
+
             @Override
             public void visit(BuyCard msg) {
                 DevelopmentCard card = model.getDevelopmentGrid().
@@ -99,5 +128,32 @@ class ClientUpdateHandlerTest {
         msg.setNewCard(card);
         updateHandler.visit(msg);
         assertEquals(2,model.getDevelopmentGrid().getCard(1,Color.GREEN).getID());
+    }
+
+    @Test
+    void testVisitProduction(){
+        model.getBoard().getWarehouseStore().setRes(Resource.COIN,1);
+        UtilityProductionAndCost unit = new UtilityProductionAndCost(1,Resource.COIN);
+        UtilityProductionAndCost unit1 = new UtilityProductionAndCost(1,Resource.SERF);
+        UtilityProductionAndCost[] cost = new UtilityProductionAndCost[]{unit};
+        UtilityProductionAndCost[] prod = new UtilityProductionAndCost[]{unit1};
+        ProductionPower productionPower = new ProductionPower(cost,prod);
+        model.getBoard().getDevelopmentPlace().setDevStack(new DevelopmentCard(1,1,1,Color.BLUE,cost,productionPower),1);
+        StartProduction msg = new StartProduction(1,new ArrayList<Integer>(Arrays.asList(1)));
+        msg.setPlayer("test");
+        updateHandler.visit(msg);
+        assertEquals(1,model.getBoard().getStrongbox().getResources()[Utility.mapStrongbox.get(Resource.SERF)]);
+        msg = new StartProduction(0,new ArrayList<Integer>(Arrays.asList(1,0)),"coin", new String[]{"stone", "serf"});
+        msg.setPlayer("test");
+        model.getBoard().getWarehouseStore().setRes(Resource.STONE,1);
+        updateHandler.visit(msg);
+        assertEquals(0, model.getBoard().getStrongbox().getResources()[Utility.mapStrongbox.get(Resource.SERF)]);
+        assertEquals(1, model.getBoard().getStrongbox().getResources()[Utility.mapStrongbox.get(Resource.COIN)]);
+        msg = new StartProduction(4,new ArrayList<Integer>(Arrays.asList(0)),"shield");
+        msg.setPlayer("test");
+        model.getBoard().setLeaderCards(new LeaderCard(1,1,null,new AdditionalProductionPower(Resource.COIN)));
+        model.getBoard().getLeaderCards().get(0).getPower().activatePower(model.getBoard());
+        updateHandler.visit(msg);
+        assertEquals(0, model.getBoard().getStrongbox().getResources()[Utility.mapStrongbox.get(Resource.COIN)]);
     }
 }

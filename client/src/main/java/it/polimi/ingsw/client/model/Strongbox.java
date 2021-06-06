@@ -7,7 +7,12 @@ import it.polimi.ingsw.commonFiles.model.Resource;
  * light version of Strongbox class for representation purposes
  */
 public class Strongbox {
-    int[] resources = new int[]{0,0,0,0};
+    private int[] resources = new int[]{0,0,0,0};
+
+
+    public int[] getResources() {
+        return resources;
+    }
 
     /**
      * add a num of resource in the strongbox

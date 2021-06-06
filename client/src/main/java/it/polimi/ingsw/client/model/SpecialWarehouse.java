@@ -14,8 +14,8 @@ public class SpecialWarehouse implements LeaderPower{
     }
 
     @Override
-    public void activatePower() {
-
+    public void activatePower(Board board) {
+        board.getWarehouseStore().addWarehouse(resources);
     }
 
     @Override

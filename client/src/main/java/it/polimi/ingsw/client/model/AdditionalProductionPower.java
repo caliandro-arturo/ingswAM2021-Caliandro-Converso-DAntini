@@ -13,8 +13,8 @@ public class AdditionalProductionPower implements LeaderPower, Production {
     }
 
     @Override
-    public void activatePower() {
-
+    public void activatePower(Board board) {
+        board.setPowerProd(cost);
     }
 
     @Override
