@@ -99,22 +99,31 @@ public class ClientHandler extends SocketManager implements Runnable {
         String nickname = setNickname.getNickname();
         ConcurrentHashMap<String, Boolean> connectedClients = serverMain.getConnectedClients();
         synchronized (connectedClients) {
+            //searching if there is another player with this nickname
             Optional<Boolean> playerIsConnected = Optional.ofNullable(serverMain.getConnectedClients().get(nickname));
+            //if the nickname is present checks if the player with that nickname is currently connected
             playerIsConnected.ifPresentOrElse(i -> {
+                        //if the nickname owner is currently connected, the player cannot use this nickname...
                         if (i) {
                             try {
                                 sendMessage(new ErrorMessage( "This nickname is already used."));
                             } catch (IOException ignore) {
                             }
+                        //...else we assume that the previous nickname owner and the new player are the same person,
+                        //and then is checked if this player is linked with a lobby
                         } else {
                             Optional<VirtualView> virtualView = Optional.ofNullable(serverMain.getClientToLobbyMap().get(nickname));
                             virtualView.ifPresentOrElse(
+                                    //if there is the lobby, the client is linked to that nickname
                                     v -> {
                                         v.reAddPlayer(nickname, this);
                                         this.virtualView = v;
                                         serverMain.getConnectedClients().replace(nickname, true);
-                                        v.sendMessage(new GameRejoin(nickname));
+                                        //notifying the other players in the lobby
+                                        v.sendMessageToOthers(nickname, new GameRejoin(nickname));
+                                        /*v.sendCurrentGameState(nickname);*/
                                     },
+                                    //else the player is simply readded to the server
                                     () -> {
                                         player = nickname;
                                         serverMain.getConnectedClients().put(nickname, true);
@@ -123,15 +132,16 @@ public class ClientHandler extends SocketManager implements Runnable {
                                         } catch (IOException e) {
                                             serverMain.getConnectedClients().remove(nickname);
                                         }
-                            }
-                            );
+                                    });
                         }
                     },
+                    //else a new player is added to the server
                     () -> {
                         player = nickname;
                         serverMain.getConnectedClients().put(nickname, true);
                         try {
                             sendMessage(setNickname);
+                            //if the sendMessage fails, the user is removed immediately
                         } catch (IOException e) {
                             serverMain.getConnectedClients().remove(nickname);
                         }

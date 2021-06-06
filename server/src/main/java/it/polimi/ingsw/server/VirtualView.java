@@ -92,7 +92,6 @@ public class VirtualView {
         clientMap.put(nickname, clientHandler);
         serverMain.getClientToLobbyMap().put(nickname, this);
         sendMessageToOthers(nickname, new NewPlayer(nickname));
-        if (isFull()) controller.startGame();
     }
 
     public void reAddPlayer(String nickname, ClientHandler clientHandler) {
