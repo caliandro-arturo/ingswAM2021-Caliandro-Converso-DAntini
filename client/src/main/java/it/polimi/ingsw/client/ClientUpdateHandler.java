@@ -55,6 +55,14 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     }
 
     @Override
+    public void visit(GameRejoin gameRejoin) {
+        if (gameRejoin.getPlayer().equals(model.getPlayerUsername()))
+            showUpdate("resume");
+        else
+            showUpdate("newplayer", gameRejoin.getPlayer());
+    }
+
+    @Override
     public void visit(ResourceUpdate msg) {
 
     }
@@ -250,14 +258,6 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             showUpdate("vatican", Integer.toString(msg.getNum()), Boolean.toString(msg.isPassed()));
         } else
             model.getBoard(msg.getPlayer()).getFaithTrack().setVaticanMap(msg.getNum(), msg.isPassed());
-    }
-
-    @Override
-    public void visit(GameRejoin gameRejoin) {
-        if (gameRejoin.getPlayer().equals(model.getPlayerUsername()))
-            showUpdate("resume");
-        else
-            showUpdate("newplayer", gameRejoin.getPlayer());
     }
 
     @Override

@@ -2,7 +2,12 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -161,12 +166,18 @@ public class GUIView extends View {
 
     @Override
     public void showGameJoined() {
-
+        show("You joined the game.");
+        Launcher launcher = (Launcher) App.controller;
+        launcher.setCurrentPane(launcher.waitPane);
     }
 
     @Override
     public void showResume() {
-
+        Launcher launcher = (Launcher) App.controller;
+        launcher.setCurrentPane(launcher.resumePane);
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4),
+                event -> Platform.runLater(() -> App.setScene("board", "Masters of Renaissance"))));
+        timeline.play();
     }
 
     @Override
@@ -177,13 +188,8 @@ public class GUIView extends View {
 
     @Override
     public void showGameSet(int playersNum) {
-
-    }
-
-    @Override
-    public void showWaitGameCreation() {
+        show("Your game has been set.");
         Launcher launcher = (Launcher) App.controller;
-        launcher.waitLabel.setText("Waiting the creation of the game...");
         launcher.setCurrentPane(launcher.waitPane);
     }
 
@@ -196,17 +202,17 @@ public class GUIView extends View {
 
     @Override
     public void showGameStarted() {
-        App.setScene("board", "Masters of Renaissance");
+        Platform.runLater(() -> App.setScene("board", "Masters of Renaissance"));
     }
 
     @Override
     public void showNewPlayer(String playerNick) {
-
+        show(playerNick + " joined the game.");
     }
 
     @Override
     public void showPlayerLeft(String playerNick) {
-
+        show(playerNick + " has disconnected.");
     }
 
     @Override

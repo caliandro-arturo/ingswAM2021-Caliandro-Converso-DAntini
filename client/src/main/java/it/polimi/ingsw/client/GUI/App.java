@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class App extends Application {
     public static Stage stage;
@@ -56,6 +57,8 @@ public class App extends Application {
         }
         controller = fxmlLoader.getController();
         controller.setGui(gui);
+        Optional<Scene> previousScene = Optional.ofNullable(stage.getScene());
+        previousScene.ifPresent(s -> stage.hide());
         stage.setTitle(sceneTitle);
         stage.setScene(scene);
         stage.show();

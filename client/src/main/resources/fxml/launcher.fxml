@@ -27,50 +27,55 @@
         </Label>
       <AnchorPane fx:id="waitPane" disable="true" opacity="0.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="waitLabel" alignment="CENTER" layoutX="54.0" layoutY="227.0" prefHeight="35.0" prefWidth="350.0" textFill="WHITE">
+            <Label fx:id="waitLabel" alignment="CENTER" layoutX="125.0" layoutY="182.0" prefHeight="35.0" prefWidth="350.0" text="Waiting the start of the game..." textFill="WHITE" AnchorPane.bottomAnchor="182.8" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="124.60000000000002" AnchorPane.topAnchor="182.0">
                <font>
                   <Font name="Harrington" size="19.0" />
                </font>
             </Label>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="createGamePane" disable="true" opacity="0.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Label layoutX="191.0" layoutY="187.0" prefHeight="27.0" prefWidth="219.0" text="Set the number of players:" textFill="#d1ddca">
-               <font>
-                  <Font name="Harrington" size="19.0" />
-               </font>
-            </Label>
-            <HBox fx:id="playersNumButtons" alignment="CENTER" layoutX="157.0" layoutY="237.0" prefHeight="35.0" prefWidth="286.0" spacing="20.0">
-               <children>
-                  <Button fx:id="playersNum1" mnemonicParsing="false" text="1">
-                     <font>
-                        <Font name="Harrington" size="29.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="playersNum2" mnemonicParsing="false" text="2">
-                     <font>
-                        <Font name="Harrington" size="29.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="playersNum3" mnemonicParsing="false" text="3">
-                     <font>
-                        <Font name="Harrington" size="29.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="playersNum4" mnemonicParsing="false" text="4">
-                     <font>
-                        <Font name="Harrington" size="29.0" />
-                     </font>
-                  </Button>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </HBox>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="resumePane" disable="true" opacity="0.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane fx:id="createGamePane" disable="true" opacity="0.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" layoutX="140.0" layoutY="156.0" prefHeight="89.0" prefWidth="320.0" spacing="25.0" AnchorPane.bottomAnchor="155.0" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="156.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="27.0" prefWidth="293.0" text="Set the number of players:" textFill="#d1ddca">
+                     <font>
+                        <Font name="Harrington" size="19.0" />
+                     </font>
+                  </Label>
+                  <HBox fx:id="playersNumButtons" alignment="CENTER" prefHeight="35.0" prefWidth="286.0" spacing="20.0">
+                     <children>
+                        <Button fx:id="backToCreateOrJoinButton1" mnemonicParsing="false" onAction="#backOnCreateOrJoin" prefHeight="23.0" prefWidth="91.0" text="Back" />
+                        <Button fx:id="playersNum1" mnemonicParsing="false" onAction="#setGame" text="1">
+                           <font>
+                              <Font name="Harrington" size="29.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="playersNum2" mnemonicParsing="false" onAction="#setGame" text="2">
+                           <font>
+                              <Font name="Harrington" size="29.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="playersNum3" mnemonicParsing="false" onAction="#setGame" text="3">
+                           <font>
+                              <Font name="Harrington" size="29.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="playersNum4" mnemonicParsing="false" onAction="#setGame" text="4">
+                           <font>
+                              <Font name="Harrington" size="29.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
       <AnchorPane fx:id="gamesListPane" disable="true" opacity="0.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" layoutX="137.0" layoutY="66.0" prefHeight="237.0" prefWidth="326.0" spacing="20.0" AnchorPane.bottomAnchor="97.0" AnchorPane.leftAnchor="137.0" AnchorPane.rightAnchor="137.0" AnchorPane.topAnchor="66.0">
@@ -113,7 +118,7 @@
                <children>
                   <Label alignment="TOP_CENTER" prefHeight="49.0" prefWidth="134.0" text="Choose action" />
                   <Button fx:id="joinGameButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showGamesList" prefHeight="38.0" prefWidth="134.0" text="Join game" />
-                  <Button fx:id="createGameButton" alignment="TOP_CENTER" mnemonicParsing="false" text="Create game" />
+                  <Button fx:id="createGameButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#createGame" text="Create game" />
                </children>
             </VBox>
          </children>

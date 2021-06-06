@@ -31,6 +31,10 @@ public class Controller {
         return virtualView;
     }
 
+    public Game getModel() {
+        return model;
+    }
+
     public boolean isGameStarted() {
         return isGameStarted;
     }

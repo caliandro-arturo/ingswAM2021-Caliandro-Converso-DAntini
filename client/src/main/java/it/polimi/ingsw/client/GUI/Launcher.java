@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.commonFiles.messages.toServer.GamesList;
+import it.polimi.ingsw.commonFiles.messages.toServer.JoinGame;
+import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.collections.FXCollections;
@@ -37,12 +39,12 @@ public class Launcher extends SceneHandler {
     public AnchorPane gamesListPane;
 
     @FXML
+    public AnchorPane resumePane;
+
+    @FXML
     public TableView<Lobby> gamesListTable;
 
     public ObservableList<Lobby> lobbies = FXCollections.observableArrayList();
-
-    @FXML
-    private TableColumn<Lobby, String> gameNames;
 
     @FXML
     private TextField hostname;
@@ -123,18 +125,18 @@ public class Launcher extends SceneHandler {
     //choosing between looking for open games and creating a new game
 
     public void showGamesList(ActionEvent actionEvent) {
+        gamesListTable.getSelectionModel().clearSelection();
+        joinSelectedButton.setDisable(true);
         setCurrentPane(gamesListPane);
         refreshGamesList(actionEvent);
     }
 
+    public void createGame(ActionEvent actionEvent) {
+        setCurrentPane(createGamePane);
+    }
+
 
     //game list scene
-
-    public void backOnCreateOrJoin(ActionEvent actionEvent) {
-        setCurrentPane(createOrJoinPane);
-        gamesListTable.getSelectionModel().clearSelection();
-        joinSelectedButton.setDisable(true);
-    }
 
     public void refreshGamesList(ActionEvent actionEvent) {
         lobbies.clear();
@@ -142,7 +144,24 @@ public class Launcher extends SceneHandler {
     }
 
     public void joinSelectedGame(ActionEvent actionEvent) {
-        gamesListTable.getSelectionModel().getSelectedItem();
+        String lobby = gamesListTable.getSelectionModel().getSelectedItem().getLobbyName();
+        App.out.setText("Joining " + lobby + "...");
+        getGui().getView().getController().sendMessage(new JoinGame(lobby));
     }
+
+    //create game
+
+    public void setGame(ActionEvent e) {
+        int playersNum = Integer.parseInt(((Button) e.getSource()).getText());
+        getGui().getView().getController().sendMessage(new SetGame(playersNum));
+    }
+
+
+
+    //back button
+    public void backOnCreateOrJoin(ActionEvent actionEvent) {
+        setCurrentPane(createOrJoinPane);
+    }
+
 
 }

@@ -151,10 +151,6 @@ public class CLIView extends View {
                 System.out.println("Insert your nickname by typing SETNICK: <your nickname>:");
                 break;
             }
-            case "waitgamecreation": {
-                System.out.println("Waiting creation of the game...");
-                break;
-            }
             case "turnphase": {
                 System.out.println("Next turn phase: " + getModel().getCurrentTurnPhase());
                 break;
@@ -729,11 +725,6 @@ public class CLIView extends View {
     public void showGameSet(int playersNum) {
         showUpdateText("The game has been set: " + playersNum + " allowed players.");
         showWaitGameStart();
-    }
-
-    @Override
-    public void showWaitGameCreation() {
-        showUpdateText("Waiting creation of the game...");
     }
 
     @Override
