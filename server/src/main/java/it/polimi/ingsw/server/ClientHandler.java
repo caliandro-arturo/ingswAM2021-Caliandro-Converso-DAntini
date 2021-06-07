@@ -4,7 +4,6 @@ import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
 import it.polimi.ingsw.commonFiles.messages.toClient.GameRejoin;
 import it.polimi.ingsw.commonFiles.messages.toClient.WaitGameStart;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.PlayerLeft;
 import it.polimi.ingsw.commonFiles.messages.toServer.GamesList;
 import it.polimi.ingsw.commonFiles.messages.toServer.JoinGame;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
@@ -216,5 +215,7 @@ public class ClientHandler extends SocketManager implements Runnable {
             sendMessage(setGame);
         } catch (IOException ignore) {
         }
+        if (view.isFull())
+            view.getController().startGame();
     }
 }
