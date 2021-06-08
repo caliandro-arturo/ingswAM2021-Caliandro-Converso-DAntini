@@ -333,8 +333,8 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(StartProduction msg) {
+        ArrayList<Resource> resources = new ArrayList<>();
         if (msg.getID() == 0){
-            ArrayList<Resource> resources = new ArrayList<>();
             for (String s : msg.getCostResource()) {
                 resources.add(Utility.mapResource.get(s));
             }
@@ -342,6 +342,13 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
                     get(msg.getProduction()));
         } else if (msg.getID()<=3){
+            for (UtilityProductionAndCost cost: model.getBoard(msg.getPlayer()).
+                    getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getCost()){
+                for (int i=0; i < cost.getQuantity(); i++){
+                    resources.add(cost.getResource());
+                }
+            }
+            model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
             UtilityProductionAndCost[] prod = model.getBoard(msg.getPlayer()).
                     getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getProd();
             for (int i = 0; i<prod.length; i++) {

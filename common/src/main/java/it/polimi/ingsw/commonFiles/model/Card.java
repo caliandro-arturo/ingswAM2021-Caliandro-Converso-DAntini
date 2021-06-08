@@ -7,6 +7,7 @@ public class Card implements Serializable {
     private UtilityProductionAndCost[] newCardCost;
     private int newCardVictoryPoints;
     private Production productions;
+    private int level;
 
     public UtilityProductionAndCost[] getNewCardCost() {
         return newCardCost;
@@ -22,6 +23,10 @@ public class Card implements Serializable {
 
     public int getID() {
         return ID;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public Card(int ID, UtilityProductionAndCost[] newCardCost, int newCardVictoryPoints, Production productions) {

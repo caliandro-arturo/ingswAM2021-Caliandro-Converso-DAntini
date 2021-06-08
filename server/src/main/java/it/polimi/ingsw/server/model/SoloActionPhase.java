@@ -5,15 +5,13 @@ import java.util.ArrayList;
 public class SoloActionPhase extends TurnPhase {
     private final SoloActionsStack soloActions = new SoloActionsStack();
     public SoloActionPhase(Game game) {
-        super(game, "Solo Action phase", false);
+        super(game, "Solo Action phase", true);
     }
 
     @Override
     public void start() {
-        soloActions.pick(getGame());
         getGame().getViewAdapter().announceTurnPhase(getGame().getCurrentPlayer(), getName(), getPhaseInfo());
-
-        getGame().nextTurnPhase();
+        soloActions.pick(getGame());
     }
 
     @Override

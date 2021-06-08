@@ -202,7 +202,7 @@ public class ControllerAdapter {
         else if (!(game.getCurrentTurnPhase().isFinished()))
             if (!(game.getCurrentTurnPhase().isSkippable()))
                 throw new GameException.IllegalMove();
-        game.nextTurnPhase();
+            game.nextTurnPhase();
     }
 
     /**
@@ -218,6 +218,7 @@ public class ControllerAdapter {
         Resource production = Utility.mapResource.get(prod);
         player.startBoardProduction(box,cost,production);
         player.getBoard().getProductionList().get(0).setProductionCanBeActivate(false);
+        game.getCurrentTurnPhase().setFinished(true);
     }
 
     /**
@@ -233,6 +234,7 @@ public class ControllerAdapter {
         player.startLeaderProduction(cost,production,index);
         Production productionPower = player.getBoard().getProductionList().get(index);
         productionPower.setProductionCanBeActivate(false);
+        game.getCurrentTurnPhase().setFinished(true);
     }
 
     /**
@@ -255,6 +257,7 @@ public class ControllerAdapter {
         Production production = player.getBoard().getDevelopmentSpace()[index - 1].
                 getDevelopmentCards().peek().getProduction();
         production.setProductionCanBeActivate(false);
+        game.getCurrentTurnPhase().setFinished(true);
     }
 
     /**

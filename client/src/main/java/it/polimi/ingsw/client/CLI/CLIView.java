@@ -498,6 +498,7 @@ public class CLIView extends View {
             argument = commandSlice[1];
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Wrong syntax: use the format \"USEMARKET: <rowOrColumn>, <number>\".");
+            return;
         }
         String[] args = commandSlice[1].split("\\s*,\\s*");
         if (args[0].toLowerCase().matches("[rc]") && args.length == 2) {
@@ -529,6 +530,13 @@ public class CLIView extends View {
     @Override
     public void useLeader(String[] commandSlice){
         int pos;
+        String argument;
+        try {
+            argument = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"USELEADER: <position number>\".");
+            return;
+        }
         try {
             pos = Integer.parseInt(commandSlice[1]);
             getController().sendMessage(new UseLeader(pos));
@@ -543,11 +551,14 @@ public class CLIView extends View {
      */
     @Override
     public void deployRes(String[] commandSlice){
-        String[] args = commandSlice[1].split("\\s*,\\s*");
-        if (args.length != 2) {
+        String argument;
+        try {
+            argument = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Wrong syntax: use the format \"DEPLOYRES: <resource name, depot position number>\".");
             return;
         }
+        String[] args = argument.split("\\s*,\\s*");
         Optional<Resource> toGet = Optional.ofNullable(Utility.mapResource.get(args[0].trim().toLowerCase()));
         toGet.ifPresentOrElse(res -> {
             try {

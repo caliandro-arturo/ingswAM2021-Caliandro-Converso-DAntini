@@ -28,6 +28,7 @@ public class ActivateProdPhase extends TurnPhase {
                         .setProductionCanBeActivate(true);
             }
         }
+        this.setFinished(false);
         return getGame().getTurnPhase("UseAgainLeader");
     }
 }

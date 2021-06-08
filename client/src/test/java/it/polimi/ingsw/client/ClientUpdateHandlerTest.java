@@ -1,12 +1,10 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.*;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.LorenzoPick;
 import it.polimi.ingsw.commonFiles.messages.toServer.BuyCard;
 import it.polimi.ingsw.commonFiles.messages.toServer.StartProduction;
-import it.polimi.ingsw.commonFiles.model.Card;
-import it.polimi.ingsw.commonFiles.model.ProductionPower;
-import it.polimi.ingsw.commonFiles.model.Resource;
-import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
+import it.polimi.ingsw.commonFiles.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,8 +24,8 @@ class ClientUpdateHandlerTest {
         updateHandler = new ClientUpdateHandler(controller,model){
             @Override
             public void visit(StartProduction msg) {
+                ArrayList<Resource> resources = new ArrayList<>();
                 if (msg.getID() == 0){
-                    ArrayList<Resource> resources = new ArrayList<>();
                     for (String s : msg.getCostResource()) {
                         resources.add(Utility.mapResource.get(s));
                     }
@@ -35,6 +33,13 @@ class ClientUpdateHandlerTest {
                     model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
                             get(msg.getProduction()));
                 } else if (msg.getID()<=3){
+                    for (UtilityProductionAndCost cost: model.getBoard(msg.getPlayer()).
+                            getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getCost()){
+                        for (int i=0; i < cost.getQuantity(); i++){
+                            resources.add(cost.getResource());
+                        }
+                    }
+                    model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
                     UtilityProductionAndCost[] prod = model.getBoard(msg.getPlayer()).
                             getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getProd();
                     for (int i = 0; i<prod.length; i++) {
@@ -83,6 +88,22 @@ class ClientUpdateHandlerTest {
                 model.getDevelopmentGrid().setCard(msg.getLevel(), msg.getColor(), newCard);
             }
 
+            @Override
+            public void visit(LorenzoPick msg) {
+                switch (msg.getAction()) {
+                    case "TWOPOSITIONS" -> {
+
+                    }
+                    case "ONEPOSITIONRESET" -> {
+
+                    }
+                    default -> {
+                        Color color = Utility.mapColor.get(msg.getAction().substring(3));
+                        model.getDevelopmentGrid().lorenzoRemoveAction(color, msg.getCard(), msg.isTakenCardsOfDifferentLevel());
+                    }
+                }
+            }
+
 
             @Override
             public void setToDo(String id, String toDo) {
@@ -92,8 +113,6 @@ class ClientUpdateHandlerTest {
             public void deleteToDo(String id) {
             }
 
-            public void showUpdate(String... update) {
-            }
         };
         model.setPlayerUsername("test");
         UtilityProductionAndCost utilitytest = new UtilityProductionAndCost(1, Resource.COIN);
@@ -139,9 +158,10 @@ class ClientUpdateHandlerTest {
         UtilityProductionAndCost[] prod = new UtilityProductionAndCost[]{unit1};
         ProductionPower productionPower = new ProductionPower(cost,prod);
         model.getBoard().getDevelopmentPlace().setDevStack(new DevelopmentCard(1,1,1,Color.BLUE,cost,productionPower),1);
-        StartProduction msg = new StartProduction(1,new ArrayList<Integer>(Arrays.asList(1)));
+        StartProduction msg = new StartProduction(1,new ArrayList<>(Arrays.asList(1)));
         msg.setPlayer("test");
         updateHandler.visit(msg);
+        System.out.println(model.getBoard().getWarehouseStore());
         assertEquals(1,model.getBoard().getStrongbox().getResources()[Utility.mapStrongbox.get(Resource.SERF)]);
         msg = new StartProduction(0,new ArrayList<Integer>(Arrays.asList(1,0)),"coin", new String[]{"stone", "serf"});
         msg.setPlayer("test");
@@ -155,5 +175,17 @@ class ClientUpdateHandlerTest {
         model.getBoard().getLeaderCards().get(0).getPower().activatePower(model.getBoard());
         updateHandler.visit(msg);
         assertEquals(0, model.getBoard().getStrongbox().getResources()[Utility.mapStrongbox.get(Resource.COIN)]);
+    }
+
+    @Test
+    void testVisitLorenzo(){
+        UtilityProductionAndCost unit = new UtilityProductionAndCost(1,Resource.SERF);
+        UtilityProductionAndCost[] array = new UtilityProductionAndCost[]{unit};
+        Production productionPower = new ProductionPower(array,array);
+        Card card = new Card(3,array,1,productionPower);
+        LorenzoPick msg = new LorenzoPick("DELBLUE",true,card);
+        updateHandler.visit(msg);
+        assertNull(model.getDevelopmentGrid().getCard(1,Color.BLUE));
+        System.out.println(model.getDevelopmentGrid());
     }
 }

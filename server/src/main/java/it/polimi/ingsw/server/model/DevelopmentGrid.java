@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.commonFiles.model.Card;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -81,25 +82,29 @@ public class DevelopmentGrid {
 
     public Card lorenzoCardsUpdate(Color color, boolean flag){
         DevelopmentCard card;
+        int index;
         for (int i=0; i<3; i++) {
             if (!developmentGrid[i][Utility.colorPosition.get(color)].getDeck().isEmpty() &&
-                    developmentGrid[i][Utility.colorPosition.get(color)].getDeck().size() != 1){
+                    developmentGrid[i][Utility.colorPosition.get(color)].getDeck().size() >= 2){
+                index = developmentGrid[i][Utility.colorPosition.get(color)].getDeck().size() - 3;
                 try {
-                    card = getDeck(i+1,color).getDeck().peek();
+                    card = getDeck(i+1,color).getDeck().get(index);
                 } catch (ArrayIndexOutOfBoundsException e) {
                     return null;
                 }
                 return new Card(card.getID(),card.getCost(),card.getVictoryPoints(), card.getProduction());
-            } else if (flag){
+            } else if (flag && !developmentGrid[i][Utility.colorPosition.get(color)].getDeck().isEmpty()){
+                index = developmentGrid[i][Utility.colorPosition.get(color)].getDeck().size() - 2;
                 try {
-                    card = getDeck(i+2,color).getDeck().peek();
-                } catch (ArrayIndexOutOfBoundsException e) {
+                    card = getDeck(i+2,color).getDeck().get(index);
+                } catch (ArrayIndexOutOfBoundsException | EmptyStackException e) {
                     return null;
                 }
                 return new Card(card.getID(),card.getCost(),card.getVictoryPoints(), card.getProduction());
             }
         }
         return null;
+        //a solution may be add level in Card
     }
 
     /**
