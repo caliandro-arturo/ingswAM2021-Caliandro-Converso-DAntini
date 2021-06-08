@@ -14,7 +14,7 @@ public class Player {
     private String username;
     private Board board;
     private final ArrayList<LeaderCard> leaderCards;
-    private final ArrayList<Resource> whiteAlt;
+    private final ArrayList<Resource> whiteAlt ;
     private final ArrayList<Resource> sale;
     private Game game;
     private final int[] victoryPoints;
@@ -237,7 +237,19 @@ public class Player {
         if (box.length < card.getCost().length){
             throw new IllegalArgumentException("invalid cmd");
         }
-        handlingCost(card.getCost(), box);
+        if (sale.isEmpty())
+            handlingCost(card.getCost(), box);
+        else{
+            ArrayList<UtilityProductionAndCost> costArrayList = new ArrayList<>();
+            for (UtilityProductionAndCost cost: card.getCost()){
+                if (sale.contains(cost.getResource())){
+                    costArrayList.add(new UtilityProductionAndCost(cost.getQuantity()-1, cost.getResource()));
+                } else
+                    costArrayList.add(new UtilityProductionAndCost(cost.getQuantity(), cost.getResource()));
+            }
+            UtilityProductionAndCost[] utilityProductionAndCosts = new UtilityProductionAndCost[costArrayList.size()];
+            handlingCost(costArrayList.toArray(utilityProductionAndCosts),box);
+        }
         board.addCard( game.getDevelopmentGrid().buyCard(card.getColor(), card.getLevel()),index);
     }
 
@@ -313,7 +325,6 @@ public class Player {
      * Leader Production
      * @param cost store from where you take the resource
      * @param production resource chose by the player
-     * @param index
      */
     public void startLeaderProduction(int cost,Resource production,int index){
         Production productionPower = this.getBoard().getProductionList().get(index);

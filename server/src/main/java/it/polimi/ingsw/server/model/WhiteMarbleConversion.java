@@ -18,7 +18,7 @@ public class WhiteMarbleConversion implements LeaderPower {
 
     @Override
     public void activatePower(Player player) {
-        player.addWhiteAlt(getResource());
+        player.addWhiteAlt(resource);
     }
 
     @Override

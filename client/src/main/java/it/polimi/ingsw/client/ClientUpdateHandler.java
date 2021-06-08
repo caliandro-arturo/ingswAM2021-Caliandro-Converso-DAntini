@@ -311,8 +311,13 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      */
     @Override
     public void visit(UseMarket msg) {
-        model.getBoard(msg.getPlayer()).addResourcesToHand(model.getMarket().
-                marbleArrayToResourceList(msg.getRowOrColumn(),msg.getNum()));
+        if (model.getBoard(msg.getPlayer()).getPowerWhite().size() == 1) {
+            model.getBoard(msg.getPlayer()).addResourcesToHand(model.getMarket().
+                    marbleArrayToResourceList(model.getBoard(msg.getPlayer()).getPowerWhite().get(0),
+                            msg.getRowOrColumn(), msg.getNum()));
+        } else
+            model.getBoard(msg.getPlayer()).addResourcesToHand(model.getMarket().
+                    marbleArrayToResourceList(msg.getRowOrColumn(), msg.getNum()));
         if (msg.getPlayer().equals(model.getPlayerUsername())) {
             deleteToDo("turnaction");
             showUpdate("marketused");

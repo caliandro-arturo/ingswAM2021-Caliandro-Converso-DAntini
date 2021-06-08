@@ -38,11 +38,19 @@ public class DevelopmentGrid{
             if (grid[i][Utility.colorPosition.get(color)] != null){
                 if (flag){
                     grid[i][Utility.colorPosition.get(color)] = null;
-                    grid[i+1][Utility.colorPosition.get(color)] = new DevelopmentCard(card.getID(),
-                            i+2, card.getNewCardVictoryPoints(), color, card.getNewCardCost(), card.getProductions());
+                    try {
+                        grid[i + 1][Utility.colorPosition.get(color)] = new DevelopmentCard(card.getID(),
+                                i + 2, card.getNewCardVictoryPoints(), color, card.getNewCardCost(), card.getProductions());
+                    } catch (NullPointerException e){
+                        grid[i + 1][Utility.colorPosition.get(color)] = null;
+                    }
                 }  else {
-                    grid[i][Utility.colorPosition.get(color)] = new DevelopmentCard(card.getID(),
-                            i + 1, card.getNewCardVictoryPoints(), color, card.getNewCardCost(), card.getProductions());
+                    try {
+                        grid[i][Utility.colorPosition.get(color)] = new DevelopmentCard(card.getID(),
+                                i + 1, card.getNewCardVictoryPoints(), color, card.getNewCardCost(), card.getProductions());
+                    }catch (NullPointerException e){
+                        grid[i][Utility.colorPosition.get(color)] = null;
+                    }
                 }
                 return;
             }
