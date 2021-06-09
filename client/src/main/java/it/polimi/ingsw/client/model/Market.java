@@ -58,13 +58,17 @@ public class Market {
         return resources;
     }
 
-    public List<Resource> marbleArrayToResourceList(Resource resource, char rowOrColumn, int num) {
+    public List<Resource> marbleArrayToResourceList(Resource whiteResource, char rowOrColumn, int num) {
         List<Resource> resources = new ArrayList<>();
         Arrays.stream(getRowOrColumn(rowOrColumn, num)).forEach(
-                marble -> resources.add(Utility.colorResourceMap.get(marble.getColor()))
+                marble -> {
+                    if (marble.getColor() == Color.WHITE) {
+                        resources.add(whiteResource);
+                    }else
+                        resources.add(Utility.colorResourceMap.get(marble.getColor()));
+                }
         );
         resources.removeIf(r -> r.equals(Resource.FAITH));
-
         return resources;
     }
 
@@ -72,7 +76,7 @@ public class Market {
     public String toString() {
         return  "┌──────────────┐\n" +
                 "│" + StringUtility.center(extraMarble.toString(),14) + "│ \n" +
-                "│"+ StringUtility.center(" ▼ ▼ ▼ ▼",14) + "│ \n" +
+                "│"+ StringUtility.center(" v v v v",14) + "│ \n" +
                 "│"+ StringUtility.center("> " +grid[0][0].toString()+ " " +grid[0][1].toString()+ " " +grid[0][2].toString()+ " " + grid[0][3].toString(),14) + "│ \n" +
                 "│"+ StringUtility.center("> " +grid[1][0].toString()+" " +grid[1][1].toString()+ " " +grid[1][2].toString()+ " " + grid[1][3].toString(),14) + "│ \n" +
                 "│"+ StringUtility.center("> " +grid[2][0].toString()+" " +grid[2][1].toString()+ " " +grid[2][2].toString()+ " " + grid[2][3].toString(),14) + "│ \n" +
