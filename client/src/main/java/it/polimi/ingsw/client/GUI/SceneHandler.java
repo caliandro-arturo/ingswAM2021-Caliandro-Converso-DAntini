@@ -33,5 +33,4 @@ public abstract class SceneHandler implements Initializable {
         this.gui = gui;
     }
 
-
 }

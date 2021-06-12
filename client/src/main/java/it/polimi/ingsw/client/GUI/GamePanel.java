@@ -1,13 +1,17 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.client.model.Color;
-import it.polimi.ingsw.client.model.DevelopmentCard;
-import it.polimi.ingsw.client.model.Marble;
+import it.polimi.ingsw.client.model.*;
+import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
+import it.polimi.ingsw.commonFiles.messages.toServer.TakeRes;
 import it.polimi.ingsw.commonFiles.model.Resource;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -239,6 +243,33 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ImageView activeLeaderCard2;
 
+    @FXML
+    private ImageView baseProd1;
+
+    @FXML
+    private ImageView baseProd2;
+
+    @FXML
+    private Label boxShield;
+
+    @FXML
+    private Label boxCoin;
+
+    @FXML
+    private Label boxSerf;
+
+    @FXML
+    private Label boxStone;
+
+    @FXML
+    private SplitPane rightPane;
+
+    @FXML
+    private Button chooseCardX;
+
+    @FXML
+    private ComboBox resBaseProd;
+
     private Image blueMarble;
     private Image greyMarble;
     private Image purpleMarble;
@@ -249,9 +280,11 @@ public class GamePanel extends SceneHandler {
     private Image serf;
     private Image shield;
     private Image stone;
+    private ContextMenu contextMenu;
+    private MenuItem menuItem;
 
 
-    private ArrayList<ImageView> handListImg;
+    private ObservableList<ImageView> handListImg;
 
     /**
      * data structures with the imageView for the images in the board
@@ -259,7 +292,7 @@ public class GamePanel extends SceneHandler {
      */
     private ArrayList<ImageView> resSpots;
     private ImageView[][] marketSpots;
-    private ArrayList<ImageView> leaderCardSpots;
+    private ObservableList<ImageView> leaderHand;
     private ImageView[][] devCardSpots;
     private ArrayList<ImageView> marketReinsertSpots;
 
@@ -270,6 +303,7 @@ public class GamePanel extends SceneHandler {
      */
     private HashMap<Color, Image> colorImageMap;
     private HashMap<Resource, Image> resourceImageMap;
+    private HashMap<Resource, Label> resourceLabelHashMap;
 
     /**
      * initialization of the images and the data structure used to collect similar objects
@@ -290,7 +324,7 @@ public class GamePanel extends SceneHandler {
         serf = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/serf.png")));
         shield = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/shield.png")));
         stone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/stone.png")));
-        handListImg = new ArrayList<>();
+        handListImg = FXCollections.observableArrayList();
         resSpots = new ArrayList<>(Arrays.asList(res1, res21, res22, res31, res32, res33));
         marketReinsertSpots = new ArrayList<>(Arrays.asList(row0, row1, row2, col0, col1, col2, col3));
         marketSpots = new ImageView[][]{
@@ -298,7 +332,7 @@ public class GamePanel extends SceneHandler {
                 {mb01, mb11, mb21, mb31},
                 {mb02, mb12, mb22, mb32}
         };
-        leaderCardSpots = new ArrayList<>(Arrays.asList(leadCard1, leadCard2,leadCard3,leadCard4));
+        leaderHand = FXCollections.observableArrayList(leadCard1, leadCard2, leadCard3, leadCard4);
         devCardSpots = new ImageView[][]{
                 {devcard00, devcard10, devcard20, devcard30},
                 {devcard01, devcard11, devcard21, devcard31},
@@ -318,9 +352,74 @@ public class GamePanel extends SceneHandler {
             put(Color.WHITE, whiteMarble);
             put(Color.YELLOW, yellowMarble);
         }};
+        resourceLabelHashMap = new HashMap<>(){{
+            put(Resource.SERF, boxSerf);
+            put(Resource.COIN, boxCoin);
+            put(Resource.SHIELD, boxShield);
+            put(Resource.STONE, boxStone);
+        }};
+        ImageView imgCoin = new ImageView(coin);
+        imgCoin.setFitHeight(40);
+        imgCoin.setFitWidth(40);
+        ImageView imgSerf = new ImageView(serf);
+        imgSerf.setFitHeight(40);
+        imgSerf.setFitWidth(40);
+        ImageView imgShield = new ImageView(shield);
+        imgShield.setFitHeight(40);
+        imgShield.setFitWidth(40);
+        ImageView imgStone = new ImageView(stone);
+        imgStone.setFitHeight(40);
+        imgStone.setFitWidth(40);
+        resBaseProd.getItems().addAll(
+                imgCoin,
+                imgSerf,
+                imgShield,
+                imgStone
+        );
+        contextMenu = new ContextMenu();
+        menuItem = new MenuItem("back to hand");
+        contextMenu.getItems().add(menuItem);
 
+
+
+        //prove
+        goFront(chooseCardPane);
+        chooseCardX.setDisable(true);
+        chooseCardX.setOpacity(0);
     }
 
+
+    /**
+     * takes the leader cards from the model and print the relative images
+     */
+    public void addLeaderCards(LeaderHand hand){
+        for(int i = 0; i<4; i++){
+            leaderHand.get(i).setImage(getCardPng(hand.getHand().get(i).getID()));
+        }
+    }
+    /**
+     * is called by the production to add resources in the strongbox
+     * @param num: the number of resources to add
+     * @param resource: the type of resources to add
+     */
+    public void addBoxResource(int num, Resource resource){
+        int quantity = Integer.parseInt(resourceLabelHashMap.get(resource).getText());
+        quantity+=num;
+        resourceLabelHashMap.get(resource).setText((Integer.toString(quantity)));
+    }
+
+    /**
+     * remove a specific resource from the strongbox
+     * @param resource
+     */
+    public void removeBoxResources(Resource resource){
+        int quantity = Integer.parseInt(resourceLabelHashMap.get(resource).getText());
+        int compare = quantity;
+        if(--compare>0){
+            quantity--;
+            resourceLabelHashMap.get(resource).setText((Integer.toString(quantity)));
+        } //TODO: error message
+    }
     /**
      * requires as a parameter the development card grid and set the devCardSpots with the
      * relative card images
@@ -332,7 +431,6 @@ public class GamePanel extends SceneHandler {
                 devCardSpots[row][col].setImage(getCardPng(devGrid[row][col].getID()));
             }
         }
-
     }
 
     /**
@@ -379,6 +477,10 @@ public class GamePanel extends SceneHandler {
      */
     public Image getCardPng(int cardId){
         return new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/"+cardId+".png")));
+    }
+
+    public int getCardId(Image image){
+        return Integer.parseInt(image.getUrl().substring(11,14));
     }
 
     /**
@@ -450,6 +552,8 @@ public class GamePanel extends SceneHandler {
     @FXML
     public void slideRes(ActionEvent event){
         //TODO: needs to be activated NOT with a button, but in the end of each market usage
+        handListImg.add(new ImageView(resourceImageMap.get(Resource.COIN)));
+
         if(!handListImg.isEmpty()){
             fillHand(handListImg);
         }
@@ -459,7 +563,7 @@ public class GamePanel extends SceneHandler {
      * fill the hands with the relative resource images in the pagination
      * @param handList
      */
-    public void fillHand(ArrayList<ImageView> handList){
+    public void fillHand(ObservableList<ImageView> handList){
         for (ImageView view : handList) {
             view.setFitHeight(70);
             view.setFitWidth(70);
@@ -487,28 +591,37 @@ public class GamePanel extends SceneHandler {
         });
 
         for(ImageView warSpot: resSpots){
-            warSpot.setOnDragOver(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                    dragEvent.consume();
-                }
-
+            warSpot.setOnDragOver(dragEvent -> {
+                dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                dragEvent.consume();
             });
         }
+
+        baseProd1.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        baseProd2.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        baseProd1.setOnDragDropped(dragEvent -> {
+            baseProd1.setImage(dragEvent.getDragboard().getImage());
+            dragEvent.consume();
+        });
+        baseProd2.setOnDragDropped(dragEvent -> {
+            baseProd2.setImage(dragEvent.getDragboard().getImage());
+            dragEvent.consume();
+        });
 
         for(ImageView warSpot: resSpots){
-            warSpot.setOnDragDropped(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    //TODO: needs to add the legitimacy of the moves in the spots of the warehouse store
-                    warSpot.setImage(dragEvent.getDragboard().getImage());
-                    fillHand(handListImg);
-                    dragEvent.consume();
-                }
+            warSpot.setOnDragDropped(dragEvent -> {
+                //TODO: needs to add the legitimacy of the moves in the spots of the warehouse store
+                warSpot.setImage(dragEvent.getDragboard().getImage());
+                fillHand(handListImg);
+                dragEvent.consume();
             });
         }
-
     }
 
     /**
@@ -542,6 +655,15 @@ public class GamePanel extends SceneHandler {
     @FXML
     void showDevGrid(ActionEvent event) {
         goFront(devGridPane);
+        int k=1;
+        for(int i=0; i<3; i++){
+            for(int j=0; j<4; j++){
+                devCardSpots[i][j].setImage(getCardPng(k));
+                k++;
+
+            }
+        }
+
     }
 
     /**
@@ -552,6 +674,13 @@ public class GamePanel extends SceneHandler {
     public void showChooseCards(ActionEvent actionEvent){
         //TODO: should be activated only in the initial phase and not with the button
         goFront(chooseCardPane);
+        leaderHand.get(0).setImage(getCardPng(61));
+        leaderHand.get(1).setImage(getCardPng(62));
+        leaderHand.get(2).setImage(getCardPng(63));
+
+        leaderHand.get(3).setImage(getCardPng(64));
+
+
     }
 
     /**
@@ -567,6 +696,7 @@ public class GamePanel extends SceneHandler {
                 stackPane.getChildren().get(i).setDisable(true);
             }
         }
+        rightPane.setDisable(true);
         handButton.setDisable(true);
         boardPane.toFront();
         boardPane.setDisable(true);
@@ -580,30 +710,42 @@ public class GamePanel extends SceneHandler {
     /**
      * utility method to close the pane and bring to front the Board pane again
      */
-    public void closePopUp(){
+    public void closePopup(ActionEvent actionEvent){
         boardPane.toFront();
         boardPane.setOpacity(1);
         boardPane.setDisable(false);
         boardPane.setEffect(null);
         handButton.setDisable(false);
+        rightPane.setDisable(false);
     }
 
 
     @FXML
     public void buyResources(ActionEvent actionEvent) {
-        closePopUp();
         //TODO: add here the message
     }
 
     @FXML
     public void buyCard(ActionEvent event){
-        closePopUp();
         //TODO: add here the message
     }
 
     @FXML
+    public void discardLeaderCard(){
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setSaturation(1);
+
+        for(int i=0; i<4; i++){
+            int finalI = i;
+            leaderHand.get(i).setOnMouseClicked(event ->{
+                leaderHand.get(finalI).setEffect(colorAdjust);
+              event.consume(); });
+        }
+        getGui().getView().getController().sendMessage(new DiscardLeader(pos));
+    }
+    @FXML
     public void chooseCard(ActionEvent actionEvent){
-        closePopUp();
+        closePopup(actionEvent);
         //TODO: add here the message
     }
 
@@ -629,6 +771,28 @@ public class GamePanel extends SceneHandler {
             for (ImageView marketSpot : marketReinsertSpots) {
                 //TODO: insert here the call to the function for reinsert the extra marble with col/row , int
                 marketSpot.setOnDragDropped(dragEvent -> marketSpot.setImage(dragEvent.getDragboard().getImage()));
+            }
+        }
+
+        @FXML
+    public void ctxMenuRes(ContextMenuEvent contextMenuEvent){
+            for(ImageView img: resSpots){
+                if(img.getImage()!= null){
+                    img.setOnContextMenuRequested(e->
+                            contextMenu.show(img, e.getScreenX(), e.getScreenY()));
+                    int posRes;
+                    if(img==res1){
+                        posRes = 1;
+                    }
+                    else if(img==res21 || img == res22)
+                        posRes = 2;
+                    else
+                        posRes = 3;
+                    menuItem.setOnAction(event->{
+                        img.setImage(null);
+                        //getGui().getView().getController().sendMessage(new TakeRes(posRes));
+                         });
+                }
             }
         }
 }

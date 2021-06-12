@@ -28,6 +28,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit5</artifactId>
+            <version>4.0.16-alpha</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>it.polimi.ingsw</groupId>
             <artifactId>common</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -108,6 +114,8 @@
                     <argLine>--add-opens it.polimi.ingsw.client/it.polimi.ingsw.client.CLI=ALL-UNNAMED
                         --add-opens it.polimi.ingsw.client/it.polimi.ingsw.client.model=ALL-UNNAMED
                         --add-opens it.polimi.ingsw.client/it.polimi.ingsw.client=ALL-UNNAMED
+                        --add-opens it.polimi.ingsw.client/it.polimi.ingsw.client.GUI=ALL-UNNAMED
+                        --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
                     </argLine>
                 </configuration>
             </plugin>

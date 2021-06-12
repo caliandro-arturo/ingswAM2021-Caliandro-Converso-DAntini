@@ -57,8 +57,11 @@ public class App extends Application {
         }
         controller = fxmlLoader.getController();
         controller.setGui(gui);
-        Optional<Scene> previousScene = Optional.ofNullable(stage.getScene());
-        previousScene.ifPresent(s -> stage.hide());
+        if(stage==null) {
+            stage = new Stage();
+        }else if(stage.getScene()!= null){
+            stage.hide();
+        }
         stage.setTitle(sceneTitle);
         stage.setScene(scene);
         stage.show();
