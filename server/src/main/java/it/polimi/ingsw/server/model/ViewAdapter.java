@@ -172,7 +172,7 @@ public class ViewAdapter {
     /**
      * Sends initial configurations of development grid and market.
      */
-    public void sendTable(){
+    public void sendTable(Player player){
         ArrayList<DevelopmentCard> cards = game.getDevelopmentGrid().getTopDevelopmentCards();
         ArrayList<Integer> level = new ArrayList<>();
         ArrayList<Integer> victoryPoints = new ArrayList<>();
@@ -188,7 +188,7 @@ public class ViewAdapter {
             costs.add(card.getCost());
             productions.add(card.getProduction());
         }
-        sendMessage(new InitDevGrid(IDs,colors,costs,level,victoryPoints,productions));
+        sendMessage(player, new InitDevGrid(IDs,colors,costs,level,victoryPoints,productions));
         Market market = game.getMarket();
         String extraMarble = market.getExtraMarble().getColorString();
         String[][] tray = new String[market.getRows()][market.getColumns()];
@@ -197,7 +197,14 @@ public class ViewAdapter {
                 tray[i][j] = market.getTray()[i][j].getColorString();
             }
         }
-        sendMessage(new InitMarket(tray,extraMarble));
+        sendMessage(player, new InitMarket(tray,extraMarble));
+    }
+
+    public void sendTable() {
+        for (Player p :
+                game.getPlayers()) {
+            sendTable(p);
+        }
     }
 
     /**

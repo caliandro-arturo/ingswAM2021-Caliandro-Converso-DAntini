@@ -206,4 +206,50 @@ public class Board {
         else
             throw new IllegalArgumentException("you don't have more space for another leader");
     }
+
+    @Override
+    public String toString() {
+        StringBuilder boardJson = new StringBuilder();
+        boardJson.append("""
+                {
+                    "faithTrack": %s,
+                    "leaderCards": [
+                """.formatted(faithTrack));
+        for (LeaderCard l :
+                activeLeaders) {
+            boardJson.append(l).append(",\n");
+        }
+        if (!activeLeaders.isEmpty())
+            boardJson.deleteCharAt(boardJson.lastIndexOf(","));
+        boardJson.append("""
+                    ],
+                    "warehouseStores": [
+                """);
+        for (WarehouseStore w : store) {
+            boardJson.append(w).append(",\n");
+        }
+        boardJson.deleteCharAt(boardJson.lastIndexOf(","));
+        boardJson.append("""
+                    ],
+                    "strongBox": %s,
+                    "developmentPlaces": [
+                """.formatted(strongbox));
+        for (DevelopmentPlace devPlace : developmentSpace) {
+            boardJson.append(devPlace).append(",\n");
+        }
+        boardJson.deleteCharAt(boardJson.lastIndexOf(","));
+        boardJson.append("""
+                    ],
+                    "resourceHand": [
+                """);
+        for (Resource r : resHand) {
+            boardJson.append("\"").append(r.name()).append("\",\n");
+        }
+        if (!resHand.isEmpty())
+            boardJson.deleteCharAt(boardJson.lastIndexOf(","));
+        boardJson.append("""
+                    ]
+                }""");
+        return boardJson.toString();
+    }
 }

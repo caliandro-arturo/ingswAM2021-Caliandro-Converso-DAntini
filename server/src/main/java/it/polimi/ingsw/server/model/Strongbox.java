@@ -74,4 +74,21 @@ public class Strongbox {
             this.resourceMap.replace(res, temp, temp+1);
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder strongboxJson = new StringBuilder();
+        strongboxJson.append("{");
+        for (Resource r : resourceMap.keySet()) {
+            strongboxJson.append("""
+                    "%s": %d,
+                    """.formatted(
+                    r.name(),
+                    resourceMap.get(r)
+            ));
+        }
+        strongboxJson.deleteCharAt(strongboxJson.lastIndexOf(","));
+        strongboxJson.append("}");
+        return strongboxJson.toString();
+    }
 }

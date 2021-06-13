@@ -47,5 +47,18 @@ public class DevelopmentPlace {
         }
     }
 
+    @Override
+    public String toString() {
+        StringBuilder devPlaceJson = new StringBuilder();
+        devPlaceJson.append("[");
+        for (DevelopmentCard c : developmentCards) {
+            devPlaceJson.append(c.toString());
+            devPlaceJson.append(",\n");
+        }
+        if (devPlaceJson.lastIndexOf(",") != -1)
+            devPlaceJson.deleteCharAt(devPlaceJson.lastIndexOf(","));
+        devPlaceJson.append("]");
+        return devPlaceJson.toString();
+    }
 }
 

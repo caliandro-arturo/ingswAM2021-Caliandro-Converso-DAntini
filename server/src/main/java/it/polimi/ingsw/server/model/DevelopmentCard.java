@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.commonFiles.model.Production;
 import it.polimi.ingsw.commonFiles.model.ProductionPower;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
@@ -51,4 +52,65 @@ public class DevelopmentCard {
         return color.name();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder devCardJson = new StringBuilder();
+        devCardJson.append("""
+                {
+                    "ID": %d,
+                    "color": "%s",
+                    "cost": [""".formatted(ID, color.name()));
+        for (UtilityProductionAndCost upc : cost) {
+            devCardJson.append("""
+                    {
+                        "resource": "%s",
+                        "quantity": %d
+                    },
+                    """.formatted(
+                    upc.getResource().name(),
+                    upc.getQuantity()));
+        }
+        devCardJson.deleteCharAt(devCardJson.lastIndexOf(","));
+        devCardJson.append("""
+                ],
+                    "production": {
+                """);
+        devCardJson.append("""
+                    "cost": [""");
+        for (UtilityProductionAndCost upc : productionPower.getCost()) {
+            devCardJson.append("""
+                        {
+                            "resource": "%s",
+                            "quantity": %d
+                        },
+                        """.formatted(
+                    upc.getResource().name(),
+                    upc.getQuantity()));
+        }
+        devCardJson.deleteCharAt(devCardJson.lastIndexOf(","));
+        devCardJson.append("""
+                    ],
+                    "products": [""");
+        for (UtilityProductionAndCost upc : productionPower.getProd()) {
+            devCardJson.append("""
+                        {
+                            "resource": "%s",
+                            "quantity": %d
+                        },
+                        """.formatted(
+                    upc.getResource().name(),
+                    upc.getQuantity()));
+        }
+        devCardJson.deleteCharAt(devCardJson.lastIndexOf(","));
+        devCardJson.append("""
+                    ]
+                },
+                    "victoryPoints": %d,
+                    "level": %d
+                }""".formatted(
+                victoryPoints,
+                level
+        ));
+        return devCardJson.toString();
+    }
 }

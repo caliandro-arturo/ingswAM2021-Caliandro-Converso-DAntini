@@ -1,16 +1,24 @@
 package it.polimi.ingsw.server;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameStamp;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameStarted;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.TimeUp;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
 import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessage;
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.GameCreator;
-import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller element of the MVC architectural pattern: sends received messages to the message visitor and creates the
@@ -22,6 +30,8 @@ public class Controller {
     private final ServerMessageVisitor messageVisitor = new ServerMessageVisitor(this);
     private Game model;
     private boolean isGameStarted = false;
+    private boolean isInPause = false;
+    private Thread messageReader;
 
     public Controller(VirtualView virtualView) {
         this.virtualView = virtualView;
@@ -58,8 +68,19 @@ public class Controller {
         return model.getPlayersNum();
     }
 
-    public synchronized void readMessage(Message message) {
-        ((ToServerMessage) message).accept(messageVisitor);
+    public void readMessage(Message message) {
+        try {
+            messageReader.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return;
+        } catch (NullPointerException ignore) {
+        }
+        if (isInPause) sendMessage(message.getPlayer(), new ErrorMessage("Game in pause to re-add a player."));
+        else {
+            messageReader = new Thread (() -> ((ToServerMessage) message).accept(messageVisitor));
+            messageReader.start();
+        }
     }
 
     public void sendMessage(String player, Message message) {
@@ -86,8 +107,27 @@ public class Controller {
         return model.getPlayer(nick);
     }
 
+    public void sendGameStatus(String nickname) {
+        sendMessage(nickname, new GameStamp(model.toString()));
+        model.getViewAdapter().sendTable(getPlayer(nickname));
+        model.getViewAdapter().sendLeaderHand(getPlayer(nickname));
+    }
+
     public boolean isFinished() {
         return model.isFinished();
     }
 
+    public void pauseGame() {
+        isInPause = true;
+        try {
+            messageReader.join();
+        } catch (InterruptedException | NullPointerException ignore) {
+        }
+        virtualView.sendMessage(new TimeUp(true));
+    }
+
+    public void restartGame() {
+        isInPause = false;
+        virtualView.sendMessage(new TimeUp(false));
+    }
 }

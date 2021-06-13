@@ -58,5 +58,8 @@ public class MultiplayerGame extends Game {
                      getViewAdapter().notifyGameEnded(p, i.incrementAndGet(), p.getVictoryPoints()));
     }
 
-
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

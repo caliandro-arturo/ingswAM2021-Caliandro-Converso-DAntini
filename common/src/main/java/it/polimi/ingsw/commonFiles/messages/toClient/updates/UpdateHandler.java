@@ -22,4 +22,6 @@ public interface UpdateHandler {
     void visit(LorenzoPick msg);
     void visit(GameRejoin gameRejoin);
     void visit(LorenzoPosition msg);
+    void visit(GameStamp gameStamp);
+    void visit(TimeUp timeUp);
 }

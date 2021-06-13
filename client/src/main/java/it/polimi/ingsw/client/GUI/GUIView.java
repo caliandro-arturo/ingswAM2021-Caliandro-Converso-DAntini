@@ -244,4 +244,9 @@ public class GUIView extends View {
     public void showConnectionLost() {
         Platform.runLater(() -> App.setScene("connectionLost", "Masters of Renaissance"));
     }
+
+    @Override
+    public void showTimeUp(boolean timeIsUp) {
+        /*Platform.runLater(() -> ((GamePanel) App.controller).goFront(WaitingPane));*/
+    }
 }

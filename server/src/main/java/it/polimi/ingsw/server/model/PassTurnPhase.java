@@ -40,8 +40,13 @@ public class PassTurnPhase extends TurnPhase {
      */
     private Player nextPlayer() {
         Game game = getGame();
-        if(game.getPlayers().indexOf(game.getCurrentPlayer()) == game.getPlayersNum() - 1)
-            return game.getPlayer(0);
-        return game.getPlayer(game.getPlayers().indexOf(game.getCurrentPlayer()) + 1);
+        Player nextPlayer;
+        try {
+            nextPlayer = game.getPlayer(game.getPlayers().indexOf(game.getCurrentPlayer()) + 1);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            nextPlayer = game.getPlayer(0);
+        }
+        return nextPlayer;
     }
+
 }

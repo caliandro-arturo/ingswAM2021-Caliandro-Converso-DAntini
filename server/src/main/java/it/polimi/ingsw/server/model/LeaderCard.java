@@ -34,4 +34,31 @@ public class LeaderCard{
         this.requirements = requirements;
         this.leaderPower = leaderPower;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder leadCardJson = new StringBuilder();
+        leadCardJson.append("""
+                {
+                    "ID": %d,
+                    "requirements": [
+                """.formatted(ID));
+        for (String r : requirements.identifier()) {
+            leadCardJson.append(r).append(",\n");
+        }
+        leadCardJson.deleteCharAt(leadCardJson.lastIndexOf(","));
+        leadCardJson.append("""
+                ],
+                    "leaderPower": [
+                """);
+        for (String r : leaderPower.identifier()) {
+            leadCardJson.append(r).append(",\n");
+        }
+        leadCardJson.deleteCharAt(leadCardJson.lastIndexOf(","));
+        leadCardJson.append("""
+                ],
+                    "victoryPoints": %d
+                }""".formatted(victoryPoints));
+        return leadCardJson.toString();
+    }
 }

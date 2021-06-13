@@ -1,15 +1,17 @@
 package it.polimi.ingsw.client;
 
+import com.google.gson.*;
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.messages.toClient.GameRejoin;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitialResourcesAmount;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.*;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
+import it.polimi.ingsw.commonFiles.model.ProductionPower;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Handles model updates and service communications.
@@ -57,8 +59,10 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(GameRejoin gameRejoin) {
-        if (gameRejoin.getPlayer().equals(model.getPlayerUsername()))
+        if (model.getPlayerUsername() == null) {
+            model.setPlayerUsername(gameRejoin.getPlayer());
             showUpdate("resume");
+        }
         else
             showUpdate("newplayer", gameRejoin.getPlayer());
     }
@@ -73,6 +77,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      */
     public void visit(SetGame msg) {
         model.setNumOfPlayers(msg.getNumberOfPlayers());
+        model.setGameSelected(true);
         if (msg.getNumberOfPlayers() == 1) {
             model.setBoards(model.getPlayerUsername());
             model.getBoard().getFaithTrack().setPositionB(1);
@@ -88,7 +93,10 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         showUpdate("gamestarted");
     }
 
-
+    /**
+     * Handles the last turn message.
+     * @param msg
+     */
     public void visit(LastTurn msg) {
         model.setLast(true);
         showUpdate("lastturns", msg.getReason());
@@ -151,7 +159,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                         Integer.parseInt(requirementString[3]));
             }
         }
-            return new LeaderCard(ID, victoryPoints, requirement, leaderPower);
+        return new LeaderCard(ID, victoryPoints, requirement, leaderPower);
     }
 
     /**
@@ -166,9 +174,11 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                     msg.getRequirements().get(i)));
         }
         model.setLeaderHand(new LeaderHand(leaderCards));
-        model.setGameStarted(true);
-        setToDo("discardleader", "Discard two leader card by using the command discardleader: <pos>");
-        controller.show("hand");
+        if (!model.isGameStarted()) {
+            model.setGameStarted(true);
+            setToDo("discardleader", "Discard two leader card by using the command discardleader: <pos>");
+            controller.show("hand");
+        }
     }
 
     /**
@@ -225,6 +235,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         controller.getView().showTablePosition(msg.getPosition());
     }
 
+    /**
+     * Announces the initial resource amount.
+     */
     @Override
     public void visit(InitialResourcesAmount msg) {
         if (msg.getResourcesAmount() > 0) {
@@ -244,6 +257,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
+    /**
+     * Announces a new turn.
+     */
     @Override
     public void visit(NewTurn msg) {
         model.setCurrentPlayerInTheGame(msg.getPlayer());
@@ -252,6 +268,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             setToDo("wait", "Wait your turn...");
     }
 
+    /**
+     * Announces a vatican report.
+     */
     @Override
     public void visit(VaticanReport msg) {
         if (msg.getPlayer().equals(model.getPlayerUsername())) {
@@ -261,9 +280,160 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             model.getBoard(msg.getPlayer()).getFaithTrack().setVaticanMap(msg.getNum(), msg.isPassed());
     }
 
+    /**
+     * {@link FaithTrack#addLorenzoPositionByOne()}
+     */
     @Override
     public void visit(LorenzoPosition msg) {
         model.getBoard().getFaithTrack().addLorenzoPositionByOne();
+    }
+
+    /**
+     * Initializes the local model to represent the actual game state. This update is received by players reconnected to
+     * a game after losing the connection.
+     */
+    @Override
+    public void visit(GameStamp gameStamp) {
+        model.setGameSelected(true);
+        model.setGameStarted(true);
+        String status = gameStamp.getGameStatus();
+        JsonElement json = JsonParser.parseString(status);
+        JsonObject gameStatus = json.getAsJsonObject();
+        if (!gameStatus.get("currentPlayer").isJsonNull()) {
+            model.setCurrentPlayerInTheGame(gameStatus.get("currentPlayer").getAsString());
+            model.setCurrentTurnPhase(gameStatus.get("currentTurnPhase").getAsString());
+            setToDo("wait", "Wait your turn...");
+        }
+        JsonArray players = gameStatus.getAsJsonArray("players");
+        model.setNumOfPlayers(players.size());
+        //parsing players
+        players.forEach(p -> {
+            JsonObject player = p.getAsJsonObject();
+            //parsing the nickname
+            String playerNick = player.get("nickname").getAsString();
+            model.setBoards(playerNick);
+            Board playerBoard = model.getBoard(playerNick);
+            JsonObject board = player.getAsJsonObject("board");
+            //parsing the faith track
+            FaithTrack playerTrack = playerBoard.getFaithTrack();
+            JsonObject faithTrack = board.getAsJsonObject("faithTrack");
+            playerTrack.setPosition(faithTrack.get("position").getAsInt());
+            JsonObject vaticanReport = faithTrack.getAsJsonObject("vaticanReport");
+            for (Map.Entry<String, JsonElement> j : vaticanReport.entrySet()) {
+                playerTrack.getVaticanMap().replace(
+                        Integer.parseInt(j.getKey()), j.getValue().isJsonNull() ? null : j.getValue().getAsBoolean());
+            }
+            //parsing leader cards
+            JsonArray leaderCards = board.getAsJsonArray("leaderCards");
+            for (JsonElement cardElement : leaderCards) {
+                JsonObject card = cardElement.getAsJsonObject();
+                int cardId = card.get("ID").getAsInt();
+                int victoryPoints = card.get("victoryPoints").getAsInt();
+                JsonArray requirementsArray = card.getAsJsonArray("requirements");
+                ArrayList<String> requirements = new ArrayList<>();
+                for (JsonElement j : requirementsArray) {
+                    requirements.add(j.getAsString());
+                }
+                JsonArray powerArray = card.getAsJsonArray("leaderPower");
+                ArrayList<String> power = new ArrayList<>();
+                for (JsonElement j : powerArray) {
+                    power.add(j.getAsString());
+                }
+                LeaderCard toAdd = translator(cardId, victoryPoints, power.toArray(new String[0]), requirements.toArray(new String[0]));
+                playerBoard.getLeaderCards().add(toAdd);
+                toAdd.getPower().activatePower(playerBoard);
+            }
+            //parsing warehouse stores (including the leader power one)
+            JsonArray warehouseStores = board.getAsJsonArray("warehouseStores");
+            int warehousePosition = 0;
+            for (JsonElement j : warehouseStores) {
+                JsonObject jsonStore = j.getAsJsonObject();
+                ArrayList<Resource> store;
+                try {
+                    store = playerBoard.getWarehouseStore().getRes().get(warehousePosition);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    store = new ArrayList<>();
+                    playerBoard.getWarehouseStore().getRes().set(warehousePosition, store);
+                }
+                if (!jsonStore.get("resourceType").isJsonNull()) {
+                    String resource = jsonStore.get("resourceType").getAsString();
+                    Resource trueResource = Utility.mapResource.get(resource.toLowerCase());
+                    for (int i = 0; i < jsonStore.get("quantity").getAsInt(); i++)
+                        store.add(trueResource);
+                }
+                warehousePosition++;
+            }
+            //parsing the strongbox
+            JsonObject strongBox = board.getAsJsonObject("strongBox");
+            Strongbox box = playerBoard.getStrongbox();
+            for (Map.Entry<String, JsonElement> entry :
+                    strongBox.entrySet()) {
+                Resource trueResource = Utility.mapResource.get(entry.getKey().toLowerCase());
+                box.addResources(entry.getValue().getAsInt(), trueResource);
+            }
+            //parsing development cards
+            JsonArray devSpace = board.getAsJsonArray("developmentPlaces");
+            DevelopmentPlace developmentPlace = playerBoard.getDevelopmentPlace();
+            for (JsonElement j :
+                    devSpace) {
+                JsonArray devPlace = j.getAsJsonArray();
+                int devPlaceIndex = 0;
+                for (JsonElement k :
+                        devPlace) {
+                    JsonObject devCard = k.getAsJsonObject();
+                    int ID = devCard.get("ID").getAsInt();
+                    Color color = Color.valueOf(devCard.get("color").getAsString());
+                    UtilityProductionAndCost[] cost = utilityProductionAndCostsParser(devCard.getAsJsonArray("cost"));
+                    JsonObject production = devCard.getAsJsonObject("production");
+                    ProductionPower productionPower = new ProductionPower(
+                            utilityProductionAndCostsParser(production.getAsJsonArray("cost")),
+                            utilityProductionAndCostsParser(production.getAsJsonArray("products"))
+                    );
+                    int victoryPoints = devCard.get("victoryPoints").getAsInt();
+                    int level = devCard.get("level").getAsInt();
+                    DevelopmentCard card = new DevelopmentCard(ID, level, victoryPoints, color, cost, productionPower);
+                    developmentPlace.setDevStack(card, devPlaceIndex++);
+                }
+            }
+            //parsing the resource hand
+            JsonArray resHand = board.getAsJsonArray("resourceHand");
+            for (JsonElement j :
+                    resHand) {
+                Resource res = Utility.mapResource.get(j.getAsString().toLowerCase());
+                playerBoard.addResourceToHand(res);
+            }
+            //parsing white conversion resources
+            JsonArray whiteAlt = player.getAsJsonArray("whiteAlt");
+            for (JsonElement j :
+                    whiteAlt) {
+                playerBoard.setPowerWhiteMarble(Utility.mapResource.get(j.getAsString().toLowerCase()));
+            }
+            //parsing sale resources
+            JsonArray sale = player.getAsJsonArray("sale");
+            for (JsonElement j :
+                    sale) {
+                playerBoard.setPowerSale(Utility.mapResource.get(j.getAsString().toLowerCase()));
+            }
+        });
+    }
+
+    private UtilityProductionAndCost[] utilityProductionAndCostsParser(JsonArray upsRawArray) {
+        ArrayList<UtilityProductionAndCost> upc = new ArrayList<>();
+        for (JsonElement j :
+                upsRawArray) {
+            JsonObject upcRawUnit = j.getAsJsonObject();
+            UtilityProductionAndCost upcUnit = new UtilityProductionAndCost(
+                    upcRawUnit.get("quantity").getAsInt(),
+                    Utility.mapResource.get(upcRawUnit.get("resource").getAsString().toLowerCase())
+            );
+            upc.add(upcUnit);
+        }
+        return upc.toArray(new UtilityProductionAndCost[0]);
+    }
+
+    @Override
+    public void visit(TimeUp timeUp) {
+        showUpdate("timeup", Boolean.toString(timeUp.isTimeEffectivelyUp()));
     }
 
     @Override

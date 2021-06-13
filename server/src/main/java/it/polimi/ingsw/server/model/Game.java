@@ -239,7 +239,11 @@ public abstract class Game {
      */
     public void startGame() {
         setStarted(true);
-        setCurrentPlayer(getPlayer(0));
+        int i = 0;
+        do {
+            setCurrentPlayer(getPlayer(i++));
+            if (i == playersNum) i = 0;
+        } while (!currentPlayer.isConnected());
         getViewAdapter().notifyNewTurn(getCurrentPlayer());
         setCurrentTurnPhase(getTurnPhase("UseLeader"));
         currentTurnPhase.start();
@@ -287,6 +291,28 @@ public abstract class Game {
      * Ends the game, sending to players the results of the game (Victory Points and ranking).
      */
     public abstract void endGame();
+
+    @Override
+    public String toString() {
+        StringBuilder gameJson = new StringBuilder();
+        gameJson.append("""
+                {
+                    "currentPlayer": %s,
+                    "currentTurnPhase": %s,
+                    "players": [""".formatted(
+                (currentPlayer != null ? "\"" + currentPlayer.getUsername() + "\"" : "null"),
+                (currentTurnPhase != null ? "\"" + currentTurnPhase.getName() + "\"" : "null")
+                )
+        );
+        for (Player p : players.values()) {
+            gameJson.append(p).append(",\n");
+        }
+        gameJson.deleteCharAt(gameJson.lastIndexOf(","));
+        gameJson.append("""
+                    ]
+                }""");
+        return gameJson.toString();
+    }
 
     //------------------------------------------------------------------------------------------------------------------
     /* for debug purposes */

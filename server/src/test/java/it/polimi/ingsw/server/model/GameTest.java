@@ -1,6 +1,9 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.commonFiles.messages.Message;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -84,7 +87,11 @@ public class GameTest {
         multiTest.setPlayerReady(testPlayer2);
         multiTest.setPlayerReady(testPlayer3);
         multiTest.setPlayerReady(testPlayer4);
-        assertTrue(multiTest.isStarted());
+        /*System.out.println(multiTest);*/
+        JsonElement json = JsonParser.parseString(multiTest.toString());
+        JsonObject gameStatus = json.getAsJsonObject();
+        JsonArray players = gameStatus.getAsJsonArray("players");
+        System.out.println(multiTest);
     }
 
     /**

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.commonFiles.messages.toClient.*;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.NewPlayer;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.PlayerLeft;
 import it.polimi.ingsw.server.model.Player;
@@ -14,11 +13,22 @@ import java.util.*;
  * messages.
  */
 public class VirtualView {
+    /**
+     * The name of the virtual view.
+     */
     private final String name;
+    /**
+     * The reference to the server instance.
+     */
     private final ServerMain serverMain;
+    /**
+     * The controller
+     */
     private final Controller controller = new Controller(this);
+    /**
+     * The map of clients connected to this virtual view.
+     */
     private final HashMap<String, ClientHandler> clientMap = new LinkedHashMap<>();
-    private boolean hasBeenSet = false;
 
     public VirtualView(ServerMain serverMain, String name) {
         this.serverMain = serverMain;
@@ -35,25 +45,6 @@ public class VirtualView {
 
     public Controller getController() {
         return controller;
-    }
-
-    /**
-     * Checks if the game has been set.
-     *
-     * @return {@code true} if the game has been set; {@code false} otherwise
-     */
-    public boolean hasBeenSet() {
-        return hasBeenSet;
-    }
-
-    /**
-     * Checks if the client has already been added to {@link VirtualView#clientMap}.
-     *
-     * @param clientHandler the client to look for in {@link VirtualView#clientMap}
-     * @return {@code true} if the client is in {@link VirtualView#clientMap}; {@code false} otherwise
-     */
-    public boolean hasBeenAdded(ClientHandler clientHandler) {
-        return clientMap.containsValue(clientHandler);
     }
 
     /**
@@ -79,10 +70,6 @@ public class VirtualView {
         return controller.gamePlayersNum();
     }
 
-    public void setHasBeenSet(boolean hasBeenSet) {
-        this.hasBeenSet = hasBeenSet;
-    }
-
     /**
      * Creates the player for the client.
      *
@@ -94,13 +81,22 @@ public class VirtualView {
         sendMessageToOthers(nickname, new NewPlayer(nickname));
     }
 
-    public void reAddPlayer(String nickname, ClientHandler clientHandler) {
+    /**
+     * Re-adds a player that has previously lost the connection.
+     *
+     * @param nickname the previous nickname
+     * @param clientHandler the new client handler to link with the nickname
+     */
+    public synchronized void reAddPlayer(String nickname, ClientHandler clientHandler) {
+        controller.pauseGame();
         clientMap.replace(nickname, clientHandler);
         controller.getPlayer(nickname).setConnected(true);
+        controller.sendGameStatus(nickname);
+        controller.restartGame();
     }
 
     /**
-     * Removes a client from this virtual view.
+     * Removes a client. If there are no connected clients, removes any reference to this virtual view in the server.
      *
      * @param client the client to remove
      */
@@ -155,7 +151,7 @@ public class VirtualView {
      */
     public void sendMessage(Message message) {
         for (String player : clientMap.keySet()) {
-            if (clientMap.get(player).isConnected())
+            if (clientMap.get(player) != null)
                 sendMessage(player, message);
         }
     }
@@ -170,9 +166,4 @@ public class VirtualView {
         for (String p : clientMap.keySet())
             if (!p.equals(player)) sendMessage(p, message);
     }
-
-    public void sendMessageToOthers(Player player, Message message) {
-        sendMessageToOthers(player.getUsername(), message);
-    }
-
 }

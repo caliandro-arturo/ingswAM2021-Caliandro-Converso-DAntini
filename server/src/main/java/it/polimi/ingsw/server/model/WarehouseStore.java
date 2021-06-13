@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.commonFiles.model.Resource;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * class that represents the three different shelves of the Warehouse store
@@ -85,5 +86,16 @@ public class WarehouseStore {
         }
         else
             throw new IllegalArgumentException("This shelf is empty.");
+    }
+
+    @Override
+    public String toString() {
+        return """
+                {
+                    "resourceType": %s,
+                    "quantity": %d
+                }""".formatted(
+                (typeOfResource != null ? "\"" + typeOfResource.name() + "\"" : null),
+                getQuantity());
     }
 }

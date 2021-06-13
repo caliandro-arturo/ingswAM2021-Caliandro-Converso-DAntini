@@ -51,7 +51,12 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <argLine>
+                        --add-opens it.polimi.ingsw.server/it.polimi.ingsw.server.model=ALL-UNNAMED
+                    </argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

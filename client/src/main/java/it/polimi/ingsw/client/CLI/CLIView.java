@@ -724,6 +724,7 @@ public class CLIView extends View {
 
     @Override
     public void showResume() {
+        show("hand");
         showUpdateText("Welcome back, " + getModel().getPlayerUsername() + ".");
     }
 
@@ -789,5 +790,10 @@ public class CLIView extends View {
     public void showConnectionLost() {
         showError("Connection lost.");
         System.exit(0);
+    }
+
+    @Override
+    public void showTimeUp(boolean timeIsUp) {
+        showUpdateText(timeIsUp ? "Readmitting a player..." : "Player readmitted.");
     }
 }

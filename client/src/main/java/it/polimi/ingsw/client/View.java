@@ -68,6 +68,7 @@ public abstract class View {
             case "lastturns" -> showLastTurns(update[1]);
             case "lorenzoaction" -> showLorenzoAction(update[1]);
             case "connectionlost" -> showConnectionLost();
+            case "timeup" -> showTimeUp(Boolean.parseBoolean(update[1]));
         }
     }
 
@@ -102,6 +103,8 @@ public abstract class View {
     public abstract void showLastTurns(String reason);
 
     public abstract void showConnectionLost();
+
+    public abstract void showTimeUp(boolean timeIsUp);
 
     /**
      * Shows the player position on the table.

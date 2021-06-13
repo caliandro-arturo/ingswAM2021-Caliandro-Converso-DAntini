@@ -18,7 +18,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Handles the connection with the client, and represents him in the virtual view.
+ * Handles connection with the client. It also manages the initial nickname setting, the game creation and the game
+ * joining.
  */
 public class ClientHandler extends SocketManager implements Runnable {
     private final ServerMain serverMain;
@@ -36,14 +37,10 @@ public class ClientHandler extends SocketManager implements Runnable {
         return player;
     }
 
-    public void setPlayerName(String nickname) {
-        this.player = nickname;
-    }
-
-    public void setVirtualView(VirtualView virtualView) {
-        this.virtualView = virtualView;
-    }
-
+    /**
+     * Starts the message receiving system. If the connection is lost, flags the player as offline and closes the
+     * socket.
+     */
     public void run() {
         try {
             receiveMessages();
@@ -64,10 +61,12 @@ public class ClientHandler extends SocketManager implements Runnable {
         shutdown();
     }
 
-    public Socket getSocket() {
-        return socket;
-    }
-
+    /**
+     * Reads player's messages. If the virtual view is set, the message is directly delegated to it, else it is managed
+     * here.
+     *
+     * @param message the message to read
+     */
     @Override
     public void readMessage(Message message) {
         if (virtualView == null) {
@@ -102,25 +101,25 @@ public class ClientHandler extends SocketManager implements Runnable {
             Optional<Boolean> playerIsConnected = Optional.ofNullable(serverMain.getConnectedClients().get(nickname));
             //if the nickname is present checks if the player with that nickname is currently connected
             playerIsConnected.ifPresentOrElse(i -> {
-                        //if the nickname owner is currently connected, the player cannot use this nickname...
+                        //if the nickname owner is currently connected, the player cannot use this nickname
                         if (i) {
                             try {
                                 sendMessage(new ErrorMessage( "This nickname is already used."));
                             } catch (IOException ignore) {
                             }
-                        //...else we assume that the previous nickname owner and the new player are the same person,
-                        //and then is checked if this player is linked with a lobby
+                        //else we assume that this new player is the previous nickname owner, and then is checked if
+                        //this player is linked with a lobby
                         } else {
                             Optional<VirtualView> virtualView = Optional.ofNullable(serverMain.getClientToLobbyMap().get(nickname));
                             virtualView.ifPresentOrElse(
                                     //if there is the lobby, the client is linked to that nickname
                                     v -> {
+                                        player = nickname;
                                         v.reAddPlayer(nickname, this);
                                         this.virtualView = v;
                                         serverMain.getConnectedClients().replace(nickname, true);
                                         //notifying the other players in the lobby
-                                        v.sendMessageToOthers(nickname, new GameRejoin(nickname));
-                                        /*v.sendCurrentGameState(nickname);*/
+                                        v.sendMessage(new GameRejoin(nickname));
                                     },
                                     //else the player is simply readded to the server
                                     () -> {
@@ -151,6 +150,8 @@ public class ClientHandler extends SocketManager implements Runnable {
 
     /**
      * Sends the free games list to the player.
+     *
+     * @param gamesList the received message to fill up with available games
      */
     private void sendGamesList(GamesList gamesList) {
         List<VirtualView> views = serverMain.getFreeVirtualViews();
@@ -163,6 +164,11 @@ public class ClientHandler extends SocketManager implements Runnable {
         }
     }
 
+    /**
+     * Adds the player to the selected game.
+     *
+     * @param joinGame the game that the player wants to join
+     */
     private void addPlayerToLobby(JoinGame joinGame) {
         String lobbyName = joinGame.getGameName();
         Optional<VirtualView> lobby = serverMain.getVirtualView(lobbyName);
@@ -178,7 +184,10 @@ public class ClientHandler extends SocketManager implements Runnable {
                         virtualView = l;
                         try {
                             sendMessage(joinGame);
-                        } catch (IOException ignore) {
+                        } catch (IOException e) {
+                            virtualView = null;
+                            l.remove(this);
+                            return;
                         }
                         if (l.isFull())
                             l.getController().startGame();
@@ -197,6 +206,12 @@ public class ClientHandler extends SocketManager implements Runnable {
         );
     }
 
+    /**
+     * Creates a game with the specified number of players. The name of the game is the nickname of the player who
+     * created the game.
+     *
+     * @param setGame the message with the number of players selected for the game creation
+     */
     private void createGame(SetGame setGame) {
         VirtualView view = new VirtualView(serverMain, player);
         try {
@@ -213,7 +228,10 @@ public class ClientHandler extends SocketManager implements Runnable {
         serverMain.addVirtualView(view);
         try {
             sendMessage(setGame);
-        } catch (IOException ignore) {
+        } catch (IOException e) {
+            view.remove(this);
+            virtualView = null;
+            return;
         }
         if (view.isFull())
             view.getController().startGame();

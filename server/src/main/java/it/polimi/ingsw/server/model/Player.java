@@ -5,6 +5,7 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -148,7 +149,7 @@ public class Player {
 
     public void setConnected(boolean connected) {
         isConnected = connected;
-        if (!connected)
+        if (!connected && game.getPlayers().stream().anyMatch(Player::isConnected))
             if (game.getCurrentTurnPhase() == null) {
                 if (!game.isReady(this)) {
                     while (initialResources > 0) {
@@ -159,7 +160,8 @@ public class Player {
                             initialResources--;
                         }
                     }
-                    for (Resource r : board.getResHand())
+                    ArrayList<Resource> tempResHand = new ArrayList<>(board.getResHand());
+                    for (Resource r : tempResHand)
                         //deploys resources in the player's hand in the first free depot
                         for (WarehouseStore w : board.getStore()) {
                             try {
@@ -453,7 +455,6 @@ public class Player {
             }
         }
     }
-
     /**
      *
      * @return number of dev cards owned by the player
@@ -464,5 +465,27 @@ public class Player {
             numOfDevCards += devPlace.getDevelopmentCards().size();
         }
         return numOfDevCards;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder playerJson = new StringBuilder();
+        playerJson.append("""
+                {
+                    "nickname": "%s",
+                    "board": %s,
+                    "whiteAlt": [""".formatted(username, board));
+        for (Resource r : whiteAlt) playerJson.append(r.name()).append(",\n");
+        if (!whiteAlt.isEmpty()) playerJson.deleteCharAt(playerJson.lastIndexOf(","));
+        playerJson.append("""
+                    ],
+                    "sale": [
+                """);
+        for (Resource r : sale) playerJson.append(r.name()).append(",\n");
+        if (!sale.isEmpty()) playerJson.deleteCharAt(playerJson.lastIndexOf(","));
+        playerJson.append("""
+                    ]
+                }""");
+        return playerJson.toString();
     }
 }

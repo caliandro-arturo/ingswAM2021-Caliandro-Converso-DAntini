@@ -1,6 +1,9 @@
 package it.polimi.ingsw.server.model;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.VaticanReport;
+
+import java.util.HashMap;
 
 /**
  * this class represents the faith path,
@@ -11,13 +14,27 @@ public class FaithTrack {
     private Player player;
     private int position = 1;
     private int scoreCard = 0;
+    private final HashMap<Integer, Boolean> vaticanReportsMap = new HashMap<Integer, Boolean>() {{
+        put(8, null);
+        put(16, null);
+        put(24, null);
+    }};
 
     public FaithTrack(Player player) {
         this.player = player;
     }
 
-    public void setPosition(int position) { this.position = position;    }
-    public void setScoreCard(int scoreCard) { this.scoreCard = scoreCard;    }
+    public void setPosition(int position) {
+        this.position = position;
+    }
+    public void setScoreCard(int scoreCard) {
+        this.scoreCard = scoreCard;
+    }
+
+    public HashMap<Integer, Boolean> getVaticanReportsMap() {
+        return vaticanReportsMap;
+    }
+
     public int getPosition() {        return position;    }
     public int getScoreCard() { return scoreCard; }
     private Game game;
@@ -69,35 +86,50 @@ public class FaithTrack {
     public void isInVatican(int papalSpace){
         VaticanReport vaticanReport = new VaticanReport();
         vaticanReport.setPlayer(player.getUsername());
+        boolean isPassed = false;
         switch(papalSpace){
             case 8: {
                 vaticanReport.setNum(1);
                 if (position > 4 && position < 9) {
                     scoreCard += 2;
-                    vaticanReport.setPassed(true);
-                } else
-                    vaticanReport.setPassed(false);
-                break;
+                    isPassed = true;
+                } else break;
             }
             case 16: {
                 vaticanReport.setNum(2);
                 if (position > 11 && position < 17) {
                     scoreCard += 3;
-                    vaticanReport.setPassed(true);
-                } else
-                    vaticanReport.setPassed(false);
+                    isPassed = true;
+                }
                 break;
             }
             case 24: {
                 vaticanReport.setNum(3);
                 if (position > 18 && position < 25) {
                     scoreCard += 4;
-                    vaticanReport.setPassed(true);
-                } else
-                    vaticanReport.setPassed(false);
-                break;
+                    isPassed = true;
+                } else break;
             }
         }
+        vaticanReport.setPassed(isPassed);
+        vaticanReportsMap.replace(papalSpace, isPassed);
         game.getViewAdapter().sendMessage(vaticanReport);
+    }
+
+    @Override
+    public String toString() {
+        return """
+                {
+                    "position": %d,
+                    "vaticanReport": {
+                        "8": %s,
+                        "16": %s,
+                        "24": %s
+                    }
+                }""".formatted(
+                position,
+                vaticanReportsMap.get(8),
+                vaticanReportsMap.get(16),
+                vaticanReportsMap.get(24));
     }
 }
