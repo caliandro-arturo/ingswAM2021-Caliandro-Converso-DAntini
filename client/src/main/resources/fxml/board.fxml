@@ -310,6 +310,15 @@
                                     <ImageView fx:id="baseProd2" fitHeight="41.0" fitWidth="47.0" layoutX="231.0" layoutY="505.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
                                     <Button layoutX="237.0" layoutY="564.0" mnemonicParsing="false" text="Produce" />
                                     <ComboBox fx:id="resBaseProd" layoutX="287.0" layoutY="477.0" prefHeight="45.0" prefWidth="45.0" />
+                                    <ImageView fx:id="devP11" fitHeight="221.0" fitWidth="162.0" layoutX="356.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="devP31" fitHeight="221.0" fitWidth="162.0" layoutX="720.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="devP21" fitHeight="221.0" fitWidth="162.0" layoutX="533.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="devP32" fitHeight="221.0" fitWidth="162.0" layoutX="720.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="devP22" fitHeight="221.0" fitWidth="162.0" layoutX="533.0" layoutY="311.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="devP12" fitHeight="221.0" fitWidth="162.0" layoutX="356.0" layoutY="304.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="devP33" fitHeight="221.0" fitWidth="162.0" layoutX="720.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="devP23" fitHeight="221.0" fitWidth="162.0" layoutX="533.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="devP13" fitHeight="221.0" fitWidth="162.0" layoutX="356.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -391,13 +400,20 @@
    <left>
       <Pane prefHeight="200.0" prefWidth="250.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="activeLeaderCard1" fitHeight="260.0" fitWidth="200.0" layoutX="25.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="activeLeaderCard1" fitHeight="260.0" fitWidth="200.0" layoutX="25.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
             <ImageView fx:id="activeLeaderCard2" fitHeight="260.0" fitWidth="200.0" layoutX="25.0" layoutY="441.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="labelLeaderCards" layoutX="56.0" layoutY="119.0" prefHeight="27.0" prefWidth="139.0" text="Leader Cards:">
                <font>
                   <Font name="Harrington" size="22.0" />
                </font>
             </Label>
+            <ImageView fx:id="resToGive" fitHeight="39.0" fitWidth="49.0" layoutX="32.0" layoutY="377.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="resToGive1" fitHeight="39.0" fitWidth="49.0" layoutX="32.0" layoutY="591.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
+            <ComboBox fx:id="leadProd1" layoutX="101.0" layoutY="365.0" prefHeight="13.0" prefWidth="50.0" />
+            <ComboBox fx:id="leadProd2" layoutX="100.0" layoutY="630.0" prefHeight="19.0" prefWidth="50.0" />
+            <Button fx:id="prodButton1" layoutX="166.0" layoutY="418.0" mnemonicParsing="false" text="Produce" />
+            <Button fx:id="prodButton2" layoutX="166.0" layoutY="671.0" mnemonicParsing="false" text="Produce" />
          </children>
       </Pane>
    </left>

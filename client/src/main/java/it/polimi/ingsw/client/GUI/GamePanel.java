@@ -2,17 +2,13 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
-import it.polimi.ingsw.commonFiles.messages.toServer.TakeRes;
 import it.polimi.ingsw.commonFiles.model.Resource;
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -269,6 +265,51 @@ public class GamePanel extends SceneHandler {
 
     @FXML
     private ComboBox resBaseProd;
+    @FXML
+    private ComboBox leadProd1;
+    @FXML
+    private ComboBox leadProd2;
+
+
+    @FXML
+    private ImageView resToGive;
+
+    @FXML
+    private ImageView resToGive1;
+
+    @FXML
+    private Button prodButton1;
+
+    @FXML
+    private Button prodButton2;
+
+    @FXML
+    private ImageView devP11;
+
+    @FXML
+    private ImageView devP31;
+
+    @FXML
+    private ImageView devP21;
+
+    @FXML
+    private ImageView devP32;
+
+    @FXML
+    private ImageView devP22;
+
+    @FXML
+    private ImageView devP12;
+
+    @FXML
+    private ImageView devP33;
+
+    @FXML
+    private ImageView devP23;
+
+    @FXML
+    private ImageView devP13;
+
 
     private Image blueMarble;
     private Image greyMarble;
@@ -282,7 +323,7 @@ public class GamePanel extends SceneHandler {
     private Image stone;
     private ContextMenu contextMenu;
     private MenuItem menuItem;
-
+    private ArrayList<ArrayList<ImageView>> devPlace;
 
     private ObservableList<ImageView> handListImg;
 
@@ -376,18 +417,58 @@ public class GamePanel extends SceneHandler {
                 imgShield,
                 imgStone
         );
+        leadProd1.getItems().addAll(
+                imgCoin,
+                imgSerf,
+                imgShield,
+                imgStone
+        );
+        leadProd2.getItems().addAll(
+                imgCoin,
+                imgSerf,
+                imgShield,
+                imgStone
+        );
+        leadProd1.setOpacity(0);
+        leadProd1.setDisable(true);
+        leadProd2.setOpacity(0);
+        leadProd2.setDisable(true);
+        resToGive.setDisable(true);
+        resToGive1.setDisable(true);
+        prodButton1.setDisable(true);
+        prodButton1.setOpacity(0);
+        prodButton2.setDisable(true);
+        prodButton2.setOpacity(0);
+
+
         contextMenu = new ContextMenu();
         menuItem = new MenuItem("back to hand");
         contextMenu.getItems().add(menuItem);
-
-
+        devPlace = new ArrayList<>(){{
+            add(new ArrayList<>(Arrays.asList(devP11, devP12, devP13)));
+            add(new ArrayList<>(Arrays.asList(devP21, devP22, devP23)));
+            add(new ArrayList<>(Arrays.asList(devP31, devP32, devP33)));
+        }};
 
         //prove
         goFront(chooseCardPane);
         chooseCardX.setDisable(true);
         chooseCardX.setOpacity(0);
+
+
     }
 
+    /**
+     * prints the relative image for a development card
+     * @param cardId
+     * @param lev
+     * @param pos
+     */
+    public void setDevCard(int pos, int lev, int cardId){
+        pos--;
+        lev--;
+        devPlace.get(pos).get(lev).setImage(getCardPng(cardId));
+    }
 
     /**
      * takes the leader cards from the model and print the relative images
@@ -445,17 +526,50 @@ public class GamePanel extends SceneHandler {
 
     /**
      * setter for the active leader card images
-     * @param cardID
+     * @param cardID must be greater than 48
      */
     public void setActiveLeaderCard(int cardID){
-        if(activeLeaderCard1.getImage()==null){
-            activeLeaderCard1.setImage(getCardPng(cardID));
-        }
-        else if(activeLeaderCard2.getImage()== null){
-            activeLeaderCard2.setImage(getCardPng(cardID));
+        if(cardID>48){
+            if(activeLeaderCard1.getImage()==null){
+                activeLeaderCard1.setImage(getCardPng(cardID));
+                //let the production drag&drop appear
+                if(cardID > 60){
+                    resToGive.setDisable(false);
+                    leadProd1.setDisable(false);
+                    leadProd1.setOpacity(1);
+                    prodButton1.setOpacity(1);
+                    prodButton1.setDisable(false);
+                }else {
+                    resToGive.setDisable(true);
+                    leadProd1.setDisable(true);
+                    leadProd1.setOpacity(0);
+                    prodButton1.setDisable(true);
+                    prodButton1.setOpacity(0);
+
+                }
+            }
+            else if(activeLeaderCard2.getImage()== null){
+                activeLeaderCard2.setImage(getCardPng(cardID));
+                //let the production drag&drop appear
+                if(cardID > 60){
+                    resToGive1.setDisable(false);
+                    leadProd2.setDisable(false);
+                    leadProd2.setOpacity(1);
+                    prodButton2.setDisable(false);
+                    prodButton2.setOpacity(1);
+                }else {
+                    resToGive1.setDisable(true);
+                    leadProd2.setDisable(true);
+                    leadProd2.setOpacity(0);
+                    prodButton2.setDisable(true);
+                    prodButton2.setOpacity(0);
+                }
+            }
         }
         //TODO : else error message FULL ACTIVE LEADER CARDS
     }
+
+
     /**
      * requires as a parameter the marble tray of the market and set the marketSpots
      * so the market is set with the relatives marbles Images
@@ -580,6 +694,8 @@ public class GamePanel extends SceneHandler {
      */
     @FXML
     public void moveRes(){
+
+        //drag 6 drop for warehouse store
         hand.setOnDragDetected(event1 -> {
             Dragboard db = hand.startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();
@@ -597,6 +713,25 @@ public class GamePanel extends SceneHandler {
             });
         }
 
+        for(ImageView warSpot: resSpots){
+            warSpot.setOnDragDropped(dragEvent -> {
+                //TODO: needs to add the legitimacy of the moves in the spots of the warehouse store
+                warSpot.setImage(dragEvent.getDragboard().getImage());
+                fillHand(handListImg);
+                dragEvent.consume();
+            });
+        }
+        //drag & drop for leader card production
+        resToGive.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        resToGive.setOnDragDropped(dragEvent -> {
+            resToGive.setImage(dragEvent.getDragboard().getImage());
+            dragEvent.consume();
+        });
+
+        //drag & drop for base production
         baseProd1.setOnDragOver(dragEvent -> {
             dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             dragEvent.consume();
@@ -614,14 +749,9 @@ public class GamePanel extends SceneHandler {
             dragEvent.consume();
         });
 
-        for(ImageView warSpot: resSpots){
-            warSpot.setOnDragDropped(dragEvent -> {
-                //TODO: needs to add the legitimacy of the moves in the spots of the warehouse store
-                warSpot.setImage(dragEvent.getDragboard().getImage());
-                fillHand(handListImg);
-                dragEvent.consume();
-            });
-        }
+
+
+
     }
 
     /**
