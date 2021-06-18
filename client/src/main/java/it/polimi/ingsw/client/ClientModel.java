@@ -2,6 +2,8 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.*;
 
@@ -16,7 +18,7 @@ public class ClientModel {
     private Market market;
     private LeaderHand leaderHand;
     private int resourcesToGet = 0;
-    private final HashMap<String, Board> boards = new LinkedHashMap<>();
+    private final LinkedHashMap<String, Board> boards = new LinkedHashMap<>();
     private boolean gameStarted = false;                                    //true if leader cards are distributed
     private boolean gameSelected = false;
 
@@ -62,6 +64,10 @@ public class ClientModel {
 
     public Board getBoard() {
         return boards.get(playerUsername);
+    }
+
+    public LinkedHashMap<String, Board> getBoards() {
+        return boards;
     }
 
     public LeaderHand getLeaderHand() {
@@ -139,5 +145,4 @@ public class ClientModel {
     public void setBoards(String username) {
         boards.put(username,new Board());
     }
-
 }

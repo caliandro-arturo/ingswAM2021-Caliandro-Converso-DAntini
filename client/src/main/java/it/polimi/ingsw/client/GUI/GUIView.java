@@ -15,6 +15,8 @@ import java.util.Map;
 
 public class GUIView extends View {
 
+    private boolean isInGame = false;
+
     @Override
     public void process(String input) {
 
@@ -35,7 +37,13 @@ public class GUIView extends View {
 
     @Override
     public void refresh(String... elements) {
-
+        if (elements[0].equals("")) return;
+        GamePanel gamePanel = (GamePanel) App.controller;
+        switch (elements[0]) {
+            case "hand" -> {}
+            case "board" -> {}
+            case "market" -> {}
+        }
     }
 
     @Override

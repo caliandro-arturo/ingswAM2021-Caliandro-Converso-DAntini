@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -20,18 +19,10 @@
 
 <AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/launcher.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.Launcher">
     <children>
-        <Label fx:id="out" alignment="CENTER" layoutX="41.0" layoutY="318.0" prefHeight="37.0" prefWidth="515.0" textFill="WHITE" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="43.799999999999955">
-            <font>
-                <Font name="Harrington" size="19.0" />
-            </font>
-        </Label>
+        <Label fx:id="out" alignment="CENTER" layoutX="41.0" layoutY="318.0" prefHeight="37.0" prefWidth="515.0" textFill="WHITE" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="43.799999999999955" />
       <AnchorPane fx:id="waitPane" disable="true" opacity="0.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="waitLabel" alignment="CENTER" layoutX="125.0" layoutY="182.0" prefHeight="35.0" prefWidth="350.0" text="Waiting the start of the game..." textFill="WHITE" AnchorPane.bottomAnchor="182.8" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="124.60000000000002" AnchorPane.topAnchor="182.0">
-               <font>
-                  <Font name="Harrington" size="19.0" />
-               </font>
-            </Label>
+            <Label fx:id="waitLabel" alignment="CENTER" layoutX="125.0" layoutY="182.0" prefHeight="35.0" prefWidth="350.0" text="Waiting the start of the game..." textFill="WHITE" AnchorPane.bottomAnchor="182.8" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="124.60000000000002" AnchorPane.topAnchor="182.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="resumePane" disable="true" opacity="0.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
@@ -47,30 +38,11 @@
                   <HBox fx:id="playersNumButtons" alignment="CENTER" prefHeight="35.0" prefWidth="286.0" spacing="20.0">
                      <children>
                         <Button fx:id="backToCreateOrJoinButton1" mnemonicParsing="false" onAction="#backOnCreateOrJoin" prefHeight="23.0" prefWidth="91.0" text="Back" />
-                        <Button fx:id="playersNum1" mnemonicParsing="false" onAction="#setGame" text="1">
-                           <font>
-                              <Font name="Harrington" size="29.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="playersNum2" mnemonicParsing="false" onAction="#setGame" text="2">
-                           <font>
-                              <Font name="Harrington" size="29.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="playersNum3" mnemonicParsing="false" onAction="#setGame" text="3">
-                           <font>
-                              <Font name="Harrington" size="29.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="playersNum4" mnemonicParsing="false" onAction="#setGame" text="4">
-                           <font>
-                              <Font name="Harrington" size="29.0" />
-                           </font>
-                        </Button>
+                        <Button fx:id="playersNum1" mnemonicParsing="false" onAction="#setGame" text="1" />
+                        <Button fx:id="playersNum2" mnemonicParsing="false" onAction="#setGame" text="2" />
+                        <Button fx:id="playersNum3" mnemonicParsing="false" onAction="#setGame" text="3" />
+                        <Button fx:id="playersNum4" mnemonicParsing="false" onAction="#setGame" text="4" />
                      </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
                   </HBox>
                </children>
             </VBox>
