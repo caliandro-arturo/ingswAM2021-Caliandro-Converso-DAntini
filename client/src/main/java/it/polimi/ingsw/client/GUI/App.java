@@ -30,6 +30,10 @@ public class App extends Application {
         App.out = out;
     }
 
+    public static GUI getGui() {
+        return gui;
+    }
+
     public static void setError(Label error) {
         App.error = error;
     }

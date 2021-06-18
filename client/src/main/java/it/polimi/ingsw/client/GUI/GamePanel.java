@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
+import it.polimi.ingsw.commonFiles.messages.toServer.UseMarket;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +21,7 @@ import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GamePanel extends SceneHandler {
 
@@ -29,287 +31,207 @@ public class GamePanel extends SceneHandler {
     /**
      * list of FXML item on the board
      */
+
+    @FXML
+    private Label out;
     @FXML
     private BorderPane mainPane;
-
     @FXML
     private Tab yourBoard;
-
     @FXML
     private Pane marketPane;
-
     @FXML
     private ImageView boardImg;
-
     @FXML
     private ImageView crossB;
-
     @FXML
     private ImageView cross;
-
     @FXML
     private Button right;
-
     @FXML
     private Button blackButton;
-
     @FXML
     private Button buy;
-
     @FXML
     private ImageView tile2;
-
     @FXML
     private ImageView tile3;
-
     @FXML
     private ImageView tile4;
-
     @FXML
     private Pagination hand;
-
     @FXML
     private Button res;
-
     @FXML
     private Button marketBtn;
-
     @FXML
     private ImageView res1;
-
     @FXML
     private ImageView res33;
-
     @FXML
     private ImageView res32;
-
     @FXML
     private ImageView res31;
-
     @FXML
     private ImageView res22;
-
     @FXML
     private ImageView res21;
-
     @FXML
     private GridPane marketTray;
-
     @FXML
     private ImageView mb00 ;
-
     @FXML
     private ImageView mb10 ;
-
     @FXML
     private ImageView mb20;
-
     @FXML
     private ImageView mb30;
-
     @FXML
     private ImageView mb01;
-
     @FXML
     private ImageView mb11;
-
     @FXML
     private ImageView mb21;
-
     @FXML
     private ImageView mb31;
-
     @FXML
     private ImageView mb02;
-
     @FXML
     private ImageView mb12;
-
     @FXML
     private ImageView mb22;
-
     @FXML
     private ImageView mb32;
-
     @FXML
     private ImageView row1;
-
     @FXML
     private ImageView row0;
-
     @FXML
     private ImageView row2;
-
     @FXML
     private ImageView col0;
-
     @FXML
     private ImageView col1;
-
     @FXML
     private ImageView col3;
-
     @FXML
     private ImageView col2;
-
     @FXML
     private ImageView mbEx;
-
     @FXML
     private Label infoBox;
-
     @FXML
     private TableView<String> tabVP;
-
     @FXML
     private TableColumn<String, String> columnCategory;
-
     @FXML
     private TableColumn<String, Integer> columnVP;
-
     @FXML
     private Pane chooseCardPane;
-
     @FXML
     private ImageView leadCard1;
-
     @FXML
     private ImageView leadCard2;
-
     @FXML
     private ImageView leadCard3;
-
     @FXML
     private ImageView leadCard4;
-
     @FXML
     private Pane devGridPane;
-
     @FXML
     private Pane boardPane;
-
     @FXML
     private StackPane stackPane;
-
     @FXML
     private Button buyCardButton;
-
     @FXML
     private ImageView devcard00;
-
     @FXML
     private ImageView devcard10;
-
     @FXML
     private ImageView devcard20;
-
     @FXML
     private ImageView devcard30;
-
     @FXML
     private ImageView devcard01;
-
     @FXML
     private ImageView devcard11;
-
     @FXML
     private ImageView devcard21;
-
     @FXML
     private ImageView devcard31;
-
     @FXML
     private ImageView devcard02;
-
     @FXML
     private ImageView devcard12;
-
     @FXML
     private ImageView devcard22;
-
     @FXML
     private ImageView devcard32;
-
     @FXML
     private Button handButton;
-
     @FXML
     private ImageView activeLeaderCard1;
-
     @FXML
     private ImageView activeLeaderCard2;
-
     @FXML
     private ImageView baseProd1;
-
     @FXML
     private ImageView baseProd2;
-
     @FXML
     private Label boxShield;
-
     @FXML
     private Label boxCoin;
-
     @FXML
     private Label boxSerf;
-
     @FXML
     private Label boxStone;
-
     @FXML
     private SplitPane rightPane;
-
     @FXML
     private Button chooseCardX;
-
     @FXML
     private ComboBox resBaseProd;
     @FXML
     private ComboBox leadProd1;
     @FXML
     private ComboBox leadProd2;
-
-
     @FXML
     private ImageView resToGive;
-
     @FXML
     private ImageView resToGive1;
-
     @FXML
     private Button prodButton1;
-
     @FXML
     private Button prodButton2;
-
     @FXML
     private ImageView devP11;
-
     @FXML
     private ImageView devP31;
-
     @FXML
     private ImageView devP21;
-
     @FXML
     private ImageView devP32;
-
     @FXML
     private ImageView devP22;
-
     @FXML
     private ImageView devP12;
-
     @FXML
     private ImageView devP33;
-
     @FXML
     private ImageView devP23;
-
     @FXML
     private ImageView devP13;
-
+    @FXML
+    private Pane pause;
+    @FXML
+    private Pane leftPane;
+    @FXML
+    private Button cardsButton;
+    @FXML
+    private Button discardButton;
+    @FXML
+    private Button deployLButton;
 
     private Image blueMarble;
     private Image greyMarble;
@@ -354,6 +276,7 @@ public class GamePanel extends SceneHandler {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        setGui(App.getGui());
 
         blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
         greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
@@ -451,13 +374,38 @@ public class GamePanel extends SceneHandler {
         }};
 
         //prove
-        goFront(chooseCardPane);
-        chooseCardX.setDisable(true);
-        chooseCardX.setOpacity(0);
 
+        cardsButton.fire();
+        chooseCardX.setDisable(true);
+        deployLButton.setDisable(true);
 
     }
 
+    /**
+     * prints in the bottom of the game a message passed as parameter
+     * @param msg
+     */
+    public void printOut(String msg){
+        out.setText(msg);
+    }
+    /**
+     * activated when the connection is lost. Freeze the game and show "pause"
+     */
+    public void pause(){
+        //if(connection problems...)
+        goFront(pause);
+        leftPane.setDisable(true);
+        rightPane.setDisable(true);
+    }
+
+    /**
+     * activated when the connection is back after pause
+     */
+    public void reconnect(){
+        pause.toBack();
+        leftPane.setDisable(false);
+        rightPane.setDisable(false);
+    }
     /**
      * prints the relative image for a development card
      * @param cardId
@@ -470,14 +418,6 @@ public class GamePanel extends SceneHandler {
         devPlace.get(pos).get(lev).setImage(getCardPng(cardId));
     }
 
-    /**
-     * takes the leader cards from the model and print the relative images
-     */
-    public void addLeaderCards(LeaderHand hand){
-        for(int i = 0; i<4; i++){
-            leaderHand.get(i).setImage(getCardPng(hand.getHand().get(i).getID()));
-        }
-    }
     /**
      * is called by the production to add resources in the strongbox
      * @param num: the number of resources to add
@@ -761,22 +701,10 @@ public class GamePanel extends SceneHandler {
     @FXML
     public void showMarket(ActionEvent actionEvent){
         goFront(marketPane);
+        Market modelMarket = getGui().getView().getModel().getMarket();
+        setMarketPng(modelMarket.getGrid(), modelMarket.getExtraMarble());
 
-        //temporary initialization of the marbles in the market
-        mb00.setImage(yellowMarble);
-        mb10.setImage(redMarble);
-        mb20.setImage(yellowMarble);
-        mb30.setImage(redMarble);
-        mb01.setImage(blueMarble);
-        mb11.setImage(greyMarble);
-        mb21.setImage(yellowMarble);
-        mb31.setImage(whiteMarble);
-        mb02.setImage(yellowMarble);
-        mb12.setImage(purpleMarble);
-        mb22.setImage(yellowMarble);
-        mb32.setImage(purpleMarble);
-        mbEx.setImage(whiteMarble);
-    }
+           }
 
     /**
      * shows the Dev Grid pane on the click of the relative button
@@ -786,9 +714,11 @@ public class GamePanel extends SceneHandler {
     void showDevGrid(ActionEvent event) {
         goFront(devGridPane);
         int k=1;
+        DevelopmentGrid developmentGrid = getGui().getView().getModel().getDevelopmentGrid();
+
         for(int i=0; i<3; i++){
             for(int j=0; j<4; j++){
-                devCardSpots[i][j].setImage(getCardPng(k));
+                devCardSpots[i][j].setImage(getCardPng(developmentGrid.getGrid()[i][j].getID()));
                 k++;
 
             }
@@ -803,14 +733,16 @@ public class GamePanel extends SceneHandler {
     @FXML
     public void showChooseCards(ActionEvent actionEvent){
         //TODO: should be activated only in the initial phase and not with the button
+        LeaderHand hand = getGui().getView().getModel().getLeaderHand();
         goFront(chooseCardPane);
-        leaderHand.get(0).setImage(getCardPng(61));
-        leaderHand.get(1).setImage(getCardPng(62));
-        leaderHand.get(2).setImage(getCardPng(63));
+        try {
+            leaderHand.get(0).setImage(getCardPng(hand.getHand().get(0).getID()));
+            leaderHand.get(1).setImage(getCardPng(hand.getHand().get(1).getID()));
+            leaderHand.get(2).setImage(getCardPng(hand.getHand().get(2).getID()));
+            leaderHand.get(3).setImage(getCardPng(hand.getHand().get(3).getID()));
+        }catch(ArrayIndexOutOfBoundsException ignore){
 
-        leaderHand.get(3).setImage(getCardPng(64));
-
-
+        }
     }
 
     /**
@@ -863,20 +795,29 @@ public class GamePanel extends SceneHandler {
     @FXML
     public void discardLeaderCard(){
         ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setSaturation(1);
-
+        colorAdjust.setSaturation(0.5);
+        AtomicInteger discarded= new AtomicInteger();
         for(int i=0; i<4; i++){
             int finalI = i;
             leaderHand.get(i).setOnMouseClicked(event ->{
                 leaderHand.get(finalI).setEffect(colorAdjust);
-              event.consume(); });
+                discardButton.setOnAction(e->{
+                    getGui().getView().getController().sendMessage(new DiscardLeader(finalI+1));
+                    printOut("You have discarded card number "+(finalI+1));
+                    leaderHand.get(finalI).setImage(null);
+                    discarded.set(discarded.intValue()+1);
+                    if(discarded.intValue()==2){
+                        printOut("You are ready to play! ");
+                        discardButton.setDisable(true);
+                        chooseCardX.setDisable(false);
+                        deployLButton.setDisable(false);
+                    }
+                    e.consume();
+            });
+                event.consume();
+            });
+
         }
-        getGui().getView().getController().sendMessage(new DiscardLeader(pos));
-    }
-    @FXML
-    public void chooseCard(ActionEvent actionEvent){
-        closePopup(actionEvent);
-        //TODO: add here the message
     }
 
     /**
@@ -899,8 +840,28 @@ public class GamePanel extends SceneHandler {
                 });
             }
             for (ImageView marketSpot : marketReinsertSpots) {
-                //TODO: insert here the call to the function for reinsert the extra marble with col/row , int
-                marketSpot.setOnDragDropped(dragEvent -> marketSpot.setImage(dragEvent.getDragboard().getImage()));
+                marketSpot.setOnDragDropped(dragEvent ->{
+                    if(dragEvent.getSource()==row0) {
+                        getGui().getView().getController().sendMessage(new UseMarket('r', 1));
+                    }else if(dragEvent.getSource()==row1){
+                        getGui().getView().getController().sendMessage(new UseMarket('r', 2));
+                    }
+                    else if(dragEvent.getSource()==row2){
+                        getGui().getView().getController().sendMessage(new UseMarket('r', 3));
+                    }
+                    else if(dragEvent.getSource()==col0){
+                        getGui().getView().getController().sendMessage(new UseMarket('c', 1));
+                    }
+                    else if(dragEvent.getSource()==col1){
+                        getGui().getView().getController().sendMessage(new UseMarket('c', 2));
+                    }
+                    else if(dragEvent.getSource()==col2){
+                        getGui().getView().getController().sendMessage(new UseMarket('c', 3));
+                    }
+                    else if(dragEvent.getSource()==col3){
+                        getGui().getView().getController().sendMessage(new UseMarket('c', 4));
+                    }
+                });
             }
         }
 

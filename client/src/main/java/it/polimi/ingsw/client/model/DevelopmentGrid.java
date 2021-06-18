@@ -13,6 +13,10 @@ import java.util.Arrays;
 public class DevelopmentGrid{
     private DevelopmentCard[][] grid;
 
+    public DevelopmentCard[][] getGrid() {
+        return grid;
+    }
+
     public DevelopmentGrid(ArrayList<DevelopmentCard> grid){
         this.grid = new DevelopmentCard[3][4];
         setGrid(grid);

@@ -35,6 +35,14 @@ public class Market {
         }
     }
 
+    public Marble getExtraMarble() {
+        return extraMarble;
+    }
+
+    public Marble[][] getGrid() {
+        return grid;
+    }
+
     public Marble[] getRowOrColumn(char rowOrColumn, int num) {
         num--;
         Marble[] marbleArray;
