@@ -193,6 +193,8 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ComboBox resBaseProd;
     @FXML
+    private ComboBox devPosCombo;
+    @FXML
     private ComboBox leadProd1;
     @FXML
     private ComboBox leadProd2;
@@ -232,6 +234,10 @@ public class GamePanel extends SceneHandler {
     private Button discardButton;
     @FXML
     private Button deployLButton;
+    @FXML
+    private Pane paymentPane;
+    @FXML
+    private ImageView devCardToBuy;
 
     private Image blueMarble;
     private Image greyMarble;
@@ -352,6 +358,11 @@ public class GamePanel extends SceneHandler {
                 imgShield,
                 imgStone
         );
+        devPosCombo.getItems().addAll(
+                "1",
+                "2",
+                "3"
+        );
         leadProd1.setOpacity(0);
         leadProd1.setDisable(true);
         leadProd2.setOpacity(0);
@@ -378,7 +389,6 @@ public class GamePanel extends SceneHandler {
         cardsButton.fire();
         chooseCardX.setDisable(true);
         deployLButton.setDisable(true);
-
     }
 
     /**
@@ -713,6 +723,13 @@ public class GamePanel extends SceneHandler {
     @FXML
     void showDevGrid(ActionEvent event) {
         goFront(devGridPane);
+        for(ImageView[] row: devCardSpots){
+            for (ImageView card: row){
+                card.setOnMouseClicked(event1 -> {
+                    showPayment(card.getImage());
+                });
+            }
+        }
         int k=1;
         DevelopmentGrid developmentGrid = getGui().getView().getModel().getDevelopmentGrid();
 
@@ -724,6 +741,11 @@ public class GamePanel extends SceneHandler {
             }
         }
 
+    }
+
+    private void showPayment(Image card) {
+        goFront(paymentPane);
+        devCardToBuy.setImage(card);
     }
 
     /**
@@ -816,7 +838,6 @@ public class GamePanel extends SceneHandler {
             });
                 event.consume();
             });
-
         }
     }
 
