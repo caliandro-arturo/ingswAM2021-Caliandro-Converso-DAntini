@@ -1,9 +1,13 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.ClientModel;
+import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
 import it.polimi.ingsw.commonFiles.messages.toServer.UseMarket;
 import it.polimi.ingsw.commonFiles.model.Resource;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -282,8 +286,12 @@ public class GamePanel extends SceneHandler {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        while (getModel().getLeaderHand() == null) try {
+            this.wait();
+        } catch (InterruptedException e) {
+            System.exit(1);
+        }
         setGui(App.getGui());
-
         blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
         greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
         purpleMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/purple_marble.png")));
@@ -373,7 +381,8 @@ public class GamePanel extends SceneHandler {
         prodButton1.setOpacity(0);
         prodButton2.setDisable(true);
         prodButton2.setOpacity(0);
-
+        getModel().getMarket().gridProperty().addListener(e -> setMarketPng());
+        if (getModel().getMarket().getGrid() != null) setMarketPng();
 
         contextMenu = new ContextMenu();
         menuItem = new MenuItem("back to hand");
@@ -389,6 +398,10 @@ public class GamePanel extends SceneHandler {
         cardsButton.fire();
         chooseCardX.setDisable(true);
         deployLButton.setDisable(true);
+    }
+
+    private ClientModel getModel() {
+        return getGui().getView().getModel();
     }
 
     /**
@@ -523,9 +536,10 @@ public class GamePanel extends SceneHandler {
     /**
      * requires as a parameter the marble tray of the market and set the marketSpots
      * so the market is set with the relatives marbles Images
-     * @param tray : the Marble tray of the market and the extra marble
      */
-    public void setMarketPng(Marble[][] tray, Marble exMarble){
+    public void setMarketPng(){
+        Marble[][] tray = getModel().getMarket().getGrid();
+        Marble exMarble = getModel().getMarket().getExtraMarble();
         for(int row=0; row< tray.length; row++){
             for(int col=0; col< tray[row].length; col++){
                 marketSpots[row][col].setImage(colorImageMap.get(tray[row][col].getColor()));
@@ -712,9 +726,9 @@ public class GamePanel extends SceneHandler {
     public void showMarket(ActionEvent actionEvent){
         goFront(marketPane);
         Market modelMarket = getGui().getView().getModel().getMarket();
-        setMarketPng(modelMarket.getGrid(), modelMarket.getExtraMarble());
+        setMarketPng();
 
-           }
+    }
 
     /**
      * shows the Dev Grid pane on the click of the relative button
