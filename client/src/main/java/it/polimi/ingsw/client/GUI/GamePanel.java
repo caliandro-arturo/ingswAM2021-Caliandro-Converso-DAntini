@@ -51,7 +51,6 @@ public class GamePanel extends SceneHandler {
     private Button res;
     @FXML
     private Button marketBtn;
-
     @FXML
     private GridPane marketTray;
     @FXML
@@ -103,7 +102,52 @@ public class GamePanel extends SceneHandler {
     @FXML
     private TableColumn<String, Integer> columnVP;
     @FXML
+    private StackPane stackPane;
+    @FXML
+    private Button handButton;
+    @FXML
+    private ImageView activeLeaderCard1;
+    @FXML
+    private ImageView activeLeaderCard2;
+    @FXML
+    private SplitPane rightPane;
+    @FXML
+    private ComboBox devPosCombo;
+    @FXML
+    private ComboBox leadProd1;
+    @FXML
+    private ComboBox leadProd2;
+    @FXML
+    private Button prodButton1;
+    @FXML
+    private ImageView resToGive;
+    @FXML
+    private ImageView resToGive1;
+    @FXML
+    private Button prodButton2;
+    @FXML
+    private Button cardsButton;
+    @FXML
+    private ImageView devCardToBuy;
+    @FXML
+    private Button backBtn;
+    @FXML
+    private Button gridButton;
+    @FXML
+    private Label colorLabel;
+    @FXML
+    private Label levelLabel;
+    @FXML
+    private Label costLabel;
+
+    @FXML
     private Pane chooseCardPane;
+    @FXML
+    private Button discardButton;
+    @FXML
+    private Button deployLButton;
+    @FXML
+    private Button chooseCardX;
     @FXML
     private ImageView leadCard1;
     @FXML
@@ -113,11 +157,13 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ImageView leadCard4;
     @FXML
+    private Pane pause;
+    @FXML
+    private Pane leftPane;
+    @FXML
+    private Pane paymentPane;
+    @FXML
     private Pane devGridPane;
-    @FXML
-    private Pane boardPane;
-    @FXML
-    private StackPane stackPane;
     @FXML
     private Button buyCardButton;
     @FXML
@@ -145,85 +191,29 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ImageView devcard32;
     @FXML
-    private Button handButton;
+    private Pane marketPane;
     @FXML
-    private ImageView activeLeaderCard1;
-    @FXML
-    private ImageView activeLeaderCard2;
-    @FXML
-    private SplitPane rightPane;
-    @FXML
-    private Button chooseCardX;
-    @FXML
-    private ComboBox devPosCombo;
-    @FXML
-    private ComboBox leadProd1;
-    @FXML
-    private ComboBox leadProd2;
-    @FXML
-    private Button prodButton1;
-    @FXML
-    private ImageView resToGive;
-    @FXML
-    private ImageView resToGive1;
-    @FXML
-    private Button prodButton2;
-    @FXML
-    private ImageView devP11;
-    @FXML
-    private ImageView devP31;
-    @FXML
-    private ImageView devP21;
-    @FXML
-    private ImageView devP32;
-    @FXML
-    private ImageView devP22;
-    @FXML
-    private ImageView devP12;
-    @FXML
-    private ImageView devP33;
-    @FXML
-    private ImageView devP23;
-    @FXML
-    private ImageView devP13;
-    @FXML
-    private Pane pause;
-    @FXML
-    private Pane leftPane;
-    @FXML
-    private Button cardsButton;
-    @FXML
-    private Button discardButton;
-    @FXML
-    private Button deployLButton;
-    @FXML
-    private Pane paymentPane;
-    @FXML
-    private ImageView devCardToBuy;
-    @FXML
-    private Button backBtn;
-    @FXML
-    private Button gridButton;
-    @FXML
-    private Label colorLabel;
-    @FXML
-    private Label levelLabel;
-    @FXML
-    private Label costLabel;
+    private Pane boardPane;
 
-    private Image blueMarble;
-    private Image greyMarble;
-    private Image purpleMarble;
-    private Image redMarble;
-    private Image whiteMarble;
-    private Image yellowMarble;
-    private Image coin;
-    private Image serf;
-    private Image shield;
-    private Image stone;
+    private final Image blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
+    private final Image greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
+    private final Image purpleMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/purple_marble.png")));
+    private final Image redMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/red_marble.png")));
+    private final Image whiteMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/white_marble.png")));
+    private final Image yellowMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/yellow_marble.png")));
+
+    public static final Image imgCoin = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/coin.png")));
+    public static final Image imgSerf = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/serf.png")));
+    public static final Image imgShield = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/shield.png")));
+    public static final Image imgStone = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/stone.png")));
+
+    public static final ImageView imgViewCoin = new ImageView(imgCoin);
+    public static final ImageView imgViewSerf = new ImageView(imgSerf);
+    public static final ImageView imgViewShield = new ImageView(imgShield);
+    public static final ImageView imgViewStone = new ImageView(imgStone);
+
     private ContextMenu contextMenu;
     private MenuItem menuItem;
-    private ArrayList<ArrayList<ImageView>> devPlace;
 
     private ObservableList<ImageView> handListImg;
 
@@ -254,18 +244,7 @@ public class GamePanel extends SceneHandler {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-
         setGui(App.getGui());
-        blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
-        greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
-        purpleMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/purple_marble.png")));
-        redMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/red_marble.png")));
-        whiteMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/white_marble.png")));
-        yellowMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/yellow_marble.png")));
-        coin = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/coin.png")));
-        serf = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/serf.png")));
-        shield = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/shield.png")));
-        stone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/stone.png")));
         handListImg = FXCollections.observableArrayList();
         resSpots = new ArrayList<>(Arrays.asList(res1, res21, res22, res31, res32, res33));
         marketReinsertSpots = new ArrayList<>(Arrays.asList(row0, row1, row2, col0, col1, col2, col3));
@@ -294,24 +273,15 @@ public class GamePanel extends SceneHandler {
             put(Color.WHITE, whiteMarble);
             put(Color.YELLOW, yellowMarble);
         }};
-        resourceLabelHashMap = new HashMap<>(){{
-            put(Resource.SERF, boxSerf);
-            put(Resource.COIN, boxCoin);
-            put(Resource.SHIELD, boxShield);
-            put(Resource.STONE, boxStone);
-        }};
-        ImageView imgCoin = new ImageView(coin);
-        imgCoin.setFitHeight(40);
-        imgCoin.setFitWidth(40);
-        ImageView imgSerf = new ImageView(serf);
-        imgSerf.setFitHeight(40);
-        imgSerf.setFitWidth(40);
-        ImageView imgShield = new ImageView(shield);
-        imgShield.setFitHeight(40);
-        imgShield.setFitWidth(40);
-        ImageView imgStone = new ImageView(stone);
-        imgStone.setFitHeight(40);
-        imgStone.setFitWidth(40);
+
+        imgViewCoin.setFitHeight(40);
+        imgViewCoin.setFitWidth(40);
+        imgViewSerf.setFitHeight(40);
+        imgViewSerf.setFitWidth(40);
+        imgViewShield.setFitHeight(40);
+        imgViewShield.setFitWidth(40);
+        imgViewStone.setFitHeight(40);
+        imgViewStone.setFitWidth(40);
 
         devPosCombo.getItems().addAll(
                 "1",
@@ -379,17 +349,6 @@ public class GamePanel extends SceneHandler {
         leftPane.setDisable(false);
         rightPane.setDisable(false);
     }
-    /**
-     * prints the relative image for a development card
-     * @param cardId
-     * @param lev
-     * @param pos
-     */
-    public void setDevCard(int pos, int lev, int cardId){
-        pos--;
-        lev--;
-        devPlace.get(pos).get(lev).setImage(getCardPng(cardId));
-    }
 
     /**
      * is called by the production to add resources in the strongbox
@@ -422,7 +381,7 @@ public class GamePanel extends SceneHandler {
         DevelopmentCard[][] devGrid = getModel().getDevelopmentGrid().getGrid();
         for(int row=0; row<devGrid.length; row++){
             for(int col=0; col<devGrid[row].length; col++){
-                devCardSpots[row][col].setImage(getCardPng(devGrid[row][col].getID()));
+                devCardSpots[row][col].setImage(Utility.getCardPng(devGrid[row][col].getID()));
             }
         }
     }
@@ -444,7 +403,7 @@ public class GamePanel extends SceneHandler {
     public void setActiveLeaderCard(int cardID){
         if(cardID>48){
             if(activeLeaderCard1.getImage()==null){
-                activeLeaderCard1.setImage(getCardPng(cardID));
+                activeLeaderCard1.setImage(Utility.getCardPng(cardID));
                 //let the production drag&drop appear
                 if(cardID > 60){
                     resToGive.setDisable(false);
@@ -462,7 +421,7 @@ public class GamePanel extends SceneHandler {
                 }
             }
             else if(activeLeaderCard2.getImage()== null){
-                activeLeaderCard2.setImage(getCardPng(cardID));
+                activeLeaderCard2.setImage(Utility.getCardPng(cardID));
                 //let the production drag&drop appear
                 if(cardID > 60){
                     resToGive1.setDisable(false);
@@ -498,82 +457,9 @@ public class GamePanel extends SceneHandler {
         mbEx.setImage(colorImageMap.get(exMarble.getColor()));
     }
 
-    /**
-     * can be used to get the card image for giving the cardId as a parameter
-     * @param cardId
-     * @return
-     */
-    public Image getCardPng(int cardId){
-        return new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/"+cardId+".png")));
-    }
 
     public int getCardId(Image image){
         return Integer.parseInt(image.getUrl().substring(11,14));
-    }
-
-    /**
-     * increase the position of the cross in the GUI
-     * @param event
-     */
-    @FXML
-    void increasePos(ActionEvent event) {
-        //TODO: needs to be activated NOT with a button, but updated with a faith resource
-        int posi=0;
-        ImageView newCross = null;
-        if(event.getSource() == blackButton){
-            ++posB;
-            if(posB<=2)
-                moveRight(crossB);
-            posi= posB;
-            newCross = crossB;
-        }else if(event.getSource() == right){
-            ++pos;
-            posi = pos;
-            newCross = cross;
-        }
-        checkTile(posi);
-        if (posi<=2)
-            moveRight(newCross);
-        else if(posi<5)
-            moveUp(newCross);
-        else if(posi<10)
-            moveRight(newCross);
-        else if(posi<12)
-            moveDown(newCross);
-        else if(posi<17)
-            moveRight(newCross);
-        else if(posi<19)
-            moveUp(newCross);
-        else if(posi<25)
-            moveRight(newCross);
-
-    }
-
-    /**
-     * check the position and set the relative tile visiblle
-     * @param pos
-     */
-    public void checkTile(int pos){
-        if(pos == 9)
-            tile2.setOpacity(100);
-        else if (pos == 17)
-            tile3.setOpacity(100);
-        else if (pos== 24)
-            tile4.setOpacity(100);
-    }
-
-    /**
-     * utility methods to move the cross in the faith track
-     * @param img
-     */
-    public void moveUp(ImageView img){
-        img.setLayoutY(img.getLayoutY()-46);
-    }
-    public void moveRight(ImageView img){
-        img.setLayoutX(img.getLayoutX()+46);
-    }
-    public void moveDown(ImageView img){
-        img.setLayoutY(img.getLayoutY()+46);
     }
 
 
@@ -662,11 +548,8 @@ public class GamePanel extends SceneHandler {
             baseProd2.setImage(dragEvent.getDragboard().getImage());
             dragEvent.consume();
         });
-
-
-
-
     }
+
 
     /**
      * shows the Market pane on the click of the relative button
@@ -701,7 +584,7 @@ public class GamePanel extends SceneHandler {
     }
 
     private void showPayment(DevelopmentCard devCard) {
-        devCardToBuy.setImage(getCardPng(devCard.getID()));
+        devCardToBuy.setImage(Utility.getCardPng(devCard.getID()));
         StringBuilder cost = new StringBuilder();
         for(int i=0; i<devCard.getCosts().length; i++){
             cost.append(" " + devCard.getCosts()[i].getQuantity());
@@ -723,10 +606,10 @@ public class GamePanel extends SceneHandler {
         LeaderHand hand = getGui().getView().getModel().getLeaderHand();
         goFront(chooseCardPane);
         try {
-            leaderHand.get(0).setImage(getCardPng(hand.getHand().get(0).getID()));
-            leaderHand.get(1).setImage(getCardPng(hand.getHand().get(1).getID()));
-            leaderHand.get(2).setImage(getCardPng(hand.getHand().get(2).getID()));
-            leaderHand.get(3).setImage(getCardPng(hand.getHand().get(3).getID()));
+            leaderHand.get(0).setImage(Utility.getCardPng(hand.getHand().get(0).getID()));
+            leaderHand.get(1).setImage(Utility.getCardPng(hand.getHand().get(1).getID()));
+            leaderHand.get(2).setImage(Utility.getCardPng(hand.getHand().get(2).getID()));
+            leaderHand.get(3).setImage(Utility.getCardPng(hand.getHand().get(3).getID()));
         }catch(ArrayIndexOutOfBoundsException ignore){
 
         }
@@ -851,7 +734,7 @@ public class GamePanel extends SceneHandler {
             }
         }
 
-        @FXML
+    @FXML
     public void ctxMenuRes(ContextMenuEvent contextMenuEvent){
             for(ImageView img: resSpots){
                 if(img.getImage()!= null){
