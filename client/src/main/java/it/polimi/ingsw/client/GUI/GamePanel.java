@@ -29,8 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GamePanel extends SceneHandler {
 
-    int pos = 1;
-    int posB = 1;
+
 
     /**
      * list of FXML item on the board
@@ -41,45 +40,18 @@ public class GamePanel extends SceneHandler {
     @FXML
     private BorderPane mainPane;
     @FXML
-    private Tab yourBoard;
-    @FXML
     private Pane marketPane;
     @FXML
     private ImageView boardImg;
     @FXML
-    private ImageView crossB;
-    @FXML
-    private ImageView cross;
-    @FXML
-    private Button right;
-    @FXML
-    private Button blackButton;
-    @FXML
     private Button buy;
-    @FXML
-    private ImageView tile2;
-    @FXML
-    private ImageView tile3;
-    @FXML
-    private ImageView tile4;
     @FXML
     private Pagination hand;
     @FXML
     private Button res;
     @FXML
     private Button marketBtn;
-    @FXML
-    private ImageView res1;
-    @FXML
-    private ImageView res33;
-    @FXML
-    private ImageView res32;
-    @FXML
-    private ImageView res31;
-    @FXML
-    private ImageView res22;
-    @FXML
-    private ImageView res21;
+
     @FXML
     private GridPane marketTray;
     @FXML
@@ -179,23 +151,9 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ImageView activeLeaderCard2;
     @FXML
-    private ImageView baseProd1;
-    @FXML
-    private ImageView baseProd2;
-    @FXML
-    private Label boxShield;
-    @FXML
-    private Label boxCoin;
-    @FXML
-    private Label boxSerf;
-    @FXML
-    private Label boxStone;
-    @FXML
     private SplitPane rightPane;
     @FXML
     private Button chooseCardX;
-    @FXML
-    private ComboBox resBaseProd;
     @FXML
     private ComboBox devPosCombo;
     @FXML
@@ -203,11 +161,11 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ComboBox leadProd2;
     @FXML
+    private Button prodButton1;
+    @FXML
     private ImageView resToGive;
     @FXML
     private ImageView resToGive1;
-    @FXML
-    private Button prodButton1;
     @FXML
     private Button prodButton2;
     @FXML
@@ -242,6 +200,16 @@ public class GamePanel extends SceneHandler {
     private Pane paymentPane;
     @FXML
     private ImageView devCardToBuy;
+    @FXML
+    private Button backBtn;
+    @FXML
+    private Button gridButton;
+    @FXML
+    private Label colorLabel;
+    @FXML
+    private Label levelLabel;
+    @FXML
+    private Label costLabel;
 
     private Image blueMarble;
     private Image greyMarble;
@@ -286,11 +254,7 @@ public class GamePanel extends SceneHandler {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        while (getModel().getLeaderHand() == null) try {
-            this.wait();
-        } catch (InterruptedException e) {
-            System.exit(1);
-        }
+
         setGui(App.getGui());
         blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
         greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
@@ -348,24 +312,7 @@ public class GamePanel extends SceneHandler {
         ImageView imgStone = new ImageView(stone);
         imgStone.setFitHeight(40);
         imgStone.setFitWidth(40);
-        resBaseProd.getItems().addAll(
-                imgCoin,
-                imgSerf,
-                imgShield,
-                imgStone
-        );
-        leadProd1.getItems().addAll(
-                imgCoin,
-                imgSerf,
-                imgShield,
-                imgStone
-        );
-        leadProd2.getItems().addAll(
-                imgCoin,
-                imgSerf,
-                imgShield,
-                imgStone
-        );
+
         devPosCombo.getItems().addAll(
                 "1",
                 "2",
@@ -382,7 +329,10 @@ public class GamePanel extends SceneHandler {
         prodButton2.setDisable(true);
         prodButton2.setOpacity(0);
         getModel().getMarket().gridProperty().addListener(e -> setMarketPng());
+        getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
         if (getModel().getMarket().getGrid() != null) setMarketPng();
+        if (getModel().getDevelopmentGrid().getGrid() != null) setDevGridPng();
+
 
         contextMenu = new ContextMenu();
         menuItem = new MenuItem("back to hand");
@@ -467,9 +417,9 @@ public class GamePanel extends SceneHandler {
     /**
      * requires as a parameter the development card grid and set the devCardSpots with the
      * relative card images
-     * @param devGrid
      */
-    public void setDevGridPng(DevelopmentCard[][] devGrid){
+    public void setDevGridPng(){
+        DevelopmentCard[][] devGrid = getModel().getDevelopmentGrid().getGrid();
         for(int row=0; row<devGrid.length; row++){
             for(int col=0; col<devGrid[row].length; col++){
                 devCardSpots[row][col].setImage(getCardPng(devGrid[row][col].getID()));
@@ -737,29 +687,30 @@ public class GamePanel extends SceneHandler {
     @FXML
     void showDevGrid(ActionEvent event) {
         goFront(devGridPane);
-        for(ImageView[] row: devCardSpots){
-            for (ImageView card: row){
-                card.setOnMouseClicked(event1 -> {
-                    showPayment(card.getImage());
+
+        for(int row=0; row<devCardSpots.length; row++){
+            for (int col=0; col<devCardSpots[row].length; col++){
+                int finalRow = row;
+                int finalCol = col;
+                devCardSpots[row][col].setOnMouseClicked(event1 -> {
+                    showPayment(getModel().getDevelopmentGrid().getGrid()[finalRow][finalCol]);
                 });
             }
         }
-        int k=1;
-        DevelopmentGrid developmentGrid = getGui().getView().getModel().getDevelopmentGrid();
-
-        for(int i=0; i<3; i++){
-            for(int j=0; j<4; j++){
-                devCardSpots[i][j].setImage(getCardPng(developmentGrid.getGrid()[i][j].getID()));
-                k++;
-
-            }
-        }
-
+        backBtn.setOnMouseClicked(e-> goFront(devGridPane));
     }
 
-    private void showPayment(Image card) {
+    private void showPayment(DevelopmentCard devCard) {
+        devCardToBuy.setImage(getCardPng(devCard.getID()));
+        StringBuilder cost = new StringBuilder();
+        for(int i=0; i<devCard.getCosts().length; i++){
+            cost.append(" " + devCard.getCosts()[i].getQuantity());
+            cost.append( " " + devCard.getCosts()[i].getResource().name()+".");
+        }
+        colorLabel.setText("Color: " + devCard.getColor().name());
+        costLabel.setText("Cost: " + cost);
+        levelLabel.setText("Level: " + devCard.getLevel());
         goFront(paymentPane);
-        devCardToBuy.setImage(card);
     }
 
     /**
