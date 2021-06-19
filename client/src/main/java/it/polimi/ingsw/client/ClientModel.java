@@ -18,9 +18,13 @@ public class ClientModel {
     private Market market;
     private LeaderHand leaderHand;
     private int resourcesToGet = 0;
-    private final LinkedHashMap<String, Board> boards = new LinkedHashMap<>();
+    private final ObjectProperty<LinkedHashMap<String, Board>> boards = new SimpleObjectProperty<>();
     private boolean gameStarted = false;                                    //true if leader cards are distributed
     private boolean gameSelected = false;
+
+    public ClientModel() {
+        boards.
+    }
 
     public boolean isGameStarted(){
         return gameStarted;
@@ -35,7 +39,7 @@ public class ClientModel {
     }
 
     public Set<String> getPlayersUsernames() {
-        return boards.keySet();
+        return boards.get().keySet();
     }
 
     public String getCurrentPlayerInTheGame() {
@@ -63,11 +67,15 @@ public class ClientModel {
     }
 
     public Board getBoard() {
-        return boards.get(playerUsername);
+        return boards.get().get(playerUsername);
+    }
+
+    public ObjectProperty<LinkedHashMap<String, Board>> boardsProperty() {
+        return boards;
     }
 
     public LinkedHashMap<String, Board> getBoards() {
-        return boards;
+        return boards.get();
     }
 
     public LeaderHand getLeaderHand() {
@@ -79,7 +87,7 @@ public class ClientModel {
     }
 
     public Board getBoard(String playerUsername) {
-        return boards.get(playerUsername);
+        return boards.get().get(playerUsername);
     }
 
     public void setGameStarted(boolean gameStarted) {
@@ -143,6 +151,6 @@ public class ClientModel {
     }
 
     public void setBoards(String username) {
-        boards.put(username,new Board());
+        boards.get().put(username,new Board());
     }
 }

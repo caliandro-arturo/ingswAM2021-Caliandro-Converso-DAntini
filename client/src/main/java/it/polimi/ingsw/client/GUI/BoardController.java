@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.model.Utility;
+import it.polimi.ingsw.commonFiles.model.Resource;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -12,7 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class BoardController implements Initializable {
 
@@ -21,12 +24,20 @@ public class BoardController implements Initializable {
      */
     @FXML
     private ImageView cross;
+
+    /**
+     * Tiles of the faith track
+     */
     @FXML
     private ImageView tile2;
     @FXML
     private ImageView tile3;
     @FXML
     private ImageView tile4;
+
+    /**
+     * Warehouse depots slots
+     */
     @FXML
     private ImageView res1;
     @FXML
@@ -39,22 +50,16 @@ public class BoardController implements Initializable {
     private ImageView res22;
     @FXML
     private ImageView res21;
-    @FXML
-    private GridPane strongBox;
-    @FXML
-    private HBox serf;
+
+    /**
+     * Displayed number of resources in strongbox
+     */
     @FXML
     private Label boxSerf;
     @FXML
-    private HBox shield;
-    @FXML
     private Label boxShield;
     @FXML
-    private HBox stone;
-    @FXML
     private Label boxStone;
-    @FXML
-    private HBox coin;
     @FXML
     private Label boxCoin;
 
@@ -103,4 +108,77 @@ public class BoardController implements Initializable {
             add(new ArrayList<>(Arrays.asList(devP31, devP32, devP33)));
         }};
     }
+
+    /**
+     * prints the relative image for a development card
+     * @param cardId
+     * @param lev
+     * @param pos
+     */
+    public void setDevCard(int pos, int lev, int cardId){
+        pos--;
+        lev--;
+        devPlace.get(pos).get(lev).setImage(Utility.getCardPng(cardId));
+    }
+
+    /**
+     * increase the position of the cross in the GUI
+     * @param oldPosition the initial position to increment
+     */
+    @FXML
+    void increasePos(ImageView cross, int oldPosition) {
+        if (oldPosition<=2)
+            moveRight(cross);
+        else if(oldPosition<5)
+            moveUp(cross);
+        else if(oldPosition<10)
+            moveRight(cross);
+        else if(oldPosition<12)
+            moveDown(cross);
+        else if(oldPosition<17)
+            moveRight(cross);
+        else if(oldPosition<19)
+            moveUp(cross);
+        else if(oldPosition<25)
+            moveRight(cross);
+    }
+
+    public void increasePos() {
+        increasePos(cross, get);
+    }
+
+    /**
+     * utility methods to move the cross in the faith track
+     *
+     * @param cross the cross to move
+     */
+    @FXML
+    public void moveUp(ImageView cross) {
+        cross.setLayoutY(cross.getLayoutY() - 46);
+    }
+
+    @FXML
+    public void moveRight(ImageView cross) {
+        cross.setLayoutX(cross.getLayoutX() + 46);
+    }
+
+    @FXML
+    public void moveDown(ImageView cross) {
+        cross.setLayoutY(cross.getLayoutY() + 46);
+    }
+
+    /**
+     * check the position and set the relative tile visiblle
+     * @param pos
+     */
+    public void checkTile(int pos){
+        if(pos == 9)
+            tile2.setOpacity(100);
+        else if (pos == 17)
+            tile3.setOpacity(100);
+        else if (pos== 24)
+            tile4.setOpacity(100);
+    }
+
+
 }

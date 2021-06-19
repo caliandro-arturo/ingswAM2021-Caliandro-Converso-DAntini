@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.GaussianBlur;
@@ -23,24 +24,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GamePanel extends SceneHandler {
-
-
-
     /**
      * list of FXML item on the board
      */
-
     @FXML
     private Label out;
     @FXML
     private BorderPane mainPane;
     @FXML
-    private Pane marketPane;
+    private TabPane boardsTabPane;
     @FXML
     private ImageView boardImg;
     @FXML
@@ -114,9 +112,9 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ComboBox devPosCombo;
     @FXML
-    private ComboBox leadProd1;
+    private ComboBox<Image> leadProd1;
     @FXML
-    private ComboBox leadProd2;
+    private ComboBox<Image> leadProd2;
     @FXML
     private Button prodButton1;
     @FXML
@@ -221,7 +219,6 @@ public class GamePanel extends SceneHandler {
      * data structures with the imageView for the images in the board
      * they represents the empty spots in the board
      */
-    private ArrayList<ImageView> resSpots;
     private ImageView[][] marketSpots;
     private ObservableList<ImageView> leaderHand;
     private ImageView[][] devCardSpots;
@@ -246,7 +243,6 @@ public class GamePanel extends SceneHandler {
         super.initialize(location, resources);
         setGui(App.getGui());
         handListImg = FXCollections.observableArrayList();
-        resSpots = new ArrayList<>(Arrays.asList(res1, res21, res22, res31, res32, res33));
         marketReinsertSpots = new ArrayList<>(Arrays.asList(row0, row1, row2, col0, col1, col2, col3));
         marketSpots = new ImageView[][]{
                 {mb00, mb10, mb20, mb30},
@@ -260,10 +256,10 @@ public class GamePanel extends SceneHandler {
                 {devcard02, devcard12, devcard22, devcard32}
         };
         resourceImageMap = new HashMap<>(){{
-            put(Resource.SHIELD, shield);
-            put(Resource.COIN, coin);
-            put(Resource.SERF,serf);
-            put(Resource.STONE, stone);
+            put(Resource.SHIELD, imgShield);
+            put(Resource.COIN, imgCoin);
+            put(Resource.SERF, imgSerf);
+            put(Resource.STONE, imgStone);
         }};
         colorImageMap = new HashMap<>(){{
             put(Color.BLUE, blueMarble);
@@ -298,23 +294,25 @@ public class GamePanel extends SceneHandler {
         prodButton1.setOpacity(0);
         prodButton2.setDisable(true);
         prodButton2.setOpacity(0);
+
         getModel().getMarket().gridProperty().addListener(e -> setMarketPng());
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
         if (getModel().getMarket().getGrid() != null) setMarketPng();
         if (getModel().getDevelopmentGrid().getGrid() != null) setDevGridPng();
 
+        Tab personalBoard = null;
+        try {
+            personalBoard = new Tab("Your board", new FXMLLoader(getClass().getResource("/fxml/personalBoard.fxml")).load());
+        }catch (IOException e) {
+            System.err.println("Error when trying to load the personal board.");
+            System.exit(0);
+        }
+        boardsTabPane.getTabs().add(personalBoard);
+        getModel().boardsProperty().addListener(e -> setBoardsTabs());
 
         contextMenu = new ContextMenu();
         menuItem = new MenuItem("back to hand");
         contextMenu.getItems().add(menuItem);
-        devPlace = new ArrayList<>(){{
-            add(new ArrayList<>(Arrays.asList(devP11, devP12, devP13)));
-            add(new ArrayList<>(Arrays.asList(devP21, devP22, devP23)));
-            add(new ArrayList<>(Arrays.asList(devP31, devP32, devP33)));
-        }};
-
-        //prove
-
         cardsButton.fire();
         chooseCardX.setDisable(true);
         deployLButton.setDisable(true);
@@ -373,6 +371,11 @@ public class GamePanel extends SceneHandler {
             resourceLabelHashMap.get(resource).setText((Integer.toString(quantity)));
         } //TODO: error message
     }
+
+    private void setBoardsTabs() {
+
+    }
+
     /**
      * requires as a parameter the development card grid and set the devCardSpots with the
      * relative card images
