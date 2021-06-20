@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -17,9 +16,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
@@ -31,45 +32,6 @@
    <center>
       <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="699.0" prefWidth="927.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="devGridPane" prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1fff9b" height="668.0" layoutX="132.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="663.0" />
-                  <GridPane layoutX="158.0" layoutY="67.0" prefHeight="577.0" prefWidth="612.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <ImageView fx:id="devcard00" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="devcard10" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <ImageView fx:id="devcard20" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                        <ImageView fx:id="devcard30" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
-                        <ImageView fx:id="devcard01" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-                        <ImageView fx:id="devcard11" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ImageView fx:id="devcard21" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <ImageView fx:id="devcard31" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <ImageView fx:id="devcard02" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
-                        <ImageView fx:id="devcard12" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <ImageView fx:id="devcard22" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <ImageView fx:id="devcard32" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                     </children>
-                  </GridPane>
-                  <Label layoutX="154.0" layoutY="25.0" prefHeight="31.0" prefWidth="533.0" text="These are the development cards. ">
-                     <font>
-                        <Font name="Harrington" size="25.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="buyCardButton" layoutX="706.0" layoutY="653.0" mnemonicParsing="false" onAction="#buyCard" prefHeight="25.0" prefWidth="82.0" text="Buy" />
-                  <Button layoutX="754.0" layoutY="26.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
-               </children>
-            </Pane>
             <Pane fx:id="chooseCardPane" prefHeight="200.0" prefWidth="200.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#72d1e4" height="470.0" layoutX="86.0" layoutY="115.0" stroke="BLACK" strokeType="INSIDE" width="756.0" />
@@ -98,52 +60,6 @@
                   </Label>
                   <Button fx:id="chooseCardX" layoutX="802.0" layoutY="122.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
                   <Button fx:id="deployLButton" layoutX="464.0" layoutY="531.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="147.0" text="Deploy" />
-               </children>
-            </Pane>
-            <Pane fx:id="pause" prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <Label layoutX="349.0" layoutY="125.0" prefHeight="189.0" prefWidth="229.0" text="Pause" textAlignment="CENTER">
-                     <font>
-                        <Font size="85.0" />
-                     </font>
-                     <textFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </textFill>
-                  </Label>
-                  <Label layoutX="214.0" layoutY="314.0" prefHeight="150.0" prefWidth="500.0" text="Another player has left the game...">
-                     <font>
-                        <Font size="33.0" />
-                     </font>
-                     <textFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </textFill>
-                  </Label>
                </children>
             </Pane>
             <Pane fx:id="marketPane" layoutX="700.0" layoutY="200.0" prefHeight="626.0" prefWidth="792.0" StackPane.alignment="CENTER">
@@ -202,7 +118,53 @@
             </Pane>
             <Pane fx:id="boardPane">
                <children>
-                  <TabPane fx:id="boardsTabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="923.0" tabClosingPolicy="UNAVAILABLE"/>
+                  <TabPane fx:id="boardsTabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="923.0" tabClosingPolicy="UNAVAILABLE" />
+               </children>
+            </Pane>
+            <Pane fx:id="pause" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="349.0" layoutY="125.0" prefHeight="189.0" prefWidth="229.0" text="Pause" textAlignment="CENTER">
+                     <font>
+                        <Font size="85.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Label>
+                  <Label layoutX="166.0" layoutY="314.0" prefHeight="150.0" prefWidth="595.0" text="Waiting the re-admission of the player...">
+                     <font>
+                        <Font size="33.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Label>
                </children>
             </Pane>
             <Pane fx:id="paymentPane" prefHeight="200.0" prefWidth="200.0">
@@ -230,7 +192,106 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Button fx:id="backBtn" layoutX="210.0" layoutY="219.0" mnemonicParsing="false" text="Back" />
+                  <HBox layoutX="328.0" layoutY="169.0">
+                     <children>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../png/coin.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="paymentCoin" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../png/serf.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="paymentSerf" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../png/shield.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="paymentShield" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../png/stone.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="paymentStone" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Button fx:id="backBtn" layoutX="211.0" layoutY="213.0" mnemonicParsing="false" text="Back" />
+                  <Button fx:id="paymentButton" layoutX="524.0" layoutY="191.0" mnemonicParsing="false" onAction="#buyCard" text="Buy" />
+               </children>
+            </Pane>
+            <Pane fx:id="devGridPane" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1fff9b" height="668.0" layoutX="132.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="663.0" />
+                  <GridPane layoutX="158.0" layoutY="67.0" prefHeight="577.0" prefWidth="612.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ImageView fx:id="devcard00" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="devcard10" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                        <ImageView fx:id="devcard20" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                        <ImageView fx:id="devcard30" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
+                        <ImageView fx:id="devcard01" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+                        <ImageView fx:id="devcard11" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ImageView fx:id="devcard21" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <ImageView fx:id="devcard31" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <ImageView fx:id="devcard02" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
+                        <ImageView fx:id="devcard12" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ImageView fx:id="devcard22" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <ImageView fx:id="devcard32" fitHeight="185.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
+                  <Label layoutX="154.0" layoutY="25.0" prefHeight="31.0" prefWidth="533.0" text="These are the development cards. ">
+                     <font>
+                        <Font name="Harrington" size="25.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="754.0" layoutY="26.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
                </children>
             </Pane>
          </children>

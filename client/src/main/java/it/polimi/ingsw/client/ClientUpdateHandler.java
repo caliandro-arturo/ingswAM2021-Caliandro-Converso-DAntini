@@ -176,7 +176,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         model.setLeaderHand(new LeaderHand(leaderCards));
         if (!model.isGameStarted()) {
             model.setGameStarted(true);
-            setToDo("discardleader", "Discard two leader card by using the command discardleader: <pos>");
+            setToDo("discardleader", "Discard two leader cards.");
             controller.show("hand");
         }
     }

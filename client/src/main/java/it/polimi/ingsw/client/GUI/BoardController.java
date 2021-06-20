@@ -1,7 +1,10 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.model.Board;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.model.Resource;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,12 +16,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.*;
 
 public class BoardController implements Initializable {
 
+    private Board board;
     /**
      * Cross
      */
@@ -90,6 +95,12 @@ public class BoardController implements Initializable {
     @FXML
     private ImageView devP13;
 
+    /**
+     * Leader cards pane
+     */
+    @FXML
+    private Pane leftPane;
+
     private final ArrayList<ImageView> resSpots = new ArrayList<>();
     private ArrayList<ArrayList<ImageView>> devPlace;
 
@@ -107,6 +118,18 @@ public class BoardController implements Initializable {
             add(new ArrayList<>(Arrays.asList(devP21, devP22, devP23)));
             add(new ArrayList<>(Arrays.asList(devP31, devP32, devP33)));
         }};
+
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+        for (int i = 1; i < board.getFaithTrack().getPosition(); i++)
+            increasePos();
+        board.getFaithTrack().positionProperty().addListener(e -> increasePos());
+    }
+
+    public Pane getLeftPane() {
+        return leftPane;
     }
 
     /**
@@ -127,6 +150,7 @@ public class BoardController implements Initializable {
      */
     @FXML
     void increasePos(ImageView cross, int oldPosition) {
+        checkTile(oldPosition);
         if (oldPosition<=2)
             moveRight(cross);
         else if(oldPosition<5)
@@ -144,7 +168,7 @@ public class BoardController implements Initializable {
     }
 
     public void increasePos() {
-        increasePos(cross, get);
+        increasePos(cross, board.getFaithTrack().getPosition());
     }
 
     /**
@@ -153,17 +177,17 @@ public class BoardController implements Initializable {
      * @param cross the cross to move
      */
     @FXML
-    public void moveUp(ImageView cross) {
+    private void moveUp(ImageView cross) {
         cross.setLayoutY(cross.getLayoutY() - 46);
     }
 
     @FXML
-    public void moveRight(ImageView cross) {
+    private void moveRight(ImageView cross) {
         cross.setLayoutX(cross.getLayoutX() + 46);
     }
 
     @FXML
-    public void moveDown(ImageView cross) {
+    private void moveDown(ImageView cross) {
         cross.setLayoutY(cross.getLayoutY() + 46);
     }
 
@@ -171,7 +195,7 @@ public class BoardController implements Initializable {
      * check the position and set the relative tile visiblle
      * @param pos
      */
-    public void checkTile(int pos){
+    private void checkTile(int pos){
         if(pos == 9)
             tile2.setOpacity(100);
         else if (pos == 17)

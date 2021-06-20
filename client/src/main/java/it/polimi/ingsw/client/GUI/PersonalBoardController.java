@@ -28,7 +28,7 @@ public class PersonalBoardController extends BoardController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        super.initialize(location, resources);
         resBaseProd.getItems().addAll(
                 GamePanel.imgCoin,
                 GamePanel.imgSerf,

@@ -107,8 +107,8 @@ public class ClientHandler extends SocketManager implements Runnable {
                                 sendMessage(new ErrorMessage( "This nickname is already used."));
                             } catch (IOException ignore) {
                             }
-                        //else we assume that this new player is the previous nickname owner, and then is checked if
-                        //this player is linked with a lobby
+                        //else we assume that this new player is the previous nickname owner, and then it's checked if
+                        //the player has been linked with a lobby
                         } else {
                             Optional<VirtualView> virtualView = Optional.ofNullable(serverMain.getClientToLobbyMap().get(nickname));
                             virtualView.ifPresentOrElse(
@@ -121,7 +121,7 @@ public class ClientHandler extends SocketManager implements Runnable {
                                         //notifying the other players in the lobby
                                         v.sendMessage(new GameRejoin(nickname));
                                     },
-                                    //else the player is simply readded to the server
+                                    //else the player is simply re-added into the server
                                     () -> {
                                         player = nickname;
                                         serverMain.getConnectedClients().put(nickname, true);

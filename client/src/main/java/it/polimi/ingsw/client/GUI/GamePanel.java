@@ -19,10 +19,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -233,6 +230,8 @@ public class GamePanel extends SceneHandler {
     private HashMap<Resource, Image> resourceImageMap;
     private HashMap<Resource, Label> resourceLabelHashMap;
 
+    private HashMap<Tab, BoardController> boardAndControllerMap = new HashMap<>();
+
     /**
      * initialization of the images and the data structure used to collect similar objects
      * @param location
@@ -297,23 +296,34 @@ public class GamePanel extends SceneHandler {
 
         getModel().getMarket().gridProperty().addListener(e -> setMarketPng());
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
+        boardsTabPane.getSelectionModel().selectedItemProperty().addListener(e -> {
+            leftPane.getChildren().clear();
+            leftPane.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getLeftPane());
+        });
         if (getModel().getMarket().getGrid() != null) setMarketPng();
         if (getModel().getDevelopmentGrid().getGrid() != null) setDevGridPng();
 
-        Tab personalBoard = null;
+        FXMLLoader personalBoardLoader = new FXMLLoader(getClass().getResource("/fxml/personalBoard.fxml"));
+        AnchorPane board = null;
         try {
-            personalBoard = new Tab("Your board", new FXMLLoader(getClass().getResource("/fxml/personalBoard.fxml")).load());
+            board = personalBoardLoader.load();
         }catch (IOException e) {
             System.err.println("Error when trying to load the personal board.");
             System.exit(0);
         }
+        Tab personalBoard = new Tab("Your board", board);
+        boardsTabPane.getSelectionModel().select(personalBoard);
+        boardAndControllerMap.put(personalBoard, personalBoardLoader.getController());
         boardsTabPane.getTabs().add(personalBoard);
+        ((PersonalBoardController)personalBoardLoader.getController()).setBoard(getModel().getBoard());
         getModel().boardsProperty().addListener(e -> setBoardsTabs());
+        if (!getModel().getBoards().isEmpty()) setBoardsTabs();
+
 
         contextMenu = new ContextMenu();
         menuItem = new MenuItem("back to hand");
         contextMenu.getItems().add(menuItem);
-        cardsButton.fire();
+        showChooseCards(null);
         chooseCardX.setDisable(true);
         deployLButton.setDisable(true);
     }
@@ -373,7 +383,23 @@ public class GamePanel extends SceneHandler {
     }
 
     private void setBoardsTabs() {
-
+        getModel().getBoards().entrySet().stream()
+                .filter(p -> boardsTabPane.getTabs().stream().noneMatch(t -> t.getText().equals(p.getKey()) || p.getKey().equals(getModel().getPlayerUsername())))
+                .forEach(p -> {
+                    AnchorPane board = null;
+                    FXMLLoader loader = null;
+                    try {
+                        loader = new FXMLLoader(getClass().getResource("/fxml/playersBoard.fxml"));
+                        board = loader.load();
+                    } catch (IOException e) {
+                        System.err.println("Error when trying to load a player's board.");
+                        System.exit(1);
+                    }
+                    Tab newBoard = new Tab(p.getKey(), board);
+                    boardsTabPane.getTabs().add(newBoard);
+                    boardAndControllerMap.put(newBoard, loader.getController());
+                    ((BoardController) loader.getController()).setBoard(p.getValue());
+                });
     }
 
     /**
@@ -509,7 +535,7 @@ public class GamePanel extends SceneHandler {
             event1.consume();
         });
 
-        for(ImageView warSpot: resSpots){
+        /*for(ImageView warSpot: resSpots){
             warSpot.setOnDragOver(dragEvent -> {
                 dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 dragEvent.consume();
@@ -523,7 +549,7 @@ public class GamePanel extends SceneHandler {
                 fillHand(handListImg);
                 dragEvent.consume();
             });
-        }
+        }*/
         //drag & drop for leader card production
         resToGive.setOnDragOver(dragEvent -> {
             dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
@@ -535,7 +561,7 @@ public class GamePanel extends SceneHandler {
         });
 
         //drag & drop for base production
-        baseProd1.setOnDragOver(dragEvent -> {
+        /*baseProd1.setOnDragOver(dragEvent -> {
             dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             dragEvent.consume();
         });
@@ -550,7 +576,7 @@ public class GamePanel extends SceneHandler {
         baseProd2.setOnDragDropped(dragEvent -> {
             baseProd2.setImage(dragEvent.getDragboard().getImage());
             dragEvent.consume();
-        });
+        });*/
     }
 
 
@@ -613,8 +639,7 @@ public class GamePanel extends SceneHandler {
             leaderHand.get(1).setImage(Utility.getCardPng(hand.getHand().get(1).getID()));
             leaderHand.get(2).setImage(Utility.getCardPng(hand.getHand().get(2).getID()));
             leaderHand.get(3).setImage(Utility.getCardPng(hand.getHand().get(3).getID()));
-        }catch(ArrayIndexOutOfBoundsException ignore){
-
+        }catch(IndexOutOfBoundsException ignore){
         }
     }
 
@@ -739,23 +764,23 @@ public class GamePanel extends SceneHandler {
 
     @FXML
     public void ctxMenuRes(ContextMenuEvent contextMenuEvent){
-            for(ImageView img: resSpots){
-                if(img.getImage()!= null){
-                    img.setOnContextMenuRequested(e->
-                            contextMenu.show(img, e.getScreenX(), e.getScreenY()));
-                    int posRes;
-                    if(img==res1){
-                        posRes = 1;
-                    }
-                    else if(img==res21 || img == res22)
-                        posRes = 2;
-                    else
-                        posRes = 3;
-                    menuItem.setOnAction(event->{
-                        img.setImage(null);
-                        //getGui().getView().getController().sendMessage(new TakeRes(posRes));
-                         });
+        /*for(ImageView img: resSpots){
+            if(img.getImage()!= null){
+                img.setOnContextMenuRequested(e->
+                        contextMenu.show(img, e.getScreenX(), e.getScreenY()));
+                int posRes;
+                if(img==res1){
+                    posRes = 1;
                 }
+                else if(img==res21 || img == res22)
+                    posRes = 2;
+                else
+                    posRes = 3;
+                menuItem.setOnAction(event->{
+                    img.setImage(null);
+                    //getGui().getView().getController().sendMessage(new TakeRes(posRes));
+                     });
             }
-        }
+        }*/
+    }
 }

@@ -74,7 +74,7 @@ public class Utility {
      * @return
      */
     public static Image getCardPng(int cardId){
-        return new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/"+cardId+".png")));
+        return new Image(Objects.requireNonNull(Utility.class.getResourceAsStream("/png/cards/"+cardId+".png")));
     }
 
 }

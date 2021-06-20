@@ -18,13 +18,9 @@ public class ClientModel {
     private Market market;
     private LeaderHand leaderHand;
     private int resourcesToGet = 0;
-    private final ObjectProperty<LinkedHashMap<String, Board>> boards = new SimpleObjectProperty<>();
+    private final ObjectProperty<LinkedHashMap<String, Board>> boards = new SimpleObjectProperty<>(new LinkedHashMap<>());
     private boolean gameStarted = false;                                    //true if leader cards are distributed
     private boolean gameSelected = false;
-
-    public ClientModel() {
-        boards.
-    }
 
     public boolean isGameStarted(){
         return gameStarted;

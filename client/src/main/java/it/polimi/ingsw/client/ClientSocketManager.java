@@ -17,7 +17,7 @@ public class ClientSocketManager extends SocketManager {
     }
 
     @Override
-    public void readMessage(Message message) {
+    public synchronized void readMessage(Message message) {
         controller.readMessage(message);
     }
 
