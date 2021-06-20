@@ -9,6 +9,9 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,9 +24,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.channels.SelectableChannel;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -136,6 +141,8 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Pane chooseCardPane;
     @FXML
+    private GridPane leadCardGrid;
+    @FXML
     private Button discardButton;
     @FXML
     private Button deployLButton;
@@ -233,7 +240,8 @@ public class GamePanel extends SceneHandler {
      * they represents the empty spots in the board
      */
     private ImageView[][] marketSpots;
-    private ObservableList<ImageView> leaderHand;
+    private List<ImageView> leaderHand;
+    private ImageView selectedLeader;
     private ImageView[][] devCardSpots;
     private ArrayList<ImageView> marketReinsertSpots;
 
@@ -266,7 +274,7 @@ public class GamePanel extends SceneHandler {
                 {mb01, mb11, mb21, mb31},
                 {mb02, mb12, mb22, mb32}
         };
-        leaderHand = FXCollections.observableArrayList(leadCard1, leadCard2, leadCard3, leadCard4);
+        leaderHand = new ArrayList<>(Arrays.asList(leadCard1, leadCard2, leadCard3, leadCard4));
         paymentSpots = new ArrayList<>(Arrays.asList(vShield, vCoin, vSerf, vStone));
         devCardSpots = new ImageView[][]{
                 {devcard00, devcard10, devcard20, devcard30},
@@ -297,15 +305,7 @@ public class GamePanel extends SceneHandler {
         imgViewStone.setFitHeight(40);
         imgViewStone.setFitWidth(40);
 
-        devPosCombo.getItems().addAll(
-                "1",
-                "2",
-                "3"
-        );
-        leadProd1.setOpacity(0);
-        leadProd1.setDisable(true);
-        leadProd2.setOpacity(0);
-        leadProd2.setDisable(true);
+        devPosCombo.getItems().addAll("1", "2", "3");
         resToGive.setDisable(true);
         resToGive1.setDisable(true);
         prodButton1.setDisable(true);
@@ -315,10 +315,12 @@ public class GamePanel extends SceneHandler {
 
         getModel().getMarket().gridProperty().addListener(e -> setMarketPng());
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
+        getGui().getView().getModel().getLeaderHand().handProperty().addListener((InvalidationListener) e -> Platform.runLater(() -> showChooseCards(null)));
         boardsTabPane.getSelectionModel().selectedItemProperty().addListener(e -> {
             leftPane.getChildren().clear();
             leftPane.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getLeftPane());
         });
+        selectedLeader.imageProperty().addListener(e -> leaderButtonsProperty());
         if (getModel().getMarket().getGrid() != null) setMarketPng();
         if (getModel().getDevelopmentGrid().getGrid() != null) setDevGridPng();
 
@@ -334,18 +336,17 @@ public class GamePanel extends SceneHandler {
         boardsTabPane.getSelectionModel().select(personalBoard);
         boardAndControllerMap.put(personalBoard, personalBoardLoader.getController());
         boardsTabPane.getTabs().add(personalBoard);
-        ((PersonalBoardController)personalBoardLoader.getController()).setBoard(getModel().getBoard());
         getModel().boardsProperty().addListener(e -> setBoardsTabs());
         if (!getModel().getBoards().isEmpty()) setBoardsTabs();
-
 
         contextMenu = new ContextMenu();
         menuItem = new MenuItem("back to hand");
         contextMenu.getItems().add(menuItem);
-        showChooseCards(null);
-        chooseCardX.setDisable(true);
+        if (getGui().getView().getModel().getLeaderHand() != null) showChooseCards(null);
         deployLButton.setDisable(true);
     }
+
+
 
     private ClientModel getModel() {
         return getGui().getView().getModel();
@@ -394,8 +395,15 @@ public class GamePanel extends SceneHandler {
 
     private void setBoardsTabs() {
         getModel().getBoards().entrySet().stream()
-                .filter(p -> boardsTabPane.getTabs().stream().noneMatch(t -> t.getText().equals(p.getKey()) || p.getKey().equals(getModel().getPlayerUsername())))
+                .filter(p -> boardsTabPane.getTabs().stream().noneMatch(t -> t.getText().equals(p.getKey())))
                 .forEach(p -> {
+                    if (p.getKey().equals(getModel().getPlayerUsername()))
+                        boardAndControllerMap.entrySet().stream()
+                                .filter(e -> e.getKey().getText().equals("Your board"))
+                                .findAny()
+                                .get()
+                                .getValue()
+                                .setBoard(p.getValue());
                     AnchorPane board = null;
                     FXMLLoader loader = null;
                     try {
@@ -692,8 +700,15 @@ public class GamePanel extends SceneHandler {
     @FXML
     public void showChooseCards(ActionEvent actionEvent){
         //TODO: should be activated only in the initial phase and not with the button
-        LeaderHand hand = getGui().getView().getModel().getLeaderHand();
+        setLeaderCards();
         goFront(chooseCardPane);
+    }
+
+    private void setLeaderCards() {
+        LeaderHand hand = getGui().getView().getModel().getLeaderHand();
+        for (ImageView img : leaderHand) {
+            img.setImage(null);
+        }
         try {
             leaderHand.get(0).setImage(Utility.getCardPng(hand.getHand().get(0).getID()));
             leaderHand.get(1).setImage(Utility.getCardPng(hand.getHand().get(1).getID()));
@@ -756,31 +771,35 @@ public class GamePanel extends SceneHandler {
         getGui().getView().process(command);
     }
 
+    private void leaderButtonsProperty() {
+        if (selectedLeader == null) {
+            discardButton.setDisable(true);
+            deployLButton.setDisable(true);
+        } else {
+            discardButton.setDisable(false);
+            deployLButton.setDisable(false);
+        }
+    }
+
     @FXML
-    public void discardLeaderCard(){
+    public void selectLeaderCard(@NotNull ActionEvent e){
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setSaturation(0.5);
-        AtomicInteger discarded= new AtomicInteger();
-        for(int i=0; i<4; i++){
-            int finalI = i;
-            leaderHand.get(i).setOnMouseClicked(event ->{
-                leaderHand.get(finalI).setEffect(colorAdjust);
-                discardButton.setOnAction(e->{
-                    getGui().getView().getController().sendMessage(new DiscardLeader(finalI+1));
-                    printOut("You have discarded card number "+(finalI+1));
-                    leaderHand.get(finalI).setImage(null);
-                    discarded.set(discarded.intValue()+1);
-                    if(discarded.intValue()==2){
-                        printOut("You are ready to play! ");
-                        discardButton.setDisable(true);
-                        chooseCardX.setDisable(false);
-                        deployLButton.setDisable(false);
-                    }
-                    e.consume();
-            });
-                event.consume();
-            });
+        ImageView selectedCard = (ImageView)e.getSource();
+        if (selectedLeader == selectedCard) {
+            selectedCard.setEffect(null);
+            selectedLeader = null;
+        } else if (selectedCard.getImage() != null) {
+            if (selectedLeader != null && selectedLeader.getImage() != null)
+                selectedLeader.setEffect(null);
+            selectedLeader = selectedCard;
+            selectedCard.setEffect(colorAdjust);
         }
+    }
+
+    @FXML
+    public void discardLeaderCard(ActionEvent actionEvent) {
+        getGui().getView().getController().sendMessage(new DiscardLeader(leaderHand.indexOf(selectedLeader) + 1));
     }
 
     /**

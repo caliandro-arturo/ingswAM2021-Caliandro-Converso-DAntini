@@ -16,7 +16,7 @@ public class ClientModel {
     private boolean isLast;
     private DevelopmentGrid developmentGrid;
     private Market market;
-    private LeaderHand leaderHand;
+    private ObjectProperty<LeaderHand> leaderHand = new SimpleObjectProperty<>(new LeaderHand());
     private int resourcesToGet = 0;
     private final ObjectProperty<LinkedHashMap<String, Board>> boards = new SimpleObjectProperty<>(new LinkedHashMap<>());
     private boolean gameStarted = false;                                    //true if leader cards are distributed
@@ -75,6 +75,10 @@ public class ClientModel {
     }
 
     public LeaderHand getLeaderHand() {
+        return leaderHand.get();
+    }
+
+    public ObjectProperty<LeaderHand> leaderHandProperty() {
         return leaderHand;
     }
 
@@ -130,8 +134,8 @@ public class ClientModel {
         this.market = market;
     }
 
-    public void setLeaderHand(LeaderHand leaderHand) {
-        this.leaderHand = leaderHand;
+    public void setLeaderHand(ArrayList<LeaderCard> leaderHand) {
+        this.leaderHand.get().handProperty().addAll(leaderHand);
     }
 
     public void setResourcesToGet(int resourcesToGet) {

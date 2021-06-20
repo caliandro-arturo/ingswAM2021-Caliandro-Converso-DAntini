@@ -61,6 +61,10 @@ public class PersonalBoardController extends BoardController {
                 GamePanel.imgShield,
                 GamePanel.imgStone
         );
+        leadProd1.setOpacity(0);
+        leadProd1.setDisable(true);
+        leadProd2.setOpacity(0);
+        leadProd2.setDisable(true);
     }
 
     public void moveRes() {
@@ -100,8 +104,6 @@ public class PersonalBoardController extends BoardController {
         int quantity = Integer.parseInt(getResourceLabelHashMap().get(resource).getText());
         quantity+=num;
         getResourceLabelHashMap().get(resource).setText((Integer.toString(quantity)));
-
-
     }
 
 }
