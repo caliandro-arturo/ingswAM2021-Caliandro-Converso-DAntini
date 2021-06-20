@@ -43,7 +43,7 @@ public class PassTurnPhase extends TurnPhase {
         Player nextPlayer;
         try {
             nextPlayer = game.getPlayer(game.getPlayers().indexOf(game.getCurrentPlayer()) + 1);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (Exception e) {
             nextPlayer = game.getPlayer(0);
         }
         return nextPlayer;

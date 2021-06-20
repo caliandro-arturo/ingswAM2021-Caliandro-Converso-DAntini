@@ -149,55 +149,59 @@ public class Player {
 
     public void setConnected(boolean connected) {
         isConnected = connected;
-        if (!connected && game.getPlayers().stream().anyMatch(Player::isConnected))
-            if (game.getCurrentTurnPhase() == null) {
-                if (!game.isReady(this)) {
-                    while (initialResources > 0) {
-                        //selects random storable resources
-                        Resource randomResource = Resource.values()[new Random().nextInt(5)];
-                        if (Utility.isStorable(randomResource)) {
-                            board.getResHand().add(randomResource);
-                            initialResources--;
+        if (game.getPlayers().stream().anyMatch(Player::isConnected))
+            if (!connected)
+                if (game.getCurrentTurnPhase() == null) {
+                    if (!game.isReady(this)) {
+                        while (initialResources > 0) {
+                            //selects random storable resources
+                            Resource randomResource = Resource.values()[new Random().nextInt(5)];
+                            if (Utility.isStorable(randomResource)) {
+                                board.getResHand().add(randomResource);
+                                initialResources--;
+                            }
                         }
+                        ArrayList<Resource> tempResHand = new ArrayList<>(board.getResHand());
+                        for (Resource r : tempResHand)
+                            //deploys resources from the player's hand into the first free depots
+                            for (WarehouseStore w : board.getStore()) {
+                                try {
+                                    board.deployResource(r, board.getStore().indexOf(w) + 1);
+                                } catch (IllegalArgumentException e) {
+                                    continue;
+                                }
+                                break;
+                            }
+                        //discard initial leader cards
+                        while (leaderCards.size() > 2)
+                            leaderCards.remove(0);
                     }
-                    ArrayList<Resource> tempResHand = new ArrayList<>(board.getResHand());
-                    for (Resource r : tempResHand)
-                        //deploys resources in the player's hand in the first free depot
-                        for (WarehouseStore w : board.getStore()) {
-                            try {
-                                board.deployResource(r, board.getStore().indexOf(w) + 1);
-                            } catch (Exception e) {
-                                continue;
-                            }
-                            break;
-                        }
-                    while (leaderCards.size() > 2)
-                        leaderCards.remove(0);
-                }
-                game.setPlayerReady(this);
-            }
-        else if (this.equals(game.getCurrentPlayer())) {
-                if (!board.getResHand().isEmpty()) {
-                    //tries to deploy resources from the hand
-                    for (Resource r : board.getResHand())
-                        for (WarehouseStore w : board.getStore()) {
-                            try {
-                                board.deployResource(r, board.getStore().indexOf(w) + 1);
-                            } catch (Exception e) {
-                                continue;
-                            }
-                            break;
-                        }
-                    //if there is not free depot, discard resources.
-                    if (!board.getResHand().isEmpty())
+                    //sets the player as ready
+                    game.setPlayerReady(this);
+                // else if the player was the current player, his turn is forcibly ended and the turn is passed to the
+                // next player
+                } else if (this.equals(game.getCurrentPlayer())) {
+                    if (!board.getResHand().isEmpty()) {
+                        //tries to deploy resources from the hand
                         for (Resource r : board.getResHand())
-                            try {
-                                board.discardResource(r);
-                            } catch (Exception ignore) {
+                            for (WarehouseStore w : board.getStore()) {
+                                try {
+                                    board.deployResource(r, board.getStore().indexOf(w) + 1);
+                                } catch (Exception e) {
+                                    continue;
+                                }
+                                break;
                             }
+                        //if there is not free depot, discard resources.
+                        if (!board.getResHand().isEmpty())
+                            for (Resource r : board.getResHand())
+                                try {
+                                    board.discardResource(r);
+                                } catch (Exception ignore) {
+                                }
+                    }
+                    game.nextTurnPhase("EndTurn");
                 }
-                game.nextTurnPhase("EndTurnPhase");
-            }
     }
 
     public void addWhiteAlt(Resource resource) {
