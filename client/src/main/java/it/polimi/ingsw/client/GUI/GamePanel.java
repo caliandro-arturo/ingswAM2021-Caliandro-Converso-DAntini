@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
 import it.polimi.ingsw.commonFiles.messages.toServer.UseMarket;
 import it.polimi.ingsw.commonFiles.model.Resource;
+import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -189,6 +190,12 @@ public class GamePanel extends SceneHandler {
     private Pane marketPane;
     @FXML
     private Pane boardPane;
+    @FXML
+    private Label paymentCoin;
+    @FXML
+    private Label paymentSerf;
+    @FXML
+    private Label paymentShield;
 
     private final Image blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
     private final Image greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
@@ -614,13 +621,12 @@ public class GamePanel extends SceneHandler {
 
     private void showPayment(DevelopmentCard devCard) {
         devCardToBuy.setImage(Utility.getCardPng(devCard.getID()));
-        StringBuilder cost = new StringBuilder();
-        for(int i=0; i<devCard.getCosts().length; i++){
-            cost.append(" " + devCard.getCosts()[i].getQuantity());
-            cost.append( " " + devCard.getCosts()[i].getResource().name()+".");
+        //StringBuilder cost = new StringBuilder();
+        for(UtilityProductionAndCost cost: devCard.getCosts()){
+                
         }
         colorLabel.setText("Color: " + devCard.getColor().name());
-        costLabel.setText("Cost: " + cost);
+        //costLabel.setText("Cost: " + cost);
         levelLabel.setText("Level: " + devCard.getLevel());
         goFront(paymentPane);
     }
