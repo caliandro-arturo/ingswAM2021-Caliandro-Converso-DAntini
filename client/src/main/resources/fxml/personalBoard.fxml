@@ -86,7 +86,7 @@
             <children>
                 <HBox fx:id="serf" alignment="CENTER" prefHeight="29.0" prefWidth="69.0">
                     <children>
-                        <ImageView fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="strongSerf" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../png/serf.png" />
                             </image>
@@ -105,7 +105,7 @@
                 </HBox>
                 <HBox fx:id="shield" alignment="CENTER" prefHeight="29.0" prefWidth="69.0" GridPane.columnIndex="1">
                     <children>
-                        <ImageView fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="strongShield" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../png/shield.png" />
                             </image>
@@ -124,7 +124,7 @@
                 </HBox>
                 <HBox fx:id="stone" alignment="CENTER" prefHeight="29.0" prefWidth="69.0" GridPane.rowIndex="1">
                     <children>
-                        <ImageView fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="strongStone" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../png/stone.png" />
                             </image>
@@ -143,7 +143,7 @@
                 </HBox>
                 <HBox fx:id="coin" alignment="CENTER" prefHeight="29.0" prefWidth="69.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <children>
-                        <ImageView fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="strongCoin" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../png/coin.png" />
                             </image>

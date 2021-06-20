@@ -134,9 +134,6 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Label levelLabel;
     @FXML
-    private Label costLabel;
-
-    @FXML
     private Pane chooseCardPane;
     @FXML
     private Button discardButton;
@@ -199,6 +196,15 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Label paymentStone;
 
+    @FXML
+    private VBox vShield;
+    @FXML
+    private VBox vStone;
+    @FXML
+    private VBox vCoin;
+    @FXML
+    private VBox vSerf;
+
     private final Image blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
     private final Image greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
     private final Image purpleMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/purple_marble.png")));
@@ -218,6 +224,7 @@ public class GamePanel extends SceneHandler {
 
     private ContextMenu contextMenu;
     private MenuItem menuItem;
+    private String command;
 
     private ObservableList<ImageView> handListImg;
 
@@ -229,6 +236,8 @@ public class GamePanel extends SceneHandler {
     private ObservableList<ImageView> leaderHand;
     private ImageView[][] devCardSpots;
     private ArrayList<ImageView> marketReinsertSpots;
+
+    private ArrayList<VBox> paymentSpots;
 
     /**
      * map for resource and marbles.
@@ -258,6 +267,7 @@ public class GamePanel extends SceneHandler {
                 {mb02, mb12, mb22, mb32}
         };
         leaderHand = FXCollections.observableArrayList(leadCard1, leadCard2, leadCard3, leadCard4);
+        paymentSpots = new ArrayList<>(Arrays.asList(vShield, vCoin, vSerf, vStone));
         devCardSpots = new ImageView[][]{
                 {devcard00, devcard10, devcard20, devcard30},
                 {devcard01, devcard11, devcard21, devcard31},
@@ -367,16 +377,7 @@ public class GamePanel extends SceneHandler {
         rightPane.setDisable(false);
     }
 
-    /**
-     * is called by the production to add resources in the strongbox
-     * @param num: the number of resources to add
-     * @param resource: the type of resources to add
-     */
-    public void addBoxResource(int num, Resource resource){
-        int quantity = Integer.parseInt(resourceLabelHashMap.get(resource).getText());
-        quantity+=num;
-        resourceLabelHashMap.get(resource).setText((Integer.toString(quantity)));
-    }
+
 
     /**
      * remove a specific resource from the strongbox
@@ -544,21 +545,7 @@ public class GamePanel extends SceneHandler {
             event1.consume();
         });
 
-        /*for(ImageView warSpot: resSpots){
-            warSpot.setOnDragOver(dragEvent -> {
-                dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                dragEvent.consume();
-            });
-        }
 
-        for(ImageView warSpot: resSpots){
-            warSpot.setOnDragDropped(dragEvent -> {
-                //TODO: needs to add the legitimacy of the moves in the spots of the warehouse store
-                warSpot.setImage(dragEvent.getDragboard().getImage());
-                fillHand(handListImg);
-                dragEvent.consume();
-            });
-        }*/
         //drag & drop for leader card production
         resToGive.setOnDragOver(dragEvent -> {
             dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
@@ -621,20 +608,82 @@ public class GamePanel extends SceneHandler {
     }
 
     private void showPayment(DevelopmentCard devCard) {
+
         HashMap<Resource, Label> resourceLabelHashMap = new HashMap<>(){{
             put(Resource.COIN, paymentCoin);
             put(Resource.SERF, paymentSerf);
             put(Resource.SHIELD, paymentShield);
             put(Resource.STONE, paymentStone);
         }};
+        StringBuilder cmd = new StringBuilder("buydevcard: ");
+        cmd.append(devCard.getLevel() + ", " + devCard.getColor().name() + ", " + devPosCombo.getValue() + ", ");
         devCardToBuy.setImage(Utility.getCardPng(devCard.getID()));
         for(UtilityProductionAndCost cost: devCard.getCosts()){
             resourceLabelHashMap.get(cost.getResource()).setText(Integer.toString(cost.getQuantity()));
         }
         colorLabel.setText("Color: " + devCard.getColor().name());
         levelLabel.setText("Level: " + devCard.getLevel());
+        for(VBox res: paymentSpots){
+            res.setOnDragOver(dragEvent -> {
+                dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                dragEvent.consume();
+            });
+        }
+        ArrayList<Integer> storesStone = new ArrayList<>();
+        ArrayList<Integer> storesShield = new ArrayList<>();
+        ArrayList<Integer> storesSerf = new ArrayList<>();
+        ArrayList<Integer> storesCoin = new ArrayList<>();
+
+        for(VBox res: paymentSpots){
+            res.setOnDragDropped(dragEvent -> {
+                Resource resource = resourceImageMap.entrySet().stream()
+                        .filter(entry->entry.getValue().equals(dragEvent.getDragboard().getImage()))
+                        .findAny().get().getKey();
+                String cost = resourceLabelHashMap.get(resource).getText();
+
+                resourceLabelHashMap.get(resource).setText(Integer.toString(Integer.parseInt(cost)-1));
+
+                switch (resource){
+                    case COIN -> storesCoin.add(Integer.parseInt(dragEvent.getDragboard().getString()));
+                    case SERF -> storesSerf.add(Integer.parseInt(dragEvent.getDragboard().getString()));
+                    case SHIELD -> storesShield.add(Integer.parseInt(dragEvent.getDragboard().getString()));
+                    case STONE -> storesStone.add(Integer.parseInt(dragEvent.getDragboard().getString()));
+                }
+            });
+        }
+        if(paymentCoin.getText().equals("0") && paymentStone.getText().equals("0") &&
+                paymentShield.getText().equals("0") && paymentSerf.getText().equals("0")){
+            for(UtilityProductionAndCost cost: devCard.getCosts()){
+                switch (cost.getResource()){
+                    case COIN -> {
+                        for(Integer store: storesCoin){
+                            cmd.append(store + " ");
+                        }
+                    }
+                    case SERF -> {
+                        for(Integer store: storesSerf){
+                            cmd.append(store + " ");
+                        }
+                    }
+                    case SHIELD -> {
+                        for(Integer store: storesShield){
+                            cmd.append(store + " ");
+                        }
+                    }
+                    case STONE -> {
+                        for(Integer store: storesStone){
+                            cmd.append(store + " ");
+                        }
+                    }
+                }
+            }
+            command = cmd.toString();
+        }
         goFront(paymentPane);
     }
+
+
+
 
     /**
      * shows the initial phase of the choose of the 2 leader cards
@@ -670,8 +719,14 @@ public class GamePanel extends SceneHandler {
         rightPane.setDisable(true);
         handButton.setDisable(true);
         boardPane.toFront();
-        boardPane.setDisable(true);
-        boardPane.setEffect(new GaussianBlur());
+        if(!pane.equals(paymentPane)){
+            boardPane.setDisable(true);
+            boardPane.setEffect(new GaussianBlur());
+        }else{
+            boardPane.setDisable(false);
+            boardPane.setEffect(null);
+        }
+
         pane.toFront();
         pane.setOpacity(1);
         pane.setDisable(false);
@@ -698,7 +753,7 @@ public class GamePanel extends SceneHandler {
 
     @FXML
     public void buyCard(ActionEvent event){
-        //TODO: add here the message
+        getGui().getView().process(command);
     }
 
     @FXML

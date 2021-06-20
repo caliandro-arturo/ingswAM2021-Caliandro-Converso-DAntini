@@ -13,7 +13,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -94,12 +97,24 @@ public class BoardController implements Initializable {
     private ImageView devP23;
     @FXML
     private ImageView devP13;
+    @FXML
+    private ImageView strongCoin;
+    @FXML
+    private ImageView strongStone;
+    @FXML
+    private ImageView strongShield;
+    @FXML
+    private ImageView strongSerf;
 
     /**
      * Leader cards pane
      */
     @FXML
     private Pane leftPane;
+
+    private ArrayList<ImageView> strongResources;
+
+
 
     private final ArrayList<ImageView> resSpots = new ArrayList<>();
     private ArrayList<ArrayList<ImageView>> devPlace;
@@ -112,6 +127,7 @@ public class BoardController implements Initializable {
             put(Resource.SHIELD, boxShield);
             put(Resource.STONE, boxStone);
         }};
+        strongResources = new ArrayList<>(Arrays.asList(strongCoin, strongSerf, strongShield, strongStone));
         resSpots.addAll(Arrays.asList(res1, res21, res22, res31, res32, res33));
         devPlace = new ArrayList<>(){{
             add(new ArrayList<>(Arrays.asList(devP11, devP12, devP13)));
@@ -119,6 +135,16 @@ public class BoardController implements Initializable {
             add(new ArrayList<>(Arrays.asList(devP31, devP32, devP33)));
         }};
 
+    }
+    public ArrayList<ImageView> getResSpots() {
+        return resSpots;
+    }
+    public ArrayList<ImageView> getStrongResources() {
+        return strongResources;
+    }
+
+    public HashMap<Resource, Label> getResourceLabelHashMap() {
+        return resourceLabelHashMap;
     }
 
     public void setBoard(Board board) {

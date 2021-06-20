@@ -167,90 +167,6 @@
                   </Label>
                </children>
             </Pane>
-            <Pane fx:id="paymentPane" prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#86d8f8" height="224.0" layoutX="20.0" layoutY="29.0" stroke="BLACK" strokeType="INSIDE" width="888.0" />
-                  <ImageView fx:id="devCardToBuy" fitHeight="208.0" fitWidth="150.0" layoutX="32.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
-                  <ComboBox fx:id="devPosCombo" layoutX="802.0" layoutY="115.0" prefHeight="25.0" prefWidth="65.0" />
-                  <Label layoutX="549.0" layoutY="117.0" text="Where do you want to put the card?">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="levelLabel" layoutX="211.0" layoutY="114.0" prefHeight="26.0" prefWidth="56.0">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="colorLabel" layoutX="211.0" layoutY="156.0" prefHeight="26.0" prefWidth="138.0">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <HBox layoutX="328.0" layoutY="169.0">
-                     <children>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/coin.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="paymentCoin" text="0" textFill="WHITE">
-                                 <font>
-                                    <Font size="23.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/serf.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="paymentSerf" text="0" textFill="WHITE">
-                                 <font>
-                                    <Font size="23.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/shield.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="paymentShield" text="0" textFill="WHITE">
-                                 <font>
-                                    <Font size="23.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/stone.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="paymentStone" text="0" textFill="WHITE">
-                                 <font>
-                                    <Font size="23.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <Button fx:id="backBtn" layoutX="211.0" layoutY="213.0" mnemonicParsing="false" text="Back" />
-                  <Button fx:id="paymentButton" layoutX="524.0" layoutY="191.0" mnemonicParsing="false" onAction="#buyCard" text="Buy" />
-               </children>
-            </Pane>
             <Pane fx:id="devGridPane" prefHeight="200.0" prefWidth="200.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1fff9b" height="668.0" layoutX="132.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="663.0" />
@@ -287,6 +203,90 @@
                      </font>
                   </Label>
                   <Button layoutX="754.0" layoutY="26.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
+               </children>
+            </Pane>
+            <Pane fx:id="paymentPane" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#86d8f8" height="224.0" layoutX="20.0" layoutY="29.0" stroke="BLACK" strokeType="INSIDE" width="888.0" />
+                  <ImageView fx:id="devCardToBuy" fitHeight="208.0" fitWidth="150.0" layoutX="32.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
+                  <ComboBox fx:id="devPosCombo" layoutX="802.0" layoutY="115.0" prefHeight="25.0" prefWidth="65.0" />
+                  <Label layoutX="549.0" layoutY="117.0" text="Where do you want to put the card?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="levelLabel" layoutX="211.0" layoutY="114.0" prefHeight="26.0" prefWidth="56.0">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="colorLabel" layoutX="211.0" layoutY="156.0" prefHeight="26.0" prefWidth="138.0">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <HBox layoutX="328.0" layoutY="169.0">
+                     <children>
+                        <VBox fx:id="vCoin" alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../png/coin.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="paymentCoin" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vSerf" alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../png/serf.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="paymentSerf" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vShield" alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../png/shield.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="paymentShield" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vStone" alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../png/stone.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="paymentStone" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Button fx:id="backBtn" layoutX="211.0" layoutY="213.0" mnemonicParsing="false" text="Back" />
+                  <Button fx:id="paymentButton" layoutX="524.0" layoutY="191.0" mnemonicParsing="false" onAction="#buyCard" text="Buy" />
                </children>
             </Pane>
          </children>
