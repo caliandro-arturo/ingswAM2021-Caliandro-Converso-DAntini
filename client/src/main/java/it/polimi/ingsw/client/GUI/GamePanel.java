@@ -196,6 +196,8 @@ public class GamePanel extends SceneHandler {
     private Label paymentSerf;
     @FXML
     private Label paymentShield;
+    @FXML
+    private Label paymentStone;
 
     private final Image blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
     private final Image greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
@@ -606,7 +608,6 @@ public class GamePanel extends SceneHandler {
     @FXML
     void showDevGrid(ActionEvent event) {
         goFront(devGridPane);
-
         for(int row=0; row<devCardSpots.length; row++){
             for (int col=0; col<devCardSpots[row].length; col++){
                 int finalRow = row;
@@ -620,13 +621,17 @@ public class GamePanel extends SceneHandler {
     }
 
     private void showPayment(DevelopmentCard devCard) {
+        HashMap<Resource, Label> resourceLabelHashMap = new HashMap<>(){{
+            put(Resource.COIN, paymentCoin);
+            put(Resource.SERF, paymentSerf);
+            put(Resource.SHIELD, paymentShield);
+            put(Resource.STONE, paymentStone);
+        }};
         devCardToBuy.setImage(Utility.getCardPng(devCard.getID()));
-        //StringBuilder cost = new StringBuilder();
         for(UtilityProductionAndCost cost: devCard.getCosts()){
-                
+            resourceLabelHashMap.get(cost.getResource()).setText(Integer.toString(cost.getQuantity()));
         }
         colorLabel.setText("Color: " + devCard.getColor().name());
-        //costLabel.setText("Cost: " + cost);
         levelLabel.setText("Level: " + devCard.getLevel());
         goFront(paymentPane);
     }

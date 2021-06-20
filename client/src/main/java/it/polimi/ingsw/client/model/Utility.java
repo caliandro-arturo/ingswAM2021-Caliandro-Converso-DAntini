@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
 import it.polimi.ingsw.commonFiles.model.Resource;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
