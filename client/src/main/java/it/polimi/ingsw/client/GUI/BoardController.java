@@ -5,18 +5,18 @@ import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.*;
 
 public class BoardController implements Initializable {
+
 
     private Board board;
     /**
@@ -112,12 +113,23 @@ public class BoardController implements Initializable {
     @FXML
     private Pane leftPane;
 
+    @FXML
+    private Pagination hand;
+
     private ArrayList<ImageView> strongResources;
+
+
+
+    private ObservableList<ImageView> handListImg;
 
 
 
     private final ArrayList<ImageView> resSpots = new ArrayList<>();
     private ArrayList<ArrayList<ImageView>> devPlace;
+
+
+
+    private HashMap<Resource, Image> resourceImageMap;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -134,6 +146,13 @@ public class BoardController implements Initializable {
             add(new ArrayList<>(Arrays.asList(devP21, devP22, devP23)));
             add(new ArrayList<>(Arrays.asList(devP31, devP32, devP33)));
         }};
+        handListImg = FXCollections.observableArrayList();
+        resourceImageMap = new HashMap<>(){{
+            put(Resource.SHIELD, GamePanel.imgShield);
+            put(Resource.COIN, GamePanel.imgCoin);
+            put(Resource.SERF, GamePanel.imgSerf);
+            put(Resource.STONE, GamePanel.imgStone);
+        }};
 
     }
     public ArrayList<ImageView> getResSpots() {
@@ -142,11 +161,15 @@ public class BoardController implements Initializable {
     public ArrayList<ImageView> getStrongResources() {
         return strongResources;
     }
-
+    public HashMap<Resource, Image> getResourceImageMap() {
+        return resourceImageMap;
+    }
     public HashMap<Resource, Label> getResourceLabelHashMap() {
         return resourceLabelHashMap;
     }
-
+    public ObservableList<ImageView> getHandListImg() {
+        return handListImg;
+    }
     public void setBoard(Board board) {
         this.board = board;
         for (int i = 1; i < board.getFaithTrack().getPosition(); i++)
@@ -231,4 +254,21 @@ public class BoardController implements Initializable {
     }
 
 
+    public void moveRes(MouseEvent mouseEvent) {
+
+    }
+
+    public Pagination getHand() {
+        return hand;
+    }
+
+    /**
+     * requires as parameter the handlist and set the handList of images of resources
+     * @param hand
+     */
+    public void setHandList(ArrayList<Resource> hand){
+        for(Resource res: hand){
+            handListImg.add(new ImageView(resourceImageMap.get(res)));
+        }
+    }
 }

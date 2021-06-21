@@ -47,8 +47,6 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Button buy;
     @FXML
-    private Pagination hand;
-    @FXML
     private Button res;
     @FXML
     private Button marketBtn;
@@ -120,10 +118,6 @@ public class GamePanel extends SceneHandler {
     private ComboBox<Image> leadProd2;
     @FXML
     private Button prodButton1;
-    @FXML
-    private ImageView resToGive;
-    @FXML
-    private ImageView resToGive1;
     @FXML
     private Button prodButton2;
     @FXML
@@ -233,8 +227,6 @@ public class GamePanel extends SceneHandler {
     private MenuItem menuItem;
     private String command;
 
-    private ObservableList<ImageView> handListImg;
-
     /**
      * data structures with the imageView for the images in the board
      * they represents the empty spots in the board
@@ -267,7 +259,6 @@ public class GamePanel extends SceneHandler {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
         setGui(App.getGui());
-        handListImg = FXCollections.observableArrayList();
         marketReinsertSpots = new ArrayList<>(Arrays.asList(row0, row1, row2, col0, col1, col2, col3));
         marketSpots = new ImageView[][]{
                 {mb00, mb10, mb20, mb30},
@@ -306,8 +297,6 @@ public class GamePanel extends SceneHandler {
         imgViewStone.setFitWidth(40);
 
         devPosCombo.getItems().addAll("1", "2", "3");
-        resToGive.setDisable(true);
-        resToGive1.setDisable(true);
         prodButton1.setDisable(true);
         prodButton1.setOpacity(0);
         prodButton2.setDisable(true);
@@ -318,6 +307,7 @@ public class GamePanel extends SceneHandler {
         getGui().getView().getModel().getLeaderHand().handProperty().addListener((InvalidationListener) e -> Platform.runLater(() -> showChooseCards(null)));
         boardsTabPane.getSelectionModel().selectedItemProperty().addListener(e -> {
             leftPane.getChildren().clear();
+            //TODO: add change of resource hand
             leftPane.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getLeftPane());
         });
         selectedLeader.imageProperty().addListener(e -> leaderButtonsProperty());
@@ -434,16 +424,6 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * requires as parameter the handlist and set the handList of images of resources
-     * @param hand
-     */
-    public void setHandList(ArrayList<Resource> hand){
-        for(Resource res: hand){
-            handListImg.add(new ImageView(resourceImageMap.get(res)));
-        }
-    }
-
-    /**
      * setter for the active leader card images
      * @param cardID must be greater than 48
      */
@@ -507,80 +487,6 @@ public class GamePanel extends SceneHandler {
 
     public int getCardId(Image image){
         return Integer.parseInt(image.getUrl().substring(11,14));
-    }
-
-
-    @FXML
-    public void slideRes(ActionEvent event){
-        //TODO: needs to be activated NOT with a button, but in the end of each market usage
-        handListImg.add(new ImageView(resourceImageMap.get(Resource.COIN)));
-
-        if(!handListImg.isEmpty()){
-            fillHand(handListImg);
-        }
-    }
-
-    /**
-     * fill the hands with the relative resource images in the pagination
-     * @param handList
-     */
-    public void fillHand(ObservableList<ImageView> handList){
-        for (ImageView view : handList) {
-            view.setFitHeight(70);
-            view.setFitWidth(70);
-        }
-        if(!handList.isEmpty()){
-            hand.setPageFactory(handList::get);
-        }else
-            hand.setPageFactory(null);
-        hand.setPageCount(handList.size());
-    }
-
-    /**
-     * methods implementing the drag and drop from handListImg to the spots of the warehouse
-     */
-    @FXML
-    public void moveRes(){
-
-        //drag 6 drop for warehouse store
-        hand.setOnDragDetected(event1 -> {
-            Dragboard db = hand.startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            Image res = handListImg.get(hand.getCurrentPageIndex()).getImage();
-            content.putImage(res);
-            db.setContent(content);
-            handListImg.remove(hand.getCurrentPageIndex());
-            event1.consume();
-        });
-
-
-        //drag & drop for leader card production
-        resToGive.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        resToGive.setOnDragDropped(dragEvent -> {
-            resToGive.setImage(dragEvent.getDragboard().getImage());
-            dragEvent.consume();
-        });
-
-        //drag & drop for base production
-        /*baseProd1.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        baseProd2.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        baseProd1.setOnDragDropped(dragEvent -> {
-            baseProd1.setImage(dragEvent.getDragboard().getImage());
-            dragEvent.consume();
-        });
-        baseProd2.setOnDragDropped(dragEvent -> {
-            baseProd2.setImage(dragEvent.getDragboard().getImage());
-            dragEvent.consume();
-        });*/
     }
 
 

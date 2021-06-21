@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -297,8 +296,6 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="512.0" prefWidth="250.0">
                <children>
-                  <Pagination fx:id="hand" layoutX="22.0" layoutY="139.0" maxPageIndicatorCount="0" onDragDetected="#moveRes" pageCount="0" prefHeight="151.0" prefWidth="204.0" />
-                  <Button fx:id="handButton" disable="true" layoutX="100.0" layoutY="303.0" mnemonicParsing="false" onAction="#slideRes" text="hand" />
                   <Button fx:id="marketBtn" layoutY="387.0" mnemonicParsing="false" onAction="#showMarket" prefHeight="54.0" prefWidth="155.0" text="Market" />
                   <Button fx:id="cardsButton" layoutY="335.0" mnemonicParsing="false" onAction="#showChooseCards" prefHeight="52.0" prefWidth="155.0" text="Leader hand" />
                   <Button fx:id="gridButton" layoutY="441.0" mnemonicParsing="false" onAction="#showDevGrid" prefHeight="54.0" prefWidth="155.0" text="Development Grid" />
@@ -307,6 +304,7 @@
                         <Image url="@../png/logo.png" />
                      </image>
                   </ImageView>
+                  <AnchorPane fx:id="anchorPaneHand" layoutX="6.0" layoutY="121.0" prefHeight="172.0" prefWidth="239.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

@@ -163,6 +163,9 @@
             </children>
         </GridPane>
 
+        <!--resource hand-->
+        <Button fx:id="handButton" disable="true" layoutX="100.0" layoutY="303.0" mnemonicParsing="false" onAction="#discard" text="Discard" />
+
         <!--board production-->
         <ComboBox fx:id="resBaseProd" layoutX="296.0" layoutY="477.0" prefHeight="45.0" prefWidth="45.0" />
         <ImageView fx:id="baseProd1" fitHeight="41.0" fitWidth="47.0" layoutX="236.0" layoutY="470.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
