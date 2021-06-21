@@ -1,7 +1,5 @@
 package it.polimi.ingsw.commonFiles.model;
 
-import it.polimi.ingsw.commonFiles.model.Resource;
-
 import java.io.Serializable;
 
 /**

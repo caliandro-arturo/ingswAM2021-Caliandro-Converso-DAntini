@@ -1,10 +1,5 @@
 package it.polimi.ingsw.server;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameStamp;
@@ -12,13 +7,12 @@ import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameStarted;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.TimeUp;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetGame;
 import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessage;
-import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.GameCreator;
+import it.polimi.ingsw.server.model.Player;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Controller element of the MVC architectural pattern: sends received messages to the message visitor and creates the

@@ -1,14 +1,14 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.model.Card;
-import it.polimi.ingsw.server.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class SoloActionsStackTest {

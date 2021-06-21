@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.ServerMessageVisitor;
 import it.polimi.ingsw.commonFiles.model.Production;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
+import it.polimi.ingsw.server.ServerMessageVisitor;
 
 import java.util.ArrayList;
 import java.util.Arrays;

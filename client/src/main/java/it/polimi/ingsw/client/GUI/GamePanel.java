@@ -2,12 +2,12 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.ClientModel;
 import it.polimi.ingsw.client.model.*;
-import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
-import it.polimi.ingsw.commonFiles.messages.toServer.UseMarket;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,9 +16,11 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -100,7 +102,7 @@ public class GamePanel extends SceneHandler {
     @FXML
     private SplitPane rightPane;
     @FXML
-    private ComboBox devPosCombo;
+    private ComboBox<String> devPosCombo;
     @FXML
     private Button cardsButton;
     @FXML
@@ -213,7 +215,7 @@ public class GamePanel extends SceneHandler {
      */
     private ImageView[][] marketSpots;
     private List<ImageView> leaderHand;
-    private ImageView selectedLeader = new ImageView();
+    private final ObjectProperty<ImageView> selectedLeader = new SimpleObjectProperty<>();
     private ImageView[][] devCardSpots;
     private ArrayList<ImageView> marketReinsertSpots;
 
@@ -266,7 +268,6 @@ public class GamePanel extends SceneHandler {
             put(Color.WHITE, whiteMarble);
             put(Color.YELLOW, yellowMarble);
         }};
-
         imgViewCoin.setFitHeight(40);
         imgViewCoin.setFitWidth(40);
         imgViewSerf.setFitHeight(40);
@@ -280,8 +281,8 @@ public class GamePanel extends SceneHandler {
 
         getModel().getMarket().gridProperty().addListener(e -> setMarketPng());
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
-        getGui().getView().getModel().getLeaderHand().handProperty().addListener((InvalidationListener) e -> Platform.runLater(() -> showChooseCards(null)));
-        selectedLeader.imageProperty().addListener(e -> leaderButtonsProperty());
+        getGui().getView().getModel().getLeaderHand().handProperty().addListener((InvalidationListener) e -> Platform.runLater(this::setLeaderCards));
+        selectedLeader.addListener(e -> leaderButtonsProperty());
         if (getModel().getMarket().getGrid() != null) setMarketPng();
         if (getModel().getDevelopmentGrid().getGrid() != null) setDevGridPng();
 
@@ -306,8 +307,9 @@ public class GamePanel extends SceneHandler {
         boardsTabPane.getTabs().add(personalBoard);
         getModel().boardsProperty().addListener(e -> setBoardsTabs());
         if (!getModel().getBoards().isEmpty()) setBoardsTabs();
-        if (getGui().getView().getModel().getLeaderHand() != null) showChooseCards(null);
-        deployLButton.setDisable(true);
+        if (getGui().getView().getModel().getLeaderHand() != null &&
+                getGui().getView().getModel().getLeaderHand().getHand().size() > 2) showChooseCards(null);
+        else goFront(boardPane);
     }
 
 
@@ -524,9 +526,6 @@ public class GamePanel extends SceneHandler {
         goFront(paymentPane);
     }
 
-
-
-
     /**
      * shows the initial phase of the choose of the 2 leader cards
      * @param actionEvent
@@ -540,6 +539,10 @@ public class GamePanel extends SceneHandler {
 
     private void setLeaderCards() {
         LeaderHand hand = getGui().getView().getModel().getLeaderHand();
+        if (selectedLeader.get() != null) {
+            selectedLeader.get().setEffect(null);
+            selectedLeader.set(null);
+        }
         for (ImageView img : leaderHand) {
             img.setImage(null);
         }
@@ -572,7 +575,6 @@ public class GamePanel extends SceneHandler {
             boardPane.setEffect(new GaussianBlur());
         }else{
             boardPane.setDisable(false);
-
             boardPane.setEffect(null);
         }
 
@@ -605,7 +607,7 @@ public class GamePanel extends SceneHandler {
     }
 
     private void leaderButtonsProperty() {
-        if (selectedLeader.getImage()==null) {
+        if (selectedLeader.get()==null) {
             discardButton.setDisable(true);
             deployLButton.setDisable(true);
         } else {
@@ -615,24 +617,27 @@ public class GamePanel extends SceneHandler {
     }
 
     @FXML
-    public void selectLeaderCard(@NotNull ActionEvent e){
+    public void selectLeaderCard(MouseEvent e){
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setSaturation(0.5);
         ImageView selectedCard = (ImageView)e.getSource();
-        if (selectedLeader.getImage().equals(selectedCard.getImage())) {
+        //if no leader was previously selected, the leader is selected.
+        //if a leader was selected, remove the effect.
+        //if the leader is reselected, remove the selection.
+        if (selectedLeader.get() != null && selectedLeader.get() == selectedCard) {
             selectedCard.setEffect(null);
-            selectedLeader.setImage(null);
-        } else if (selectedCard.getImage() != null) {
-            if (selectedLeader.getImage() != null)
-                selectedLeader.setEffect(null);
-            selectedLeader.setImage(selectedCard.getImage());
-            selectedCard.setEffect(colorAdjust);
+            selectedLeader.set(null);
+            return;
+        } else if (selectedLeader.get() != null) {
+            selectedLeader.get().setEffect(null);
         }
+        selectedLeader.set(selectedCard);
+        selectedCard.setEffect(colorAdjust);
     }
 
     @FXML
     public void discardLeaderCard(ActionEvent actionEvent) {
-        getGui().getView().getController().sendMessage(new DiscardLeader(leaderHand.indexOf(selectedLeader) + 1));
+        getGui().getView().discardLeader(new String[]{"", Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1)});
     }
 
     /**

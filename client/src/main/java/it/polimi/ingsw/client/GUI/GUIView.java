@@ -8,13 +8,9 @@ import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.util.Duration;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GUIView extends View {
 
@@ -116,7 +112,6 @@ public class GUIView extends View {
             pos = Integer.parseInt(commandSlice[1]);
             getController().sendMessage(new DiscardLeader(pos));
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException ignore) {
-            //TODO: handle the exception
         }
     }
 

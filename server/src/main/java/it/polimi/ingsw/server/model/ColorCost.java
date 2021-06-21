@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ColorCost implements Requirements {
     private final HashMap<Color, Integer> cost = new HashMap<>();

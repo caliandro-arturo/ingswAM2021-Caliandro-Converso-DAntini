@@ -5,7 +5,10 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 public class ClientModel {
     private String playerUsername;

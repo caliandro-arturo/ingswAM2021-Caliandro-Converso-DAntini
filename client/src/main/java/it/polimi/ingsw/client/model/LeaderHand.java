@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.model;
 
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

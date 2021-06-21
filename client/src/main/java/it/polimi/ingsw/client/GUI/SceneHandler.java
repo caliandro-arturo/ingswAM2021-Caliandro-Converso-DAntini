@@ -1,12 +1,10 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.client.model.LeaderCard;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public abstract class SceneHandler implements Initializable {

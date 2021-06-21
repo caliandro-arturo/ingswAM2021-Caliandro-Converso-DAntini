@@ -2,9 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.commonFiles.messages.toServer.Next;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * View element of the MVC architectural pattern applied to the client.

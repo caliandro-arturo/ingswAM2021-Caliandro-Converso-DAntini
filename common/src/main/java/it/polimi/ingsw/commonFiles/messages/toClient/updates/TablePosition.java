@@ -1,7 +1,6 @@
 package it.polimi.ingsw.commonFiles.messages.toClient.updates;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessage;
 import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
 
 public class TablePosition extends Message implements GameUpdate {

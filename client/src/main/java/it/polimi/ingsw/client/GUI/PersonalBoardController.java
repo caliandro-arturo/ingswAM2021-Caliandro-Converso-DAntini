@@ -11,14 +11,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class PersonalBoardController extends BoardController {
@@ -156,6 +156,9 @@ public class PersonalBoardController extends BoardController {
         this.view = view;
     }
 
+    /**
+     * move resource from hand to warehouse store
+     */
     public void moveRes() {
         //drag & drop for warehouse store
         getHand().setOnDragDetected(event1 -> {

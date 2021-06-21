@@ -1,14 +1,12 @@
 package it.polimi.ingsw.server.model;
-import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.commonFiles.model.ProductionPower;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
-import it.polimi.ingsw.server.model.Color;
-import it.polimi.ingsw.server.model.DevelopmentCard;
-import it.polimi.ingsw.server.model.DevelopmentGrid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DevelopmentGridTest {
 

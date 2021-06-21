@@ -1,7 +1,5 @@
 package it.polimi.ingsw.commonFiles.model;
 
-import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
-
 import java.io.Serializable;
 
 public interface Production extends Serializable {

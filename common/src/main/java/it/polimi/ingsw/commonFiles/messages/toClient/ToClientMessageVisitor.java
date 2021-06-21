@@ -1,7 +1,6 @@
 package it.polimi.ingsw.commonFiles.messages.toClient;
 
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitialResourcesAmount;
 
 public interface ToClientMessageVisitor {
     void visit(CreateGame createGame);
