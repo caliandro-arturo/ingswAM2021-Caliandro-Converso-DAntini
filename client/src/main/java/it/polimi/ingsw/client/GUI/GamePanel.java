@@ -103,21 +103,15 @@ public class GamePanel extends SceneHandler {
     @FXML
     private StackPane stackPane;
     @FXML
-    private Button handButton;
-    @FXML
     private SplitPane rightPane;
     @FXML
     private ComboBox devPosCombo;
-    @FXML
-    private ComboBox<Image> leadProd1;
-    @FXML
-    private ComboBox<Image> leadProd2;
     @FXML
     private Button cardsButton;
     @FXML
     private ImageView devCardToBuy;
     @FXML
-    private Button backBtn;
+    private Button backToGridBtn;
     @FXML
     private Button gridButton;
     @FXML
@@ -224,7 +218,7 @@ public class GamePanel extends SceneHandler {
      */
     private ImageView[][] marketSpots;
     private List<ImageView> leaderHand;
-    private ImageView selectedLeader;
+    private ImageView selectedLeader = new ImageView();
     private ImageView[][] devCardSpots;
     private ArrayList<ImageView> marketReinsertSpots;
 
@@ -289,15 +283,9 @@ public class GamePanel extends SceneHandler {
 
         devPosCombo.getItems().addAll("1", "2", "3");
 
-
         getModel().getMarket().gridProperty().addListener(e -> setMarketPng());
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
         getGui().getView().getModel().getLeaderHand().handProperty().addListener((InvalidationListener) e -> Platform.runLater(() -> showChooseCards(null)));
-        boardsTabPane.getSelectionModel().selectedItemProperty().addListener(e -> {
-            leftPane.getChildren().clear();
-            //TODO: add change of resource hand
-            leftPane.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getLeftPane());
-        });
         selectedLeader.imageProperty().addListener(e -> leaderButtonsProperty());
         if (getModel().getMarket().getGrid() != null) setMarketPng();
         if (getModel().getDevelopmentGrid().getGrid() != null) setDevGridPng();
@@ -311,13 +299,16 @@ public class GamePanel extends SceneHandler {
             System.exit(0);
         }
         Tab personalBoard = new Tab("Your board", board);
-        boardsTabPane.getSelectionModel().select(personalBoard);
         boardAndControllerMap.put(personalBoard, personalBoardLoader.getController());
+        boardsTabPane.getSelectionModel().selectedItemProperty().addListener(e -> {
+            leftPane.getChildren().clear();
+            //TODO: add change of resource hand
+            leftPane.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getLeftPane());
+        });
+        boardsTabPane.getSelectionModel().select(personalBoard);
         boardsTabPane.getTabs().add(personalBoard);
         getModel().boardsProperty().addListener(e -> setBoardsTabs());
         if (!getModel().getBoards().isEmpty()) setBoardsTabs();
-
-
         if (getGui().getView().getModel().getLeaderHand() != null) showChooseCards(null);
         deployLButton.setDisable(true);
     }
@@ -450,8 +441,8 @@ public class GamePanel extends SceneHandler {
     @FXML
     void showDevGrid(ActionEvent event) {
         goFront(devGridPane);
-        for(int row=0; row<devCardSpots.length; row++){
-            for (int col=0; col<devCardSpots[row].length; col++){
+        for(int row=0; row<devCardSpots.length; row++) {
+            for (int col = 0; col < devCardSpots[row].length; col++) {
                 int finalRow = row;
                 int finalCol = col;
                 devCardSpots[row][col].setOnMouseClicked(event1 -> {
@@ -459,7 +450,6 @@ public class GamePanel extends SceneHandler {
                 });
             }
         }
-        backBtn.setOnMouseClicked(e-> goFront(devGridPane));
     }
 
     private void showPayment(DevelopmentCard devCard) {
@@ -579,7 +569,6 @@ public class GamePanel extends SceneHandler {
             }
         }
         rightPane.setDisable(true);
-        handButton.setDisable(true);
         boardPane.toFront();
         if(!pane.equals(paymentPane)){
             boardPane.setDisable(true);
@@ -603,7 +592,6 @@ public class GamePanel extends SceneHandler {
         boardPane.setOpacity(1);
         boardPane.setDisable(false);
         boardPane.setEffect(null);
-        handButton.setDisable(false);
         rightPane.setDisable(false);
     }
 
@@ -619,7 +607,7 @@ public class GamePanel extends SceneHandler {
     }
 
     private void leaderButtonsProperty() {
-        if (selectedLeader == null) {
+        if (selectedLeader.getImage()==null) {
             discardButton.setDisable(true);
             deployLButton.setDisable(true);
         } else {
@@ -633,13 +621,13 @@ public class GamePanel extends SceneHandler {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setSaturation(0.5);
         ImageView selectedCard = (ImageView)e.getSource();
-        if (selectedLeader == selectedCard) {
+        if (selectedLeader.getImage().equals(selectedCard.getImage())) {
             selectedCard.setEffect(null);
-            selectedLeader = null;
+            selectedLeader.setImage(null);
         } else if (selectedCard.getImage() != null) {
-            if (selectedLeader != null && selectedLeader.getImage() != null)
+            if (selectedLeader.getImage() != null)
                 selectedLeader.setEffect(null);
-            selectedLeader = selectedCard;
+            selectedLeader.setImage(selectedCard.getImage());
             selectedCard.setEffect(colorAdjust);
         }
     }
@@ -695,4 +683,12 @@ public class GamePanel extends SceneHandler {
         }
 
 
+    public void backToDevGrid(ActionEvent actionEvent) {
+        //TODO refund cost need to be implemented
+        paymentCoin.setText("0");
+        paymentSerf.setText("0");
+        paymentShield.setText("0");
+        paymentStone.setText("0");
+        goFront(devGridPane);
+    }
 }

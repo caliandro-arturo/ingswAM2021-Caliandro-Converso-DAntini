@@ -95,7 +95,7 @@ public class PersonalBoardController extends BoardController {
      * @param cardID must be greater than 48
      */
     public void setActiveLeaderCard(int cardID){
-        /*if(cardID>48){
+        if(cardID>48){
 
             if(activeLeaderCard1.getImage()==null){
                 activeLeaderCard1.setImage(Utility.getCardPng(cardID));
@@ -142,7 +142,7 @@ public class PersonalBoardController extends BoardController {
                     prodButton2.setOpacity(0);
                 }
             }
-        }*/
+        }
         //TODO : else error message FULL ACTIVE LEADER CARDS
     }
 
@@ -259,7 +259,7 @@ public class PersonalBoardController extends BoardController {
         });
 
         //drag & drop for base production
-        /*baseProd1.setOnDragOver(dragEvent -> {
+        baseProd1.setOnDragOver(dragEvent -> {
             dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             dragEvent.consume();
         });
@@ -274,7 +274,7 @@ public class PersonalBoardController extends BoardController {
         baseProd2.setOnDragDropped(dragEvent -> {
             baseProd2.setImage(dragEvent.getDragboard().getImage());
             dragEvent.consume();
-        });*/
+        });
     }
 
 

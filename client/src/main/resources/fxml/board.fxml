@@ -254,7 +254,7 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Button fx:id="backBtn" layoutX="211.0" layoutY="213.0" mnemonicParsing="false" text="Back" />
+                  <Button fx:id="backToGridBtn" layoutX="211.0" layoutY="213.0" mnemonicParsing="false" onAction="#backToDevGrid" text="Back" />
                   <Button fx:id="paymentButton" layoutX="524.0" layoutY="191.0" mnemonicParsing="false" onAction="#buyCard" text="Buy" />
                </children>
             </Pane>
