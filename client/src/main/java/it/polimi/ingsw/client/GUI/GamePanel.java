@@ -344,8 +344,6 @@ public class GamePanel extends SceneHandler {
         rightPane.setDisable(false);
     }
 
-
-
     /**
      * remove a specific resource from the strongbox
      * @param resource
@@ -363,13 +361,15 @@ public class GamePanel extends SceneHandler {
         getModel().getBoards().entrySet().stream()
                 .filter(p -> boardsTabPane.getTabs().stream().noneMatch(t -> t.getText().equals(p.getKey())))
                 .forEach(p -> {
-                    if (p.getKey().equals(getModel().getPlayerUsername()))
+                    if (p.getKey().equals(getModel().getPlayerUsername())) {
                         boardAndControllerMap.entrySet().stream()
                                 .filter(e -> e.getKey().getText().equals("Your board"))
                                 .findAny()
                                 .get()
                                 .getValue()
                                 .setBoard(p.getValue());
+                        return;
+                    }
                     AnchorPane board = null;
                     FXMLLoader loader = null;
                     try {
@@ -430,7 +430,6 @@ public class GamePanel extends SceneHandler {
         goFront(marketPane);
         Market modelMarket = getGui().getView().getModel().getMarket();
         setMarketPng();
-
     }
 
     /**
