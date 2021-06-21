@@ -157,7 +157,7 @@ public class PersonalBoardController extends BoardController {
     }
 
     public void moveRes() {
-        //drag 6 drop for warehouse store
+        //drag & drop for warehouse store
         getHand().setOnDragDetected(event1 -> {
             Dragboard db = getHand().startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();

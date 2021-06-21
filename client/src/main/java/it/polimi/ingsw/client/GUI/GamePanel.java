@@ -1,19 +1,13 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.ClientModel;
-import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
 import it.polimi.ingsw.commonFiles.messages.toServer.UseMarket;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,9 +22,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.channels.SelectableChannel;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GamePanel extends SceneHandler {
     /**
@@ -414,7 +407,7 @@ public class GamePanel extends SceneHandler {
         Marble exMarble = getModel().getMarket().getExtraMarble();
         for(int row=0; row< tray.length; row++){
             for(int col=0; col< tray[row].length; col++){
-                marketSpots[row][col].setImage(colorImageMap.get(tray[row][col].getColor()));
+                marketSpots[2-row][3-col].setImage(colorImageMap.get(tray[row][col].getColor()));
             }
         }
         mbEx.setImage(colorImageMap.get(exMarble.getColor()));
@@ -579,6 +572,7 @@ public class GamePanel extends SceneHandler {
             boardPane.setEffect(new GaussianBlur());
         }else{
             boardPane.setDisable(false);
+
             boardPane.setEffect(null);
         }
 
@@ -661,26 +655,34 @@ public class GamePanel extends SceneHandler {
                 });
             }
             for (ImageView marketSpot : marketReinsertSpots) {
+                AtomicReference<String> cmd = null;
                 marketSpot.setOnDragDropped(dragEvent ->{
                     if(dragEvent.getSource()==row0) {
-                        getGui().getView().getController().sendMessage(new UseMarket('r', 1));
+                        cmd.set("usemarket: r, 1");
+                        getGui().getView().process(cmd.get());
                     }else if(dragEvent.getSource()==row1){
-                        getGui().getView().getController().sendMessage(new UseMarket('r', 2));
+                        cmd.set("usemarket: r, 2");
+                        getGui().getView().process(cmd.get());
                     }
                     else if(dragEvent.getSource()==row2){
-                        getGui().getView().getController().sendMessage(new UseMarket('r', 3));
+                        cmd.set("usemarket: r, 3");
+                        getGui().getView().process(cmd.get());
                     }
                     else if(dragEvent.getSource()==col0){
-                        getGui().getView().getController().sendMessage(new UseMarket('c', 1));
+                        cmd.set("usemarket: c, 1");
+                        getGui().getView().process(cmd.get());
                     }
                     else if(dragEvent.getSource()==col1){
-                        getGui().getView().getController().sendMessage(new UseMarket('c', 2));
+                        cmd.set("usemarket: c, 2");
+                        getGui().getView().process(cmd.get());
                     }
                     else if(dragEvent.getSource()==col2){
-                        getGui().getView().getController().sendMessage(new UseMarket('c', 3));
+                        cmd.set("usemarket: c, 3");
+                        getGui().getView().process(cmd.get());
                     }
                     else if(dragEvent.getSource()==col3){
-                        getGui().getView().getController().sendMessage(new UseMarket('c', 4));
+                        cmd.set("usemarket: c, 4");
+                        getGui().getView().process(cmd.get());
                     }
                 });
             }
