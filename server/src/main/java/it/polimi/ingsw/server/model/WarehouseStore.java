@@ -3,7 +3,6 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.commonFiles.model.Resource;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 /**
  * class that represents the three different shelves of the Warehouse store

@@ -1,12 +1,8 @@
 package it.polimi.ingsw.server.model;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import it.polimi.ingsw.server.model.Color;
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.GameCreator;
-import it.polimi.ingsw.server.model.Player;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GameCreatorTest {
 

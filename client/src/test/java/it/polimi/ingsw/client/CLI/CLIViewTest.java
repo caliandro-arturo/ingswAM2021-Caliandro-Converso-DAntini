@@ -1,23 +1,10 @@
 package it.polimi.ingsw.client.CLI;
 
-import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.ClientModel;
-import it.polimi.ingsw.client.ClientSocketManager;
-import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.commonFiles.messages.toServer.StartProduction;
-import it.polimi.ingsw.commonFiles.utility.StringUtility;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.imageio.IIOException;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CLIViewTest {
 

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.commonFiles.utility.JSONReader;
 import it.polimi.ingsw.commonFiles.network.SocketManager;
+import it.polimi.ingsw.commonFiles.utility.JSONReader;
 
 import java.io.IOException;
 import java.net.Socket;

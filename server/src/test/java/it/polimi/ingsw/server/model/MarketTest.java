@@ -1,11 +1,9 @@
 package it.polimi.ingsw.server.model;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import it.polimi.ingsw.server.model.Color;
-import it.polimi.ingsw.server.model.Marble;
-import it.polimi.ingsw.server.model.Market;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MarketTest {
     public Market market = new Market();

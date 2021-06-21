@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.VaticanReport;
 
 import java.util.HashMap;

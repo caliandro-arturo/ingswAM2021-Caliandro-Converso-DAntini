@@ -1,13 +1,9 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.FaithTrack;
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.GameException;
-import it.polimi.ingsw.server.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FaithTrackTest {
     private FaithTrack track;

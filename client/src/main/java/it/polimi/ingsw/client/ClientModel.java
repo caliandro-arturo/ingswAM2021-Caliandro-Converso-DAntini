@@ -5,7 +5,10 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 public class ClientModel {
     private String playerUsername;
@@ -16,9 +19,9 @@ public class ClientModel {
     private boolean isLast;
     private DevelopmentGrid developmentGrid;
     private Market market;
-    private LeaderHand leaderHand;
+    private ObjectProperty<LeaderHand> leaderHand = new SimpleObjectProperty<>(new LeaderHand());
     private int resourcesToGet = 0;
-    private final LinkedHashMap<String, Board> boards = new LinkedHashMap<>();
+    private final ObjectProperty<LinkedHashMap<String, Board>> boards = new SimpleObjectProperty<>(new LinkedHashMap<>());
     private boolean gameStarted = false;                                    //true if leader cards are distributed
     private boolean gameSelected = false;
 
@@ -35,7 +38,7 @@ public class ClientModel {
     }
 
     public Set<String> getPlayersUsernames() {
-        return boards.keySet();
+        return boards.get().keySet();
     }
 
     public String getCurrentPlayerInTheGame() {
@@ -63,14 +66,22 @@ public class ClientModel {
     }
 
     public Board getBoard() {
-        return boards.get(playerUsername);
+        return boards.get().get(playerUsername);
     }
 
-    public LinkedHashMap<String, Board> getBoards() {
+    public ObjectProperty<LinkedHashMap<String, Board>> boardsProperty() {
         return boards;
     }
 
+    public LinkedHashMap<String, Board> getBoards() {
+        return boards.get();
+    }
+
     public LeaderHand getLeaderHand() {
+        return leaderHand.get();
+    }
+
+    public ObjectProperty<LeaderHand> leaderHandProperty() {
         return leaderHand;
     }
 
@@ -79,7 +90,7 @@ public class ClientModel {
     }
 
     public Board getBoard(String playerUsername) {
-        return boards.get(playerUsername);
+        return boards.get().get(playerUsername);
     }
 
     public void setGameStarted(boolean gameStarted) {
@@ -126,8 +137,8 @@ public class ClientModel {
         this.market = market;
     }
 
-    public void setLeaderHand(LeaderHand leaderHand) {
-        this.leaderHand = leaderHand;
+    public void setLeaderHand(ArrayList<LeaderCard> leaderHand) {
+        this.leaderHand.get().handProperty().addAll(leaderHand);
     }
 
     public void setResourcesToGet(int resourcesToGet) {
@@ -143,6 +154,6 @@ public class ClientModel {
     }
 
     public void setBoards(String username) {
-        boards.put(username,new Board());
+        boards.get().put(username,new Board());
     }
 }

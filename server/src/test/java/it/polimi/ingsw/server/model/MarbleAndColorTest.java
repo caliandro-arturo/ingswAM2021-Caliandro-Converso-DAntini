@@ -1,14 +1,13 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.model.Resource;
-import it.polimi.ingsw.server.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MarbleAndColorTest {
     /**

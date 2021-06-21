@@ -1,11 +1,7 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitBoards;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.LorenzoPick;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.LorenzoPosition;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Stack;
 
 public class SinglePlayerGame extends Game {
@@ -20,7 +16,8 @@ public class SinglePlayerGame extends Game {
                             DevelopmentGrid developmentGrid) {
         super(player, playersNum, market, leaderDeck, developmentGrid);
         Player lorenzo = new Player("Lorenzo");
-        //TODO
+        lorenzo.setGame(this);
+        lorenzo.setConnected(false);
         FaithTrack lorenzoTrack = new FaithTrack(lorenzo) {
             @Override
             public void isInVatican(int papalSpace) {

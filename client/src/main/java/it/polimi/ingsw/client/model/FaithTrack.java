@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.HashMap;
 
@@ -8,8 +10,8 @@ import java.util.HashMap;
  * light version of FaithTrack class for representation purposes
  */
 public class FaithTrack {
-    private int position = 1;
-    private int positionB = 0;
+    private final IntegerProperty position = new SimpleIntegerProperty(1);
+    private final IntegerProperty positionB = new SimpleIntegerProperty();
     private final HashMap<Integer, Boolean> vaticanMap = new HashMap<Integer, Boolean>(){{
         put(1, null);
         put(2, null);
@@ -20,24 +22,32 @@ public class FaithTrack {
         return vaticanMap;
     }
 
+    public int getPosition() {
+        return position.get();
+    }
+
+    public IntegerProperty positionProperty() {
+        return position;
+    }
+
     public void setVaticanMap(int num, boolean passed){
         vaticanMap.replace(num,passed);
     }
 
     public void addPosition(){
-        this.position++;
+        position.set(position.get() + 1);
     }
 
     public void setPosition(int position) {
-        this.position = position;
+        this.position.set(position);
     }
 
     public void setPositionB(int positionB) {
-        this.positionB = positionB;
+        this.positionB.set(positionB);
     }
 
     public void addLorenzoPositionByOne(){
-        positionB++;
+        positionB.set(positionB.get() + 1);
     }
 
     /**
@@ -69,14 +79,14 @@ public class FaithTrack {
 
         for (int j = 1; j < 25; j++) {
             final boolean b = j > 4 && j < 9 || j > 11 && j < 17 || j > 18;
-            if(j == position && j==positionB){
+            if(j == position.get() && j==positionB.get()){
                 if(b){
                     faithArt.append(CLIColor.ANSI_YELLOW + " ║ "+cross+crossB + CLIColor.ANSI_RESET);
                 }
                 else
                     faithArt.append(" ║ "+cross+crossB);
             }
-            else if (j == position) {
+            else if (j == position.get()) {
                 if(b) {
                     faithArt.append(CLIColor.ANSI_YELLOW + " ║ "+cross+" " + CLIColor.ANSI_RESET);
                 }
@@ -84,7 +94,7 @@ public class FaithTrack {
                     faithArt.append(" ║ "+cross+" ");
 
             }
-            else if (j == positionB){
+            else if (j == positionB.get()){
                 if(b){
                     faithArt.append(CLIColor.ANSI_YELLOW + " ║ "+crossB+" " + CLIColor.ANSI_RESET);
                 }

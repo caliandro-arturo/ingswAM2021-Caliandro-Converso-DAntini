@@ -3,8 +3,6 @@ package it.polimi.ingsw.commonFiles.messages.toClient.updates;
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
 
-import java.util.HashMap;
-
 public class GameStamp extends Message implements GameUpdate {
     private final String gameStatus;
 

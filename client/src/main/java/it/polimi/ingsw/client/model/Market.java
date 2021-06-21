@@ -3,9 +3,7 @@ package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;

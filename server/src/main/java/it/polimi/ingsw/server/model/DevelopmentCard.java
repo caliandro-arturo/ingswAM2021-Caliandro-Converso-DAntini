@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.commonFiles.model.Production;
 import it.polimi.ingsw.commonFiles.model.ProductionPower;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;

@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.model.Card;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,49 +13,53 @@ import java.util.Arrays;
  * DevelopmentGrid class for client
  */
 public class DevelopmentGrid{
-    private DevelopmentCard[][] grid;
+    private ObjectProperty<DevelopmentCard[][]> grid = new SimpleObjectProperty<>();
 
     public DevelopmentCard[][] getGrid() {
+        return grid.get();
+    }
+
+    public ObjectProperty<DevelopmentCard[][]> gridProperty() {
         return grid;
     }
 
     public DevelopmentGrid(ArrayList<DevelopmentCard> grid){
-        this.grid = new DevelopmentCard[3][4];
+        this.grid.set(new DevelopmentCard[3][4]);
         setGrid(grid);
     }
 
     public DevelopmentGrid(DevelopmentCard[][] grid) {
-        this.grid = grid;
+        this.grid.set(grid);
     }
 
     public void setGrid(ArrayList<DevelopmentCard> grid) {
         for (DevelopmentCard developmentCard : grid) {
-            this.grid[developmentCard.getLevel()- 1][Utility.colorPosition.
+            this.grid.get()[developmentCard.getLevel()- 1][Utility.colorPosition.
                     get(developmentCard.getColor())] = developmentCard;
         }
     }
 
     public DevelopmentCard getCard(int level, Color color){
-        return grid[level-1][Utility.colorPosition.get(color)];
+        return grid.get()[level-1][Utility.colorPosition.get(color)];
     }
 
     public void lorenzoRemoveAction(Color color, Card card, boolean flag){
         for (int i = 0; i<4; i++) {
-            if (grid[i][Utility.colorPosition.get(color)] != null){
+            if (grid.get()[i][Utility.colorPosition.get(color)] != null){
                 if (flag){
-                    grid[i][Utility.colorPosition.get(color)] = null;
+                    grid.get()[i][Utility.colorPosition.get(color)] = null;
                     try {
-                        grid[i + 1][Utility.colorPosition.get(color)] = new DevelopmentCard(card.getID(),
+                        grid.get()[i + 1][Utility.colorPosition.get(color)] = new DevelopmentCard(card.getID(),
                                 i + 2, card.getNewCardVictoryPoints(), color, card.getNewCardCost(), card.getProductions());
                     } catch (NullPointerException e){
-                        grid[i + 1][Utility.colorPosition.get(color)] = null;
+                        grid.get()[i + 1][Utility.colorPosition.get(color)] = null;
                     }
                 }  else {
                     try {
-                        grid[i][Utility.colorPosition.get(color)] = new DevelopmentCard(card.getID(),
+                        grid.get()[i][Utility.colorPosition.get(color)] = new DevelopmentCard(card.getID(),
                                 i + 1, card.getNewCardVictoryPoints(), color, card.getNewCardCost(), card.getProductions());
                     }catch (NullPointerException e){
-                        grid[i][Utility.colorPosition.get(color)] = null;
+                        grid.get()[i][Utility.colorPosition.get(color)] = null;
                     }
                 }
                 return;
@@ -62,7 +68,7 @@ public class DevelopmentGrid{
     }
 
     public void setCard(int level, String color, DevelopmentCard newCard) {
-        grid[level-1][Utility.colorPosition.get(Utility.mapColor.get(color))] = newCard;
+        grid.get()[level-1][Utility.colorPosition.get(Utility.mapColor.get(color))] = newCard;
     }
 
     @Override
@@ -90,8 +96,8 @@ public class DevelopmentGrid{
     private String assertLengthCost(int row) {
         StringBuilder costs = new StringBuilder(" ");
         for (int i = 0; i < 4; i++) {
-            if (grid[row][i] != null)
-                costs.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].getCosts()), 14));
+            if (grid.get()[row][i] != null)
+                costs.append("│").append(StringUtility.center(Arrays.toString(grid.get()[row][i].getCosts()), 14));
             else
                 costs.append("│").append(StringUtility.center("", 14));
         }
@@ -102,8 +108,8 @@ public class DevelopmentGrid{
     private String assertLengthProductionCost(int row){
         StringBuilder productionCost = new StringBuilder(" ");
         for (int i = 0; i<4; i++) {
-            if (grid[row][i] != null)
-                productionCost.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].
+            if (grid.get()[row][i] != null)
+                productionCost.append("│").append(StringUtility.center(Arrays.toString(grid.get()[row][i].
                         getProduction().getCost()), 14));
             else
                 productionCost.append("│").append(StringUtility.center("", 14));
@@ -115,8 +121,8 @@ public class DevelopmentGrid{
     private String assertLengthProductionValue(int row){
         StringBuilder productionValue = new StringBuilder(" ");
         for (int i = 0; i<4; i++) {
-            if (grid[row][i] != null)
-                productionValue.append("│").append(StringUtility.center(Arrays.toString(grid[row][i].
+            if (grid.get()[row][i] != null)
+                productionValue.append("│").append(StringUtility.center(Arrays.toString(grid.get()[row][i].
                     getProduction().getProd()),14));
             else
                 productionValue.append("│").append(StringUtility.center("", 14));
@@ -128,8 +134,8 @@ public class DevelopmentGrid{
     private String assertVictoryPoints(int row){
         StringBuilder victoryPoints = new StringBuilder(" ");
         for (int i = 0; i<4; i++){
-            if (grid[row][i] != null)
-                victoryPoints.append("│").append(StringUtility.center(String.format("%2d", grid[row][i].getVictoryPoints()),14));
+            if (grid.get()[row][i] != null)
+                victoryPoints.append("│").append(StringUtility.center(String.format("%2d", grid.get()[row][i].getVictoryPoints()),14));
             else
                 victoryPoints.append("│").append(StringUtility.center("", 14));
         }

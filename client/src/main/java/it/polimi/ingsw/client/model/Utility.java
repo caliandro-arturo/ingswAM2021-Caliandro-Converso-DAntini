@@ -1,11 +1,13 @@
 package it.polimi.ingsw.client.model;
 
-import it.polimi.ingsw.commonFiles.utility.CLIColor;
 import it.polimi.ingsw.commonFiles.model.Resource;
+import it.polimi.ingsw.commonFiles.utility.CLIColor;
+import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Utility {
 
@@ -66,4 +68,13 @@ public class Utility {
         put(CLIColor.ANSI_GREY + "■" + CLIColor.ANSI_RESET, Resource.STONE);
         put(CLIColor.ANSI_YELLOW + "■" + CLIColor.ANSI_RESET, Resource.COIN);
     }};
+    /**
+     * can be used to get the card image for giving the cardId as a parameter
+     * @param cardId
+     * @return
+     */
+    public static Image getCardPng(int cardId){
+        return new Image(Objects.requireNonNull(Utility.class.getResourceAsStream("/png/cards/"+cardId+".png")));
+    }
+
 }

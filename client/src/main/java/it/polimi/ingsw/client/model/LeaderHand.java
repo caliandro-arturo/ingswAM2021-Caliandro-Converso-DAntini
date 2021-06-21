@@ -1,19 +1,22 @@
 package it.polimi.ingsw.client.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
+
 /**
  * this class is used to represent the hand of the player in the phase of choosing leader cards
  *
  */
 public class LeaderHand {
-    private ArrayList<LeaderCard> hand;
+    private final ObservableList<LeaderCard> hand = FXCollections.observableArrayList();
 
-    public LeaderHand(ArrayList<LeaderCard> hand) {
-        this.hand = hand;
+    public LeaderHand() {
     }
 
-    public void setHand(ArrayList<LeaderCard> hand) {
-        this.hand = hand;
+    public LeaderHand(ArrayList<LeaderCard> hand) {
+        this.hand.setAll(hand);
     }
 
     public void removeCardFromHand(int pos){
@@ -21,6 +24,10 @@ public class LeaderHand {
     }
 
     public ArrayList<LeaderCard> getHand() {
+        return new ArrayList<>(hand);
+    }
+
+    public ObservableList<LeaderCard> handProperty() {
         return hand;
     }
 

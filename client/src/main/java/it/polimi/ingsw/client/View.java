@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client;
 
-import java.util.HashMap;
+import it.polimi.ingsw.commonFiles.messages.toServer.Next;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * View element of the MVC architectural pattern applied to the client.
@@ -25,11 +25,91 @@ public abstract class View {
     }
 
     /**
-     * Processes the input.
-     *
-     * @param input input to process
+     * Reads and processes user commands.
+     * <p>
+     * <b>Commands</b>
+     * <p>
+     * A command is structured as follows:<br>
+     * {@code identifier<: arg1, arg2, ..., argn>}.<br>
+     * Each command has a specific number of arguments (0 to n), and this
+     * verifies the correctness of both identifier and number of arguments.
      */
-    public abstract void process(String input);
+    public void process(String input){
+        String[] commandSlice = input.split("\\s*:\\s*", 2);
+        switch (commandSlice[0].toLowerCase()) {
+            //each case is an identifier
+            case "setnick": {
+                setNick(commandSlice);
+                break;
+            }
+            case "joingame": {
+                joinGame(commandSlice);
+                break;
+            }
+            case "setgame": {
+                setGame(commandSlice);
+                break;
+            }
+            case "back": {
+                back();
+                break;
+            }
+            case "choose": {
+                choose(commandSlice);
+                break;
+            }
+            case "activateprod": {
+                activateProduction(commandSlice);
+                break;
+            }
+            case "usemarket": {
+                useMarket(commandSlice);
+                break;
+            }
+            case "choosewhite": {
+                chooseWhite(commandSlice);
+                break;
+            }
+            case "buydevcard": {
+                buyDevCard(commandSlice);
+                break;
+            }
+            case "useleader": {
+                useLeader(commandSlice);
+                break;
+            }
+            case "discardleader": {
+                discardLeader(commandSlice);
+                break;
+            }
+            case "deployres": {
+                deployRes(commandSlice);
+                break;
+            }
+            case "takeres": {
+                takeRes(commandSlice);
+                break;
+            }
+            case "discardres": {
+                discardRes(commandSlice);
+                break;
+            }
+            case "getres": {
+                getRes(commandSlice);
+                break;
+            }
+            case "show":{
+                showHandler(commandSlice);
+                break;
+            }
+            case "next": {
+                getController().sendMessage(new Next());
+                break;
+            }
+            default:
+                System.err.println("Invalid command, retry.");
+        }
+    };
 
     /**
      * Shows elements to the user.

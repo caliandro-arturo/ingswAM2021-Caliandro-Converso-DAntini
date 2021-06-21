@@ -1,17 +1,16 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.client.model.Utility;
+import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
+import it.polimi.ingsw.commonFiles.messages.toServer.DiscardRes;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.util.Duration;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GUIView extends View {
 
@@ -108,7 +107,12 @@ public class GUIView extends View {
 
     @Override
     public void discardLeader(String[] commandSlice) {
-
+        int pos;
+        try {
+            pos = Integer.parseInt(commandSlice[1]);
+            getController().sendMessage(new DiscardLeader(pos));
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException ignore) {
+        }
     }
 
     @Override
@@ -138,7 +142,18 @@ public class GUIView extends View {
 
     @Override
     public void discardRes(String[] commandSlice) {
-
+        String resource;
+        try {
+            resource = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"DISCARDRES: <resource name>\".");
+            return;
+        }
+        if (Utility.mapResource.get(commandSlice[1]) != null){
+            if (Utility.isStorable(Utility.mapResource.get(commandSlice[1]))){
+                getController().sendMessage(new DiscardRes(Utility.mapResource.get(commandSlice[1])));
+            }
+        }
     }
 
     @Override

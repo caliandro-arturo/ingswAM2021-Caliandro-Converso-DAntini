@@ -2,8 +2,6 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.model.Resource;
 
-import java.util.ArrayList;
-
 /**
  * power tha add a extra Warehouse of a resource large 2 spaces
  */

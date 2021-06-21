@@ -6,7 +6,6 @@ import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
 import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessage;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * Controller element of the MVC architectural pattern applied to the client.

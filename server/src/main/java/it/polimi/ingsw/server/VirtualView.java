@@ -6,7 +6,9 @@ import it.polimi.ingsw.commonFiles.messages.toClient.updates.PlayerLeft;
 import it.polimi.ingsw.server.model.Player;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Objects;
 
 /**
  * View element of the MVC architectural pattern. It also acts as a waiting room and manages the exchanging of

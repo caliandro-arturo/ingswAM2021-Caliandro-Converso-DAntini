@@ -1,11 +1,6 @@
 package it.polimi.ingsw.commonFiles.messages.toServer;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessage;
-import it.polimi.ingsw.commonFiles.messages.toServer.ToServerMessageHandler;
-
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
 
 public class UseLeader extends Message implements ToServerMessage {
     int IDCard;
