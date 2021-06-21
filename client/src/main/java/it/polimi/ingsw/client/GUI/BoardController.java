@@ -10,9 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,6 +41,8 @@ public class BoardController implements Initializable {
     private ImageView tile3;
     @FXML
     private ImageView tile4;
+
+
 
     /**
      * Warehouse depots slots
@@ -98,6 +98,10 @@ public class BoardController implements Initializable {
     private ImageView devP23;
     @FXML
     private ImageView devP13;
+
+    /**
+     * strongbox
+     */
     @FXML
     private ImageView strongCoin;
     @FXML
@@ -112,16 +116,25 @@ public class BoardController implements Initializable {
      */
     @FXML
     private Pane leftPane;
+    @FXML
+    private ImageView activeLeaderCard1;
+    @FXML
+    private ImageView activeLeaderCard2;
 
     @FXML
     private Pagination hand;
 
+    private ContextMenu contextMenu;
+
+    private MenuItem menuItem;
+    /**
+     * strongbox
+     */
     private ArrayList<ImageView> strongResources;
 
 
 
     private ObservableList<ImageView> handListImg;
-
 
 
     private final ArrayList<ImageView> resSpots = new ArrayList<>();
@@ -131,14 +144,28 @@ public class BoardController implements Initializable {
 
     private HashMap<Resource, Image> resourceImageMap;
 
+
+
+    private HashMap<ImageView, Label> strongMap ;
+
+    public BoardController() {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        strongMap = new HashMap<>(){{
+            put(strongSerf, boxSerf);
+            put(strongCoin, boxCoin);
+            put(strongShield, boxShield);
+            put(strongStone, boxStone);
+        }};
         resourceLabelHashMap = new HashMap<>(){{
             put(Resource.SERF, boxSerf);
             put(Resource.COIN, boxCoin);
             put(Resource.SHIELD, boxShield);
             put(Resource.STONE, boxStone);
         }};
+
         strongResources = new ArrayList<>(Arrays.asList(strongCoin, strongSerf, strongShield, strongStone));
         resSpots.addAll(Arrays.asList(res1, res21, res22, res31, res32, res33));
         devPlace = new ArrayList<>(){{
@@ -153,7 +180,15 @@ public class BoardController implements Initializable {
             put(Resource.SERF, GamePanel.imgSerf);
             put(Resource.STONE, GamePanel.imgStone);
         }};
-
+        contextMenu = new ContextMenu();
+        menuItem = new MenuItem("back to hand");
+        contextMenu.getItems().add(menuItem);
+    }
+    public MenuItem getMenuItem() {
+        return menuItem;
+    }
+    public ContextMenu getContextMenu() {
+        return contextMenu;
     }
     public ArrayList<ImageView> getResSpots() {
         return resSpots;
@@ -176,7 +211,32 @@ public class BoardController implements Initializable {
             increasePos();
         board.getFaithTrack().positionProperty().addListener(e -> increasePos());
     }
+    public ImageView getRes1() {
+        return res1;
+    }
 
+    public ImageView getRes33() {
+        return res33;
+    }
+
+    public ImageView getRes32() {
+        return res32;
+    }
+
+    public ImageView getRes31() {
+        return res31;
+    }
+
+    public ImageView getRes22() {
+        return res22;
+    }
+
+    public ImageView getRes21() {
+        return res21;
+    }
+    public HashMap<ImageView, Label> getStrongMap() {
+        return strongMap;
+    }
     public Pane getLeftPane() {
         return leftPane;
     }

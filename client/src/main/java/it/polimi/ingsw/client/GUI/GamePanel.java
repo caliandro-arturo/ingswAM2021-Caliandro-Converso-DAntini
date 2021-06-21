@@ -105,10 +105,6 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Button handButton;
     @FXML
-    private ImageView activeLeaderCard1;
-    @FXML
-    private ImageView activeLeaderCard2;
-    @FXML
     private SplitPane rightPane;
     @FXML
     private ComboBox devPosCombo;
@@ -116,10 +112,6 @@ public class GamePanel extends SceneHandler {
     private ComboBox<Image> leadProd1;
     @FXML
     private ComboBox<Image> leadProd2;
-    @FXML
-    private Button prodButton1;
-    @FXML
-    private Button prodButton2;
     @FXML
     private Button cardsButton;
     @FXML
@@ -223,8 +215,7 @@ public class GamePanel extends SceneHandler {
     public static final ImageView imgViewShield = new ImageView(imgShield);
     public static final ImageView imgViewStone = new ImageView(imgStone);
 
-    private ContextMenu contextMenu;
-    private MenuItem menuItem;
+
     private String command;
 
     /**
@@ -297,10 +288,7 @@ public class GamePanel extends SceneHandler {
         imgViewStone.setFitWidth(40);
 
         devPosCombo.getItems().addAll("1", "2", "3");
-        prodButton1.setDisable(true);
-        prodButton1.setOpacity(0);
-        prodButton2.setDisable(true);
-        prodButton2.setOpacity(0);
+
 
         getModel().getMarket().gridProperty().addListener(e -> setMarketPng());
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
@@ -329,9 +317,7 @@ public class GamePanel extends SceneHandler {
         getModel().boardsProperty().addListener(e -> setBoardsTabs());
         if (!getModel().getBoards().isEmpty()) setBoardsTabs();
 
-        contextMenu = new ContextMenu();
-        menuItem = new MenuItem("back to hand");
-        contextMenu.getItems().add(menuItem);
+
         if (getGui().getView().getModel().getLeaderHand() != null) showChooseCards(null);
         deployLButton.setDisable(true);
     }
@@ -421,51 +407,6 @@ public class GamePanel extends SceneHandler {
                 devCardSpots[row][col].setImage(Utility.getCardPng(devGrid[row][col].getID()));
             }
         }
-    }
-
-    /**
-     * setter for the active leader card images
-     * @param cardID must be greater than 48
-     */
-    public void setActiveLeaderCard(int cardID){
-        if(cardID>48){
-            if(activeLeaderCard1.getImage()==null){
-                activeLeaderCard1.setImage(Utility.getCardPng(cardID));
-                //let the production drag&drop appear
-                if(cardID > 60){
-                    resToGive.setDisable(false);
-                    leadProd1.setDisable(false);
-                    leadProd1.setOpacity(1);
-                    prodButton1.setOpacity(1);
-                    prodButton1.setDisable(false);
-                }else {
-                    resToGive.setDisable(true);
-                    leadProd1.setDisable(true);
-                    leadProd1.setOpacity(0);
-                    prodButton1.setDisable(true);
-                    prodButton1.setOpacity(0);
-
-                }
-            }
-            else if(activeLeaderCard2.getImage()== null){
-                activeLeaderCard2.setImage(Utility.getCardPng(cardID));
-                //let the production drag&drop appear
-                if(cardID > 60){
-                    resToGive1.setDisable(false);
-                    leadProd2.setDisable(false);
-                    leadProd2.setOpacity(1);
-                    prodButton2.setDisable(false);
-                    prodButton2.setOpacity(1);
-                }else {
-                    resToGive1.setDisable(true);
-                    leadProd2.setDisable(true);
-                    leadProd2.setOpacity(0);
-                    prodButton2.setDisable(true);
-                    prodButton2.setOpacity(0);
-                }
-            }
-        }
-        //TODO : else error message FULL ACTIVE LEADER CARDS
     }
 
 
@@ -753,25 +694,5 @@ public class GamePanel extends SceneHandler {
             }
         }
 
-    @FXML
-    public void ctxMenuRes(ContextMenuEvent contextMenuEvent){
-        /*for(ImageView img: resSpots){
-            if(img.getImage()!= null){
-                img.setOnContextMenuRequested(e->
-                        contextMenu.show(img, e.getScreenX(), e.getScreenY()));
-                int posRes;
-                if(img==res1){
-                    posRes = 1;
-                }
-                else if(img==res21 || img == res22)
-                    posRes = 2;
-                else
-                    posRes = 3;
-                menuItem.setOnAction(event->{
-                    img.setImage(null);
-                    //getGui().getView().getController().sendMessage(new TakeRes(posRes));
-                     });
-            }
-        }*/
-    }
+
 }
