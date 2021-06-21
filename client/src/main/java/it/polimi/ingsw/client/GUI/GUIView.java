@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -108,7 +109,13 @@ public class GUIView extends View {
 
     @Override
     public void discardLeader(String[] commandSlice) {
-
+        int pos;
+        try {
+            pos = Integer.parseInt(commandSlice[1]);
+            getController().sendMessage(new DiscardLeader(pos));
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException ignore) {
+            //TODO: handle the exception
+        }
     }
 
     @Override
