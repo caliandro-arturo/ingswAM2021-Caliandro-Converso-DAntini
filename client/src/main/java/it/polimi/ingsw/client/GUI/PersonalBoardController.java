@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.collections.ObservableList;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
@@ -57,6 +59,10 @@ public class PersonalBoardController extends BoardController {
     private ImageView activeLeaderCard2;
     @FXML
     private Label labelLeaderCards;
+    @FXML
+    private AnchorPane resourceHand;
+
+    private View view;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -146,18 +152,56 @@ public class PersonalBoardController extends BoardController {
         //TODO : else error message FULL ACTIVE LEADER CARDS
     }
 
+    public void setView(View view) {
+        this.view = view;
+    }
 
-    /**
-     * move resource from hand to warehouse store
-     */
     public void moveRes() {
+        //drag 6 drop for warehouse store
+        getHand().setOnDragDetected(event1 -> {
+            Dragboard db = getHand().startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            Image res = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
+            content.putImage(res);
+            db.setContent(content);
+            getHandListImg().remove(getHand().getCurrentPageIndex());
+            event1.consume();
+        });
+
+
+        //drag & drop for leader card production
+        resToGive.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        resToGive.setOnDragDropped(dragEvent -> {
+            resToGive.setImage(dragEvent.getDragboard().getImage());
+            dragEvent.consume();
+        });
+
+        //drag & drop for base production
+        baseProd1.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        baseProd2.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        baseProd1.setOnDragDropped(dragEvent -> {
+            baseProd1.setImage(dragEvent.getDragboard().getImage());
+            dragEvent.consume();
+        });
+        baseProd2.setOnDragDropped(dragEvent -> {
+            baseProd2.setImage(dragEvent.getDragboard().getImage());
+            dragEvent.consume();
+        });
         for(ImageView warSpot: getResSpots()){
             warSpot.setOnDragOver(dragEvent -> {
                 dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 dragEvent.consume();
             });
         }
-
         for(ImageView warSpot: getResSpots()){
             warSpot.setOnDragDropped(dragEvent -> {
                 //TODO: needs to add the legitimacy of the moves in the spots of the warehouse store
@@ -165,7 +209,6 @@ public class PersonalBoardController extends BoardController {
                 dragEvent.consume();
             });
         }
-
         for (ImageView res : getStrongResources()) {
             if (Integer.parseInt(getStrongMap().get(res).getText()) > 0) {
                 res.setOnDragDetected(e -> {
@@ -232,52 +275,14 @@ public class PersonalBoardController extends BoardController {
         getHand().setPageCount(handList.size());
     }
 
-    @Override
-    public void moveRes(MouseEvent mouseEvent) {
-        super.moveRes(mouseEvent);
-
-        //drag 6 drop for warehouse store
-        getHand().setOnDragDetected(event1 -> {
-            Dragboard db = getHand().startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            Image res = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
-            content.putImage(res);
-            db.setContent(content);
-            getHandListImg().remove(getHand().getCurrentPageIndex());
-            event1.consume();
-        });
-
-
-        //drag & drop for leader card production
-        resToGive.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        resToGive.setOnDragDropped(dragEvent -> {
-            resToGive.setImage(dragEvent.getDragboard().getImage());
-            dragEvent.consume();
-        });
-
-        //drag & drop for base production
-        baseProd1.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        baseProd2.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        baseProd1.setOnDragDropped(dragEvent -> {
-            baseProd1.setImage(dragEvent.getDragboard().getImage());
-            dragEvent.consume();
-        });
-        baseProd2.setOnDragDropped(dragEvent -> {
-            baseProd2.setImage(dragEvent.getDragboard().getImage());
-            dragEvent.consume();
-        });
-    }
-
-
     public void discard(ActionEvent actionEvent) {
+        Resource resource;
+        try {
+            resource = getResourceImageViewHashMap().get(getHandListImg().get(getHand().getCurrentPageIndex()));
+            getHandListImg().remove(getHand().getCurrentPageIndex());
+        }catch (IndexOutOfBoundsException e){
+            return;
+        }
+        view.process("discardres: " + resource.name());
     }
 }

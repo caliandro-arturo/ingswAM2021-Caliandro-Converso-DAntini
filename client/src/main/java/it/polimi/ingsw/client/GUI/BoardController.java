@@ -15,6 +15,7 @@ import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -124,6 +125,9 @@ public class BoardController implements Initializable {
     @FXML
     private Pagination hand;
 
+    @FXML
+    private AnchorPane resourceHand;
+
     private ContextMenu contextMenu;
 
     private MenuItem menuItem;
@@ -131,22 +135,12 @@ public class BoardController implements Initializable {
      * strongbox
      */
     private ArrayList<ImageView> strongResources;
-
-
-
     private ObservableList<ImageView> handListImg;
-
-
     private final ArrayList<ImageView> resSpots = new ArrayList<>();
     private ArrayList<ArrayList<ImageView>> devPlace;
-
-
-
     private HashMap<Resource, Image> resourceImageMap;
-
-
-
     private HashMap<ImageView, Label> strongMap ;
+    private HashMap<ImageView, Resource> resourceImageViewHashMap;
 
     public BoardController() {
     }
@@ -180,6 +174,12 @@ public class BoardController implements Initializable {
             put(Resource.SERF, GamePanel.imgSerf);
             put(Resource.STONE, GamePanel.imgStone);
         }};
+        resourceImageViewHashMap = new HashMap<>(){{
+            put(GamePanel.imgViewShield,Resource.SHIELD);
+            put(GamePanel.imgViewCoin, Resource.COIN);
+            put(GamePanel.imgViewSerf, Resource.SERF);
+            put(GamePanel.imgViewStone,Resource.STONE);
+        }};
         contextMenu = new ContextMenu();
         menuItem = new MenuItem("back to hand");
         contextMenu.getItems().add(menuItem);
@@ -205,6 +205,10 @@ public class BoardController implements Initializable {
     public ObservableList<ImageView> getHandListImg() {
         return handListImg;
     }
+    public HashMap<ImageView, Resource> getResourceImageViewHashMap(){
+        return resourceImageViewHashMap;
+    }
+
     public void setBoard(Board board) {
         this.board = board;
         for (int i = 1; i < board.getFaithTrack().getPosition(); i++)
@@ -313,9 +317,8 @@ public class BoardController implements Initializable {
             tile4.setOpacity(100);
     }
 
-
-    public void moveRes(MouseEvent mouseEvent) {
-
+    public Pane getResourceHand(){
+        return resourceHand;
     }
 
     public Pagination getHand() {

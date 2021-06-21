@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,7 +13,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.Pagination?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="668.0" prefWidth="936.0" styleClass="anchor" stylesheets="@../css/playersBoard.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.BoardController">
     <children>
 
@@ -157,6 +157,10 @@
             <Label fx:id="labelLeaderCards" layoutX="56.0" layoutY="119.0" prefHeight="27.0" prefWidth="139.0" text="Leader Cards:" />
         </Pane>
         <!--resource hand -->
-        <Pagination fx:id="hand" layoutX="22.0" layoutY="139.0" maxPageIndicatorCount="0" onDragDetected="#moveRes" pageCount="0" prefHeight="151.0" prefWidth="204.0" />
+      <AnchorPane fx:id="resourceHand" layoutX="22.0" layoutY="139.0">
+         <children>
+              <Pagination fx:id="hand" maxPageIndicatorCount="0" pageCount="0" prefHeight="151.0" prefWidth="204.0" />
+         </children>
+      </AnchorPane>
     </children>
 </AnchorPane>

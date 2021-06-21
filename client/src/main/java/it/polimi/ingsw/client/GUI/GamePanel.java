@@ -45,6 +45,8 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ImageView boardImg;
     @FXML
+    private Pane paneHand;
+    @FXML
     private Button buy;
     @FXML
     private Button res;
@@ -302,9 +304,11 @@ public class GamePanel extends SceneHandler {
         boardAndControllerMap.put(personalBoard, personalBoardLoader.getController());
         boardsTabPane.getSelectionModel().selectedItemProperty().addListener(e -> {
             leftPane.getChildren().clear();
-            //TODO: add change of resource hand
+            paneHand.getChildren().clear();
             leftPane.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getLeftPane());
+            paneHand.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getResourceHand());
         });
+       ((PersonalBoardController)boardAndControllerMap.get(personalBoard)).setView(getGui().getView());
         boardsTabPane.getSelectionModel().select(personalBoard);
         boardsTabPane.getTabs().add(personalBoard);
         getModel().boardsProperty().addListener(e -> setBoardsTabs());
