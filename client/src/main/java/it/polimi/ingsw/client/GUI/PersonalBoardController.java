@@ -16,6 +16,7 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
@@ -61,6 +62,18 @@ public class PersonalBoardController extends BoardController {
     private Label labelLeaderCards;
     @FXML
     private AnchorPane resourceHand;
+    @FXML
+    private GridPane leaderDepot1;
+    @FXML
+    private GridPane leaderDepot2;
+    @FXML
+    private Button prodBaseButton;
+    @FXML
+    private Pane devProdPane1;
+    @FXML
+    private Pane devProdPane2;
+    @FXML
+    private Pane devProdPane3;
 
     private View view;
 
@@ -95,6 +108,19 @@ public class PersonalBoardController extends BoardController {
         prodButton1.setOpacity(0);
         prodButton2.setDisable(true);
         prodButton2.setOpacity(0);
+        resBaseProd.setOpacity(0);
+        resBaseProd.setDisable(true);
+        prodBaseButton.setOpacity(0);
+        prodBaseButton.setDisable(true);
+        leaderDepot1.setDisable(true);
+        leaderDepot2.setDisable(true);
+        devProdPane1.setOpacity(0);
+        devProdPane2.setOpacity(0);
+        devProdPane3.setOpacity(0);
+        devProdPane1.setDisable(true);
+        devProdPane2.setDisable(true);
+        devProdPane3.setDisable(true);
+
     }
     /**
      * setter for the active leader card images

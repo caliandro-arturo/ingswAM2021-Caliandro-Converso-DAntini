@@ -14,6 +14,7 @@ import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
@@ -126,6 +127,11 @@ public class BoardController implements Initializable {
 
     @FXML
     private AnchorPane resourceHand;
+
+    @FXML
+    private GridPane leaderDepot1;
+    @FXML
+    private GridPane leaderDepot2;
 
     private ContextMenu contextMenu;
 
@@ -242,6 +248,14 @@ public class BoardController implements Initializable {
     }
     public Pane getLeftPane() {
         return leftPane;
+    }
+
+    public GridPane getLeaderDepot1() {
+        return leaderDepot1;
+    }
+
+    public GridPane getLeaderDepot2() {
+        return leaderDepot2;
     }
 
     /**

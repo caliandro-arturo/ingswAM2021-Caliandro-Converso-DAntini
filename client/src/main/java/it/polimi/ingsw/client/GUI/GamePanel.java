@@ -188,6 +188,14 @@ public class GamePanel extends SceneHandler {
     private VBox vCoin;
     @FXML
     private VBox vSerf;
+    @FXML
+    private Button nextButton;
+    @FXML
+    private Button chooseButton;
+    @FXML
+    private Button backButton;
+    @FXML
+    private Pane chooseActionPane;
 
     private final Image blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
     private final Image greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
@@ -310,6 +318,8 @@ public class GamePanel extends SceneHandler {
         if (getGui().getView().getModel().getLeaderHand() != null &&
                 getGui().getView().getModel().getLeaderHand().getHand().size() > 2) showChooseCards(null);
         else goFront(boardPane);
+        backButton.setDisable(true);
+        chooseButton.setDisable(true);
     }
 
 
@@ -700,5 +710,43 @@ public class GamePanel extends SceneHandler {
         paymentShield.setText("0");
         paymentStone.setText("0");
         goFront(devGridPane);
+    }
+
+    public void choose(ActionEvent actionEvent) {
+        goFront(chooseActionPane);
+    }
+
+    public void next(ActionEvent actionEvent) {
+        getGui().getView().process("next");
+        if (getModel().getCurrentTurnPhase().equals("Choose the next action")){
+            chooseButton.setDisable(false);
+        }
+        backButton.setDisable(true);
+    }
+
+    public void back(ActionEvent actionEvent) {
+        getGui().getView().process("back");
+        backButton.setDisable(true);
+    }
+
+    public void goToMarketPhase(ActionEvent actionEvent) {
+        getGui().getView().process("choose: usemarket");
+        backButton.setDisable(false);
+        nextButton.setDisable(true);
+        closePopup(actionEvent);
+    }
+
+    public void goToBuyDevCardPhase(ActionEvent actionEvent) {
+        getGui().getView().process("choose: buydevelopmentcard");
+        backButton.setDisable(false);
+        nextButton.setDisable(true);
+        closePopup(actionEvent);
+    }
+
+    public void goToProductionPhase(ActionEvent actionEvent) {
+        getGui().getView().process("choose: activateproduction");
+        backButton.setDisable(false);
+        nextButton.setDisable(true);
+        closePopup(actionEvent);
     }
 }

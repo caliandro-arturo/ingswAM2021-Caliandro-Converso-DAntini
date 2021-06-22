@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.Utility;
+import it.polimi.ingsw.commonFiles.messages.toServer.Back;
 import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
 import it.polimi.ingsw.commonFiles.messages.toServer.DiscardRes;
 import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
@@ -15,11 +16,6 @@ import java.util.List;
 public class GUIView extends View {
 
     private boolean isInGame = false;
-
-    @Override
-    public void process(String input) {
-
-    }
 
     @Override
     public void show(String element) {
@@ -137,7 +133,7 @@ public class GUIView extends View {
 
     @Override
     public void back() {
-
+        getController().sendMessage(new Back());
     }
 
     @Override

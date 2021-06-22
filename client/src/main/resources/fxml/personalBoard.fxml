@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="668.0" prefWidth="936.0" styleClass="anchor" stylesheets="@../css/playersBoard.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.PersonalBoardController">
     <children>
 
         <!--leader cards-->
         <Pane fx:id="leftPane" prefHeight="200.0" prefWidth="250.0">
             <children>
+            <GridPane fx:id="leaderDepot2" prefHeight="79.0" prefWidth="171.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="143.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="157.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
                 <ImageView fx:id="activeLeaderCard1" fitHeight="260.0" fitWidth="200.0" layoutX="25.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
                 </ImageView>
                 <ImageView fx:id="activeLeaderCard2" fitHeight="260.0" fitWidth="200.0" layoutX="25.0" layoutY="441.0" pickOnBounds="true" preserveRatio="true" />
@@ -26,6 +50,19 @@
                 <ComboBox fx:id="leadProd2" layoutX="100.0" layoutY="630.0" prefHeight="19.0" prefWidth="50.0" />
                 <Button fx:id="prodButton1" layoutX="166.0" layoutY="418.0" mnemonicParsing="false" text="Produce" />
                 <Button fx:id="prodButton2" layoutX="166.0" layoutY="671.0" mnemonicParsing="false" text="Produce" />
+            <GridPane fx:id="leaderDepot1" prefHeight="79.0" prefWidth="171.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="143.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="157.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
             </children>
         </Pane>
 
@@ -166,11 +203,15 @@
         <ComboBox fx:id="resBaseProd" layoutX="296.0" layoutY="477.0" prefHeight="45.0" prefWidth="45.0" />
         <ImageView fx:id="baseProd1" fitHeight="41.0" fitWidth="47.0" layoutX="236.0" layoutY="470.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="baseProd2" fitHeight="41.0" fitWidth="47.0" layoutX="232.0" layoutY="510.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true" />
-        <Button layoutX="255.0" layoutY="566.0" mnemonicParsing="false" text="Produce" />
+        <Button fx:id="prodBaseButton" layoutX="255.0" layoutY="566.0" mnemonicParsing="false" text="Produce" />
       <HBox layoutX="356.0" layoutY="241.0" prefHeight="380.0" prefWidth="541.0">
          <children>
             <Pane fx:id="devPlace1" prefHeight="378.0" prefWidth="180.0">
                <children>
+                    <ImageView fx:id="devP11" fitHeight="221.0" fitWidth="162.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="devP12" fitHeight="221.0" fitWidth="162.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="devP13" fitHeight="221.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true" />
+                   <!--development spaces-->
                   <Pane fx:id="devProdPane1">
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="178.0" />
@@ -185,19 +226,62 @@
                               <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" />
-                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1" />
-                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <VBox layoutX="99.0" layoutY="107.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" />
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                         <Label fx:id="paymentStone" text="0" textFill="WHITE">
+                                             <font>
+                                                 <Font size="23.0" />
+                                             </font>
+                                         </Label>
+                                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                 <Image url="@../png/stone.png" />
+                                             </image>
+                                         </ImageView>
+                                 </children></VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                                 <children>
+                                     <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                         <image>
+                                             <Image url="@../png/serf.png" />
+                                         </image>
+                                     </ImageView>
+                                     <Label fx:id="paymentSerf" text="0" textFill="WHITE">
+                                         <font>
+                                             <Font size="23.0" />
+                                         </font>
+                                     </Label>
+                                 </children></VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                     <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                         <image>
+                                             <Image url="@../png/shield.png" />
+                                         </image>
+                                     </ImageView>
+                                     <Label fx:id="paymentShield" text="0" textFill="WHITE">
+                                         <font>
+                                             <Font size="23.0" />
+                                         </font>
+                                     </Label>
+                                 </children></VBox>
+                              <VBox layoutX="99.0" layoutY="107.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                 <children>
+                                     <Label fx:id="paymentCoin" text="0" textFill="WHITE">
+                                         <font>
+                                             <Font size="23.0" />
+                                         </font>
+                                     </Label>
+                                     <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                         <image>
+                                             <Image url="@../png/coin.png" />
+                                         </image>
+                                     </ImageView>
+                                 </children></VBox>
                            </children>
                         </GridPane>
                      </children>
                   </Pane>
-
-                                <!--development spaces-->
-                    <ImageView fx:id="devP11" fitHeight="221.0" fitWidth="162.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true" />
-                    <ImageView fx:id="devP12" fitHeight="221.0" fitWidth="162.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
-                    <ImageView fx:id="devP13" fitHeight="221.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Pane>
             <Pane fx:id="devPlace2" prefHeight="341.0" prefWidth="179.0">
@@ -206,20 +290,72 @@
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="178.0" />
                         <Button fx:id="prodCard2" layoutX="52.0" layoutY="352.0" mnemonicParsing="false" text="Production" />
-                        <GridPane prefHeight="200.0" prefWidth="178.0">
+                        <GridPane layoutX="10.0" layoutY="-1.0" prefHeight="200.0" prefWidth="178.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="97.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="110.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" />
-                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1" />
-                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <VBox layoutX="99.0" layoutY="107.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" />
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label fx:id="paymentStone1" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/stone.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/serf.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="paymentSerf1" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/shield.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="paymentShield1" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="99.0" layoutY="107.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <Label fx:id="paymentCoin1" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/coin.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
                            </children>
                         </GridPane>
                      </children>
@@ -245,10 +381,62 @@
                               <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" />
-                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1" />
-                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <VBox layoutX="99.0" layoutY="107.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" />
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label fx:id="paymentStone2" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/stone.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/serf.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="paymentSerf2" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/shield.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="paymentShield2" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="99.0" layoutY="107.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <Label fx:id="paymentCoin2" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/coin.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
                            </children>
                         </GridPane>
                      </children>
