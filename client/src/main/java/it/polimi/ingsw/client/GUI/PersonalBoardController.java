@@ -343,21 +343,6 @@ public class PersonalBoardController extends BoardController {
             }
         }
     }
-    /**
-     * fill the hands with the relative resource images in the pagination
-     * @param handList
-     */
-    public void fillHand(ObservableList<ImageView> handList){
-        for (ImageView view : handList) {
-            view.setFitHeight(70);
-            view.setFitWidth(70);
-        }
-        if(!handList.isEmpty()){
-            getHand().setPageFactory(handList::get);
-        }else
-            getHand().setPageFactory(null);
-        getHand().setPageCount(handList.size());
-    }
 
     public void discard(ActionEvent actionEvent) {
         Resource resource;

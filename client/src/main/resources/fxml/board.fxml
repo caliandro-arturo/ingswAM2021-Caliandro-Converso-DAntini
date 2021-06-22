@@ -201,12 +201,24 @@
                   <Button fx:id="deployLButton" layoutX="464.0" layoutY="531.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="147.0" text="Deploy" />
                </children>
             </Pane>
+            <Pane fx:id="chooseActionPane" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="84.0" layoutX="196.0" layoutY="241.0" stroke="BLACK" strokeType="INSIDE" width="447.0" />
+                  <HBox layoutX="239.0" layoutY="266.0" prefHeight="35.0" prefWidth="361.0">
+                     <children>
+                        <Button fx:id="marketPhase" mnemonicParsing="false" onAction="#goToMarketPhase" text="UseMarket" />
+                        <Button fx:id="buyDevCardPhase" mnemonicParsing="false" onAction="#goToBuyDevCardPhase" text="UseDevGrid" />
+                        <Button fx:id="useProduction" mnemonicParsing="false" onAction="#goToProductionPhase" text="ActivateProduction" />
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
             <Pane fx:id="paymentPane" prefHeight="200.0" prefWidth="200.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#86d8f8" height="224.0" layoutX="20.0" layoutY="29.0" stroke="BLACK" strokeType="INSIDE" width="888.0" />
                   <ImageView fx:id="devCardToBuy" fitHeight="208.0" fitWidth="150.0" layoutX="32.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
                   <ComboBox fx:id="devPosCombo" layoutX="802.0" layoutY="115.0" prefHeight="25.0" prefWidth="65.0" />
-                  <Label layoutX="549.0" layoutY="117.0" text="Where do you want to put the card?">
+                  <Label layoutX="523.0" layoutY="117.0" text="Where do you want to put the card?">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -279,14 +291,72 @@
                   <Button fx:id="paymentButton" layoutX="524.0" layoutY="191.0" mnemonicParsing="false" onAction="#buyCard" text="Buy" />
                </children>
             </Pane>
-            <Pane fx:id="chooseActionPane" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="getInitialResourcesPane" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="84.0" layoutX="196.0" layoutY="241.0" stroke="BLACK" strokeType="INSIDE" width="447.0" />
-                  <HBox layoutX="239.0" layoutY="266.0" prefHeight="35.0" prefWidth="361.0">
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="244.0" layoutX="329.0" layoutY="228.0" stroke="BLACK" strokeType="INSIDE" width="307.0">
+                     <fill>
+                        <LinearGradient endX="0.49618317698704384" endY="1.0" startX="0.4732824554880157" startY="0.16030537263127684">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.07083820551633835" green="0.46388760209083557" blue="0.8315789699554443" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Label layoutX="385.0" layoutY="292.0" text="Select an initial resource" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <HBox fx:id="initialResourcesBox" layoutX="363.0" layoutY="350.0" prefHeight="54.0" prefWidth="240.0">
                      <children>
-                        <Button fx:id="marketPhase" mnemonicParsing="false" onAction="#goToMarketPhase" text="UseMarket" />
-                        <Button fx:id="buyDevCardPhase" mnemonicParsing="false" onAction="#goToBuyDevCardPhase" text="UseDevGrid" />
-                        <Button fx:id="useProduction" mnemonicParsing="false" onAction="#goToProductionPhase" text="ActivateProduction" />
+                        <ImageView fx:id="initialCoin" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png/coin.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="initialShield" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png/shield.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="initialStone" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png/stone.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="initialSerf" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png/serf.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="548.0" layoutY="432.0">
+                     <children>
+                        <Label fx:id="initialResourceIndex" alignment="CENTER" prefHeight="22.0" prefWidth="22.0">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="21.0" prefWidth="18.0" text="of">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="totalInitialResourcesAmount" alignment="CENTER" prefHeight="22.0" prefWidth="22.0">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                </children>

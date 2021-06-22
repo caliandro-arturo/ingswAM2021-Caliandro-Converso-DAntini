@@ -65,7 +65,11 @@
 }
 #labelLeaderCards{
     -fx-effect: dropshadow(three-pass-box, rgba(243, 235, 233, 0.6), 25, 0.85, 10, 10);
+}
 
+.label {
+    -fx-font-family: Harrington;
+    -fx-font-size: 18;
 }
 
 

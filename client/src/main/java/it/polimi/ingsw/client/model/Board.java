@@ -34,10 +34,6 @@ public class Board {
         }};
     }
 
-    public ResourceHand getResHand() {
-        return resHand;
-    }
-
     public ArrayList<Resource> getPowerWhite() {
         return powers.get(0);
     }
@@ -64,6 +60,10 @@ public class Board {
 
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
+    }
+
+    public ResourceHand getResHand() {
+        return resHand;
     }
 
     public void setLeaderCards(ArrayList<LeaderCard> leaderCards) {

@@ -133,6 +133,14 @@ public class GamePanel extends SceneHandler {
     private ImageView leadCard3;
     @FXML
     private ImageView leadCard4;
+
+    @FXML
+    private Pane getInitialResourcesPane;
+    @FXML
+    private Label initialResourceIndex;
+    @FXML
+    private Label totalInitialResourcesAmount;
+
     @FXML
     private Pane pause;
     @FXML
@@ -288,7 +296,7 @@ public class GamePanel extends SceneHandler {
 
         getModel().getMarket().gridProperty().addListener(e -> setMarketPng());
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
-        getGui().getView().getModel().getLeaderHand().handProperty().addListener((InvalidationListener) e -> Platform.runLater(this::setLeaderCards));
+        getGui().getView().getModel().getLeaderHand().handProperty().addListener((InvalidationListener) e -> Platform.runLater(() -> showChooseCards(null)));
         selectedLeader.addListener(e -> leaderButtonsProperty());
         if (getModel().getMarket().getGrid() != null) setMarketPng();
         if (getModel().getDevelopmentGrid().getGrid() != null) setDevGridPng();
@@ -310,7 +318,7 @@ public class GamePanel extends SceneHandler {
             leftPane.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getLeftPane());
             paneHand.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getResourceHand());
         });
-       ((PersonalBoardController)boardAndControllerMap.get(personalBoard)).setView(getGui().getView());
+        personalBoardController.setView(getGui().getView());
         boardsTabPane.getSelectionModel().select(personalBoard);
         boardsTabPane.getTabs().add(personalBoard);
         getModel().boardsProperty().addListener(e -> setBoardsTabs());
@@ -594,7 +602,8 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * utility method to close the pane and bring to front the Board pane again
+     * Closes the pane and brings to front the Board pane. If there are initial resources to get, the initial resource
+     * pane is shown.
      */
     public void closePopup(ActionEvent actionEvent){
         boardPane.toFront();
@@ -602,6 +611,11 @@ public class GamePanel extends SceneHandler {
         boardPane.setDisable(false);
         boardPane.setEffect(null);
         rightPane.setDisable(false);
+        if (getModel().getResourcesToGet() > 0) {
+            totalInitialResourcesAmount.setText(Integer.toString(getModel().getResourcesToGet()));
+            initialResourceIndex.setText("1");
+            goFront(getInitialResourcesPane);
+        }
     }
 
 
@@ -646,6 +660,7 @@ public class GamePanel extends SceneHandler {
 
     @FXML
     public void discardLeaderCard(ActionEvent actionEvent) {
+        //TODO use process instead of this
         getGui().getView().discardLeader(new String[]{"", Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1)});
     }
 
@@ -669,7 +684,7 @@ public class GamePanel extends SceneHandler {
                 });
             }
             for (ImageView marketSpot : marketReinsertSpots) {
-                AtomicReference<String> cmd = null;
+                AtomicReference<String> cmd = new AtomicReference<>();
                 marketSpot.setOnDragDropped(dragEvent ->{
                     if(dragEvent.getSource()==row0) {
                         cmd.set("usemarket: r, 1");
@@ -754,4 +769,13 @@ public class GamePanel extends SceneHandler {
         closePopup(actionEvent);
     }
 
+    public void getInitialResource(MouseEvent mouseEvent) {
+        String resourceName = ((ImageView)mouseEvent.getSource())
+                .getId()
+                .replaceAll("initial", "");
+        getGui().getView().process("getres:" + resourceName);
+        if (initialResourceIndex.getText().equals(totalInitialResourcesAmount.getText()))
+            closePopup(null);
+        else initialResourceIndex.setText(Integer.toString(Integer.parseInt(initialResourceIndex.getText()) + 1));
+    }
 }

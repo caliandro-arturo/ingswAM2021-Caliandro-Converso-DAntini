@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
+import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -136,12 +137,7 @@ public class GUIView extends View {
 
     @Override
     public void discardLeader(String[] commandSlice) {
-        int pos;
-        try {
-            pos = Integer.parseInt(commandSlice[1]);
-            getController().sendMessage(new DiscardLeader(pos));
-        } catch (ArrayIndexOutOfBoundsException | NumberFormatException ignore) {
-        }
+        getController().sendMessage(new DiscardLeader(Integer.parseInt(commandSlice[1])));
     }
 
     @Override
@@ -151,7 +147,8 @@ public class GUIView extends View {
 
     @Override
     public void getRes(String[] commandSlice) {
-
+        Resource res = Utility.mapResource.get(commandSlice[1].toLowerCase());
+        getController().sendMessage(new GetResource(res));
     }
 
     @Override

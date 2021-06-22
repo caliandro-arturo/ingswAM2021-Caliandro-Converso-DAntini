@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.model.Board;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.model.Resource;
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -140,7 +142,7 @@ public class BoardController implements Initializable {
      * strongbox
      */
     private ArrayList<ImageView> strongResources;
-    private ObservableList<ImageView> handListImg;
+    private final ObservableList<ImageView> handListImg = FXCollections.observableArrayList();;
     private final ArrayList<ImageView> resSpots = new ArrayList<>();
     private ArrayList<ArrayList<ImageView>> devPlace;
     private HashMap<Resource, Image> resourceImageMap;
@@ -172,7 +174,6 @@ public class BoardController implements Initializable {
             add(new ArrayList<>(Arrays.asList(devP21, devP22, devP23)));
             add(new ArrayList<>(Arrays.asList(devP31, devP32, devP33)));
         }};
-        handListImg = FXCollections.observableArrayList();
         resourceImageMap = new HashMap<>(){{
             put(Resource.SHIELD, GamePanel.imgShield);
             put(Resource.COIN, GamePanel.imgCoin);
@@ -185,6 +186,16 @@ public class BoardController implements Initializable {
             put(GamePanel.imgViewSerf, Resource.SERF);
             put(GamePanel.imgViewStone,Resource.STONE);
         }};
+        hand.setPageFactory((index) -> {
+            ImageView view = null;
+            try {
+                view = handListImg.get(index);
+                view.setFitHeight(60);
+                view.setFitWidth(60);
+            } catch (IndexOutOfBoundsException ignore) {
+            }
+            return view;
+        });
         contextMenu = new ContextMenu();
         menuItem = new MenuItem("back to hand");
         contextMenu.getItems().add(menuItem);
@@ -219,6 +230,8 @@ public class BoardController implements Initializable {
         for (int i = 1; i < board.getFaithTrack().getPosition(); i++)
             increasePos();
         board.getFaithTrack().positionProperty().addListener(e -> increasePos());
+        updateHandList();
+        board.getResHand().getResources().addListener((InvalidationListener) e -> Platform.runLater(this::updateHandList));
     }
     public ImageView getRes1() {
         return res1;
@@ -339,12 +352,13 @@ public class BoardController implements Initializable {
     }
 
     /**
-     * requires as parameter the handlist and set the handList of images of resources
-     * @param hand
+     * Updates the resource hand pagination
      */
-    public void setHandList(ArrayList<Resource> hand){
-        for(Resource res: hand){
+    public void updateHandList(){
+        handListImg.clear();
+        for(Resource res: board.getResHand().getResources()){
             handListImg.add(new ImageView(resourceImageMap.get(res)));
         }
+        hand.setPageCount(handListImg.size());
     }
 }
