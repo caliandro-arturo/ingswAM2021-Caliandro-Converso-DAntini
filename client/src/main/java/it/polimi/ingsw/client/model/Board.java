@@ -34,6 +34,10 @@ public class Board {
         }};
     }
 
+    public ResourceHand getResHand() {
+        return resHand;
+    }
+
     public ArrayList<Resource> getPowerWhite() {
         return powers.get(0);
     }

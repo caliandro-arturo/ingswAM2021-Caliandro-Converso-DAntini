@@ -18,6 +18,10 @@ public class DevelopmentPlace {
         devStack.add(new Stack<>());
     }
 
+    public ArrayList<Stack<DevelopmentCard>> getDevStack() {
+        return devStack;
+    }
+
     /**
      * setter for the DevelopmentCard
      * @param developmentCard : card to insert

@@ -216,6 +216,7 @@ public class GamePanel extends SceneHandler {
 
 
     private String command;
+    private PersonalBoardController personalBoardController;
 
     /**
      * data structures with the imageView for the images in the board
@@ -226,7 +227,6 @@ public class GamePanel extends SceneHandler {
     private final ObjectProperty<ImageView> selectedLeader = new SimpleObjectProperty<>();
     private ImageView[][] devCardSpots;
     private ArrayList<ImageView> marketReinsertSpots;
-
     private ArrayList<VBox> paymentSpots;
 
     /**
@@ -237,7 +237,6 @@ public class GamePanel extends SceneHandler {
     private HashMap<Color, Image> colorImageMap;
     private HashMap<Resource, Image> resourceImageMap;
     private HashMap<Resource, Label> resourceLabelHashMap;
-
     private HashMap<Tab, BoardController> boardAndControllerMap = new HashMap<>();
 
     /**
@@ -304,6 +303,7 @@ public class GamePanel extends SceneHandler {
         }
         Tab personalBoard = new Tab("Your board", board);
         boardAndControllerMap.put(personalBoard, personalBoardLoader.getController());
+        personalBoardController = personalBoardLoader.getController();
         boardsTabPane.getSelectionModel().selectedItemProperty().addListener(e -> {
             leftPane.getChildren().clear();
             paneHand.getChildren().clear();
@@ -718,10 +718,13 @@ public class GamePanel extends SceneHandler {
 
     public void next(ActionEvent actionEvent) {
         getGui().getView().process("next");
-        if (getModel().getCurrentTurnPhase().equals("Choose the next action")){
-            chooseButton.setDisable(false);
+        if (getModel().getBoard().getResHand().isEmpty()) {
+            if (getModel().getCurrentTurnPhase().equals("Choose the next action")) {
+                chooseButton.setDisable(false);
+            }
+            personalBoardController.setProductionOff();
+            backButton.setDisable(true);
         }
-        backButton.setDisable(true);
     }
 
     public void back(ActionEvent actionEvent) {
@@ -747,6 +750,8 @@ public class GamePanel extends SceneHandler {
         getGui().getView().process("choose: activateproduction");
         backButton.setDisable(false);
         nextButton.setDisable(true);
+        personalBoardController.setProductionOn();
         closePopup(actionEvent);
     }
+
 }

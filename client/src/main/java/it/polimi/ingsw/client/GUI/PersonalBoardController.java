@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.ClientModel;
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.client.model.DevelopmentCard;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.collections.ObservableList;
@@ -20,7 +22,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 public class PersonalBoardController extends BoardController {
 
@@ -69,13 +73,47 @@ public class PersonalBoardController extends BoardController {
     @FXML
     private Button prodBaseButton;
     @FXML
+    private Label paymentStone1;
+    @FXML
+    private Label paymentSerf1;
+    @FXML
+    private Label paymentShield1;
+    @FXML
+    private Label paymentCoin1;
+    @FXML
+    private Label paymentStone2;
+    @FXML
+    private Label paymentSerf2;
+    @FXML
+    private Label paymentShield2;
+    @FXML
+    private Label paymentCoin2;
+    @FXML
+    private Label paymentStone3;
+    @FXML
+    private Label paymentSerf3;
+    @FXML
+    private Label paymentShield3;
+    @FXML
+    private Label paymentCoin3;
+
+
+
+
+
+    @FXML
     private Pane devProdPane1;
     @FXML
     private Pane devProdPane2;
+
+
+
     @FXML
     private Pane devProdPane3;
 
     private View view;
+    private ArrayList<Pane> devPlaces;
+    private ArrayList<String> commands = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -120,8 +158,25 @@ public class PersonalBoardController extends BoardController {
         devProdPane1.setDisable(true);
         devProdPane2.setDisable(true);
         devProdPane3.setDisable(true);
+        devPlaces = new ArrayList<>();
+        devPlaces.add(devProdPane1);
+        devPlaces.add(devProdPane2);
+        devPlaces.add(devProdPane3);
 
     }
+
+    public Pane getDevProdPane1() {
+        return devProdPane1;
+    }
+
+    public Pane getDevProdPane2() {
+        return devProdPane2;
+    }
+
+    public Pane getDevProdPane3() {
+        return devProdPane3;
+    }
+
     /**
      * setter for the active leader card images
      * @param cardID must be greater than 48
@@ -313,5 +368,105 @@ public class PersonalBoardController extends BoardController {
             return;
         }
         view.process("discardres: " + resource.name());
+    }
+
+    public void setProductionOn(){
+        ClientModel model = view.getModel();
+        if (model.getBoard().getLeaderCards().size() == 1 && model.getBoard().getLeaderCards().get(0).getID() > 60 && model.getBoard().getLeaderCards().get(0).getID() < 65){
+            leadProd1.setOpacity(100);
+            leadProd1.setDisable(false);
+            resToGive.setDisable(false);
+        } else if (model.getBoard().getLeaderCards().size() == 2){
+            if (model.getBoard().getLeaderCards().get(0).getID() > 60 && model.getBoard().getLeaderCards().get(0).getID() < 65) {
+                leadProd1.setOpacity(100);
+                leadProd1.setDisable(false);
+                resToGive.setDisable(false);
+                prodButton1.setDisable(false);
+                prodButton1.setOpacity(100);
+            }
+            if (model.getBoard().getLeaderCards().get(1).getID() > 60 && model.getBoard().getLeaderCards().get(0).getID() < 65) {
+                leadProd2.setOpacity(100);
+                leadProd2.setDisable(false);
+                resToGive1.setDisable(false);
+                prodButton2.setDisable(false);
+                prodButton2.setOpacity(100);
+            }
+        }
+        resBaseProd.setOpacity(100);
+        resBaseProd.setDisable(false);
+        prodBaseButton.setOpacity(100);
+        prodBaseButton.setDisable(false);
+        leaderDepot1.setDisable(false);
+        leaderDepot2.setDisable(false);
+        int i = 0;
+        for (Stack<DevelopmentCard> place: model.getBoard().getDevelopmentPlace().getDevStack()) {
+            if (!place.isEmpty()){
+                devPlaces.get(i).setOpacity(100);
+                devPlaces.get(i).setDisable(false);
+            }
+            i++;
+        }
+    }
+
+    public void setProductionOff(){
+        leadProd1.setOpacity(0);
+        leadProd1.setDisable(true);
+        leadProd2.setOpacity(0);
+        leadProd2.setDisable(true);
+        resToGive.setDisable(true);
+        resToGive1.setDisable(true);
+        prodButton1.setDisable(true);
+        prodButton1.setOpacity(0);
+        prodButton2.setDisable(true);
+        prodButton2.setOpacity(0);
+        resBaseProd.setOpacity(0);
+        resBaseProd.setDisable(true);
+        prodBaseButton.setOpacity(0);
+        prodBaseButton.setDisable(true);
+        leaderDepot1.setDisable(true);
+        leaderDepot2.setDisable(true);
+        devProdPane1.setOpacity(0);
+        devProdPane2.setOpacity(0);
+        devProdPane3.setOpacity(0);
+        devProdPane1.setDisable(true);
+        devProdPane2.setDisable(true);
+        devProdPane3.setDisable(true);
+    }
+
+    public void boardProduction(ActionEvent actionEvent) {
+        if (baseProd1.getImage() == null || baseProd2.getImage() == null || resBaseProd.getSelectionModel().getSelectedItem() == null){
+            return;
+        }
+        view.process(commands.get(0));
+    }
+
+    public void production1(ActionEvent actionEvent) {
+        if (paymentCoin1.getText().equals("0") && paymentShield1.getText().equals("0") && paymentStone1.getText().equals("0") && paymentSerf1.getText().equals("0")){
+            view.process(commands.get(1));
+        }
+    }
+
+    public void production2(ActionEvent actionEvent) {
+        if (paymentCoin2.getText().equals("0") && paymentShield2.getText().equals("0") && paymentStone2.getText().equals("0") && paymentSerf2.getText().equals("0")){
+            view.process(commands.get(2));
+        }
+    }
+
+    public void production3(ActionEvent actionEvent) {
+        if (paymentCoin3.getText().equals("0") && paymentShield3.getText().equals("0") && paymentStone3.getText().equals("0") && paymentSerf3.getText().equals("0")){
+            view.process(commands.get(3));
+        }
+    }
+
+    public void productionLeader1(ActionEvent actionEvent) {
+        if (resToGive.getImage() != null && leadProd1.getSelectionModel().getSelectedItem()!=null){
+            view.process(commands.get(4));
+        }
+    }
+
+    public void productionLeader2(ActionEvent actionEvent) {
+        if (resToGive1.getImage() != null && leadProd2.getSelectionModel().getSelectedItem()!=null){
+            view.process(commands.get(5));
+        }
     }
 }

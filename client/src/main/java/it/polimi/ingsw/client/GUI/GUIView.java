@@ -2,15 +2,13 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.Utility;
-import it.polimi.ingsw.commonFiles.messages.toServer.Back;
-import it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader;
-import it.polimi.ingsw.commonFiles.messages.toServer.DiscardRes;
-import it.polimi.ingsw.commonFiles.messages.toServer.SetNickname;
+import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GUIView extends View {
@@ -73,7 +71,42 @@ public class GUIView extends View {
 
     @Override
     public void activateProduction(String[] commandSlice) {
-
+        String argument;
+        try {
+            argument = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"ACTIVATEPRODUCTION: <id>, <arg1>, ...\".");
+            return;
+        }
+        String[] arguments = argument.split("\\s*,\\s*");
+        String[] elements;
+        ArrayList<Integer> cost = new ArrayList<>();
+        int ID = Integer.parseInt(arguments[0]);
+        try {
+            if (ID < 0)
+                throw new IllegalArgumentException("Invalid ID");
+            if (ID == 0) {
+                elements = arguments[3].split("\\s");
+                for (String element : elements) {
+                    cost.add(Integer.parseInt(element));
+                }
+                elements = arguments[1].split("\\s");
+                getController().sendMessage(new StartProduction(ID, cost, arguments[2], elements));
+            } else if (ID <= 3) {
+                elements = arguments[1].split("\\s");
+                for (String element : elements) {
+                    cost.add(Integer.parseInt(element));
+                }
+                getController().sendMessage(new StartProduction(ID, cost));
+            } else if (ID <= 5) {
+                cost.add(Integer.parseInt(arguments[1]));
+                getController().sendMessage(new StartProduction(ID, cost, arguments[2]));
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("You must insert a number.");
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
