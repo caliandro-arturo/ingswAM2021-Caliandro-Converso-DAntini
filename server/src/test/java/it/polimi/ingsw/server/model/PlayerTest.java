@@ -136,7 +136,7 @@ class PlayerTest {
         player.getBoard().getStrongbox().addProdResource(Resource.STONE);
         // 2 VP in [4]
         int[] vic = player.getVictoryPoints();
-        assertEquals(4, vic[0]);
+        assertEquals(2, vic[0]);
         assertEquals(2, vic[1]);
         assertEquals(3, vic[2]);
         assertEquals(2, vic[3]);
@@ -186,7 +186,7 @@ class PlayerTest {
         minnie.useLeader(leaderCard1);
         minnie.discardLeaderCard(leaderCard2);
         assertEquals(Resource.COIN,minnie.getWhiteAlt().get(0));
-        assertEquals(2,minnie.getBoard().getFaithTrack().getPosition());
+        assertEquals(1,minnie.getBoard().getFaithTrack().getPosition());
     }
 
     @Test

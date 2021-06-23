@@ -45,7 +45,7 @@ class BoardTest {
         assertEquals(1, (board.getStore().get(0)).getSize());
         assertEquals(2, (board.getStore().get(1)).getSize());
         assertEquals(3, (board.getStore().get(2)).getSize());
-        assertEquals(1, (board.getFaithTrack()).getPosition());
+        assertEquals(0, (board.getFaithTrack()).getPosition());
         assertEquals(0, (board.getFaithTrack()).getScoreCard());
         assertEquals(4, board.getStrongbox().getResourceMap().size());
         assertTrue(board.getStrongbox().getResourceMap().containsKey(Resource.SHIELD));

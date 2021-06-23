@@ -37,14 +37,14 @@ class FaithTrackTest {
         Player topolino = multiplayerGame.getPlayer(2);
         Player minnie = multiplayerGame.getPlayer(3);
 
-        assertEquals(1,track.getPosition());
+        assertEquals(0,track.getPosition());
         assertEquals(0, track.getScoreCard());
         track.increasePosition();
-        assertEquals(2, track.getPosition());
+        assertEquals(1, track.getPosition());
         for (int i4 = 0; i4 < 3; i4++) {
             track.increasePosition();
         }
-        assertEquals(5, track.getPosition());
+        assertEquals(4, track.getPosition());
         for (int i4 = 0; i4 < 2; i4++) {
             track.increasePosition();
         }//pippo 7 pos
@@ -74,14 +74,14 @@ class FaithTrackTest {
         for (int j = 0; j < 7; j++) {
             track.increasePosition();
         }//pippo pos 16
-        assertEquals(5, minnie.getBoard().getFaithTrack().getScoreCard());
+        assertEquals(2, minnie.getBoard().getFaithTrack().getScoreCard());
         //secondo papal space
-        assertEquals(5, pippo.getBoard().getFaithTrack().getScoreCard());
+        assertEquals(2, pippo.getBoard().getFaithTrack().getScoreCard());
         for (int i = 0; i < 15; i++) {
             topolino.getBoard().getFaithTrack().increasePosition();
         }//topolino pos 18
         assertEquals(5, minnie.getBoard().getFaithTrack().getScoreCard());
-        assertEquals(0, topolino.getBoard().getFaithTrack().getScoreCard());
+        assertEquals(3, topolino.getBoard().getFaithTrack().getScoreCard());
         assertEquals(5, pippo.getBoard().getFaithTrack().getScoreCard());
         assertEquals(2, pluto.getBoard().getFaithTrack().getScoreCard());
 
