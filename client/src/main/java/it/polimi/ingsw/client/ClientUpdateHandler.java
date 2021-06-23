@@ -443,15 +443,15 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public void visit(LorenzoPick msg) {
         switch (msg.getAction()) {
             case "TWOPOSITIONS" -> {
-                showUpdate("lorenzoaction", "Lorenzo goes two positions ahead");
+                showUpdate("lorenzoaction", "twopositions");
             }
             case "ONEPOSITIONRESET" -> {
-                showUpdate("lorenzoaction", "Lorenzo goes one position ahead");
+                showUpdate("lorenzoaction", "onepositionreset");
             }
             default -> {
                 Color color = Utility.mapColor.get(msg.getAction().substring(3));
                 model.getDevelopmentGrid().lorenzoRemoveAction(color, msg.getCard(), msg.isTakenCardsOfDifferentLevel());
-                showUpdate("lorenzoaction", "Lorenzo removes two " + color.name().toLowerCase() + " cards");
+                showUpdate("lorenzoaction", msg.getAction().toLowerCase());
             }
         }
     }

@@ -360,6 +360,35 @@
                   </HBox>
                </children>
             </Pane>
+            <Pane fx:id="soloActionPane" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="362.0" layoutX="308.0" layoutY="169.0" stroke="BLACK" strokeType="INSIDE" width="367.0">
+                     <fill>
+                        <LinearGradient endX="0.5458015412774705" endY="1.0" startX="0.5458014839478121" startY="0.9694656888947233">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Label fx:id="soloActionOut" alignment="CENTER" layoutX="328.0" layoutY="231.0" prefHeight="21.0" prefWidth="327.0" text="Reveal the action of Lorenzo" textFill="WHITE" />
+                  <ImageView fx:id="soloToken" fitHeight="125.0" fitWidth="125.0" layoutX="429.0" layoutY="296.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../png/soloTokens/back.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="soloActionOkButton" layoutX="456.0" layoutY="467.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="30.0" prefWidth="71.0" text="OK" />
+               </children>
+            </Pane>
          </children>
       </StackPane>
    </center>

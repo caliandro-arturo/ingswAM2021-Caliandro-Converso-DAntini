@@ -205,6 +205,15 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Pane chooseActionPane;
 
+    @FXML
+    private Pane soloActionPane;
+    @FXML
+    private Label soloActionOut;
+    @FXML
+    private ImageView soloToken;
+    @FXML
+    private Button soloActionOkButton;
+
     private final Image blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
     private final Image greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
     private final Image purpleMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/purple_marble.png")));
@@ -222,6 +231,22 @@ public class GamePanel extends SceneHandler {
     public static final ImageView imgViewShield = new ImageView(imgShield);
     public static final ImageView imgViewStone = new ImageView(imgStone);
 
+    public static final Image soloActionBack = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/back.png")));
+    public static final Image delBlue = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/delblue.png")));
+    public static final Image delYellow = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/delyellow.png")));
+    public static final Image delPurple = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/delpurple.png")));
+    public static final Image delGreen = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/delgreen.png")));
+    public static final Image twoPositions = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/twopositions.png")));
+    public static final Image onePositionReset = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/onepositionreset.png")));
+
+    private final HashMap<String, Image> soloActionMap = new HashMap<>(){{
+        put("delblue", delBlue);
+        put("delyellow", delYellow);
+        put("delpurple", delPurple);
+        put("delgreen", delGreen);
+        put("twopositions", twoPositions);
+        put("onepositionreset", onePositionReset);
+    }};
 
     private String command;
     private PersonalBoardController personalBoardController;
@@ -233,6 +258,7 @@ public class GamePanel extends SceneHandler {
     private ImageView[][] marketSpots;
     private List<ImageView> leaderHand;
     private final ObjectProperty<ImageView> selectedLeader = new SimpleObjectProperty<>();
+    private DevelopmentCard selectedDevCard;
     private ImageView[][] devCardSpots;
     private ArrayList<ImageView> marketReinsertSpots;
     private ArrayList<VBox> paymentSpots;
@@ -469,7 +495,7 @@ public class GamePanel extends SceneHandler {
     }
 
     private void showPayment(DevelopmentCard devCard) {
-
+        selectedDevCard = devCard;
         HashMap<Resource, Label> resourceLabelHashMap = new HashMap<>(){{
             put(Resource.COIN, paymentCoin);
             put(Resource.SERF, paymentSerf);
@@ -719,12 +745,17 @@ public class GamePanel extends SceneHandler {
 
 
     public void backToDevGrid(ActionEvent actionEvent) {
-        //TODO refund cost need to be implemented
+        revertBuyCard();
         paymentCoin.setText("0");
         paymentSerf.setText("0");
         paymentShield.setText("0");
         paymentStone.setText("0");
+        selectedDevCard = null;
         goFront(devGridPane);
+    }
+
+    public void revertBuyCard() {
+        
     }
 
     public void choose(ActionEvent actionEvent) {
@@ -779,5 +810,25 @@ public class GamePanel extends SceneHandler {
         if (initialResourceIndex.getText().equals(totalInitialResourcesAmount.getText()))
             closePopup(null);
         else initialResourceIndex.setText(Integer.toString(Integer.parseInt(initialResourceIndex.getText()) + 1));
+    }
+
+    public void showSoloAction(String tokenId) {
+        soloActionOut.setText("Reveal the action of Lorenzo");
+        soloActionOkButton.setDisable(true);
+        soloActionOkButton.setOpacity(0);
+        soloToken.setImage(soloActionBack);
+        soloToken.setOnMouseClicked(e -> revealToken(tokenId));
+        goFront(soloActionPane);
+    }
+
+    public void revealToken(String tokenId) {
+        switch (tokenId) {
+            case "onepositionreset" -> soloActionOut.setText("Lorenzo goes one position ahead");
+            case "twopositions" -> soloActionOut.setText("Lorenzo goes two positions ahead");
+            default -> soloActionOut.setText("Lorenzo removes two " + tokenId.replaceAll("del", "") + " cards");
+        }
+        soloToken.setImage(soloActionMap.get(tokenId));
+        soloActionOkButton.setDisable(false);
+        soloActionOkButton.setOpacity(1);
     }
 }

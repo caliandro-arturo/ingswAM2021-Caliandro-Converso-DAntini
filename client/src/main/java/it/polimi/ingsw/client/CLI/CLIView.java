@@ -269,7 +269,11 @@ public class CLIView extends View {
 
     @Override
     public void showLorenzoAction(String announcement) {
-        System.out.println(CLIColor.ANSI_GREEN + announcement + CLIColor.ANSI_RESET);
+        switch (announcement) {
+            case "onepositionreset" -> showUpdateText("Lorenzo goes one position ahead");
+            case "twopositions" -> showUpdateText("Lorenzo goes two positions ahead");
+            default -> showUpdateText("Lorenzo removes two " + announcement.replaceAll("del", "") + " cards");
+        }
     }
 
     /**

@@ -281,7 +281,7 @@ public class GUIView extends View {
 
     @Override
     public void showLorenzoAction(String announcement) {
-
+        Platform.runLater(() -> ((GamePanel) App.controller).showSoloAction(announcement));
     }
 
     @Override
