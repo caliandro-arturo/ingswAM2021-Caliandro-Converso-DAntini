@@ -13,16 +13,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -96,8 +94,30 @@ public class PersonalBoardController extends BoardController {
     private Label paymentShield3;
     @FXML
     private Label paymentCoin3;
-
-
+    @FXML
+    private ImageView stoneCost1;
+    @FXML
+    private ImageView shieldCost1;
+    @FXML
+    private ImageView coinCost1;
+    @FXML
+    private ImageView serfCost1;
+    @FXML
+    private ImageView stoneCost2;
+    @FXML
+    private ImageView shieldCost2;
+    @FXML
+    private ImageView coinCost2;
+    @FXML
+    private ImageView serfCost2;
+    @FXML
+    private ImageView stoneCost3;
+    @FXML
+    private ImageView shieldCost3;
+    @FXML
+    private ImageView coinCost3;
+    @FXML
+    private ImageView serfCost3;
 
 
 
@@ -114,6 +134,7 @@ public class PersonalBoardController extends BoardController {
     private View view;
     private ArrayList<Pane> devPlaces;
     private ArrayList<String> commands = new ArrayList<>();
+    private ArrayList<ArrayList<ResourceAndDepot>> resourceAndDepotBuffer = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -258,12 +279,22 @@ public class PersonalBoardController extends BoardController {
             dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             dragEvent.consume();
         });
+        resToGive1.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
         resToGive.setOnDragDropped(dragEvent -> {
             resToGive.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(resToGive,dragEvent,4);
+            dragEvent.consume();
+        });
+        resToGive1.setOnDragDropped(dragEvent -> {
+            resToGive.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(resToGive1,dragEvent,5);
             dragEvent.consume();
         });
 
-        //drag & drop for base production
+        //drag & drop for production
         baseProd1.setOnDragOver(dragEvent -> {
             dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             dragEvent.consume();
@@ -274,12 +305,124 @@ public class PersonalBoardController extends BoardController {
         });
         baseProd1.setOnDragDropped(dragEvent -> {
             baseProd1.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(baseProd1,dragEvent,0);
             dragEvent.consume();
         });
         baseProd2.setOnDragDropped(dragEvent -> {
             baseProd2.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(baseProd2,dragEvent,0);
             dragEvent.consume();
         });
+        ArrayList<ImageView> elements = new ArrayList<>(Arrays.asList(serfCost1,shieldCost1,coinCost1,stoneCost1));
+        serfCost1.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        serfCost1.setOnDragDropped(dragEvent -> {
+            serfCost1.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(serfCost1,dragEvent,1);
+            dragEvent.consume();
+        });
+        shieldCost1.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        shieldCost1.setOnDragDropped(dragEvent -> {
+            shieldCost1.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(shieldCost1,dragEvent,1);
+            dragEvent.consume();
+        });
+        stoneCost1.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        stoneCost1.setOnDragDropped(dragEvent -> {
+            stoneCost1.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(stoneCost1,dragEvent,1);
+            dragEvent.consume();
+        });
+        coinCost1.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        coinCost1.setOnDragDropped(dragEvent -> {
+            coinCost1.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(coinCost1,dragEvent,1);
+            dragEvent.consume();
+        });
+        serfCost2.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        serfCost2.setOnDragDropped(dragEvent -> {
+            serfCost2.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(serfCost2,dragEvent,2);
+            dragEvent.consume();
+        });
+        shieldCost2.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        shieldCost2.setOnDragDropped(dragEvent -> {
+            shieldCost2.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(shieldCost2,dragEvent,2);
+            dragEvent.consume();
+        });
+        stoneCost2.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        stoneCost2.setOnDragDropped(dragEvent -> {
+            stoneCost2.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(stoneCost2,dragEvent,2);
+            dragEvent.consume();
+        });
+        coinCost2.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        coinCost2.setOnDragDropped(dragEvent -> {
+            coinCost2.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(coinCost2,dragEvent,2);
+            dragEvent.consume();
+        });
+        serfCost3.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        serfCost3.setOnDragDropped(dragEvent -> {
+            serfCost3.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(serfCost3,dragEvent,3);
+            dragEvent.consume();
+        });
+        shieldCost3.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        shieldCost3.setOnDragDropped(dragEvent -> {
+            shieldCost3.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(shieldCost3,dragEvent,3);
+            dragEvent.consume();
+        });
+        stoneCost3.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        stoneCost3.setOnDragDropped(dragEvent -> {
+            stoneCost3.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(stoneCost3,dragEvent,3);
+            dragEvent.consume();
+        });
+        coinCost3.setOnDragOver(dragEvent -> {
+            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            dragEvent.consume();
+        });
+        coinCost3.setOnDragDropped(dragEvent -> {
+            coinCost3.setImage(dragEvent.getDragboard().getImage());
+            addElementToCost(coinCost3,dragEvent,3);
+            dragEvent.consume();
+        });
+
         for(ImageView warSpot: getResSpots()){
             warSpot.setOnDragOver(dragEvent -> {
                 dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
@@ -304,6 +447,21 @@ public class PersonalBoardController extends BoardController {
                     e.consume();
                 });
             }
+        }
+    }
+
+    public void addElementToADevCardCost(ArrayList<ImageView> elements, int i){
+        for (in)
+    }
+
+    public void addElementToCost(ImageView cost, DragEvent event, int i){
+        try {
+            ArrayList<ResourceAndDepot> resourceAndDepots = new ArrayList<>();
+            resourceAndDepots.add(new ResourceAndDepot(getResourceImageViewHashMap().get(cost),Integer.parseInt(event.getDragboard().getString())));
+            resourceAndDepotBuffer.set(i,resourceAndDepots);
+        } catch (ArrayIndexOutOfBoundsException e){
+            resourceAndDepotBuffer.add(new ArrayList<>());
+            resourceAndDepotBuffer.get(i).add(new ResourceAndDepot(getResourceImageViewHashMap().get(cost),Integer.parseInt(event.getDragboard().getString())));
         }
     }
 

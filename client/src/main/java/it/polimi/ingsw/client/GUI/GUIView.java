@@ -11,6 +11,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GUIView extends View {
 
@@ -67,7 +68,14 @@ public class GUIView extends View {
 
     @Override
     public void choose(String[] commandSlice) {
-
+        String turnPhase;
+        try {
+            turnPhase = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"CHOOSE: <turnphasename>\".");
+            return;
+        }
+        getController().sendMessage(new ChooseTurnPhase(turnPhase.trim().toLowerCase()));
     }
 
     @Override
@@ -112,27 +120,96 @@ public class GUIView extends View {
 
     @Override
     public void buyDevCard(String[] commandSlice) {
-
+        String arg;
+        try {
+            arg = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"BUYDEVCARD: <arg1>, <arg2>, ...\".");
+            return;
+        }
+        String[] arguments = arg.split("\\s*,\\s*");
+        int level, space;
+        String color;
+        ArrayList<Integer> stores = new ArrayList<>();
+        try {
+            level = Integer.parseInt(arguments[0]);
+            color = arguments[1];
+            space = Integer.parseInt(arguments[2]);
+            arguments = arguments[3].split("\\s");
+            for (String argument : arguments) {
+                stores.add(Integer.parseInt(argument));
+            }
+            getController().sendMessage(new BuyCard(level, color, space, stores));
+        } catch (NumberFormatException e) {
+            System.err.println("You must insert a number.");
+        }
     }
 
     @Override
     public void useMarket(String[] commandSlice) {
-
+        String argument;
+        try {
+            argument = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"USEMARKET: <rowOrColumn>, <number>\".");
+            return;
+        }
+        String[] args = commandSlice[1].split("\\s*,\\s*");
+        if (args[0].toLowerCase().matches("[rc]") && args.length == 2) {
+            try {
+                getController().sendMessage(new UseMarket(args[0].charAt(0), Integer.parseInt(args[1])));
+            } catch (NumberFormatException e) {
+                System.err.println("Wrong parameter");
+            }
+        } else
+            System.err.println("Wrong parameter");
     }
 
     @Override
     public void chooseWhite(String[] commandSlice) {
-
+        try {
+            getController().sendMessage(new ChooseWhiteMarble(Integer.parseInt(commandSlice[1].trim())));
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+            System.err.println("You must insert a leader position (1 or 2).");
+        }
     }
 
     @Override
     public void useLeader(String[] commandSlice) {
-
+        int pos;
+        String argument;
+        try {
+            argument = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"USELEADER: <position number>\".");
+            return;
+        }
+        try {
+            pos = Integer.parseInt(commandSlice[1]);
+            getController().sendMessage(new UseLeader(pos));
+        } catch (NumberFormatException e) {
+            System.err.println("You must insert a number.");
+        }
     }
 
     @Override
     public void deployRes(String[] commandSlice) {
-
+        String argument;
+        try {
+            argument = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"DEPLOYRES: <resource name, depot position number>\".");
+            return;
+        }
+        String[] args = argument.split("\\s*,\\s*");
+        Optional<Resource> toGet = Optional.ofNullable(Utility.mapResource.get(args[0].trim().toLowerCase()));
+        toGet.ifPresentOrElse(res -> {
+            try {
+                getController().sendMessage(new DeployRes(res, Integer.parseInt(args[1])));
+            } catch (NumberFormatException e) {
+                System.err.println("Wrong parameter: you must insert the position in which you want to deploy the resource.");
+            }
+        }, () -> System.err.println("Wrong parameter: you must insert a resource name."));
     }
 
     @Override
@@ -142,7 +219,13 @@ public class GUIView extends View {
 
     @Override
     public void takeRes(String[] commandSlice) {
-
+        int depot;
+        try{
+            depot=Integer.parseInt(commandSlice[1]);
+            getController().sendMessage(new TakeRes(depot));
+        }catch(ArrayIndexOutOfBoundsException | NumberFormatException e){
+            System.err.println("you must insert a number");
+        }
     }
 
     @Override

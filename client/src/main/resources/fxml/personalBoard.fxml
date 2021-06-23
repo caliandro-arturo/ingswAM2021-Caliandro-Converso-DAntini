@@ -241,7 +241,7 @@
                                                  <Font size="23.0" />
                                              </font>
                                          </Label>
-                                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                         <ImageView fx:id="stoneCost1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                  <Image url="@../png/stone.png" />
                                              </image>
@@ -254,7 +254,7 @@
                                              <Font size="23.0" />
                                          </font>
                                      </Label>
-                                     <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                     <ImageView fx:id="serfCost1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                          <image>
                                              <Image url="@../png/serf.png" />
                                          </image>
@@ -267,7 +267,7 @@
                                              <Font size="23.0" />
                                          </font>
                                      </Label>
-                                     <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                     <ImageView fx:id="shieldCost1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                          <image>
                                              <Image url="@../png/shield.png" />
                                          </image>
@@ -280,7 +280,7 @@
                                              <Font size="23.0" />
                                          </font>
                                      </Label>
-                                     <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                     <ImageView fx:id="coinCost1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                          <image>
                                              <Image url="@../png/coin.png" />
                                          </image>
@@ -315,7 +315,7 @@
                                           <Font size="23.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="stoneCost2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../png/stone.png" />
                                        </image>
@@ -329,7 +329,7 @@
                                           <Font size="23.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="serfCost2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../png/serf.png" />
                                        </image>
@@ -343,7 +343,7 @@
                                           <Font size="23.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="shieldCost2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../png/shield.png" />
                                        </image>
@@ -357,7 +357,7 @@
                                           <Font size="23.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="coinCost2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../png/coin.png" />
                                        </image>
@@ -396,7 +396,7 @@
                                           <Font size="23.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="stoneCost3" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../png/stone.png" />
                                        </image>
@@ -410,7 +410,7 @@
                                           <Font size="23.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="serfCost3" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../png/serf.png" />
                                        </image>
@@ -424,7 +424,7 @@
                                           <Font size="23.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="shieldCost3" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../png/shield.png" />
                                        </image>
@@ -438,7 +438,7 @@
                                           <Font size="23.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="coinCost3" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveRes" onDragOver="#moveRes" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../png/coin.png" />
                                        </image>

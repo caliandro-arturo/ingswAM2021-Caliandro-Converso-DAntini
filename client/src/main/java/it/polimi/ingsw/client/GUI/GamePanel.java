@@ -733,12 +733,14 @@ public class GamePanel extends SceneHandler {
 
     public void next(ActionEvent actionEvent) {
         getGui().getView().process("next");
-        if (getModel().getBoard().getResHand().isEmpty()) {
-            if (getModel().getCurrentTurnPhase().equals("Choose the next action")) {
-                chooseButton.setDisable(false);
+        if (getModel().getCurrentTurnPhase()!= null) {
+            if (getModel().getBoard().getResHand().isEmpty()) {
+                if (getModel().getCurrentTurnPhase().equals("Choose the next action")) {
+                    chooseButton.setDisable(false);
+                }
+                personalBoardController.setProductionOff();
+                backButton.setDisable(true);
             }
-            personalBoardController.setProductionOff();
-            backButton.setDisable(true);
         }
     }
 
