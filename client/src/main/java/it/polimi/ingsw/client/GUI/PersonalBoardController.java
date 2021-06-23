@@ -20,10 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ResourceBundle;
-import java.util.Stack;
+import java.util.*;
 
 public class PersonalBoardController extends BoardController {
 
@@ -136,10 +133,32 @@ public class PersonalBoardController extends BoardController {
     private ArrayList<Pane> devPlaces;
     private ArrayList<String> commands = new ArrayList<>();
     private ArrayList<ArrayList<ResourceAndDepot>> resourceAndDepotBuffer = new ArrayList<>();
+    private HashMap<ImageView, Label> devCostMap1;
+    private HashMap<ImageView, Label> devCostMap2;
+    private HashMap<ImageView, Label> devCostMap3;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        devCostMap1 = new HashMap<>(){{
+            put(stoneCost1, paymentStone1);
+            put(serfCost1, paymentSerf1);
+            put(shieldCost1, paymentShield1);
+            put(coinCost1, paymentCoin1);
+        }};
+        devCostMap2 = new HashMap<>(){{
+            put(stoneCost2, paymentStone2);
+            put(serfCost2, paymentSerf2);
+            put(shieldCost2, paymentShield2);
+            put(coinCost2, paymentCoin2);
+        }};
+        devCostMap3 = new HashMap<>(){{
+            put(stoneCost3, paymentStone3);
+            put(serfCost3, paymentSerf3);
+            put(shieldCost3, paymentShield3);
+            put(coinCost3, paymentCoin3);
+        }};
+
         resBaseProd.getItems().addAll(
                 GamePanel.imgViewCoin,
                 GamePanel.imgViewSerf,
@@ -234,15 +253,6 @@ public class PersonalBoardController extends BoardController {
                     prodButton2.setDisable(false);
                     prodButton2.setOpacity(1);
 
-                    //drag & drop for leader card production
-                    resToGive.setOnDragOver(dragEvent -> {
-                        dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                        dragEvent.consume();
-                    });
-                    resToGive.setOnDragDropped(dragEvent -> {
-                        resToGive.setImage(dragEvent.getDragboard().getImage());
-                        dragEvent.consume();
-                    });
                 }else {
                     resToGive1.setDisable(true);
                     leadProd2.setDisable(true);
@@ -257,163 +267,6 @@ public class PersonalBoardController extends BoardController {
 
     public void setView(View view) {
         this.view = view;
-    }
-
-    /**
-     * move resource from hand to warehouse store
-     */
-    public void moveRes() {
-        /**
-         * start drag & drop from HAND
-         */
-        if(!getHandListImg().isEmpty()){
-        getHand().setOnDragDetected(event1 -> {
-            Dragboard db = getHand().startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            Image res = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
-            content.putImage(res);
-            db.setContent(content);
-            getHandListImg().remove(getHand().getCurrentPageIndex());
-            event1.consume();
-        });
-        }
-        //------------------------------------------------------------------------------------------------------------
-        /**
-         * accept drag & drop for LEADERCARD production
-         */
-        resToGive.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        resToGive1.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        resToGive.setOnDragDropped(dragEvent -> {
-            resToGive.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(resToGive,dragEvent,4);
-            dragEvent.consume();
-        });
-        resToGive1.setOnDragDropped(dragEvent -> {
-            resToGive.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(resToGive1,dragEvent,5);
-            dragEvent.consume();
-        });
-        //------------------------------------------------------------------------------------------------------------
-        /**
-         * accept drag & drop for BASE production
-         */
-
-        //drag & drop for production
-        baseProd1.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        baseProd2.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        baseProd1.setOnDragDropped(dragEvent -> {
-            baseProd1.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(baseProd1,dragEvent,0);
-            dragEvent.consume();
-        });
-        baseProd2.setOnDragDropped(dragEvent -> {
-            baseProd2.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(baseProd2,dragEvent,0);
-            dragEvent.consume();
-        });
-        ArrayList<ImageView> elements = new ArrayList<>(Arrays.asList(serfCost1,shieldCost1,coinCost1,stoneCost1));
-        addElementToADevCardCost(elements,1);
-        elements = new ArrayList<>(Arrays.asList(serfCost2,shieldCost2,coinCost2,stoneCost2));
-        addElementToADevCardCost(elements,2);
-        elements = new ArrayList<>(Arrays.asList(serfCost3,shieldCost3,coinCost3,stoneCost3));
-        addElementToADevCardCost(elements,3);
-        //------------------------------------------------------------------------------------------------------------
-        /**
-         * accept drag & drop for WAREHOUSE
-         */
-
-        for(ImageView warSpot: getResSpots()){
-            warSpot.setOnDragOver(dragEvent -> {
-                dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                dragEvent.consume();
-            });
-        }
-        /**
-         * start drag & drop from WAREHOUSE
-         */
-        for(ImageView warSpot: getResSpots()){
-            warSpot.setOnDragDetected(dragEvent -> {
-                if(warSpot.getImage()!=null){
-                    Dragboard db = warSpot.startDragAndDrop(TransferMode.ANY);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(warSpot.getImage());
-                    if(dragEvent.getSource()==getRes1()){
-                        content.putString("1");
-                    }
-                    else if (dragEvent.getSource()==getRes21() || dragEvent.getSource()==getRes22() ){
-                        content.putString("2");
-                    }
-                    else if( dragEvent.getSource()== getRes31() || dragEvent.getSource()== getRes32()
-                            || dragEvent.getSource()== getRes33()){
-                        content.putString("3");
-                    }
-                }
-            });
-        }
-        //------------------------------------------------------------------------------------------------------------
-        /**
-         * accept drag & drop for WAREHOUSE store and send the relative DEPLOYRES message
-         */
-        for(ImageView warSpot: getResSpots()){
-            warSpot.setOnDragDropped(dragEvent -> {
-                StringBuilder command = new StringBuilder();
-                command.append(Arrays.toString(dragEvent.getDragboard().getImage().getUrl().split("\\.png")));
-                if(dragEvent.getSource()==getRes1()){
-                    command.append(", 1");
-                }
-                else if (dragEvent.getSource()==getRes21() || dragEvent.getSource()==getRes22() ){
-                    command.append(", 2");
-                }
-                else if( dragEvent.getSource()== getRes31() || dragEvent.getSource()== getRes32()
-                        || dragEvent.getSource()== getRes33()){
-                    command.append(", 3");
-                }
-                view.process("deployres: " + command);
-                dragEvent.consume();
-            });
-        }
-
-        /**
-         * start drag & drop for STRONGBOX
-         */
-        for (ImageView res : getStrongResources()) {
-            if (Integer.parseInt(getStrongMap().get(res).getText()) > 0) {
-                res.setOnDragDetected(e -> {
-                    Dragboard db = res.startDragAndDrop(TransferMode.ANY);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(res.getImage());
-                    content.putString("0");
-                    db.setContent(content);
-                    e.consume();
-                });
-            }
-        }
-    }
-
-    public void addElementToADevCardCost(ArrayList<ImageView> elements, int i){
-        for (ImageView element: elements){
-            element.setOnDragOver(dragEvent -> {
-                dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                dragEvent.consume();
-            });
-            element.setOnDragDropped(dragEvent -> {
-                element.setImage(dragEvent.getDragboard().getImage());
-                addElementToCost(element,dragEvent,i);
-                dragEvent.consume();
-            });
-        }
     }
 
     public void addElementToCost(ImageView cost, DragEvent event, int i){
@@ -443,24 +296,22 @@ public class PersonalBoardController extends BoardController {
      * @param contextMenuEvent
      */
     @FXML
-    public void ctxMenuRes(ContextMenuEvent contextMenuEvent){
-        for(ImageView img: getResSpots()){
-            if(img.getImage()!= null){
-                img.setOnContextMenuRequested(e->
-                        getContextMenu().show(img, e.getScreenX(), e.getScreenY()));
-                int posRes;
-                if(img==getRes1()){
-                    posRes = 1;
-                }
-                else if(img==getRes21() || img == getRes22())
-                    posRes = 2;
-                else
-                    posRes = 3;
-                getMenuItem().setOnAction(event->{
-                    img.setImage(null);
-                    //getGui().getView().getController().sendMessage(new TakeRes(posRes));
-                });
+    public void backToHand(ContextMenuEvent contextMenuEvent){
+        ImageView target = (ImageView)contextMenuEvent.getSource();
+        if(target.getImage()!= null){
+            target.setOnContextMenuRequested(e->
+                    getContextMenu().show(target, e.getScreenX(), e.getScreenY()));
+            int posRes;
+            if(target==getRes1()){
+                posRes = 1;
             }
+            else if(target==getRes21() || target == getRes22())
+                posRes = 2;
+            else
+                posRes = 3;
+            getMenuItem().setOnAction(event->
+                target.setImage(null));
+            view.process("takeres: "+ posRes);
         }
     }
 
@@ -574,12 +425,137 @@ public class PersonalBoardController extends BoardController {
             view.process(commands.get(5));
         }
     }
-
+    /**
+     * start drag & drop from HAND
+     */
     public void moveFromResHand(MouseEvent mouseEvent) {
         Dragboard db = ((Node)mouseEvent.getSource()).startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
         Image res = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
         content.putImage(res);
         db.setContent(content);
+    }
+    /**
+     * accept drag & drop
+     */
+    @FXML
+    public void onDragOver(DragEvent event) {
+        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+        event.consume();
+    }
+
+    /**
+     * start drag & drop from WAREHOUSE
+     */
+    @FXML
+    public void moveResFromWar(MouseEvent event) {
+        if(((ImageView)event.getSource()).getImage()!=null){
+            Dragboard db = ((Node)event.getSource()).startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putImage(((ImageView)event.getSource()).getImage());
+            if(event.getSource()==getRes1()){
+                content.putString("1");
+            }
+            else if (event.getSource()==getRes21() || event.getSource()==getRes22() ){
+                content.putString("2");
+            }
+            else if( event.getSource()== getRes31() || event.getSource()== getRes32()
+                    || event.getSource()== getRes33()){
+                content.putString("3");
+            }
+        }
+    }
+
+    /**
+     * accept drag & drop for WAREHOUSE store and send the relative DEPLOYRES message
+     */
+    @FXML
+    public void dropResWar(DragEvent event) {
+        StringBuilder command = new StringBuilder();
+        command.append(Arrays.toString(event.getDragboard().getImage().getUrl().split("\\.png")));
+        if(event.getSource()==getRes1()){
+            command.append(", 1");
+        }
+        else if (event.getSource()==getRes21() || event.getSource()==getRes22() ){
+            command.append(", 2");
+        }
+        else if( event.getSource()== getRes31() || event.getSource()== getRes32()
+                || event.getSource()== getRes33()){
+            command.append(", 3");
+        }
+        view.process("deployres: " + command);
+        event.consume();
+    }
+
+    @FXML
+    public void dropResProd(DragEvent event) {
+        ImageView target = (ImageView) event.getSource();
+        target.setImage(event.getDragboard().getImage());
+        if(target == baseProd1 || target == baseProd2) {
+            addElementToCost(target, event, 0);
+        }
+        else if (target == resToGive){
+            addElementToCost(target, event, 4);
+        }
+        else if (target == resToGive1){
+            addElementToCost(target, event, 5);
+        }
+        event.consume();
+    }
+
+    /**
+     * start drag & drop for STRONGBOX
+     */
+    @FXML
+    public void moveResFromBox(MouseEvent event){
+        ImageView res = (ImageView) event.getSource();
+
+        if (Integer.parseInt(getStrongMap().get(res).getText()) > 0) {
+            res.setOnDragDetected(e -> {
+                Dragboard db = res.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(res.getImage());
+                content.putString("0");
+                db.setContent(content);
+                e.consume();
+            });
+        }
+    }
+
+    /**
+     * accept drag & drop to the cost request in the development card production
+     * @param event
+     */
+    @FXML
+    public void dropProdCost(DragEvent event){
+        int i = 0;
+
+        ImageView target = (ImageView) event.getSource();
+        int costInt = Integer.parseInt(devCostMap1.get(target).getText());
+
+        if(target == coinCost1 || target == shieldCost1 || target == stoneCost1 || target == serfCost1){
+            i = 1;
+            if(costInt>0){
+                devCostMap1.get(target).setText(String.valueOf((costInt-1)));
+                addElementToCost(target, event, i);
+
+            } //TODO: else restituisci la risorsa nel caso vada male
+        }
+        else if (target == coinCost2 || target == shieldCost2 || target == stoneCost2 || target == serfCost2){
+            i = 2;
+            if(costInt>0) {
+                devCostMap2.get(target).setText(String.valueOf((costInt-1)));
+                addElementToCost(target, event, i);
+            }
+
+        }
+        else if (target == coinCost3 || target == shieldCost3 || target == stoneCost3 || target == serfCost3){
+            i = 3;
+            if(costInt>0) {
+                devCostMap3.get(target).setText(String.valueOf((costInt-1)));
+                addElementToCost(target, event, i);
+            }
+        }
+        event.consume();
     }
 }
