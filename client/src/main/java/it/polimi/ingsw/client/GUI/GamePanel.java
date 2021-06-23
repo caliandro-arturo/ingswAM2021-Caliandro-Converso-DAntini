@@ -140,6 +140,8 @@ public class GamePanel extends SceneHandler {
     private Label initialResourceIndex;
     @FXML
     private Label totalInitialResourcesAmount;
+    @FXML
+    private Button initialResourcesButton;
 
     @FXML
     private Pane pause;
@@ -360,6 +362,22 @@ public class GamePanel extends SceneHandler {
 
     private ClientModel getModel() {
         return getGui().getView().getModel();
+    }
+
+    public Pane getGetInitialResourcesPane() {
+        return getInitialResourcesPane;
+    }
+
+    public Label getInitialResourceIndex() {
+        return initialResourceIndex;
+    }
+
+    public Label getTotalInitialResourcesAmount() {
+        return totalInitialResourcesAmount;
+    }
+
+    public Button getInitialResourcesButton() {
+        return initialResourcesButton;
     }
 
     /**
@@ -637,11 +655,6 @@ public class GamePanel extends SceneHandler {
         boardPane.setDisable(false);
         boardPane.setEffect(null);
         rightPane.setDisable(false);
-        if (getModel().getResourcesToGet() > 0) {
-            totalInitialResourcesAmount.setText(Integer.toString(getModel().getResourcesToGet()));
-            initialResourceIndex.setText("1");
-            goFront(getInitialResourcesPane);
-        }
     }
 
 
@@ -802,9 +815,11 @@ public class GamePanel extends SceneHandler {
                 .getId()
                 .replaceAll("initial", "");
         getGui().getView().process("getres:" + resourceName);
-        if (initialResourceIndex.getText().equals(totalInitialResourcesAmount.getText()))
+        if (initialResourceIndex.getText().equals(totalInitialResourcesAmount.getText())) {
             closePopup(null);
-        else initialResourceIndex.setText(Integer.toString(Integer.parseInt(initialResourceIndex.getText()) + 1));
+            initialResourcesButton.setOpacity(0);
+            initialResourcesButton.setDisable(true);
+        } else initialResourceIndex.setText(Integer.toString(Integer.parseInt(initialResourceIndex.getText()) + 1));
     }
 
     public void showSoloAction(String tokenId) {
@@ -825,5 +840,9 @@ public class GamePanel extends SceneHandler {
         soloToken.setImage(soloActionMap.get(tokenId));
         soloActionOkButton.setDisable(false);
         soloActionOkButton.setOpacity(1);
+    }
+
+    public void getInitialResources(ActionEvent actionEvent) {
+        goFront(getInitialResourcesPane);
     }
 }

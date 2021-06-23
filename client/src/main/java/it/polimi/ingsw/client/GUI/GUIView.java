@@ -348,6 +348,18 @@ public class GUIView extends View {
     }
 
     @Override
+    public void showGetInitialResource() {
+        GamePanel controller = (GamePanel) App.controller;
+        Platform.runLater(() -> {
+            controller.getInitialResourcesButton().setDisable(false);
+            controller.getInitialResourcesButton().setOpacity(1);
+            controller.getTotalInitialResourcesAmount().setText(Integer.toString(getModel().getResourcesToGet()));
+            controller.getInitialResourceIndex().setText("1");
+            controller.goFront(controller.getGetInitialResourcesPane());
+        });
+    }
+
+    @Override
     public void showGotResource(String resource) {
 
     }

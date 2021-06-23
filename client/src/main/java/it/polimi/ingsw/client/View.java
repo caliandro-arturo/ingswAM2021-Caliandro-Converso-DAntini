@@ -141,6 +141,7 @@ public abstract class View {
             case "gamestarted" -> showGameStarted();
             case "newplayer" -> showNewPlayer(update[1]);
             case "playerleft" -> showPlayerLeft(update[1]);
+            case "getinitialresource" -> showGetInitialResource();
             case "gotresource" -> showGotResource(update[1]);
             case "resourcetaken" -> showResourceTaken();
             case "marketused" -> showMarketUsed();
@@ -171,6 +172,8 @@ public abstract class View {
     public abstract void showNewPlayer(String playerNick);
 
     public abstract void showPlayerLeft(String playerNick);
+
+    public abstract void showGetInitialResource();
 
     public abstract void showGotResource(String resource);
 

@@ -680,6 +680,10 @@ public class CLIView extends View {
     }
 
     @Override
+    public void showGetInitialResource() {
+    }
+
+    @Override
     public void showGotResource(String resource) {
         showUpdateText("A " + resource + " has been added to your hand. Remember to deploy it!");
     }

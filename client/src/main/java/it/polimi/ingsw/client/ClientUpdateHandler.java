@@ -247,6 +247,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             model.setResourcesToGet(msg.getResourcesAmount());
             setToDo("getresource", "You have " + msg.getResourcesAmount() + " initial resource" +
                     (msg.getResourcesAmount() > 1 ? "s" : "") + ".");
+            showUpdate("getinitialresource");
         }
     }
 

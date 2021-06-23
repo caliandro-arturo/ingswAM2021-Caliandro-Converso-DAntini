@@ -409,6 +409,7 @@
                   <Button fx:id="chooseButton" layoutY="547.0" mnemonicParsing="false" onAction="#choose" prefHeight="54.0" prefWidth="155.0" text="Choose" />
                   <Button fx:id="nextButton" layoutY="495.0" mnemonicParsing="false" onAction="#next" prefHeight="52.0" prefWidth="155.0" text="Next" />
                   <Button fx:id="backButton" layoutY="601.0" mnemonicParsing="false" onAction="#back" prefHeight="54.0" prefWidth="155.0" text="Back" />
+                  <Button fx:id="initialResourcesButton" layoutX="88.0" layoutY="667.0" mnemonicParsing="false" onAction="#getInitialResources" text="Initial resources" />
                </children>
             </AnchorPane>
         </items>
