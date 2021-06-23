@@ -8,6 +8,7 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -29,11 +30,11 @@ public class PersonalBoardController extends BoardController {
     @FXML
     private ImageView crossB;
     @FXML
-    private ComboBox<Image> resBaseProd;
+    private ComboBox<ImageView> resBaseProd;
     @FXML
-    private ComboBox<Image> leadProd1;
+    private ComboBox<ImageView> leadProd1;
     @FXML
-    private ComboBox<Image> leadProd2;
+    private ComboBox<ImageView> leadProd2;
     @FXML
     private ImageView baseProd1;
     @FXML
@@ -140,22 +141,22 @@ public class PersonalBoardController extends BoardController {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
         resBaseProd.getItems().addAll(
-                GamePanel.imgCoin,
-                GamePanel.imgSerf,
-                GamePanel.imgShield,
-                GamePanel.imgStone
+                GamePanel.imgViewCoin,
+                GamePanel.imgViewSerf,
+                GamePanel.imgViewShield,
+                GamePanel.imgViewStone
         );
         leadProd1.getItems().addAll(
-                GamePanel.imgCoin,
-                GamePanel.imgSerf,
-                GamePanel.imgShield,
-                GamePanel.imgStone
+                GamePanel.imgViewCoin,
+                GamePanel.imgViewSerf,
+                GamePanel.imgViewShield,
+                GamePanel.imgViewStone
         );
         leadProd2.getItems().addAll(
-                GamePanel.imgCoin,
-                GamePanel.imgSerf,
-                GamePanel.imgShield,
-                GamePanel.imgStone
+                GamePanel.imgViewCoin,
+                GamePanel.imgViewSerf,
+                GamePanel.imgViewShield,
+                GamePanel.imgViewStone
         );
         leadProd1.setOpacity(0);
         leadProd1.setDisable(true);
@@ -262,7 +263,10 @@ public class PersonalBoardController extends BoardController {
      * move resource from hand to warehouse store
      */
     public void moveRes() {
-        //drag & drop for warehouse store
+        /**
+         * start drag & drop from HAND
+         */
+        if(!getHandListImg().isEmpty()){
         getHand().setOnDragDetected(event1 -> {
             Dragboard db = getHand().startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();
@@ -272,9 +276,11 @@ public class PersonalBoardController extends BoardController {
             getHandListImg().remove(getHand().getCurrentPageIndex());
             event1.consume();
         });
-
-
-        //drag & drop for leader card production
+        }
+        //------------------------------------------------------------------------------------------------------------
+        /**
+         * accept drag & drop for LEADERCARD production
+         */
         resToGive.setOnDragOver(dragEvent -> {
             dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             dragEvent.consume();
@@ -293,6 +299,10 @@ public class PersonalBoardController extends BoardController {
             addElementToCost(resToGive1,dragEvent,5);
             dragEvent.consume();
         });
+        //------------------------------------------------------------------------------------------------------------
+        /**
+         * accept drag & drop for BASE production
+         */
 
         //drag & drop for production
         baseProd1.setOnDragOver(dragEvent -> {
@@ -390,6 +400,10 @@ public class PersonalBoardController extends BoardController {
             dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             dragEvent.consume();
         });
+        //------------------------------------------------------------------------------------------------------------
+        /**
+         * accept drag & drop for WAREHOUSE
+         */
         serfCost3.setOnDragDropped(dragEvent -> {
             serfCost3.setImage(dragEvent.getDragboard().getImage());
             addElementToCost(serfCost3,dragEvent,3);
@@ -429,13 +443,54 @@ public class PersonalBoardController extends BoardController {
                 dragEvent.consume();
             });
         }
+        /**
+         * start drag & drop from WAREHOUSE
+         */
+        for(ImageView warSpot: getResSpots()){
+            warSpot.setOnDragDetected(dragEvent -> {
+                if(warSpot.getImage()!=null){
+                    Dragboard db = warSpot.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(warSpot.getImage());
+                    if(dragEvent.getSource()==getRes1()){
+                        content.putString("1");
+                    }
+                    else if (dragEvent.getSource()==getRes21() || dragEvent.getSource()==getRes22() ){
+                        content.putString("2");
+                    }
+                    else if( dragEvent.getSource()== getRes31() || dragEvent.getSource()== getRes32()
+                            || dragEvent.getSource()== getRes33()){
+                        content.putString("3");
+                    }
+                }
+            });
+        }
+        //------------------------------------------------------------------------------------------------------------
+        /**
+         * accept drag & drop for WAREHOUSE store and send the relative DEPLOYRES message
+         */
         for(ImageView warSpot: getResSpots()){
             warSpot.setOnDragDropped(dragEvent -> {
-                //TODO: needs to add the legitimacy of the moves in the spots of the warehouse store
-                warSpot.setImage(dragEvent.getDragboard().getImage());
+                StringBuilder command = new StringBuilder();
+                command.append(Arrays.toString(dragEvent.getDragboard().getImage().getUrl().split("\\.png")));
+                if(dragEvent.getSource()==getRes1()){
+                    command.append(", 1");
+                }
+                else if (dragEvent.getSource()==getRes21() || dragEvent.getSource()==getRes22() ){
+                    command.append(", 2");
+                }
+                else if( dragEvent.getSource()== getRes31() || dragEvent.getSource()== getRes32()
+                        || dragEvent.getSource()== getRes33()){
+                    command.append(", 3");
+                }
+                view.process("deployres: " + command);
                 dragEvent.consume();
             });
         }
+
+        /**
+         * start drag & drop for STRONGBOX
+         */
         for (ImageView res : getStrongResources()) {
             if (Integer.parseInt(getStrongMap().get(res).getText()) > 0) {
                 res.setOnDragDetected(e -> {
@@ -611,5 +666,13 @@ public class PersonalBoardController extends BoardController {
         if (resToGive1.getImage() != null && leadProd2.getSelectionModel().getSelectedItem()!=null){
             view.process(commands.get(5));
         }
+    }
+
+    public void moveFromResHand(MouseEvent mouseEvent) {
+        Dragboard db = ((Node)mouseEvent.getSource()).startDragAndDrop(TransferMode.ANY);
+        ClipboardContent content = new ClipboardContent();
+        Image res = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
+        content.putImage(res);
+        db.setContent(content);
     }
 }

@@ -289,6 +289,10 @@ public class CLIView extends View {
             System.err.println("You have already chosen your nickname.");
             return;
         }
+        if (nickname.equals("")){
+            System.err.println("Empty nickname");
+            return;
+        }
         getController().sendMessage(new SetNickname(nickname));
     }
 
