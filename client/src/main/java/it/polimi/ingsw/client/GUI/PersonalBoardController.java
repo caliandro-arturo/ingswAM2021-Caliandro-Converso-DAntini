@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.ClientModel;
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.client.model.Board;
 import it.polimi.ingsw.client.model.DevelopmentCard;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.model.Resource;
@@ -254,10 +255,20 @@ public class PersonalBoardController extends BoardController {
             ArrayList<ResourceAndDepot> resourceAndDepots = new ArrayList<>();
             resourceAndDepots.add(new ResourceAndDepot(getResourceImageViewHashMap().get(cost),Integer.parseInt(event.getDragboard().getString())));
             resourceAndDepotBuffer.set(i,resourceAndDepots);
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e){
             resourceAndDepotBuffer.add(new ArrayList<>());
             resourceAndDepotBuffer.get(i).add(new ResourceAndDepot(getResourceImageViewHashMap().get(cost),Integer.parseInt(event.getDragboard().getString())));
         }
+    }
+
+    @Override
+    public void setBoard(Board board) {
+        super.setBoard(board);
+        board.getFaithTrack().positionBProperty().addListener(e -> {
+            if (crossB.getOpacity() < 1) crossB.setOpacity(1);
+            increasePos(crossB, board.getFaithTrack().getPositionB());
+        });
+        if (board.getFaithTrack().getPositionB() == 0) crossB.setOpacity(1);
     }
 
     /**

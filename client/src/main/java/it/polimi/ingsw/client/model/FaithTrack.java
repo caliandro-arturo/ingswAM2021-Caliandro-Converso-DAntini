@@ -33,6 +33,10 @@ public class FaithTrack {
         return position;
     }
 
+    public int getPositionB() {
+        return positionB.get();
+    }
+
     public void setVaticanMap(int num, boolean passed){
         vaticanMap.replace(num,passed);
     }
@@ -47,6 +51,10 @@ public class FaithTrack {
 
     public void setPositionB(int positionB) {
         this.positionB.set(positionB);
+    }
+
+    public IntegerProperty positionBProperty() {
+        return positionB;
     }
 
     public void addLorenzoPositionByOne(){

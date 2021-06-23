@@ -256,7 +256,7 @@ public class BoardController implements Initializable {
 
     public void setBoard(Board board) {
         this.board = board;
-        for (int i = 1; i < board.getFaithTrack().getPosition(); i++)
+        for (int i = 0; i < board.getFaithTrack().getPosition(); i++)
             increasePos();
         board.getFaithTrack().positionProperty().addListener(e -> increasePos());
         updateHandList();
