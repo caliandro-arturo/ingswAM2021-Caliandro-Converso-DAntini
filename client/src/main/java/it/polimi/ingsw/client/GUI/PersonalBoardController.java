@@ -8,15 +8,13 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -456,5 +454,13 @@ public class PersonalBoardController extends BoardController {
         if (resToGive1.getImage() != null && leadProd2.getSelectionModel().getSelectedItem()!=null){
             view.process(commands.get(5));
         }
+    }
+
+    public void moveFromResHand(MouseEvent mouseEvent) {
+        Dragboard db = ((Node)mouseEvent.getSource()).startDragAndDrop(TransferMode.ANY);
+        ClipboardContent content = new ClipboardContent();
+        Image res = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
+        content.putImage(res);
+        db.setContent(content);
     }
 }

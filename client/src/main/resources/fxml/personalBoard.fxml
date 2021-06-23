@@ -199,7 +199,7 @@
       <AnchorPane fx:id="resourceHand" layoutX="22.0" layoutY="139.0">
          <children>
               <Button fx:id="handButton" disable="true" layoutX="78.0" layoutY="164.0" mnemonicParsing="false" onAction="#discard" text="Discard" />
-              <Pagination fx:id="hand" maxPageIndicatorCount="0" onDragDetected="#moveRes" pageCount="0" prefHeight="151.0" prefWidth="204.0" />
+              <Pagination fx:id="hand" maxPageIndicatorCount="0" onDragDetected="#moveFromResHand" pageCount="0" prefHeight="151.0" prefWidth="204.0" />
          </children>
       </AnchorPane>
       <Pane fx:id="boardProdPane" layoutX="232.0" layoutY="470.0">
