@@ -324,118 +324,15 @@ public class PersonalBoardController extends BoardController {
             dragEvent.consume();
         });
         ArrayList<ImageView> elements = new ArrayList<>(Arrays.asList(serfCost1,shieldCost1,coinCost1,stoneCost1));
-        serfCost1.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        serfCost1.setOnDragDropped(dragEvent -> {
-            serfCost1.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(serfCost1,dragEvent,1);
-            dragEvent.consume();
-        });
-        shieldCost1.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        shieldCost1.setOnDragDropped(dragEvent -> {
-            shieldCost1.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(shieldCost1,dragEvent,1);
-            dragEvent.consume();
-        });
-        stoneCost1.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        stoneCost1.setOnDragDropped(dragEvent -> {
-            stoneCost1.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(stoneCost1,dragEvent,1);
-            dragEvent.consume();
-        });
-        coinCost1.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        coinCost1.setOnDragDropped(dragEvent -> {
-            coinCost1.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(coinCost1,dragEvent,1);
-            dragEvent.consume();
-        });
-        serfCost2.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        serfCost2.setOnDragDropped(dragEvent -> {
-            serfCost2.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(serfCost2,dragEvent,2);
-            dragEvent.consume();
-        });
-        shieldCost2.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        shieldCost2.setOnDragDropped(dragEvent -> {
-            shieldCost2.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(shieldCost2,dragEvent,2);
-            dragEvent.consume();
-        });
-        stoneCost2.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        stoneCost2.setOnDragDropped(dragEvent -> {
-            stoneCost2.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(stoneCost2,dragEvent,2);
-            dragEvent.consume();
-        });
-        coinCost2.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        coinCost2.setOnDragDropped(dragEvent -> {
-            coinCost2.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(coinCost2,dragEvent,2);
-            dragEvent.consume();
-        });
-        serfCost3.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
+        addElementToADevCardCost(elements,1);
+        elements = new ArrayList<>(Arrays.asList(serfCost2,shieldCost2,coinCost2,stoneCost2));
+        addElementToADevCardCost(elements,2);
+        elements = new ArrayList<>(Arrays.asList(serfCost3,shieldCost3,coinCost3,stoneCost3));
+        addElementToADevCardCost(elements,3);
         //------------------------------------------------------------------------------------------------------------
         /**
          * accept drag & drop for WAREHOUSE
          */
-        serfCost3.setOnDragDropped(dragEvent -> {
-            serfCost3.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(serfCost3,dragEvent,3);
-            dragEvent.consume();
-        });
-        shieldCost3.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        shieldCost3.setOnDragDropped(dragEvent -> {
-            shieldCost3.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(shieldCost3,dragEvent,3);
-            dragEvent.consume();
-        });
-        stoneCost3.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        stoneCost3.setOnDragDropped(dragEvent -> {
-            stoneCost3.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(stoneCost3,dragEvent,3);
-            dragEvent.consume();
-        });
-        coinCost3.setOnDragOver(dragEvent -> {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            dragEvent.consume();
-        });
-        coinCost3.setOnDragDropped(dragEvent -> {
-            coinCost3.setImage(dragEvent.getDragboard().getImage());
-            addElementToCost(coinCost3,dragEvent,3);
-            dragEvent.consume();
-        });
 
         for(ImageView warSpot: getResSpots()){
             warSpot.setOnDragOver(dragEvent -> {
@@ -506,7 +403,17 @@ public class PersonalBoardController extends BoardController {
     }
 
     public void addElementToADevCardCost(ArrayList<ImageView> elements, int i){
-        for (in)
+        for (ImageView element: elements){
+            element.setOnDragOver(dragEvent -> {
+                dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                dragEvent.consume();
+            });
+            element.setOnDragDropped(dragEvent -> {
+                element.setImage(dragEvent.getDragboard().getImage());
+                addElementToCost(element,dragEvent,i);
+                dragEvent.consume();
+            });
+        }
     }
 
     public void addElementToCost(ImageView cost, DragEvent event, int i){
