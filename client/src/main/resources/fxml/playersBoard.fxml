@@ -177,8 +177,8 @@
                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <ImageView fitHeight="150.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true" />
-                    <ImageView fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                    <ImageView fx:id="specialDepot11" fitHeight="150.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="specialDepot12" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
                 </children>
             </GridPane>
             <GridPane fx:id="leaderDepot2" prefHeight="79.0" prefWidth="171.0">
@@ -190,8 +190,8 @@
                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <ImageView fitHeight="150.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true" />
-                    <ImageView fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                    <ImageView fx:id="specialDepot21" fitHeight="150.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="specialDepot22" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
                 </children>
             </GridPane>
             <ImageView fx:id="activeLeaderCard1" fitHeight="260.0" fitWidth="200.0" layoutX="25.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />

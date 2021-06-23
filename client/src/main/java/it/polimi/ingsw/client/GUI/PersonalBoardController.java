@@ -5,7 +5,7 @@ import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.DevelopmentCard;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.model.Resource;
-import javafx.collections.ObservableList;
+import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -47,9 +47,9 @@ public class PersonalBoardController extends BoardController {
     @FXML
     private Button prodButton1;
     @FXML
-    private ImageView resToGive;
-    @FXML
     private ImageView resToGive1;
+    @FXML
+    private ImageView resToGive2;
     @FXML
     private Button prodButton2;
     @FXML
@@ -116,26 +116,26 @@ public class PersonalBoardController extends BoardController {
     private ImageView coinCost3;
     @FXML
     private ImageView serfCost3;
-
-
-
     @FXML
     private Pane devProdPane1;
     @FXML
     private Pane devProdPane2;
-
-
-
+    @FXML
+    private Button prodCard1;
+    @FXML
+    private Button prodCard2;
+    @FXML
+    private Button prodCard3;
     @FXML
     private Pane devProdPane3;
 
     private View view;
     private ArrayList<Pane> devPlaces;
-    private ArrayList<String> commands = new ArrayList<>();
     private ArrayList<ArrayList<ResourceAndDepot>> resourceAndDepotBuffer = new ArrayList<>();
     private HashMap<ImageView, Label> devCostMap1;
     private HashMap<ImageView, Label> devCostMap2;
     private HashMap<ImageView, Label> devCostMap3;
+    private ArrayList<ArrayList<ImageView>> leaderProdImageView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -177,32 +177,12 @@ public class PersonalBoardController extends BoardController {
                 GamePanel.imgViewShield,
                 GamePanel.imgViewStone
         );
-        leadProd1.setOpacity(0);
-        leadProd1.setDisable(true);
-        leadProd2.setOpacity(0);
-        leadProd2.setDisable(true);
-        resToGive.setDisable(true);
-        resToGive1.setDisable(true);
-        prodButton1.setDisable(true);
-        prodButton1.setOpacity(0);
-        prodButton2.setDisable(true);
-        prodButton2.setOpacity(0);
-        resBaseProd.setOpacity(0);
-        resBaseProd.setDisable(true);
-        prodBaseButton.setOpacity(0);
-        prodBaseButton.setDisable(true);
-        leaderDepot1.setDisable(true);
-        leaderDepot2.setDisable(true);
-        devProdPane1.setOpacity(0);
-        devProdPane2.setOpacity(0);
-        devProdPane3.setOpacity(0);
-        devProdPane1.setDisable(true);
-        devProdPane2.setDisable(true);
-        devProdPane3.setDisable(true);
-        devPlaces = new ArrayList<>();
-        devPlaces.add(devProdPane1);
-        devPlaces.add(devProdPane2);
-        devPlaces.add(devProdPane3);
+        leaderProdImageView = new ArrayList<>(){{
+           add(new ArrayList<>(Arrays.asList(resToGive1,leadProd1.getSelectionModel().getSelectedItem())));
+           add(new ArrayList<>(Arrays.asList(resToGive2,leadProd2.getSelectionModel().getSelectedItem())));
+        }};
+        setProductionOff();
+
 
     }
 
@@ -229,13 +209,13 @@ public class PersonalBoardController extends BoardController {
                 activeLeaderCard1.setImage(Utility.getCardPng(cardID));
                 //let the production drag&drop appear
                 if(cardID > 60){
-                    resToGive.setDisable(false);
+                    resToGive1.setDisable(false);
                     leadProd1.setDisable(false);
                     leadProd1.setOpacity(1);
                     prodButton1.setOpacity(1);
                     prodButton1.setDisable(false);
                 }else {
-                    resToGive.setDisable(true);
+                    resToGive1.setDisable(true);
                     leadProd1.setDisable(true);
                     leadProd1.setOpacity(0);
                     prodButton1.setDisable(true);
@@ -247,14 +227,14 @@ public class PersonalBoardController extends BoardController {
                 activeLeaderCard2.setImage(Utility.getCardPng(cardID));
                 //let the production drag&drop appear
                 if(cardID > 60){
-                    resToGive1.setDisable(false);
+                    resToGive2.setDisable(false);
                     leadProd2.setDisable(false);
                     leadProd2.setOpacity(1);
                     prodButton2.setDisable(false);
                     prodButton2.setOpacity(1);
 
                 }else {
-                    resToGive1.setDisable(true);
+                    resToGive2.setDisable(true);
                     leadProd2.setDisable(true);
                     leadProd2.setOpacity(0);
                     prodButton2.setDisable(true);
@@ -331,19 +311,19 @@ public class PersonalBoardController extends BoardController {
         if (model.getBoard().getLeaderCards().size() == 1 && model.getBoard().getLeaderCards().get(0).getID() > 60 && model.getBoard().getLeaderCards().get(0).getID() < 65){
             leadProd1.setOpacity(100);
             leadProd1.setDisable(false);
-            resToGive.setDisable(false);
+            resToGive1.setDisable(false);
         } else if (model.getBoard().getLeaderCards().size() == 2){
             if (model.getBoard().getLeaderCards().get(0).getID() > 60 && model.getBoard().getLeaderCards().get(0).getID() < 65) {
                 leadProd1.setOpacity(100);
                 leadProd1.setDisable(false);
-                resToGive.setDisable(false);
+                resToGive1.setDisable(false);
                 prodButton1.setDisable(false);
                 prodButton1.setOpacity(100);
             }
             if (model.getBoard().getLeaderCards().get(1).getID() > 60 && model.getBoard().getLeaderCards().get(0).getID() < 65) {
                 leadProd2.setOpacity(100);
                 leadProd2.setDisable(false);
-                resToGive1.setDisable(false);
+                resToGive2.setDisable(false);
                 prodButton2.setDisable(false);
                 prodButton2.setOpacity(100);
             }
@@ -369,8 +349,8 @@ public class PersonalBoardController extends BoardController {
         leadProd1.setDisable(true);
         leadProd2.setOpacity(0);
         leadProd2.setDisable(true);
-        resToGive.setDisable(true);
         resToGive1.setDisable(true);
+        resToGive2.setDisable(true);
         prodButton1.setDisable(true);
         prodButton1.setOpacity(0);
         prodButton2.setDisable(true);
@@ -387,43 +367,6 @@ public class PersonalBoardController extends BoardController {
         devProdPane1.setDisable(true);
         devProdPane2.setDisable(true);
         devProdPane3.setDisable(true);
-    }
-
-    public void boardProduction(ActionEvent actionEvent) {
-        if (baseProd1.getImage() == null || baseProd2.getImage() == null || resBaseProd.getSelectionModel().getSelectedItem() == null){
-            return;
-        }
-        view.process(commands.get(0));
-    }
-
-    public void production1(ActionEvent actionEvent) {
-        if (paymentCoin1.getText().equals("0") && paymentShield1.getText().equals("0") && paymentStone1.getText().equals("0") && paymentSerf1.getText().equals("0")){
-            view.process(commands.get(1));
-        }
-    }
-
-    public void production2(ActionEvent actionEvent) {
-        if (paymentCoin2.getText().equals("0") && paymentShield2.getText().equals("0") && paymentStone2.getText().equals("0") && paymentSerf2.getText().equals("0")){
-            view.process(commands.get(2));
-        }
-    }
-
-    public void production3(ActionEvent actionEvent) {
-        if (paymentCoin3.getText().equals("0") && paymentShield3.getText().equals("0") && paymentStone3.getText().equals("0") && paymentSerf3.getText().equals("0")){
-            view.process(commands.get(3));
-        }
-    }
-
-    public void productionLeader1(ActionEvent actionEvent) {
-        if (resToGive.getImage() != null && leadProd1.getSelectionModel().getSelectedItem()!=null){
-            view.process(commands.get(4));
-        }
-    }
-
-    public void productionLeader2(ActionEvent actionEvent) {
-        if (resToGive1.getImage() != null && leadProd2.getSelectionModel().getSelectedItem()!=null){
-            view.process(commands.get(5));
-        }
     }
     /**
      * start drag & drop from HAND
@@ -494,10 +437,10 @@ public class PersonalBoardController extends BoardController {
         if(target == baseProd1 || target == baseProd2) {
             addElementToCost(target, event, 0);
         }
-        else if (target == resToGive){
+        else if (target == resToGive1){
             addElementToCost(target, event, 4);
         }
-        else if (target == resToGive1){
+        else if (target == resToGive2){
             addElementToCost(target, event, 5);
         }
         event.consume();
@@ -539,13 +482,17 @@ public class PersonalBoardController extends BoardController {
                 devCostMap1.get(target).setText(String.valueOf((costInt-1)));
                 addElementToCost(target, event, i);
 
-            } //TODO: else restituisci la risorsa nel caso vada male
+            } else {
+                incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),target.getImage());
+            }
         }
         else if (target == coinCost2 || target == shieldCost2 || target == stoneCost2 || target == serfCost2){
             i = 2;
             if(costInt>0) {
                 devCostMap2.get(target).setText(String.valueOf((costInt-1)));
                 addElementToCost(target, event, i);
+            } else {
+                incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),target.getImage());
             }
 
         }
@@ -554,8 +501,99 @@ public class PersonalBoardController extends BoardController {
             if(costInt>0) {
                 devCostMap3.get(target).setText(String.valueOf((costInt-1)));
                 addElementToCost(target, event, i);
+            } else {
+                incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),target.getImage());
             }
         }
         event.consume();
+    }
+
+    public void production(ActionEvent actionEvent) {
+        HashMap<Button,Integer> prodMap = new HashMap<>(){{
+            put(prodBaseButton,0);
+            put(prodCard1, 1);
+            put(prodCard2,2);
+            put(prodCard3, 3);
+            put(prodButton1,4);
+            put(prodButton2,5);
+        }};
+        int ID = prodMap.get((Button) actionEvent.getSource());
+        StringBuilder cmd = new StringBuilder("activateprod: " + ID + ", ");
+        if (ID>3){
+            if (leaderProdImageView.get(ID-4).get(0).getImage() != null && leaderProdImageView.get(ID-4).get(1).getImage()!=null) {
+                cmd.append(resourceAndDepotBuffer.get(ID).get(0).getDepot()).append(", ").append(getImageResourceMap().
+                        get(leaderProdImageView.get(ID - 4).get(1).getImage()));
+                view.process(cmd.toString());
+            }
+        } else if (ID>0){
+            if (checkIfTheConditionsForTheProdAreMet(ID)){
+                StringBuilder cost = new StringBuilder();
+                for (UtilityProductionAndCost cost1: view.getModel().getBoard().getDevelopmentPlace().getTopCard(ID).getProduction().getCost()){
+                    for (ResourceAndDepot resourceAndDepot : resourceAndDepotBuffer.get(ID)){
+                        if (resourceAndDepot.getResource() == cost1.getResource()){
+                            cost.append(resourceAndDepot.getDepot() + " ");
+                        }
+                    }
+                }
+                cmd.append(cost);
+                view.process(cmd.toString());
+            }
+        } else {
+            if (baseProd1.getImage() != null || baseProd2.getImage() != null || resBaseProd.getSelectionModel().getSelectedItem() != null){
+                StringBuilder cost = new StringBuilder();
+                StringBuilder store = new StringBuilder();
+                for (ResourceAndDepot resourceAndDepot :resourceAndDepotBuffer.get(0)){
+                    store.append(resourceAndDepot.getDepot() + " ");
+                    cost.append(resourceAndDepot.getResource().name() + " ");
+                }
+                cmd.append(cost + ", " + getImageResourceMap().get(resBaseProd.getSelectionModel().getSelectedItem().getImage()).name() + ", "+ store);
+                view.process(cmd.toString());
+            }
+        }
+    }
+
+    public void incrementDepotQuantity(int ID, Image image){
+        if (ID == 0) {
+            int quantity = Integer.parseInt(getResourceLabelHashMap().get(getImageResourceMap().get(image)).getText());
+            quantity++;
+            getResourceLabelHashMap().get(getImageResourceMap().get(image)).setText(String.valueOf(quantity));
+        } else {
+            try {
+                Objects.requireNonNull(firstFreeDepot(ID)).setImage(image);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private ImageView firstFreeDepot(int ID){
+        for (ImageView depot: getStoresList().get(ID-1)){
+            if (depot.getImage() == null){
+                return depot;
+            }
+        }
+        return null;
+    }
+
+    public void refundResource(int ID){
+        for (ResourceAndDepot resourceAndDepot: resourceAndDepotBuffer.get(ID)){
+            incrementDepotQuantity(resourceAndDepot.getDepot(),getResourceImageMap().get(resourceAndDepot.getResource()));
+        }
+        resourceAndDepotBuffer.set(ID, new ArrayList<>());
+    }
+
+    private boolean checkIfTheConditionsForTheProdAreMet(int ID){
+        switch (ID) {
+            case 1 -> {
+                return paymentCoin1.getText().equals("0") && paymentShield1.getText().equals("0") && paymentStone1.getText().equals("0") && paymentSerf1.getText().equals("0");
+            }
+            case 2 -> {
+                return paymentCoin2.getText().equals("0") && paymentShield2.getText().equals("0") && paymentStone2.getText().equals("0") && paymentSerf2.getText().equals("0");
+            }
+            case 3 -> {
+                return paymentCoin3.getText().equals("0") && paymentShield3.getText().equals("0") && paymentStone3.getText().equals("0") && paymentSerf3.getText().equals("0");
+            }
+        }
+        return false;
     }
 }

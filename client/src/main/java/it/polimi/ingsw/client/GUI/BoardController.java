@@ -123,7 +123,14 @@ public class BoardController implements Initializable {
     private ImageView activeLeaderCard1;
     @FXML
     private ImageView activeLeaderCard2;
-
+    @FXML
+    private ImageView specialDepot11;
+    @FXML
+    private ImageView specialDepot12;
+    @FXML
+    private ImageView specialDepot21;
+    @FXML
+    private ImageView specialDepot22;
     @FXML
     private Pagination hand;
 
@@ -148,6 +155,8 @@ public class BoardController implements Initializable {
     private HashMap<Resource, Image> resourceImageMap;
     private HashMap<ImageView, Label> strongMap ;
     private HashMap<ImageView, Resource> resourceImageViewHashMap;
+    private HashMap<Image, Resource> imageResourceMap;
+    private ArrayList<ArrayList<ImageView>> storesList;
 
     public BoardController() {
     }
@@ -168,7 +177,14 @@ public class BoardController implements Initializable {
         }};
 
         strongResources = new ArrayList<>(Arrays.asList(strongCoin, strongSerf, strongShield, strongStone));
-        resSpots.addAll(Arrays.asList(res1, res21, res22, res31, res32, res33));
+        resSpots.addAll(Arrays.asList(res1, res21, res22, res31, res32, res33, specialDepot11, specialDepot12, specialDepot21, specialDepot22));
+        storesList = new ArrayList<>(){{
+            add(new ArrayList<>(Arrays.asList(res1)));
+            add(new ArrayList<>(Arrays.asList(res21,res22)));
+            add(new ArrayList<>(Arrays.asList(res31,res32,res33)));
+            add(new ArrayList<>(Arrays.asList(specialDepot11,specialDepot12)));
+            add(new ArrayList<>(Arrays.asList(specialDepot21,specialDepot22)));
+        }};
         devPlace = new ArrayList<>(){{
             add(new ArrayList<>(Arrays.asList(devP11, devP12, devP13)));
             add(new ArrayList<>(Arrays.asList(devP21, devP22, devP23)));
@@ -179,6 +195,12 @@ public class BoardController implements Initializable {
             put(Resource.COIN, GamePanel.imgCoin);
             put(Resource.SERF, GamePanel.imgSerf);
             put(Resource.STONE, GamePanel.imgStone);
+        }};
+        imageResourceMap = new HashMap<>(){{
+            put(GamePanel.imgShield, Resource.SHIELD);
+            put(GamePanel.imgCoin, Resource.COIN);
+            put(GamePanel.imgSerf, Resource.SERF);
+            put(GamePanel.imgStone, Resource.STONE);
         }};
         resourceImageViewHashMap = new HashMap<>(){{
             put(GamePanel.imgViewShield,Resource.SHIELD);
@@ -218,11 +240,18 @@ public class BoardController implements Initializable {
     public HashMap<Resource, Label> getResourceLabelHashMap() {
         return resourceLabelHashMap;
     }
+    public HashMap<Image,Resource> getImageResourceMap(){
+        return imageResourceMap;
+    }
     public ObservableList<ImageView> getHandListImg() {
         return handListImg;
     }
     public HashMap<ImageView, Resource> getResourceImageViewHashMap(){
         return resourceImageViewHashMap;
+    }
+
+    public ArrayList<ArrayList<ImageView>> getStoresList() {
+        return storesList;
     }
 
     public void setBoard(Board board) {

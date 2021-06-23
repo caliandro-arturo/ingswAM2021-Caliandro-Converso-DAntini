@@ -646,11 +646,6 @@ public class GamePanel extends SceneHandler {
 
 
     @FXML
-    public void buyResources(ActionEvent actionEvent) {
-        //TODO: add here the message
-    }
-
-    @FXML
     public void buyCard(ActionEvent event){
         getGui().getView().process(command);
     }
