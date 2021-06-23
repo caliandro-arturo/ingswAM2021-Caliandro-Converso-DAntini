@@ -242,6 +242,7 @@ public class PersonalBoardController extends BoardController {
      */
     public void moveRes() {
         //drag & drop for warehouse store
+        if(!getHandListImg().isEmpty()){
         getHand().setOnDragDetected(event1 -> {
             Dragboard db = getHand().startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();
@@ -251,6 +252,8 @@ public class PersonalBoardController extends BoardController {
             getHandListImg().remove(getHand().getCurrentPageIndex());
             event1.consume();
         });
+        }
+
 
 
         //drag & drop for leader card production

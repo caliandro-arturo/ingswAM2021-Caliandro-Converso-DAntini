@@ -294,7 +294,7 @@ public class GamePanel extends SceneHandler {
 
         devPosCombo.getItems().addAll("1", "2", "3");
 
-        getModel().getMarket().gridProperty().addListener(e -> setMarketPng());
+        getModel().getMarket().gridProperty().addListener( e ->Platform.runLater(this::setMarketPng));
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
         getGui().getView().getModel().getLeaderHand().handProperty().addListener((InvalidationListener) e -> Platform.runLater(() -> showChooseCards(null)));
         selectedLeader.addListener(e -> leaderButtonsProperty());
@@ -687,30 +687,30 @@ public class GamePanel extends SceneHandler {
                 AtomicReference<String> cmd = new AtomicReference<>();
                 marketSpot.setOnDragDropped(dragEvent ->{
                     if(dragEvent.getSource()==row0) {
-                        cmd.set("usemarket: r, 1");
+                        cmd.set("usemarket: r, 3");
                         getGui().getView().process(cmd.get());
                     }else if(dragEvent.getSource()==row1){
                         cmd.set("usemarket: r, 2");
                         getGui().getView().process(cmd.get());
                     }
                     else if(dragEvent.getSource()==row2){
-                        cmd.set("usemarket: r, 3");
+                        cmd.set("usemarket: r, 1");
                         getGui().getView().process(cmd.get());
                     }
                     else if(dragEvent.getSource()==col0){
-                        cmd.set("usemarket: c, 1");
+                        cmd.set("usemarket: c, 4");
                         getGui().getView().process(cmd.get());
                     }
                     else if(dragEvent.getSource()==col1){
-                        cmd.set("usemarket: c, 2");
-                        getGui().getView().process(cmd.get());
-                    }
-                    else if(dragEvent.getSource()==col2){
                         cmd.set("usemarket: c, 3");
                         getGui().getView().process(cmd.get());
                     }
+                    else if(dragEvent.getSource()==col2){
+                        cmd.set("usemarket: c, 2");
+                        getGui().getView().process(cmd.get());
+                    }
                     else if(dragEvent.getSource()==col3){
-                        cmd.set("usemarket: c, 4");
+                        cmd.set("usemarket: c, 1");
                         getGui().getView().process(cmd.get());
                     }
                 });

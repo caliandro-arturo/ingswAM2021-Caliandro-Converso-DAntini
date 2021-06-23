@@ -67,7 +67,14 @@ public class GUIView extends View {
 
     @Override
     public void choose(String[] commandSlice) {
-
+        String turnPhase;
+        try {
+            turnPhase = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"CHOOSE: <turnphasename>\".");
+            return;
+        }
+        getController().sendMessage(new ChooseTurnPhase(turnPhase.trim().toLowerCase()));
     }
 
     @Override
@@ -117,7 +124,22 @@ public class GUIView extends View {
 
     @Override
     public void useMarket(String[] commandSlice) {
-
+        String argument;
+        try {
+            argument = commandSlice[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Wrong syntax: use the format \"USEMARKET: <rowOrColumn>, <number>\".");
+            return;
+        }
+        String[] args = commandSlice[1].split("\\s*,\\s*");
+        if (args[0].toLowerCase().matches("[rc]") && args.length == 2) {
+            try {
+                getController().sendMessage(new UseMarket(args[0].charAt(0), Integer.parseInt(args[1])));
+            } catch (NumberFormatException e) {
+                System.err.println("Wrong parameter");
+            }
+        } else
+            System.err.println("Wrong parameter");
     }
 
     @Override

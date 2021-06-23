@@ -117,7 +117,7 @@ public class Launcher extends SceneHandler {
     //nickname scene
 
     public void setNickname(ActionEvent e) {
-        if (nameTextField.getText().equals(""))
+        if (nameTextField.getText().trim().equals(""))
             App.out.setText("You must insert a nickname.");
         else {
             App.out.setText("Logging with nickname: " + nameTextField.getText() + "...");
