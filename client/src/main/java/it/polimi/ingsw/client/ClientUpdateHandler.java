@@ -83,7 +83,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         model.setGameSelected(true);
         if (msg.getNumberOfPlayers() == 1) {
             model.setBoards(model.getPlayerUsername());
-            model.getBoard().getFaithTrack().setPositionB(1);
+            model.getBoard().getFaithTrack().setPositionB(0);
         }
         showUpdate("gameset", Integer.toString(model.getNumOfPlayers()));
     }

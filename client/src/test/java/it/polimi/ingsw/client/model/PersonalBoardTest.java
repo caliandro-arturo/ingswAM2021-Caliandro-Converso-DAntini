@@ -65,7 +65,10 @@ class PersonalBoardTest {
         personalBoard.addResourcesToHand(resources);
         System.out.println(personalBoard);
         personalBoard.removeResourcesFromHand(resources);
+        personalBoard.getFaithTrack().setPosition(13);
+        personalBoard.getFaithTrack().setPositionB(12);
         System.out.println(personalBoard);
+        personalBoard.getFaithTrack().setPositionB(13);
         personalBoard.getLeaderCards().clear();
         System.out.println(personalBoard);
     }

@@ -135,16 +135,18 @@ public class Board {
         boardArt.append("┌─────────────────────────────────────────────────────────────────────────────────────" +
                 "──────────────────────────────────────────────────────────────┐\n");
         String emptyCard =
-                        "┌─────────────────┐\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "│                 │\n"+
-                        "└─────────────────┘\n";
+                """
+                        ┌─────────────────┐
+                        │                 │
+                        │                 │
+                        │                 │
+                        │                 │
+                        │                 │
+                        │                 │
+                        │                 │
+                        │                 │
+                        └─────────────────┘
+                        """;
         StringBuilder tempArt = new StringBuilder();
         switch(leaderCards.size()){
             case(0):
@@ -160,13 +162,10 @@ public class Board {
         String[] leaderArt = tempArt.toString().split("\n");
         for(int k=0; k<4; k++){
             boardArt.append("│");
-            if(k==2)
-                boardArt.append("  ").append(faithArt[k]).append("   ").append(leaderArt[k]);
-            else
             boardArt.append(StringUtility.center(faithArt[k],127)).append(leaderArt[k]);
             boardArt.append(" │\n");
         }
-        boardArt.append("│  ").append(faithArt[4]).append("     ").append(leaderArt[4]).append(" │\n");
+        boardArt.append("│").append(faithArt[4]).append(leaderArt[4]).append(" │\n");
 
         for(int i = 0; i<9;i++){
             boardArt.append(wareArt[i].concat("                        "+devPlaceArt[i])).append("      ").append(leaderArt[i+5]);

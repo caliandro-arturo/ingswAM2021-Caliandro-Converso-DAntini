@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class FaithTrack {
 
     private Player player;
-    private int position = 1;
+    private int position = 0;
     private int scoreCard = 0;
     private final HashMap<Integer, Boolean> vaticanReportsMap = new HashMap<Integer, Boolean>() {{
         put(8, null);
