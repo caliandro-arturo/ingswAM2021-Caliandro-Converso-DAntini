@@ -36,7 +36,6 @@
                         <Image url="@../png/market.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="buy" layoutX="584.0" layoutY="436.0" mnemonicParsing="false" onAction="#buyResources" text="Buy" />
                   <ImageView fx:id="mbEx" fitHeight="40.0" fitWidth="40.0" layoutX="532.0" layoutY="215.0" onDragDetected="#moveMarble" pickOnBounds="true" preserveRatio="true" />
                   <Label layoutX="302.0" layoutY="98.0" prefHeight="52.0" prefWidth="330.0" text="Choose a row or a column">
                      <font>
