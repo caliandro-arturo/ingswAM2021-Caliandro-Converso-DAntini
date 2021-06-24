@@ -226,11 +226,29 @@ public class GamePanel extends SceneHandler {
     public static final Image imgSerf = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/serf.png")));
     public static final Image imgShield = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/shield.png")));
     public static final Image imgStone = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/stone.png")));
+    public static final HashMap<Image,Resource> imageResourceMap = new HashMap<>(){{
+        put(imgCoin,Resource.COIN);
+        put(imgSerf,Resource.SERF);
+        put(imgShield,Resource.SHIELD);
+        put(imgStone,Resource.STONE);
+    }};
+    public static final  HashMap<Resource,Image>resourceImageMap = new HashMap<>(){{
+        put(Resource.SHIELD, imgShield);
+        put(Resource.COIN, imgCoin);
+        put(Resource.SERF, imgSerf);
+        put(Resource.STONE, imgStone);
+    }};
 
     public static final ImageView imgViewCoin = new ImageView(imgCoin);
     public static final ImageView imgViewSerf = new ImageView(imgSerf);
     public static final ImageView imgViewShield = new ImageView(imgShield);
     public static final ImageView imgViewStone = new ImageView(imgStone);
+    public static final HashMap<ImageView,Resource> imageViewResourceMap = new HashMap<>(){{
+        put(imgViewCoin,Resource.COIN);
+        put(imgViewSerf,Resource.SERF);
+        put(imgViewShield,Resource.SHIELD);
+        put(imgViewStone,Resource.STONE);
+    }};
 
     public static final Image soloActionBack = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/back.png")));
     public static final Image delBlue = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/delblue.png")));
@@ -270,7 +288,6 @@ public class GamePanel extends SceneHandler {
      * resource match with the relative image
      */
     private HashMap<Color, Image> colorImageMap;
-    private HashMap<Resource, Image> resourceImageMap;
     private HashMap<Resource, Label> resourceLabelHashMap;
     private HashMap<Tab, BoardController> boardAndControllerMap = new HashMap<>();
 
@@ -307,12 +324,6 @@ public class GamePanel extends SceneHandler {
                 {devcard01, devcard11, devcard21, devcard31},
                 {devcard02, devcard12, devcard22, devcard32}
         };
-        resourceImageMap = new HashMap<>(){{
-            put(Resource.SHIELD, imgShield);
-            put(Resource.COIN, imgCoin);
-            put(Resource.SERF, imgSerf);
-            put(Resource.STONE, imgStone);
-        }};
         colorImageMap = new HashMap<>(){{
             put(Color.BLUE, blueMarble);
             put(Color.GREY, greyMarble);

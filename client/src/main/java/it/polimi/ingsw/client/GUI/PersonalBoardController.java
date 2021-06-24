@@ -279,11 +279,11 @@ public class PersonalBoardController extends BoardController {
     public void addElementToCost(ImageView cost, DragEvent event, int i){
         try {
             ArrayList<ResourceAndDepot> resourceAndDepots = new ArrayList<>();
-            resourceAndDepots.add(new ResourceAndDepot(getResourceImageViewHashMap().get(cost),Integer.parseInt(event.getDragboard().getString())));
+            resourceAndDepots.add(new ResourceAndDepot(GamePanel.imageViewResourceMap.get(cost),Integer.parseInt(event.getDragboard().getString())));
             resourceAndDepotBuffer.set(i,resourceAndDepots);
         } catch (IndexOutOfBoundsException e){
             resourceAndDepotBuffer.add(new ArrayList<>());
-            resourceAndDepotBuffer.get(i).add(new ResourceAndDepot(getResourceImageViewHashMap().get(cost),Integer.parseInt(event.getDragboard().getString())));
+            resourceAndDepotBuffer.get(i).add(new ResourceAndDepot(GamePanel.imageViewResourceMap.get(cost),Integer.parseInt(event.getDragboard().getString())));
         }
     }
 
@@ -335,7 +335,7 @@ public class PersonalBoardController extends BoardController {
     public void discard(ActionEvent actionEvent) {
         Resource resource;
         try {
-            resource = getResourceImageViewHashMap().get(getHandListImg().get(getHand().getCurrentPageIndex()));
+            resource = GamePanel.imageViewResourceMap.get(getHandListImg().get(getHand().getCurrentPageIndex()));
             getHandListImg().remove(getHand().getCurrentPageIndex());
         }catch (IndexOutOfBoundsException e){
             return;
@@ -449,7 +449,9 @@ public class PersonalBoardController extends BoardController {
     public void dropResWar(DragEvent event){
         StringBuilder command = new StringBuilder();
         ImageView target = (ImageView) event.getSource();
-        command.append(getImageResourceMap().get(event.getDragboard().getImage()).name());
+        Image image = event.getDragboard().getImage();
+        Resource resource = GamePanel.imageResourceMap.get(image);
+        command.append(GamePanel.imageResourceMap.get(event.getDragboard().getImage()).name());
         command.append(", " + returnResourcePosition(target));
         view.process("deployres: " + command);
     }
@@ -555,7 +557,7 @@ public class PersonalBoardController extends BoardController {
                     cmd.append(ID-1 + ", ");
                 } else
                     cmd.append(ID + ", ");
-                cmd.append(resourceAndDepotBuffer.get(ID).get(0).getDepot()).append(", ").append(getImageResourceMap().
+                cmd.append(resourceAndDepotBuffer.get(ID).get(0).getDepot()).append(", ").append(GamePanel.imageResourceMap.
                         get(leaderProdImageView.get(ID - 4).get(1).getImage()));
                 view.process(cmd.toString());
                 return;
@@ -588,7 +590,7 @@ public class PersonalBoardController extends BoardController {
                     store.append(resourceAndDepot.getDepot() + " ");
                     cost.append(resourceAndDepot.getResource().name() + " ");
                 }
-                cmd.append(cost + ", " + getImageResourceMap().get(resBaseProd.getSelectionModel().getSelectedItem().getImage()).name() + ", "+ store);
+                cmd.append(cost + ", " + GamePanel.imageResourceMap.get(resBaseProd.getSelectionModel().getSelectedItem().getImage()).name() + ", "+ store);
                 view.process(cmd.toString());
             } else {
                 refundResource(ID);
@@ -608,9 +610,9 @@ public class PersonalBoardController extends BoardController {
 
     public void incrementDepotQuantity(int ID, Image image){
         if (ID == 0) {
-            int quantity = Integer.parseInt(getResourceLabelHashMap().get(getImageResourceMap().get(image)).getText());
+            int quantity = Integer.parseInt(getResourceLabelHashMap().get(GamePanel.imageResourceMap.get(image)).getText());
             quantity++;
-            getResourceLabelHashMap().get(getImageResourceMap().get(image)).setText(String.valueOf(quantity));
+            getResourceLabelHashMap().get(GamePanel.imageResourceMap.get(image)).setText(String.valueOf(quantity));
         } else {
             try {
                 Objects.requireNonNull(firstFreeDepot(ID)).setImage(image);
@@ -631,7 +633,7 @@ public class PersonalBoardController extends BoardController {
 
     public void refundResource(int ID){
         for (ResourceAndDepot resourceAndDepot: resourceAndDepotBuffer.get(ID)){
-            incrementDepotQuantity(resourceAndDepot.getDepot(),getResourceImageMap().get(resourceAndDepot.getResource()));
+            incrementDepotQuantity(resourceAndDepot.getDepot(),GamePanel.resourceImageMap.get(resourceAndDepot.getResource()));
         }
         resourceAndDepotBuffer.set(ID, new ArrayList<>());
     }
