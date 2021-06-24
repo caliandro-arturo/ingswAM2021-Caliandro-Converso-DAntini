@@ -36,7 +36,7 @@
                         <Image url="@../png/market.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="mbEx" fitHeight="40.0" fitWidth="40.0" layoutX="532.0" layoutY="215.0" onDragDetected="#moveMarble" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="mbEx" fitHeight="40.0" fitWidth="40.0" layoutX="532.0" layoutY="215.0" onDragDetected="#moveExMarble" pickOnBounds="true" preserveRatio="true" />
                   <Label layoutX="302.0" layoutY="98.0" prefHeight="52.0" prefWidth="330.0" text="Choose a row or a column">
                      <font>
                         <Font name="Harrington" size="25.0" />
@@ -58,13 +58,13 @@
                     </rowConstraints>
                      <children>
                         <ImageView fx:id="mb00" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="col2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <ImageView fx:id="col3" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <ImageView fx:id="col1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <ImageView fx:id="col0" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
-                        <ImageView fx:id="row2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                        <ImageView fx:id="row0" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
-                        <ImageView fx:id="row1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#moveMarble" onDragOver="#moveMarble" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <ImageView fx:id="col2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <ImageView fx:id="col3" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <ImageView fx:id="col1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ImageView fx:id="col0" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
+                        <ImageView fx:id="row2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                        <ImageView fx:id="row0" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
+                        <ImageView fx:id="row1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                         <ImageView fx:id="mb32" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                         <ImageView fx:id="mb22" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <ImageView fx:id="mb12" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />

@@ -11,15 +11,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
@@ -216,6 +214,7 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Button soloActionOkButton;
 
+
     private final Image blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
     private final Image greyMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/grey_marble.png")));
     private final Image purpleMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/purple_marble.png")));
@@ -262,8 +261,8 @@ public class GamePanel extends SceneHandler {
     private final ObjectProperty<ImageView> selectedLeader = new SimpleObjectProperty<>();
     private DevelopmentCard selectedDevCard;
     private ImageView[][] devCardSpots;
-    private ArrayList<ImageView> marketReinsertSpots;
     private ArrayList<VBox> paymentSpots;
+    private HashMap<ImageView, String> reinsertMap;
 
     /**
      * map for resource and marbles.
@@ -275,6 +274,9 @@ public class GamePanel extends SceneHandler {
     private HashMap<Resource, Label> resourceLabelHashMap;
     private HashMap<Tab, BoardController> boardAndControllerMap = new HashMap<>();
 
+    public GamePanel() {
+    }
+
     /**
      * initialization of the images and the data structure used to collect similar objects
      * @param location
@@ -284,7 +286,15 @@ public class GamePanel extends SceneHandler {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
         setGui(App.getGui());
-        marketReinsertSpots = new ArrayList<>(Arrays.asList(row0, row1, row2, col0, col1, col2, col3));
+        reinsertMap = new HashMap<>(){{
+            put(row0, "r, 3");
+            put(row1, "r, 2");
+            put(row2, "r, 1");
+            put(col0, "c, 4");
+            put(col1, "c, 3");
+            put(col2, "c, 2");
+            put(col3, "c, 1");
+        }};
         marketSpots = new ImageView[][]{
                 {mb00, mb10, mb20, mb30},
                 {mb01, mb11, mb21, mb31},
@@ -699,58 +709,37 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * methods implementing the drag and drop in the reinsert phase of the extra marble
+     * accept drag&drop in the reinsert marble slots of the market
+     * @param dragevent
      */
     @FXML
-    public void moveMarble() {
-                mbEx.setOnDragDetected(event -> {
-                    Dragboard db = mbEx.startDragAndDrop(TransferMode.ANY);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(mbEx.getImage());
-                    db.setContent(content);
-                    event.consume();
-                });
+    public void dropMarble(DragEvent dragevent){
+        ImageView target = (ImageView) dragevent.getSource();
+        StringBuilder command = new StringBuilder();
+        command.append(reinsertMap.get(target));
+        getGui().getView().process("usemarket: " + command);
+    }
 
-            for (ImageView marketSpot : marketReinsertSpots) {
-                marketSpot.setOnDragOver(dragEvent -> {
-                    dragEvent.acceptTransferModes(TransferMode.MOVE);
-                    dragEvent.consume();
-                });
-            }
-            for (ImageView marketSpot : marketReinsertSpots) {
-                AtomicReference<String> cmd = new AtomicReference<>();
-                marketSpot.setOnDragDropped(dragEvent ->{
-                    if(dragEvent.getSource()==row0) {
-                        cmd.set("usemarket: r, 3");
-                        getGui().getView().process(cmd.get());
-                    }else if(dragEvent.getSource()==row1){
-                        cmd.set("usemarket: r, 2");
-                        getGui().getView().process(cmd.get());
-                    }
-                    else if(dragEvent.getSource()==row2){
-                        cmd.set("usemarket: r, 1");
-                        getGui().getView().process(cmd.get());
-                    }
-                    else if(dragEvent.getSource()==col0){
-                        cmd.set("usemarket: c, 4");
-                        getGui().getView().process(cmd.get());
-                    }
-                    else if(dragEvent.getSource()==col1){
-                        cmd.set("usemarket: c, 3");
-                        getGui().getView().process(cmd.get());
-                    }
-                    else if(dragEvent.getSource()==col2){
-                        cmd.set("usemarket: c, 2");
-                        getGui().getView().process(cmd.get());
-                    }
-                    else if(dragEvent.getSource()==col3){
-                        cmd.set("usemarket: c, 1");
-                        getGui().getView().process(cmd.get());
-                    }
-                });
-            }
-        }
+    /**
+     * accept drag & drop
+     */
+    @FXML
+    public void onDragOver(DragEvent event) {
+        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+        event.consume();
+    }
 
+    /**
+     * start drag & drop for the extra marble in the market
+     * @param event
+     */
+    @FXML
+    public void moveExMarble(MouseEvent event){
+        Dragboard db = mbEx.startDragAndDrop(TransferMode.ANY);
+        ClipboardContent content = new ClipboardContent();
+        content.putImage(mbEx.getImage());
+        db.setContent(content);
+    }
 
     public void backToDevGrid(ActionEvent actionEvent) {
         revertBuyCard();

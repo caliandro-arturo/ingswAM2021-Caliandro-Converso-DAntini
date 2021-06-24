@@ -32,8 +32,8 @@
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                  <ImageView fx:id="specialWar21" fitHeight="83.0" fitWidth="80.0" onDragDetected="#moveResFromWar" onDragDropped="#dropResWar" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="specialWar22" fitHeight="84.0" fitWidth="94.0" onDragDetected="#moveResFromWar" onDragDropped="#dropResWar" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
                </children>
             </GridPane>
                 <ImageView fx:id="activeLeaderCard1" fitHeight="260.0" fitWidth="200.0" layoutX="25.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
@@ -59,8 +59,8 @@
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                  <ImageView fx:id="specialWar11" fitHeight="78.0" fitWidth="78.0" onDragDetected="#moveResFromWar" onDragDropped="#dropResWar" onMouseDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="specialWar12" fitHeight="84.0" fitWidth="95.0" onDragDetected="#moveResFromWar" onDragDropped="#dropResWar" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
                </children>
             </GridPane>
             </children>

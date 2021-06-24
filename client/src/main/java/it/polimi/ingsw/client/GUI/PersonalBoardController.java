@@ -403,20 +403,13 @@ public class PersonalBoardController extends BoardController {
      */
     @FXML
     public void moveResFromWar(MouseEvent event) {
-        if(((ImageView)event.getSource()).getImage()!=null){
+        ImageView target = (ImageView) event.getSource();
+        if(target.getImage()!=null){
             Dragboard db = ((Node)event.getSource()).startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();
-            content.putImage(((ImageView)event.getSource()).getImage());
-            if(event.getSource()==getRes1()){
-                content.putString("1");
-            }
-            else if (event.getSource()==getRes21() || event.getSource()==getRes22() ){
-                content.putString("2");
-            }
-            else if( event.getSource()== getRes31() || event.getSource()== getRes32()
-                    || event.getSource()== getRes33()){
-                content.putString("3");
-            }
+            content.putImage(target.getImage());
+            content.putString(returnResourcePosition(target));
+            db.setContent(content);
         }
     }
 
@@ -424,21 +417,21 @@ public class PersonalBoardController extends BoardController {
      * accept drag & drop for WAREHOUSE store and send the relative DEPLOYRES message
      */
     @FXML
-    public void dropResWar(DragEvent event) {
+    public void dropResWar(DragEvent event){
         StringBuilder command = new StringBuilder();
-        command.append(Arrays.toString(event.getDragboard().getImage().getUrl().split("\\.png")));
-        if(event.getSource()==getRes1()){
-            command.append(", 1");
-        }
-        else if (event.getSource()==getRes21() || event.getSource()==getRes22() ){
-            command.append(", 2");
-        }
-        else if( event.getSource()== getRes31() || event.getSource()== getRes32()
-                || event.getSource()== getRes33()){
-            command.append(", 3");
-        }
+        ImageView target = (ImageView) event.getSource();
+        command.append(getImageResourceMap().get(event.getDragboard().getImage()).name());
+        command.append(", " + returnResourcePosition(target));
         view.process("deployres: " + command);
-        event.consume();
+    }
+
+    public String returnResourcePosition(ImageView res){
+        for(ArrayList<ImageView> slot: getStoresList()){
+            if(slot.contains(res)){
+                return String.valueOf(getStoresList().indexOf(slot)+1);
+            }
+        }
+        return "";
     }
 
     @FXML
@@ -454,7 +447,6 @@ public class PersonalBoardController extends BoardController {
         else if (target == resToGive2){
             addElementToCost(target, event, 5);
         }
-        event.consume();
     }
 
     /**
@@ -471,7 +463,6 @@ public class PersonalBoardController extends BoardController {
                 content.putImage(res.getImage());
                 content.putString("0");
                 db.setContent(content);
-                e.consume();
             });
         }
     }
@@ -516,7 +507,6 @@ public class PersonalBoardController extends BoardController {
                 incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),target.getImage());
             }
         }
-        event.consume();
     }
 
     public void production(ActionEvent actionEvent) {
