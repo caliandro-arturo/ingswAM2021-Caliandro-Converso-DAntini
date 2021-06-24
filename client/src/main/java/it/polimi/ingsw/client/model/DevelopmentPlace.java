@@ -36,6 +36,17 @@ public class DevelopmentPlace {
         return this.devStack.get(--pos).peek();
     }
 
+    public ArrayList<DevelopmentCard> getTopCards(){
+        ArrayList<DevelopmentCard> devCards = new ArrayList<>();
+        for (Stack<DevelopmentCard> devPlace: devStack){
+            if (devPlace.isEmpty()){
+                devCards.add(null);
+            } else
+                devCards.add(devPlace.peek());
+        }
+        return devCards;
+    }
+
     /**
      * representation method for Development Place (CLI)
      * @return String with the representation

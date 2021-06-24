@@ -4,6 +4,8 @@ package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ public class Board {
     private final FaithTrack faithTrack;
     private final Strongbox strongbox ;
     private final WarehouseStore warehouseStore;
-    private ArrayList<LeaderCard> leaderCards;
+    private ObservableList<LeaderCard> leaderCards = FXCollections.observableArrayList();
     private final ResourceHand resHand  = new ResourceHand();
     private ArrayList<ArrayList<Resource>> powers;
 
@@ -26,7 +28,6 @@ public class Board {
         this.faithTrack = new FaithTrack();
         this.strongbox = new Strongbox();
         this.warehouseStore = new WarehouseStore();
-        this.leaderCards = new ArrayList<>();
         this.powers = new ArrayList<>(){{
             add(new ArrayList<>());
             add(new ArrayList<>());
@@ -58,16 +59,12 @@ public class Board {
         this.powers.get(2).add(prod);
     }
 
-    public ArrayList<LeaderCard> getLeaderCards() {
+    public ObservableList<LeaderCard> getLeaderCards() {
         return leaderCards;
     }
 
     public ResourceHand getResHand() {
         return resHand;
-    }
-
-    public void setLeaderCards(ArrayList<LeaderCard> leaderCards) {
-        this.leaderCards = leaderCards;
     }
 
     public void setDevelopmentPlace(DevelopmentPlace developmentPlace) {

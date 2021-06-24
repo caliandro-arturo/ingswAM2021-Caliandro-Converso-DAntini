@@ -101,7 +101,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             } else if (ID<=3){
                 controllerAdapter.startDevProduction(player,costs,ID);
             } else {
-                controllerAdapter.startLeaderProduction(player,costs[0],production,ID);
+                controllerAdapter.startLeaderProduction(player,costs[0],production,ID-3);
             }
         }catch (GameException.IllegalMove e){
             denyMove(startProduction,e.getMessage());

@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.model.Board;
+import it.polimi.ingsw.client.model.LeaderCard;
 import it.polimi.ingsw.client.model.Utility;
+import it.polimi.ingsw.client.model.WarehouseStore;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -20,10 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class BoardController implements Initializable {
 
@@ -149,8 +148,9 @@ public class BoardController implements Initializable {
      * strongbox
      */
     private ArrayList<ImageView> strongResources;
-    private final ObservableList<ImageView> handListImg = FXCollections.observableArrayList();;
+    private final ObservableList<ImageView> handListImg = FXCollections.observableArrayList();
     private final ArrayList<ImageView> resSpots = new ArrayList<>();
+    private ArrayList<ImageView> activeLeaderCards;
     private ArrayList<ArrayList<ImageView>> devPlace;
     private HashMap<Resource, Image> resourceImageMap;
     private HashMap<ImageView, Label> strongMap ;
@@ -208,6 +208,10 @@ public class BoardController implements Initializable {
             put(GamePanel.imgViewSerf, Resource.SERF);
             put(GamePanel.imgViewStone,Resource.STONE);
         }};
+        activeLeaderCards = new ArrayList<>(){{
+            add(activeLeaderCard1);
+            add(activeLeaderCard2);
+        }};
         hand.setPageFactory((index) -> {
             ImageView view = null;
             try {
@@ -218,6 +222,8 @@ public class BoardController implements Initializable {
             }
             return view;
         });
+        leaderDepot1.setDisable(true);
+        leaderDepot2.setDisable(true);
         contextMenu = new ContextMenu();
         menuItem = new MenuItem("back to hand");
         contextMenu.getItems().add(menuItem);
@@ -261,6 +267,7 @@ public class BoardController implements Initializable {
         board.getFaithTrack().positionProperty().addListener(e -> increasePos());
         updateHandList();
         board.getResHand().getResources().addListener((InvalidationListener) e -> Platform.runLater(this::updateHandList));
+        board.getLeaderCards().addListener((InvalidationListener) e -> Platform.runLater(this::updateActiveLeaderCards));
     }
     public ImageView getRes1() {
         return res1;
@@ -295,10 +302,16 @@ public class BoardController implements Initializable {
     public GridPane getLeaderDepot1() {
         return leaderDepot1;
     }
-
     public GridPane getLeaderDepot2() {
         return leaderDepot2;
     }
+    public Pane getResourceHand(){
+        return resourceHand;
+    }
+    public Pagination getHand() {
+        return hand;
+    }
+
 
     /**
      * prints the relative image for a development card
@@ -372,13 +385,6 @@ public class BoardController implements Initializable {
             tile4.setOpacity(100);
     }
 
-    public Pane getResourceHand(){
-        return resourceHand;
-    }
-
-    public Pagination getHand() {
-        return hand;
-    }
 
     /**
      * Updates the resource hand pagination
@@ -389,5 +395,17 @@ public class BoardController implements Initializable {
             handListImg.add(new ImageView(resourceImageMap.get(res)));
         }
         hand.setPageCount(handListImg.size());
+    }
+
+    /**
+     * Updates the active leader cards
+     */
+    public void updateActiveLeaderCards(){
+        activeLeaderCards.clear();
+        ObservableList<LeaderCard> cards = board.getLeaderCards();
+        for (int i = 0; i < cards.size(); i++) {
+            activeLeaderCards.get(i).setImage(new Image(Objects.requireNonNull(getClass().
+                    getResourceAsStream("/png/" + cards.get(i).getID() + ".png"))));
+        }
     }
 }
