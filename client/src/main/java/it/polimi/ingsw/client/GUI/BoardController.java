@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
-import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -404,7 +403,7 @@ public class BoardController implements Initializable {
     public void updateStrongbox(){
         Strongbox strongbox = board.getStrongbox();
         for (Map.Entry<Resource,Label> entry: resourceLabelHashMap.entrySet()){
-            entry.getValue().setText(String.valueOf(strongbox.getSpecificResourcesQuantity(entry.getKey())));
+            entry.getValue().setText(String.valueOf(strongbox.getResourcesQuantity(entry.getKey())));
         }
     }
 }

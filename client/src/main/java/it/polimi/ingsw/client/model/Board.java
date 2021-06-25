@@ -21,7 +21,7 @@ public class Board {
     private final FaithTrack faithTrack;
     private final Strongbox strongbox ;
     private final WarehouseStore warehouseStore;
-    private ObservableList<LeaderCard> leaderCards = FXCollections.observableArrayList();
+    private final ObservableList<LeaderCard> leaderCards = FXCollections.observableArrayList();
     private final ResourceHand resHand  = new ResourceHand();
     private ArrayList<ArrayList<Resource>> powers;
 

@@ -21,7 +21,7 @@ public class ClientModel {
     private boolean isLast;
     private DevelopmentGrid developmentGrid;
     private Market market;
-    private ObjectProperty<LeaderHand> leaderHand = new SimpleObjectProperty<>(new LeaderHand());
+    private final ObjectProperty<LeaderHand> leaderHand = new SimpleObjectProperty<>(new LeaderHand());
     private int resourcesToGet = 0;
     private final ObjectProperty<LinkedHashMap<String, Board>> boards = new SimpleObjectProperty<>(new LinkedHashMap<>());
     private boolean gameStarted = false;                                    //true if leader cards are distributed

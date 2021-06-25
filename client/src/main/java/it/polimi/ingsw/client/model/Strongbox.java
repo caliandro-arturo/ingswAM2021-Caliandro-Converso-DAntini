@@ -11,21 +11,14 @@ import java.util.Arrays;
  * light version of Strongbox class for representation purposes
  */
 public class Strongbox {
-
-    private final Integer[] resources;
     private final ObservableList<Integer> strongboxList;
 
     public Strongbox() {
-        this.resources = new Integer[]{0,0,0,0};
-        this.strongboxList = FXCollections.observableArrayList(Arrays.asList(resources));
+        this.strongboxList = FXCollections.observableArrayList(Arrays.asList(0,0,0,0));
     }
 
-    public Integer[] getResources() {
-        return resources;
-    }
-
-    public int getSpecificResourcesQuantity(Resource resource){
-        return resources[Utility.mapStrongbox.get(resource)];
+    public int getResourcesQuantity(Resource resource){
+        return strongboxList.get(Utility.mapStrongbox.get(resource));
     }
 
     public ObservableList<Integer> getStrongboxList() {
@@ -38,7 +31,7 @@ public class Strongbox {
      * @param resource : resource to add
      */
     public void addResources(int num, Resource resource) {
-        this.resources[Utility.mapStrongbox.get(resource)] += num;
+        strongboxList.set(Utility.mapStrongbox.get(resource),strongboxList.get(Utility.mapStrongbox.get(resource))+num);
     }
 
     /**
@@ -46,7 +39,7 @@ public class Strongbox {
      * @param resource : resource to add
      */
     public void removeResources(Resource resource) {
-        this.resources[Utility.mapStrongbox.get(resource)]--;
+        strongboxList.set(Utility.mapStrongbox.get(resource),strongboxList.get(Utility.mapStrongbox.get(resource))-1);
     }
 
     /**
@@ -58,20 +51,22 @@ public class Strongbox {
         return "" +
                 "│          " + "\u001b[43m" + "StrongBox" + CLIColor.ANSI_RESET + "       \n" +
                 "│  ┌──────────────────────┐\n" +
-                "│  │   " + Resource.COIN + " :" + String.format("%3d", resources[0]) +
-                "     " + Resource.SERF + " :" + String.format("%3d", resources[1]) +
+                "│  │   " + Resource.COIN + " :" + String.format("%3d", strongboxList.get(0)) +
+                "     " + Resource.SERF + " :" + String.format("%3d",strongboxList.get(1)) +
                 "  │\n" +
                 "│  │                      │\n" +
-                "│  │   " + Resource.STONE + " :" + String.format("%3d", resources[2]) +
-                "     " + Resource.SHIELD + " :" + String.format("%3d", resources[3]) +
+                "│  │   " + Resource.STONE + " :" + String.format("%3d", strongboxList.get(2)) +
+                "     " + Resource.SHIELD + " :" + String.format("%3d", strongboxList.get(3)) +
                 "  │\n" +
                 "│  └──────────────────────┘";
     }
 
     //for testing purpose
-
-
+    
+    public Integer[] getResources() {
+        return strongboxList.toArray(new Integer[0]);
+    }
     public void setResources(int quantity, int depot) {
-        this.resources[depot] = quantity;
+        strongboxList.set(depot,quantity);
     }
 }
