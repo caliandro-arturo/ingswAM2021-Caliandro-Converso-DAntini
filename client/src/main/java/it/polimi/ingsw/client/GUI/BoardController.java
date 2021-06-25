@@ -243,7 +243,7 @@ public class BoardController implements Initializable {
         for(ObservableList<Resource> slot: board.getWarehouseStore().getRes()){
             slot.addListener((InvalidationListener) e-> Platform.runLater(this::updateWarehouse));
         }
-        board.getStrongboxObject().addListener(e -> Platform.runLater(this::updateStrongbox));
+        board.getStrongboxObject().addListener((InvalidationListener) e -> Platform.runLater(this::updateStrongbox));
     }
     public ImageView getRes1() {
         return res1;
@@ -388,12 +388,14 @@ public class BoardController implements Initializable {
     public void updateWarehouse(){
         for (ArrayList<ImageView> imageViews: storesList){
             WarehouseStore store = board.getWarehouseStore();
-            for (ImageView slot:imageViews){
-                try {
-                    slot.setImage(GamePanel.resourceImageMap.get(store.getSpecificStore(storesList.indexOf(imageViews)).
-                            get(imageViews.indexOf(slot))));
-                }catch(IndexOutOfBoundsException ignore){
-
+            for (ImageView slot : imageViews) {
+                if (slot != null) {
+                    try {
+                        slot.setImage(GamePanel.resourceImageMap.get(store.getSpecificStore(storesList.indexOf(imageViews)).
+                                get(imageViews.indexOf(slot))));
+                    } catch (IndexOutOfBoundsException e) {
+                        slot.setImage(null);
+                    }
                 }
             }
         }

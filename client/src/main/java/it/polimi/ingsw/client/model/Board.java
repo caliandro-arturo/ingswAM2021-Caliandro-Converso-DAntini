@@ -19,7 +19,7 @@ import java.util.List;
 public class Board {
     private DevelopmentPlace developmentPlace;
     private final FaithTrack faithTrack;
-    private final ObjectProperty<Strongbox> strongbox ;
+    private final Strongbox strongbox ;
     private final WarehouseStore warehouseStore;
     private ObservableList<LeaderCard> leaderCards = FXCollections.observableArrayList();
     private final ResourceHand resHand  = new ResourceHand();
@@ -28,7 +28,7 @@ public class Board {
     public Board() {
         this.developmentPlace = new DevelopmentPlace();
         this.faithTrack = new FaithTrack();
-        this.strongbox = new SimpleObjectProperty<>();
+        this.strongbox = new Strongbox();
         this.warehouseStore = new WarehouseStore();
         this.powers = new ArrayList<>(){{
             add(new ArrayList<>());
@@ -98,11 +98,11 @@ public class Board {
     }
 
     public Strongbox getStrongbox() {
-        return strongbox.get();
+        return strongbox;
     }
 
-    public ObjectProperty<Strongbox> getStrongboxObject(){
-        return strongbox;
+    public ObservableList<Integer> getStrongboxObject(){
+        return strongbox.getStrongboxList();
     }
 
     public void setLeaderCards(LeaderCard leaderCard) {
@@ -116,7 +116,7 @@ public class Board {
     public void removeResource(int[] store, ArrayList<Resource> resources){
         for (int i=0; i<store.length; i++){
             if (store[i]==0){
-                strongbox.get().removeResources(resources.get(i));
+                strongbox.removeResources(resources.get(i));
             } else {
                 warehouseStore.removeRes(store[i], resources.get(i));
             }

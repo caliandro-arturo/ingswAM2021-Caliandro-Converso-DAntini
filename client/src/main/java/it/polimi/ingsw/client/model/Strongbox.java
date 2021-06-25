@@ -2,23 +2,34 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
-import javafx.beans.property.ObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.util.Arrays;
 
 /**
  * light version of Strongbox class for representation purposes
  */
 public class Strongbox {
 
-    private int[] resources = new int[]{0,0,0,0};
+    private final Integer[] resources;
+    private final ObservableList<Integer> strongboxList;
 
+    public Strongbox() {
+        this.resources = new Integer[]{0,0,0,0};
+        this.strongboxList = FXCollections.observableArrayList(Arrays.asList(resources));
+    }
 
-    public int[] getResources() {
+    public Integer[] getResources() {
         return resources;
     }
 
     public int getSpecificResourcesQuantity(Resource resource){
         return resources[Utility.mapStrongbox.get(resource)];
+    }
+
+    public ObservableList<Integer> getStrongboxList() {
+        return strongboxList;
     }
 
     /**
@@ -44,7 +55,7 @@ public class Strongbox {
      */
     @Override
     public String toString(){
-        String boxArt = "" +
+        return "" +
                 "│          " + "\u001b[43m" + "StrongBox" + CLIColor.ANSI_RESET + "       \n" +
                 "│  ┌──────────────────────┐\n" +
                 "│  │   " + Resource.COIN + " :" + String.format("%3d", resources[0]) +
@@ -55,7 +66,6 @@ public class Strongbox {
                 "     " + Resource.SHIELD + " :" + String.format("%3d", resources[3]) +
                 "  │\n" +
                 "│  └──────────────────────┘";
-        return boxArt;
     }
 
     //for testing purpose

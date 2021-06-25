@@ -134,7 +134,14 @@ public class PersonalBoardController extends BoardController {
 
     private View view;
     private ArrayList<Pane> devPlaces;
-    private ArrayList<ArrayList<ResourceAndDepot>> resourceAndDepotBuffer = new ArrayList<>();
+    private ArrayList<ArrayList<ResourceAndDepot>> resourceAndDepotBuffer = new ArrayList<>(){{
+        add(new ArrayList<>());
+        add(new ArrayList<>());
+        add(new ArrayList<>());
+        add(new ArrayList<>());
+        add(new ArrayList<>());
+        add(new ArrayList<>());
+    }};
     private HashMap<ImageView, Label> devCostMap1;
     private HashMap<ImageView, Label> devCostMap2;
     private HashMap<ImageView, Label> devCostMap3;
@@ -276,16 +283,8 @@ public class PersonalBoardController extends BoardController {
         this.view = view;
     }
 
-    public void addElementToCost(ImageView cost, DragEvent event, int i){
-        ImageView target = (ImageView) event.getSource();
-        try {
-            ArrayList<ResourceAndDepot> resourceAndDepots = new ArrayList<>();
-            resourceAndDepots.add(new ResourceAndDepot(GamePanel.imageViewResourceMap.get(cost),Integer.parseInt(returnResourcePosition(target))));
-            resourceAndDepotBuffer.set(i,resourceAndDepots);
-        } catch (IndexOutOfBoundsException e){
-            resourceAndDepotBuffer.add(new ArrayList<>());
-            resourceAndDepotBuffer.get(i).add(new ResourceAndDepot(GamePanel.imageViewResourceMap.get(cost),Integer.parseInt(returnResourcePosition(target))));
-        }
+    public void addElementToCost(ImageView destination, int depot, int i){
+        resourceAndDepotBuffer.get(i).add(new ResourceAndDepot(GamePanel.imageResourceMap.get(destination.getImage()),depot));
     }
 
     @Override
@@ -328,7 +327,9 @@ public class PersonalBoardController extends BoardController {
                 posRes = "3";
             }
 
-            getMenuItem().setOnAction(event-> view.process("takeres: "+ posRes));
+            getMenuItem().setOnAction(event-> {
+                view.process("takeres: "+ posRes);
+            });
         }
     }
 
@@ -474,13 +475,13 @@ public class PersonalBoardController extends BoardController {
             }
         }
         if(destination == baseProd1 || destination == baseProd2) {
-            addElementToCost(destination, event, 0);
+            addElementToCost(destination, depot + 1, 0);
         }
         else if (destination == resToGive1){
-            addElementToCost(destination , event, 4);
+            addElementToCost(destination , depot + 1, 4);
         }
         else if (destination == resToGive2){
-            addElementToCost(destination , event, 5);
+            addElementToCost(destination , depot + 1, 5);
         }
     }
 
@@ -511,13 +512,14 @@ public class PersonalBoardController extends BoardController {
         int i = 0;
 
         ImageView destination = (ImageView) event.getSource();
+        int depot = Integer.parseInt(event.getDragboard().getString()) - 1;
         int costInt = Integer.parseInt(devCostMap1.get(destination).getText());
 
         if(destination == coinCost1 || destination == shieldCost1 || destination == stoneCost1 || destination == serfCost1){
             i = 1;
             if(costInt>0){
                 devCostMap1.get(destination).setText(String.valueOf((costInt-1)));
-                addElementToCost(destination, event, i);
+                addElementToCost(destination, depot + 1, i);
 
             } else {
                 incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),destination.getImage());
@@ -527,7 +529,7 @@ public class PersonalBoardController extends BoardController {
             i = 2;
             if(costInt>0) {
                 devCostMap2.get(destination).setText(String.valueOf((costInt-1)));
-                addElementToCost(destination, event, i);
+                addElementToCost(destination, depot + 1, i);
             } else {
                 incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),destination.getImage());
             }
@@ -537,7 +539,7 @@ public class PersonalBoardController extends BoardController {
             i = 3;
             if(costInt>0) {
                 devCostMap3.get(destination).setText(String.valueOf((costInt-1)));
-                addElementToCost(destination, event, i);
+                addElementToCost(destination, depot + 1, i);
             } else {
                 incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),destination.getImage());
             }

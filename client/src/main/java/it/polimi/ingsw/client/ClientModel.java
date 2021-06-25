@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -84,6 +85,7 @@ public class ClientModel {
     public ObjectProperty<LeaderHand> leaderHandProperty() {
         return leaderHand;
     }
+
 
     public int getResourcesToGet() {
         return resourcesToGet;

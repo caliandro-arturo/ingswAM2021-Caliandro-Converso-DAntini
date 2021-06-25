@@ -791,21 +791,21 @@ public class GamePanel extends SceneHandler {
     public void goToMarketPhase(ActionEvent actionEvent) {
         getGui().getView().process("choose: usemarket");
         backButton.setDisable(false);
-        nextButton.setDisable(true);
+        //nextButton.setDisable(true);
         closePopup(actionEvent);
     }
 
     public void goToBuyDevCardPhase(ActionEvent actionEvent) {
         getGui().getView().process("choose: buydevelopmentcard");
         backButton.setDisable(false);
-        nextButton.setDisable(true);
+        //nextButton.setDisable(true);
         closePopup(actionEvent);
     }
 
     public void goToProductionPhase(ActionEvent actionEvent) {
         getGui().getView().process("choose: activateproduction");
         backButton.setDisable(false);
-        nextButton.setDisable(true);
+        //nextButton.setDisable(true);
         personalBoardController.setProductionOn();
         closePopup(actionEvent);
     }
