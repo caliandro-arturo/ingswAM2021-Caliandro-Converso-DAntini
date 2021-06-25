@@ -5,6 +5,8 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -98,11 +100,25 @@ public class Board {
         if (!resHand.contains(resource))
             throw new IllegalArgumentException("You don't have this resource.");
         WarehouseStore depot = store.get(pos);
-        if (!depot.hasRoomForResource(resource))
+        if (!(depot.hasRoomForResource(resource) && allowedResourceTypes(pos).contains(resource)))
             throw new IllegalArgumentException("You can't add this resource in this depot.");
         else {
             store.get(pos).addResource(resource);
             resHand.remove(resource);
+        }
+    }
+
+    private List<Resource> allowedResourceTypes(int pos) {
+        if (store.get(pos).getTypeOfResource() != null)
+            return Collections.singletonList(store.get(pos).getTypeOfResource());
+        else {
+            List<Resource> resources = new ArrayList<>(Arrays.asList(Resource.values()));
+            for (WarehouseStore w :
+                    store.subList(0, 3)) {
+                if (w.getTypeOfResource() != null)
+                    resources.remove(w.getTypeOfResource());
+            }
+            return resources;
         }
     }
 

@@ -48,9 +48,7 @@ public class WarehouseStore {
      * @return true if there is space to store a new resource of the specified type, false otherwise
      */
     public boolean hasRoomForResource(Resource resource){
-        if(resources.isEmpty())
-            return true;
-        else return typeOfResource==resource && resources.size() < size;
+        return resources.size() < size;
     }
 
     /**
