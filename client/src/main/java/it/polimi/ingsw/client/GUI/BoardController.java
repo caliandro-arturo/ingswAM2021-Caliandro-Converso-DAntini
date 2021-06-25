@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -234,7 +235,14 @@ public class BoardController implements Initializable {
         updateHandList();
         board.getResHand().getResources().addListener((InvalidationListener) e -> Platform.runLater(this::updateHandList));
         board.getLeaderCards().addListener((InvalidationListener) e -> Platform.runLater(this::updateActiveLeaderCards));
-        board.getPropertyWarehouse().addListener(e -> Platform.runLater(this::updateWarehouse));
+        board.getWarehouseStore().getRes().addListener((ListChangeListener<? super ObservableList<Resource>>)  newValue -> {
+            if(newValue.wasAdded()){
+                newValue.getAddedSubList().forEach(list-> list.addListener((InvalidationListener) e-> Platform.runLater(this::updateWarehouse)));
+            }
+        });
+        for(ObservableList<Resource> slot: board.getWarehouseStore().getRes()){
+            slot.addListener((InvalidationListener) e-> Platform.runLater(this::updateWarehouse));
+        }
         board.getStrongboxObject().addListener(e -> Platform.runLater(this::updateStrongbox));
     }
     public ImageView getRes1() {
@@ -379,11 +387,14 @@ public class BoardController implements Initializable {
 
     public void updateWarehouse(){
         for (ArrayList<ImageView> imageViews: storesList){
-            imageViews.clear();
-            ObjectProperty<WarehouseStore> store = board.getPropertyWarehouse();
+            WarehouseStore store = board.getWarehouseStore();
             for (ImageView slot:imageViews){
-                slot.setImage(GamePanel.resourceImageMap.get(store.get().getSpecificStore(storesList.indexOf(imageViews)).
-                        get(imageViews.indexOf(slot))));
+                try {
+                    slot.setImage(GamePanel.resourceImageMap.get(store.getSpecificStore(storesList.indexOf(imageViews)).
+                            get(imageViews.indexOf(slot))));
+                }catch(IndexOutOfBoundsException ignore){
+
+                }
             }
         }
     }

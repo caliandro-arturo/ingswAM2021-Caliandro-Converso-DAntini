@@ -2,11 +2,13 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
 public class SpecialWarehouse implements LeaderPower{
-    ArrayList<Resource> resources = new ArrayList<>();
+    ObservableList<Resource> resources = FXCollections.observableArrayList();
     Resource resourceType;
 
     public SpecialWarehouse(Resource resource) {

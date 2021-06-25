@@ -2,11 +2,14 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
+import javafx.beans.property.ObjectProperty;
+import javafx.collections.ObservableList;
 
 /**
  * light version of Strongbox class for representation purposes
  */
 public class Strongbox {
+
     private int[] resources = new int[]{0,0,0,0};
 
 

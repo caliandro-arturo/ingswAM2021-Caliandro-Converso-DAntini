@@ -317,19 +317,18 @@ public class PersonalBoardController extends BoardController {
     public void backToHand(ContextMenuEvent contextMenuEvent){
         ImageView target = (ImageView)contextMenuEvent.getSource();
         if(target.getImage()!= null){
-            target.setOnContextMenuRequested(e->
-                    getContextMenu().show(target, e.getScreenX(), e.getScreenY()));
-            int posRes;
-            if(target==getRes1()){
-                posRes = 1;
+            getContextMenu().show(target, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
+            String posRes;
+            if(target == getRes1()){
+                posRes = "1";
             }
-            else if(target==getRes21() || target == getRes22())
-                posRes = 2;
-            else
-                posRes = 3;
-            getMenuItem().setOnAction(event->
-                target.setImage(null));
-            view.process("takeres: "+ posRes);
+            else if(target == getRes21() || target == getRes22())
+                posRes = "2";
+            else{
+                posRes = "3";
+            }
+
+            getMenuItem().setOnAction(event-> view.process("takeres: "+ posRes));
         }
     }
 
@@ -425,7 +424,6 @@ public class PersonalBoardController extends BoardController {
     @FXML
     public void onDragOver(DragEvent event) {
         event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-        event.consume();
     }
 
     /**
@@ -449,10 +447,10 @@ public class PersonalBoardController extends BoardController {
     @FXML
     public void dropResWar(DragEvent event){
         StringBuilder command = new StringBuilder();
-        ImageView target = (ImageView) event.getSource();
+        ImageView destination = (ImageView) event.getSource();
         Image image = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
         command.append(GamePanel.imageResourceMap.get(image).name());
-        command.append(", " + returnResourcePosition(target));
+        command.append(", " + returnResourcePosition(destination));
         view.process("deployres: " + command);
     }
 
@@ -512,36 +510,36 @@ public class PersonalBoardController extends BoardController {
     public void dropProdCost(DragEvent event){
         int i = 0;
 
-        ImageView target = (ImageView) event.getSource();
-        int costInt = Integer.parseInt(devCostMap1.get(target).getText());
+        ImageView destination = (ImageView) event.getSource();
+        int costInt = Integer.parseInt(devCostMap1.get(destination).getText());
 
-        if(target == coinCost1 || target == shieldCost1 || target == stoneCost1 || target == serfCost1){
+        if(destination == coinCost1 || destination == shieldCost1 || destination == stoneCost1 || destination == serfCost1){
             i = 1;
             if(costInt>0){
-                devCostMap1.get(target).setText(String.valueOf((costInt-1)));
-                addElementToCost(target, event, i);
+                devCostMap1.get(destination).setText(String.valueOf((costInt-1)));
+                addElementToCost(destination, event, i);
 
             } else {
-                incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),target.getImage());
+                incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),destination.getImage());
             }
         }
-        else if (target == coinCost2 || target == shieldCost2 || target == stoneCost2 || target == serfCost2){
+        else if (destination == coinCost2 || destination == shieldCost2 || destination == stoneCost2 || destination == serfCost2){
             i = 2;
             if(costInt>0) {
-                devCostMap2.get(target).setText(String.valueOf((costInt-1)));
-                addElementToCost(target, event, i);
+                devCostMap2.get(destination).setText(String.valueOf((costInt-1)));
+                addElementToCost(destination, event, i);
             } else {
-                incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),target.getImage());
+                incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),destination.getImage());
             }
 
         }
-        else if (target == coinCost3 || target == shieldCost3 || target == stoneCost3 || target == serfCost3){
+        else if (destination == coinCost3 || destination == shieldCost3 || destination == stoneCost3 || destination == serfCost3){
             i = 3;
             if(costInt>0) {
-                devCostMap3.get(target).setText(String.valueOf((costInt-1)));
-                addElementToCost(target, event, i);
+                devCostMap3.get(destination).setText(String.valueOf((costInt-1)));
+                addElementToCost(destination, event, i);
             } else {
-                incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),target.getImage());
+                incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),destination.getImage());
             }
         }
     }

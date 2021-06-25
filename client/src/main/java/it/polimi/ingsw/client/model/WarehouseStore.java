@@ -2,6 +2,10 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
@@ -10,11 +14,14 @@ import java.util.ArrayList;
  */
 public class WarehouseStore {
 
-    private ArrayList<ArrayList<Resource>> res = new ArrayList<>(){{
-        add(new ArrayList<>());
-        add(new ArrayList<>());
-        add(new ArrayList<>());
-    }};
+    private ObservableList<ObservableList<Resource>> res
+            = FXCollections.observableArrayList();
+
+    public WarehouseStore() {
+        res.add(FXCollections.observableArrayList());
+        res.add(FXCollections.observableArrayList());
+        res.add(FXCollections.observableArrayList());
+    }
 
     /**
      * setter for the resources in the warehouse store
@@ -26,7 +33,7 @@ public class WarehouseStore {
         this.res.get(position).add(resource);
     }
 
-    public ArrayList<Resource> getSpecificStore(int index){
+    public ObservableList<Resource> getSpecificStore(int index){
         return res.get(index);
     }
 
@@ -45,7 +52,7 @@ public class WarehouseStore {
         return resource;
     }
 
-    public void addWarehouse(ArrayList<Resource> resources){
+    public void addWarehouse(ObservableList<Resource> resources){
         res.add(resources);
     }
 
@@ -100,7 +107,7 @@ public class WarehouseStore {
 
     /*debug purpose----------------------------------*/
 
-    public ArrayList<ArrayList<Resource>> getRes() {
+    public ObservableList<ObservableList<Resource>> getRes() {
         return res;
     }
 }

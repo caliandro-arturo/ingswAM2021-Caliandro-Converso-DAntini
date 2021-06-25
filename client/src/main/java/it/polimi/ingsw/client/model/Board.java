@@ -20,7 +20,7 @@ public class Board {
     private DevelopmentPlace developmentPlace;
     private final FaithTrack faithTrack;
     private final ObjectProperty<Strongbox> strongbox ;
-    private final ObjectProperty<WarehouseStore> warehouseStore;
+    private final WarehouseStore warehouseStore;
     private ObservableList<LeaderCard> leaderCards = FXCollections.observableArrayList();
     private final ResourceHand resHand  = new ResourceHand();
     private ArrayList<ArrayList<Resource>> powers;
@@ -29,7 +29,7 @@ public class Board {
         this.developmentPlace = new DevelopmentPlace();
         this.faithTrack = new FaithTrack();
         this.strongbox = new SimpleObjectProperty<>();
-        this.warehouseStore = new SimpleObjectProperty<>();
+        this.warehouseStore = new WarehouseStore();
         this.powers = new ArrayList<>(){{
             add(new ArrayList<>());
             add(new ArrayList<>());
@@ -110,10 +110,6 @@ public class Board {
     }
 
     public WarehouseStore getWarehouseStore() {
-        return warehouseStore.get();
-    }
-
-    public ObjectProperty<WarehouseStore> getPropertyWarehouse(){
         return warehouseStore;
     }
 
@@ -122,7 +118,7 @@ public class Board {
             if (store[i]==0){
                 strongbox.get().removeResources(resources.get(i));
             } else {
-                warehouseStore.get().removeRes(store[i], resources.get(i));
+                warehouseStore.removeRes(store[i], resources.get(i));
             }
         }
     }

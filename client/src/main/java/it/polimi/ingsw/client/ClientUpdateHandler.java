@@ -11,6 +11,8 @@ import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import it.polimi.ingsw.commonFiles.model.ProductionPower;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -352,11 +354,11 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             int warehousePosition = 0;
             for (JsonElement j : warehouseStores) {
                 JsonObject jsonStore = j.getAsJsonObject();
-                ArrayList<Resource> store;
+                ObservableList<Resource> store;
                 try {
-                    store = playerBoard.getWarehouseStore().getRes().get(warehousePosition);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    store = new ArrayList<>();
+                    store = playerBoard.getWarehouseStore().getSpecificStore(warehousePosition);
+                } catch (IndexOutOfBoundsException e) {
+                    store = FXCollections.observableArrayList();
                     playerBoard.getWarehouseStore().getRes().set(warehousePosition, store);
                 }
                 if (!jsonStore.get("resourceType").isJsonNull()) {
