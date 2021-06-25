@@ -227,16 +227,16 @@ public class GamePanel extends SceneHandler {
     public static final Image imgShield = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/shield.png")));
     public static final Image imgStone = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/stone.png")));
     public static final HashMap<Image,Resource> imageResourceMap = new HashMap<>(){{
-        put(imgCoin,Resource.COIN);
-        put(imgSerf,Resource.SERF);
-        put(imgShield,Resource.SHIELD);
-        put(imgStone,Resource.STONE);
+        put(GamePanel.imgCoin,Resource.COIN);
+        put(GamePanel.imgSerf,Resource.SERF);
+        put(GamePanel.imgShield,Resource.SHIELD);
+        put(GamePanel.imgStone,Resource.STONE);
     }};
     public static final  HashMap<Resource,Image>resourceImageMap = new HashMap<>(){{
-        put(Resource.SHIELD, imgShield);
-        put(Resource.COIN, imgCoin);
-        put(Resource.SERF, imgSerf);
-        put(Resource.STONE, imgStone);
+        put(Resource.SHIELD, GamePanel.imgShield);
+        put(Resource.COIN, GamePanel.imgCoin);
+        put(Resource.SERF, GamePanel.imgSerf);
+        put(Resource.STONE, GamePanel.imgStone);
     }};
 
     public static final ImageView imgViewCoin = new ImageView(imgCoin);

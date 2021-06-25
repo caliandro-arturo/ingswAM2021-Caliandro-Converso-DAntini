@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class WarehouseStore {
 
-    private ArrayList<ArrayList<Resource>> res = new ArrayList<ArrayList<Resource>>(){{
+    private ArrayList<ArrayList<Resource>> res = new ArrayList<>(){{
         add(new ArrayList<>());
         add(new ArrayList<>());
         add(new ArrayList<>());
@@ -24,6 +24,10 @@ public class WarehouseStore {
     public void setRes( Resource resource, int position){
         --position;
         this.res.get(position).add(resource);
+    }
+
+    public ArrayList<Resource> getSpecificStore(int index){
+        return res.get(index);
     }
 
     /**

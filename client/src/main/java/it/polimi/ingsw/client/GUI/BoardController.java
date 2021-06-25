@@ -1,12 +1,10 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.client.model.Board;
-import it.polimi.ingsw.client.model.LeaderCard;
-import it.polimi.ingsw.client.model.Utility;
-import it.polimi.ingsw.client.model.WarehouseStore;
+import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -236,6 +234,8 @@ public class BoardController implements Initializable {
         updateHandList();
         board.getResHand().getResources().addListener((InvalidationListener) e -> Platform.runLater(this::updateHandList));
         board.getLeaderCards().addListener((InvalidationListener) e -> Platform.runLater(this::updateActiveLeaderCards));
+        board.getPropertyWarehouse().addListener(e -> Platform.runLater(this::updateWarehouse));
+        board.getStrongboxObject().addListener(e -> Platform.runLater(this::updateStrongbox));
     }
     public ImageView getRes1() {
         return res1;
@@ -374,6 +374,24 @@ public class BoardController implements Initializable {
         for (int i = 0; i < cards.size(); i++) {
             activeLeaderCards.get(i).setImage(new Image(Objects.requireNonNull(getClass().
                     getResourceAsStream("/png/" + cards.get(i).getID() + ".png"))));
+        }
+    }
+
+    public void updateWarehouse(){
+        for (ArrayList<ImageView> imageViews: storesList){
+            imageViews.clear();
+            ObjectProperty<WarehouseStore> store = board.getPropertyWarehouse();
+            for (ImageView slot:imageViews){
+                slot.setImage(GamePanel.resourceImageMap.get(store.get().getSpecificStore(storesList.indexOf(imageViews)).
+                        get(imageViews.indexOf(slot))));
+            }
+        }
+    }
+
+    public void updateStrongbox(){
+        Strongbox strongbox = board.getStrongbox();
+        for (Map.Entry<Resource,Label> entry: resourceLabelHashMap.entrySet()){
+            entry.getValue().setText(String.valueOf(strongbox.getSpecificResourcesQuantity(entry.getKey())));
         }
     }
 }

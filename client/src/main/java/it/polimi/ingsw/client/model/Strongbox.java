@@ -14,6 +14,10 @@ public class Strongbox {
         return resources;
     }
 
+    public int getSpecificResourcesQuantity(Resource resource){
+        return resources[Utility.mapStrongbox.get(resource)];
+    }
+
     /**
      * add a num of resource in the strongbox
      * @param num : number of the resources to add

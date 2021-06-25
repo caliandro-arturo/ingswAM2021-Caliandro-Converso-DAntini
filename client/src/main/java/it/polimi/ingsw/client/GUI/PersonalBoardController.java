@@ -277,13 +277,14 @@ public class PersonalBoardController extends BoardController {
     }
 
     public void addElementToCost(ImageView cost, DragEvent event, int i){
+        ImageView target = (ImageView) event.getSource();
         try {
             ArrayList<ResourceAndDepot> resourceAndDepots = new ArrayList<>();
-            resourceAndDepots.add(new ResourceAndDepot(GamePanel.imageViewResourceMap.get(cost),Integer.parseInt(event.getDragboard().getString())));
+            resourceAndDepots.add(new ResourceAndDepot(GamePanel.imageViewResourceMap.get(cost),Integer.parseInt(returnResourcePosition(target))));
             resourceAndDepotBuffer.set(i,resourceAndDepots);
         } catch (IndexOutOfBoundsException e){
             resourceAndDepotBuffer.add(new ArrayList<>());
-            resourceAndDepotBuffer.get(i).add(new ResourceAndDepot(GamePanel.imageViewResourceMap.get(cost),Integer.parseInt(event.getDragboard().getString())));
+            resourceAndDepotBuffer.get(i).add(new ResourceAndDepot(GamePanel.imageViewResourceMap.get(cost),Integer.parseInt(returnResourcePosition(target))));
         }
     }
 
@@ -449,9 +450,8 @@ public class PersonalBoardController extends BoardController {
     public void dropResWar(DragEvent event){
         StringBuilder command = new StringBuilder();
         ImageView target = (ImageView) event.getSource();
-        Image image = event.getDragboard().getImage();
-        Resource resource = GamePanel.imageResourceMap.get(image);
-        command.append(GamePanel.imageResourceMap.get(event.getDragboard().getImage()).name());
+        Image image = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
+        command.append(GamePanel.imageResourceMap.get(image).name());
         command.append(", " + returnResourcePosition(target));
         view.process("deployres: " + command);
     }
@@ -462,21 +462,27 @@ public class PersonalBoardController extends BoardController {
                 return String.valueOf(getStoresList().indexOf(slot)+1);
             }
         }
-        return "";
+        return "0";
     }
 
     @FXML
     public void dropResProd(DragEvent event) {
-        ImageView target = (ImageView) event.getSource();
-        target.setImage(event.getDragboard().getImage());
-        if(target == baseProd1 || target == baseProd2) {
-            addElementToCost(target, event, 0);
+        ImageView destination = (ImageView) event.getSource();
+        int depot = Integer.parseInt(event.getDragboard().getString()) -1;
+        for (ImageView store: getStoresList().get(depot)){
+            if (store.getImage()!= null){
+                destination.setImage(store.getImage());
+                break;
+            }
         }
-        else if (target == resToGive1){
-            addElementToCost(target, event, 4);
+        if(destination == baseProd1 || destination == baseProd2) {
+            addElementToCost(destination, event, 0);
         }
-        else if (target == resToGive2){
-            addElementToCost(target, event, 5);
+        else if (destination == resToGive1){
+            addElementToCost(destination , event, 4);
+        }
+        else if (destination == resToGive2){
+            addElementToCost(destination , event, 5);
         }
     }
 

@@ -4,6 +4,8 @@ package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -17,8 +19,8 @@ import java.util.List;
 public class Board {
     private DevelopmentPlace developmentPlace;
     private final FaithTrack faithTrack;
-    private final Strongbox strongbox ;
-    private final WarehouseStore warehouseStore;
+    private final ObjectProperty<Strongbox> strongbox ;
+    private final ObjectProperty<WarehouseStore> warehouseStore;
     private ObservableList<LeaderCard> leaderCards = FXCollections.observableArrayList();
     private final ResourceHand resHand  = new ResourceHand();
     private ArrayList<ArrayList<Resource>> powers;
@@ -26,8 +28,8 @@ public class Board {
     public Board() {
         this.developmentPlace = new DevelopmentPlace();
         this.faithTrack = new FaithTrack();
-        this.strongbox = new Strongbox();
-        this.warehouseStore = new WarehouseStore();
+        this.strongbox = new SimpleObjectProperty<>();
+        this.warehouseStore = new SimpleObjectProperty<>();
         this.powers = new ArrayList<>(){{
             add(new ArrayList<>());
             add(new ArrayList<>());
@@ -96,6 +98,10 @@ public class Board {
     }
 
     public Strongbox getStrongbox() {
+        return strongbox.get();
+    }
+
+    public ObjectProperty<Strongbox> getStrongboxObject(){
         return strongbox;
     }
 
@@ -104,15 +110,19 @@ public class Board {
     }
 
     public WarehouseStore getWarehouseStore() {
+        return warehouseStore.get();
+    }
+
+    public ObjectProperty<WarehouseStore> getPropertyWarehouse(){
         return warehouseStore;
     }
 
     public void removeResource(int[] store, ArrayList<Resource> resources){
         for (int i=0; i<store.length; i++){
             if (store[i]==0){
-                strongbox.removeResources(resources.get(i));
+                strongbox.get().removeResources(resources.get(i));
             } else {
-                warehouseStore.removeRes(store[i], resources.get(i));
+                warehouseStore.get().removeRes(store[i], resources.get(i));
             }
         }
     }
