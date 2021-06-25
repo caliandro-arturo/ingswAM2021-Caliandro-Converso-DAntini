@@ -517,11 +517,11 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         ArrayList<Resource> resources = new ArrayList<>();
         if (msg.getID() == 0){
             for (String s : msg.getCostResource()) {
-                resources.add(Utility.mapResource.get(s));
+                resources.add(Utility.mapResource.get(s.toLowerCase()));
             }
             model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
             model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
-                    get(msg.getProduction()));
+                    get(msg.getProduction().toLowerCase()));
         } else if (msg.getID()<=3){
             for (UtilityProductionAndCost cost: model.getBoard(msg.getPlayer()).
                     getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getCost()){
@@ -545,7 +545,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         } else {
             model.updateResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Arrays.asList(model.getBoard().getPowerProd().get(msg.getID()-4))));
             model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
-                    get(msg.getProduction()));
+                    get(msg.getProduction().toLowerCase()));
             model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
         }
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());

@@ -408,6 +408,13 @@ public class PersonalBoardController extends BoardController {
         devProdPane1.setDisable(true);
         devProdPane2.setDisable(true);
         devProdPane3.setDisable(true);
+        clearBuffer();
+    }
+
+    public void clearBuffer(){
+        for (ArrayList<ResourceAndDepot> depot: resourceAndDepotBuffer){
+            depot.clear();
+        }
     }
     /**
      * start drag & drop from HAND
@@ -467,21 +474,28 @@ public class PersonalBoardController extends BoardController {
     @FXML
     public void dropResProd(DragEvent event) {
         ImageView destination = (ImageView) event.getSource();
-        int depot = Integer.parseInt(event.getDragboard().getString()) -1;
-        for (ImageView store: getStoresList().get(depot)){
-            if (store.getImage()!= null){
-                destination.setImage(store.getImage());
-                break;
+        int depot = 0;
+        try {
+            depot = Integer.parseInt(event.getDragboard().getString()) -1;
+            for (ImageView store : getStoresList().get(depot)) {
+                if (store.getImage() != null) {
+                    destination.setImage(store.getImage());
+                    depot++;
+                    break;
+                }
             }
+        }catch (NumberFormatException e){
+            destination.setImage(GamePanel.resourceImageMap.get(Utility.mapResource.get(event.getDragboard().getString())));
+            depot = 0;
         }
         if(destination == baseProd1 || destination == baseProd2) {
-            addElementToCost(destination, depot + 1, 0);
+            addElementToCost(destination, depot, 0);
         }
         else if (destination == resToGive1){
-            addElementToCost(destination , depot + 1, 4);
+            addElementToCost(destination , depot, 4);
         }
         else if (destination == resToGive2){
-            addElementToCost(destination , depot + 1, 5);
+            addElementToCost(destination , depot, 5);
         }
     }
 
@@ -491,13 +505,12 @@ public class PersonalBoardController extends BoardController {
     @FXML
     public void moveResFromBox(MouseEvent event){
         ImageView res = (ImageView) event.getSource();
-
         if (Integer.parseInt(getStrongMap().get(res).getText()) > 0) {
             res.setOnDragDetected(e -> {
                 Dragboard db = res.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
                 content.putImage(res.getImage());
-                content.putString("0");
+                content.putString(GamePanel.imageResourceMap.get(res.getImage()).name().toLowerCase());
                 db.setContent(content);
             });
         }
@@ -598,6 +611,9 @@ public class PersonalBoardController extends BoardController {
                 }
                 cmd.append(cost + ", " + GamePanel.imageResourceMap.get(resBaseProd.getSelectionModel().getSelectedItem().getImage()).name() + ", "+ store);
                 view.process(cmd.toString());
+                baseProd1.setImage(null);
+                baseProd2.setImage(null);
+                clearBuffer();
             } else {
                 refundResource(ID);
                 baseProd1.setImage(null);

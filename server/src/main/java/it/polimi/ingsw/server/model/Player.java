@@ -289,7 +289,7 @@ public class Player {
             throw new IllegalArgumentException("You have already used this production");
         }
         for (int i = 0; i < 2; i++) {
-            Resource resource = Utility.mapResource.get(cost[i]);
+            Resource resource = Utility.mapResource.get(cost[i].toLowerCase());
             if (!Utility.isStorable(resource)) {
                 throw new IllegalArgumentException("Not valid input");
             }
@@ -317,7 +317,7 @@ public class Player {
         }
         for (int i = 0; i < cost.length; i++) {
             if (box[i] == 0) {
-                Resource resource = Utility.mapResource.get(cost[i]);
+                Resource resource = Utility.mapResource.get(cost[i].toLowerCase());
                 board.getStrongbox().removeResource(resource);
             } else {
                 board.getStore().get(box[i] - 1).takeOutResource();

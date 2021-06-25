@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.ServerMessageVisitor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * methods of the it.polimi.ingsw.client.model that can be called by {@link ServerMessageVisitor}.
@@ -215,7 +216,7 @@ public class ControllerAdapter {
      */
     public void startBoardProduction(Player player, String[] cost, String prod, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
         checkIfMoveIsValid(player,"ActivateProduction");
-        Resource production = Utility.mapResource.get(prod);
+        Resource production = Utility.mapResource.get(prod.toLowerCase());
         player.startBoardProduction(box,cost,production);
         player.getBoard().getProductionList().get(0).setProductionCanBeActivate(false);
         game.getCurrentTurnPhase().setFinished(true);
