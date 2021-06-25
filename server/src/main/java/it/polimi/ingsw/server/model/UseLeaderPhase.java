@@ -4,7 +4,7 @@ package it.polimi.ingsw.server.model;
 public class UseLeaderPhase extends TurnPhase {
     private final boolean isFirst;
     public UseLeaderPhase(Game game, boolean isFirst) {
-        super(game, "Leader action's phase", true);
+        super(game, "Leader action", true);
         this.isFirst = isFirst;
     }
 

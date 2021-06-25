@@ -4,24 +4,31 @@ import it.polimi.ingsw.client.ClientModel;
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.WritableIntegerValue;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -98,7 +105,7 @@ public class GamePanel extends SceneHandler {
     @FXML
     private StackPane stackPane;
     @FXML
-    private SplitPane rightPane;
+    private Pane rightPane;
     @FXML
     private ComboBox<String> devPosCombo;
     @FXML
@@ -213,6 +220,20 @@ public class GamePanel extends SceneHandler {
     private ImageView soloToken;
     @FXML
     private Button soloActionOkButton;
+
+    @FXML
+    private Pane phaseAnnouncementPane;
+    @FXML
+    private Label turnPhaseAnnouncementLabel;
+    @FXML
+    private Pane announcementMaskPane;
+
+    @FXML
+    private Label playerTurnLabel;
+    @FXML
+    private Label turnPhaseLabel;
+
+    private Pane currentPane;
 
 
     private final Image blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
@@ -343,9 +364,13 @@ public class GamePanel extends SceneHandler {
 
         devPosCombo.getItems().addAll("1", "2", "3");
 
-        getModel().getMarket().gridProperty().addListener( e ->Platform.runLater(this::setMarketPng));
+        getModel().getMarket().gridProperty().addListener(e ->Platform.runLater(this::setMarketPng));
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
-        getGui().getView().getModel().getLeaderHand().handProperty().addListener((InvalidationListener) e -> Platform.runLater(() -> showChooseCards(null)));
+        getModel().getLeaderHand().handProperty().addListener((ListChangeListener<? super LeaderCard>) e -> {
+            if (e.next())
+                if (e.wasAdded() && currentPane != chooseCardPane) Platform.runLater(() -> showChooseCards(null));
+                else Platform.runLater(this::setLeaderCards);
+        });
         selectedLeader.addListener(e -> leaderButtonsProperty());
         if (getModel().getMarket().getGrid() != null) setMarketPng();
         if (getModel().getDevelopmentGrid().getGrid() != null) setDevGridPng();
@@ -366,15 +391,20 @@ public class GamePanel extends SceneHandler {
             paneHand.getChildren().clear();
             leftPane.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getLeftPane());
             paneHand.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getResourceHand());
+            paneHand.setTranslateX(-5);
+            paneHand.setTranslateY(-150);
         });
         personalBoardController.setView(getGui().getView());
         boardsTabPane.getSelectionModel().select(personalBoard);
         boardsTabPane.getTabs().add(personalBoard);
         getModel().boardsProperty().addListener(e -> setBoardsTabs());
         if (!getModel().getBoards().isEmpty()) setBoardsTabs();
+        goFront(boardPane);
         if (getGui().getView().getModel().getLeaderHand() != null &&
-                getGui().getView().getModel().getLeaderHand().getHand().size() > 2) showChooseCards(null);
-        else goFront(boardPane);
+                getGui().getView().getModel().getLeaderHand().getHand().size() > 2)
+            showChooseCards(null);
+        getModel().currentPlayerInTheGameProperty().addListener(e -> Platform.runLater(this::updateCurrentPlayerLabel));
+        getModel().currentTurnPhaseProperty().addListener(e -> Platform.runLater(this::showTurnPhaseAnnouncement));
         backButton.setDisable(true);
         chooseButton.setDisable(true);
     }
@@ -445,12 +475,7 @@ public class GamePanel extends SceneHandler {
                 .filter(p -> boardsTabPane.getTabs().stream().noneMatch(t -> t.getText().equals(p.getKey())))
                 .forEach(p -> {
                     if (p.getKey().equals(getModel().getPlayerUsername())) {
-                        boardAndControllerMap.entrySet().stream()
-                                .filter(e -> e.getKey().getText().equals("Your board"))
-                                .findAny()
-                                .get()
-                                .getValue()
-                                .setBoard(p.getValue());
+                        personalBoardController.setBoard(p.getValue());
                         return;
                     }
                     AnchorPane board = null;
@@ -614,7 +639,6 @@ public class GamePanel extends SceneHandler {
      */
     @FXML
     public void showChooseCards(ActionEvent actionEvent){
-        //TODO: should be activated only in the initial phase and not with the button
         setLeaderCards();
         goFront(chooseCardPane);
     }
@@ -659,7 +683,7 @@ public class GamePanel extends SceneHandler {
             boardPane.setDisable(false);
             boardPane.setEffect(null);
         }
-
+        currentPane = pane;
         pane.toFront();
         pane.setOpacity(1);
         pane.setDisable(false);
@@ -667,8 +691,7 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * Closes the pane and brings to front the Board pane. If there are initial resources to get, the initial resource
-     * pane is shown.
+     * Closes the pane and brings to front the Board pane.
      */
     public void closePopup(ActionEvent actionEvent){
         boardPane.toFront();
@@ -676,6 +699,7 @@ public class GamePanel extends SceneHandler {
         boardPane.setDisable(false);
         boardPane.setEffect(null);
         rightPane.setDisable(false);
+        currentPane = null;
     }
 
 
@@ -844,5 +868,47 @@ public class GamePanel extends SceneHandler {
 
     public void getInitialResources(ActionEvent actionEvent) {
         goFront(getInitialResourcesPane);
+    }
+
+    public void showTurnPhaseAnnouncement() {
+        String turnPhase = getModel().getCurrentTurnPhase();
+        turnPhaseLabel.setText(turnPhase);
+        turnPhaseAnnouncementLabel.setText(turnPhase);
+        showOverAndThenHide(phaseAnnouncementPane);
+    }
+
+    public void updateCurrentPlayerLabel() {
+        playerTurnLabel.setText(
+                getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame()) ?
+                        "You" :
+                        getModel().getCurrentPlayerInTheGame());
+    }
+
+    public void showOverAndThenHide(Pane pane) {
+        DoubleProperty value = new SimpleDoubleProperty(0);
+        GaussianBlur blur = new GaussianBlur();
+        blur.radiusProperty().bind(value);
+        if (boardPane.getEffect() == null) boardPane.setEffect(blur);
+        if (currentPane != null) currentPane.setEffect(blur);
+        Timeline blurring = new Timeline(new KeyFrame(Duration.seconds(0.5), new KeyValue(value, 10)));
+        FadeTransition paneFadeInTransition = new FadeTransition(Duration.seconds(0.5), pane);
+        pane.toFront();
+        pane.setOpacity(1);
+        paneFadeInTransition.setFromValue(0);
+        paneFadeInTransition.setToValue(1);
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        SequentialTransition trans = new SequentialTransition(blurring, paneFadeInTransition, pause);
+        pane.setDisable(false);
+        trans.setAutoReverse(true);
+        trans.setCycleCount(2);
+        rightPane.setDisable(true);
+        trans.play();
+        trans.setOnFinished(e -> {
+            if (boardPane.getEffect() == blur) boardPane.setEffect(null);
+            if (currentPane != null) currentPane.setEffect(null);
+            rightPane.setDisable(false);
+            pane.setDisable(true);
+            pane.toBack();
+        });
     }
 }

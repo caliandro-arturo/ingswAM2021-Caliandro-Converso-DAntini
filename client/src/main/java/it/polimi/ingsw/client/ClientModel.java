@@ -4,7 +4,8 @@ import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,8 +14,8 @@ import java.util.Set;
 
 public class ClientModel {
     private String playerUsername;
-    private String currentPlayerInTheGame;
-    private String currentTurnPhase;
+    private final StringProperty currentPlayerInTheGame = new SimpleStringProperty();
+    private final StringProperty currentTurnPhase = new SimpleStringProperty();
     private int numOfPlayers;
     private int position;                                                   //position on the table (for turns order)
     private boolean isLast;
@@ -43,10 +44,18 @@ public class ClientModel {
     }
 
     public String getCurrentPlayerInTheGame() {
+        return currentPlayerInTheGame.get();
+    }
+
+    public StringProperty currentPlayerInTheGameProperty() {
         return currentPlayerInTheGame;
     }
 
     public String getCurrentTurnPhase() {
+        return currentTurnPhase.get();
+    }
+
+    public StringProperty currentTurnPhaseProperty() {
         return currentTurnPhase;
     }
 
@@ -86,7 +95,6 @@ public class ClientModel {
         return leaderHand;
     }
 
-
     public int getResourcesToGet() {
         return resourcesToGet;
     }
@@ -108,11 +116,11 @@ public class ClientModel {
     }
 
     public void setCurrentPlayerInTheGame(String currentPlayerInTheGame) {
-        this.currentPlayerInTheGame = currentPlayerInTheGame;
+        this.currentPlayerInTheGame.set(currentPlayerInTheGame);
     }
 
     public void setCurrentTurnPhase(String currentTurnPhase) {
-        this.currentTurnPhase = currentTurnPhase;
+        this.currentTurnPhase.set(currentTurnPhase);
     }
 
     public void setBoards(List<String> usernames){

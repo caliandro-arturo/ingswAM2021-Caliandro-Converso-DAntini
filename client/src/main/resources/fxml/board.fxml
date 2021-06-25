@@ -3,12 +3,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -26,113 +24,89 @@
 
 <BorderPane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.GamePanel">
    <center>
-      <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="699.0" prefWidth="927.0" BorderPane.alignment="CENTER">
+      <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="699.0" prefWidth="927.0" stylesheets="@../css/gamepanel.css" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="marketPane" layoutX="700.0" layoutY="200.0" prefHeight="626.0" prefWidth="792.0" StackPane.alignment="CENTER">
+            <Pane fx:id="boardPane" stylesheets="@../css/gamepanel.css">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ae4444" height="507.0" layoutX="285.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="358.0" />
-                  <ImageView fx:id="marketView" fitHeight="453.0" fitWidth="343.0" layoutX="293.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-                     <image>
-                        <Image url="@../png/market.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="mbEx" fitHeight="40.0" fitWidth="40.0" layoutX="532.0" layoutY="215.0" onDragDetected="#moveExMarble" pickOnBounds="true" preserveRatio="true" />
-                  <Label layoutX="302.0" layoutY="98.0" prefHeight="52.0" prefWidth="330.0" text="Choose a row or a column">
+                  <TabPane fx:id="boardsTabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="923.0" tabClosingPolicy="UNAVAILABLE" />
+               </children>
+            </Pane>
+            <Pane fx:id="soloActionPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="362.0" layoutX="280.0" layoutY="169.0" stroke="BLACK" strokeType="INSIDE" width="367.0">
+                     <fill>
+                        <LinearGradient endX="0.5458015412774705" endY="1.0" startX="0.5458014839478121" startY="0.9694656888947233">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Label fx:id="soloActionOut" alignment="CENTER" layoutX="300.0" layoutY="231.0" prefHeight="21.0" prefWidth="327.0" text="Reveal the action of Lorenzo" textFill="WHITE">
                      <font>
-                        <Font name="Harrington" size="25.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
-                  <GridPane fx:id="marketTray" layoutX="391.0" layoutY="255.0" prefHeight="151.0" prefWidth="196.0">
+                  <ImageView fx:id="soloToken" fitHeight="125.0" fitWidth="125.0" layoutX="401.0" layoutY="296.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../png/soloTokens/back.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="soloActionOkButton" layoutX="428.0" layoutY="467.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="30.0" prefWidth="71.0" text="OK" />
+               </children>
+            </Pane>
+            <Pane fx:id="chooseActionPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="84.0" layoutX="240.0" layoutY="308.0" stroke="BLACK" strokeType="INSIDE" width="447.0" />
+                  <HBox layoutX="283.0" layoutY="333.0" prefHeight="35.0" prefWidth="379.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="marketPhase" mnemonicParsing="false" onAction="#goToMarketPhase" text="UseMarket" />
+                        <Button fx:id="buyDevCardPhase" mnemonicParsing="false" onAction="#goToBuyDevCardPhase" text="UseDevGrid" />
+                        <Button fx:id="useProduction" mnemonicParsing="false" onAction="#goToProductionPhase" text="ActivateProduction" />
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
+            <Pane fx:id="chooseCardPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#72d1e4" height="470.0" layoutX="86.0" layoutY="115.0" stroke="BLACK" strokeType="INSIDE" width="756.0" />
+                  <GridPane fx:id="leadCardGrid" layoutX="96.0" layoutY="213.0" prefHeight="292.0" prefWidth="731.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ImageView fx:id="mb00" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="col2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <ImageView fx:id="col3" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <ImageView fx:id="col1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <ImageView fx:id="col0" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
-                        <ImageView fx:id="row2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                        <ImageView fx:id="row0" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
-                        <ImageView fx:id="row1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                        <ImageView fx:id="mb32" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <ImageView fx:id="mb22" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <ImageView fx:id="mb12" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <ImageView fx:id="mb02" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
-                        <ImageView fx:id="mb31" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <ImageView fx:id="mb21" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <ImageView fx:id="mb11" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ImageView fx:id="mb01" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-                        <ImageView fx:id="mb30" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
-                        <ImageView fx:id="mb20" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                        <ImageView fx:id="mb10" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                        <ImageView fx:id="leadCard1" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="leadCard2" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                        <ImageView fx:id="leadCard3" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                        <ImageView fx:id="leadCard4" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
                      </children>
                   </GridPane>
-                  <Button layoutX="601.0" layoutY="106.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
-               </children>
-            </Pane>
-            <Pane fx:id="boardPane">
-               <children>
-                  <TabPane fx:id="boardsTabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="923.0" tabClosingPolicy="UNAVAILABLE" />
-               </children>
-            </Pane>
-            <Pane fx:id="pause" prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <Label layoutX="349.0" layoutY="125.0" prefHeight="189.0" prefWidth="229.0" text="Pause" textAlignment="CENTER">
+                  <Button fx:id="discardButton" layoutX="671.0" layoutY="531.0" mnemonicParsing="false" onAction="#discardLeaderCard" prefHeight="40.0" prefWidth="147.0" text="Discard" />
+                  <Label fx:id="leaderHandLabel" alignment="CENTER" layoutX="329.0" layoutY="137.0" prefHeight="52.0" prefWidth="270.0" text="Discard 2 leader cards ">
                      <font>
-                        <Font size="85.0" />
+                        <Font name="Harrington" size="25.0" />
                      </font>
-                     <textFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </textFill>
                   </Label>
-                  <Label layoutX="166.0" layoutY="314.0" prefHeight="150.0" prefWidth="595.0" text="Waiting the re-admission of the player...">
-                     <font>
-                        <Font size="33.0" />
-                     </font>
-                     <textFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </textFill>
-                  </Label>
+                  <Button fx:id="chooseCardX" layoutX="802.0" layoutY="122.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
+                  <Button fx:id="deployLButton" layoutX="464.0" layoutY="531.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="147.0" text="Deploy" />
                </children>
             </Pane>
-            <Pane fx:id="devGridPane" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="devGridPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1fff9b" height="668.0" layoutX="132.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="663.0" />
                   <GridPane layoutX="158.0" layoutY="67.0" prefHeight="577.0" prefWidth="612.0">
@@ -170,61 +144,142 @@
                   <Button layoutX="754.0" layoutY="26.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
                </children>
             </Pane>
-            <Pane fx:id="chooseCardPane" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="pausePane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#72d1e4" height="470.0" layoutX="86.0" layoutY="115.0" stroke="BLACK" strokeType="INSIDE" width="756.0" />
-                  <GridPane fx:id="leadCardGrid" layoutX="96.0" layoutY="213.0" prefHeight="292.0" prefWidth="731.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <ImageView fx:id="leadCard1" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="leadCard2" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <ImageView fx:id="leadCard3" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                        <ImageView fx:id="leadCard4" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
-                     </children>
-                  </GridPane>
-                  <Button fx:id="discardButton" layoutX="671.0" layoutY="531.0" mnemonicParsing="false" onAction="#discardLeaderCard" prefHeight="40.0" prefWidth="147.0" text="Discard" />
-                  <Label alignment="CENTER" layoutX="329.0" layoutY="137.0" prefHeight="52.0" prefWidth="270.0" text="Discard 2 leader cards ">
+                  <Label layoutX="344.0" layoutY="236.0" prefHeight="94.0" prefWidth="240.0" text="Pause" textAlignment="CENTER">
                      <font>
-                        <Font name="Harrington" size="25.0" />
+                        <Font size="85.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Label>
+                  <Label layoutX="307.0" layoutY="367.0" prefHeight="53.0" prefWidth="344.0" text="Re-admitting a player...">
+                     <font>
+                        <Font size="33.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="getInitialResourcesPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="244.0" layoutX="310.0" layoutY="228.0" stroke="BLACK" strokeType="INSIDE" width="307.0">
+                     <fill>
+                        <LinearGradient endX="0.49618317698704384" endY="1.0" startX="0.4732824554880157" startY="0.16030537263127684">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.07083820551633835" green="0.46388760209083557" blue="0.8315789699554443" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Label layoutX="366.0" layoutY="292.0" text="Select an initial resource" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button fx:id="chooseCardX" layoutX="802.0" layoutY="122.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
-                  <Button fx:id="deployLButton" layoutX="464.0" layoutY="531.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="147.0" text="Deploy" />
-               </children>
-            </Pane>
-            <Pane fx:id="chooseActionPane" prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="84.0" layoutX="196.0" layoutY="241.0" stroke="BLACK" strokeType="INSIDE" width="447.0" />
-                  <HBox layoutX="239.0" layoutY="266.0" prefHeight="35.0" prefWidth="361.0">
+                  <HBox fx:id="initialResourcesBox" layoutX="344.0" layoutY="350.0" prefHeight="54.0" prefWidth="240.0">
                      <children>
-                        <Button fx:id="marketPhase" mnemonicParsing="false" onAction="#goToMarketPhase" text="UseMarket" />
-                        <Button fx:id="buyDevCardPhase" mnemonicParsing="false" onAction="#goToBuyDevCardPhase" text="UseDevGrid" />
-                        <Button fx:id="useProduction" mnemonicParsing="false" onAction="#goToProductionPhase" text="ActivateProduction" />
+                        <ImageView fx:id="initialCoin" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png/coin.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="initialShield" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png/shield.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="initialStone" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png/stone.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="initialSerf" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png/serf.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </HBox>
+                  <HBox layoutX="529.0" layoutY="432.0">
+                     <children>
+                        <Label fx:id="initialResourceIndex" alignment="CENTER" prefHeight="22.0" prefWidth="22.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="21.0" prefWidth="18.0" text="of">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="totalInitialResourcesAmount" alignment="CENTER" prefHeight="22.0" prefWidth="22.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Button layoutX="577.0" layoutY="237.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
                </children>
             </Pane>
-            <Pane fx:id="paymentPane" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="paymentPane" prefHeight="699.0" prefWidth="910.0" stylesheets="@../css/gamepanel.css">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#86d8f8" height="224.0" layoutX="20.0" layoutY="29.0" stroke="BLACK" strokeType="INSIDE" width="888.0" />
                   <ImageView fx:id="devCardToBuy" fitHeight="208.0" fitWidth="150.0" layoutX="32.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
                   <ComboBox fx:id="devPosCombo" layoutX="802.0" layoutY="115.0" prefHeight="25.0" prefWidth="65.0" />
                   <Label layoutX="523.0" layoutY="117.0" text="Where do you want to put the card?">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
                   <Label fx:id="levelLabel" layoutX="211.0" layoutY="114.0" prefHeight="26.0" prefWidth="56.0">
+                     <font>
+                        <Font name="Harrington" size="18.0" />
+                     </font>
                   </Label>
                   <Label fx:id="colorLabel" layoutX="211.0" layoutY="156.0" prefHeight="26.0" prefWidth="138.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Label>
                   <HBox layoutX="328.0" layoutY="169.0">
                      <children>
@@ -290,140 +345,147 @@
                   <Button fx:id="paymentButton" layoutX="524.0" layoutY="191.0" mnemonicParsing="false" onAction="#buyCard" text="Buy" />
                </children>
             </Pane>
-            <Pane fx:id="getInitialResourcesPane" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="marketPane" layoutX="700.0" layoutY="200.0" prefHeight="626.0" prefWidth="792.0" stylesheets="@../css/gamepanel.css" StackPane.alignment="CENTER">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="244.0" layoutX="329.0" layoutY="228.0" stroke="BLACK" strokeType="INSIDE" width="307.0">
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ae4444" height="507.0" layoutX="285.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="358.0" />
+                  <ImageView fitHeight="453.0" fitWidth="343.0" layoutX="293.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../png/market.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="mbEx" fitHeight="40.0" fitWidth="40.0" layoutX="532.0" layoutY="215.0" onDragDetected="#moveExMarble" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="302.0" layoutY="98.0" prefHeight="52.0" prefWidth="330.0" text="Choose a row or a column">
+                     <font>
+                        <Font name="Harrington" size="25.0" />
+                     </font>
+                  </Label>
+                  <GridPane fx:id="marketTray" layoutX="391.0" layoutY="255.0" prefHeight="151.0" prefWidth="196.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ImageView fx:id="mb00" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="col2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <ImageView fx:id="col3" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <ImageView fx:id="col1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ImageView fx:id="col0" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
+                        <ImageView fx:id="row2" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                        <ImageView fx:id="row0" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
+                        <ImageView fx:id="row1" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropMarble" onDragOver="#onDragOver" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <ImageView fx:id="mb32" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <ImageView fx:id="mb22" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <ImageView fx:id="mb12" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ImageView fx:id="mb02" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
+                        <ImageView fx:id="mb31" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <ImageView fx:id="mb21" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <ImageView fx:id="mb11" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ImageView fx:id="mb01" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+                        <ImageView fx:id="mb30" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
+                        <ImageView fx:id="mb20" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                        <ImageView fx:id="mb10" fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="-46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
+                  <Button layoutX="601.0" layoutY="106.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
+               </children>
+            </Pane>
+            <Pane fx:id="phaseAnnouncementPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
+               <children>
+                  <Rectangle arcHeight="1.0" arcWidth="5.0" height="248.0" layoutX="262.0" layoutY="226.0" stroke="BLACK" strokeLineJoin="ROUND" strokeType="INSIDE" width="403.0">
                      <fill>
-                        <LinearGradient endX="0.49618317698704384" endY="1.0" startX="0.4732824554880157" startY="0.16030537263127684">
+                        <LinearGradient endX="0.46946564248499983" endY="1.0" startX="0.46564889136161514">
                            <stops>
                               <Stop>
                                  <color>
-                                    <Color red="0.07083820551633835" green="0.46388760209083557" blue="0.8315789699554443" />
+                                    <Color red="0.9058823585510254" green="0.6509804129600525" blue="0.21568627655506134" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.5139135058489899">
+                                 <color>
+                                    <Color red="1.0" green="0.8592592477798462" blue="0.8592592477798462" />
                                  </color>
                               </Stop>
                               <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </fill>
-                  </Rectangle>
-                  <Label layoutX="385.0" layoutY="292.0" text="Select an initial resource" textFill="WHITE">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Label>
-                  <HBox fx:id="initialResourcesBox" layoutX="363.0" layoutY="350.0" prefHeight="54.0" prefWidth="240.0">
-                     <children>
-                        <ImageView fx:id="initialCoin" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../png/coin.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fx:id="initialShield" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../png/shield.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fx:id="initialStone" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../png/stone.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fx:id="initialSerf" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#getInitialResource" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../png/serf.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox layoutX="548.0" layoutY="432.0">
-                     <children>
-                        <Label fx:id="initialResourceIndex" alignment="CENTER" prefHeight="22.0" prefWidth="22.0">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="21.0" prefWidth="18.0" text="of">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="totalInitialResourcesAmount" alignment="CENTER" prefHeight="22.0" prefWidth="22.0">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-               </children>
-            </Pane>
-            <Pane fx:id="soloActionPane" prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="362.0" layoutX="308.0" layoutY="169.0" stroke="BLACK" strokeType="INSIDE" width="367.0">
-                     <fill>
-                        <LinearGradient endX="0.5458015412774705" endY="1.0" startX="0.5458014839478121" startY="0.9694656888947233">
-                           <stops>
-                              <Stop>
                                  <color>
                                     <Color />
                                  </color>
                               </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
                            </stops>
                         </LinearGradient>
                      </fill>
                   </Rectangle>
-                  <Label fx:id="soloActionOut" alignment="CENTER" layoutX="328.0" layoutY="231.0" prefHeight="21.0" prefWidth="327.0" text="Reveal the action of Lorenzo" textFill="WHITE" />
-                  <ImageView fx:id="soloToken" fitHeight="125.0" fitWidth="125.0" layoutX="429.0" layoutY="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../png/soloTokens/back.png" />
-                     </image>
-                  </ImageView>
-                  <Button fx:id="soloActionOkButton" layoutX="456.0" layoutY="467.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="30.0" prefWidth="71.0" text="OK" />
+                  <Label alignment="CENTER" layoutX="371.0" layoutY="269.0" prefHeight="53.0" prefWidth="186.0" text="Turn phase">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="turnPhaseAnnouncementLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="267.0" layoutY="394.0" prefHeight="39.0" prefWidth="393.0">
+                     <font>
+                        <Font size="33.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0" startX="1.0" startY="0.9541984368826597">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.9058823585510254" green="0.6509804129600525" blue="0.21568627655506134" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Label>
                </children>
             </Pane>
          </children>
       </StackPane>
    </center>
    <right>
-      <SplitPane fx:id="rightPane" orientation="VERTICAL" prefHeight="730.0" prefWidth="250.0" BorderPane.alignment="CENTER">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="512.0" prefWidth="250.0">
+      <Pane fx:id="rightPane" prefHeight="699.0" prefWidth="227.0" stylesheets="@../css/gamepanel.css">
+         <children>
+            <Pane fx:id="paneHand" layoutY="91.0" prefHeight="126.0" prefWidth="200.0" />
+            <VBox layoutX="36.0" layoutY="280.0" spacing="5.0">
                <children>
-                  <Button fx:id="marketBtn" layoutY="387.0" mnemonicParsing="false" onAction="#showMarket" prefHeight="54.0" prefWidth="155.0" text="Market" />
-                  <Button fx:id="cardsButton" layoutY="335.0" mnemonicParsing="false" onAction="#showChooseCards" prefHeight="52.0" prefWidth="155.0" text="Leader hand" />
-                  <Button fx:id="gridButton" layoutY="441.0" mnemonicParsing="false" onAction="#showDevGrid" prefHeight="54.0" prefWidth="155.0" text="Development Grid" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="21.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../png/logo.png" />
-                     </image>
-                  </ImageView>
-                  <Pane fx:id="paneHand" prefHeight="200.0" prefWidth="200.0" />
-                  <Button fx:id="chooseButton" layoutY="547.0" mnemonicParsing="false" onAction="#choose" prefHeight="54.0" prefWidth="155.0" text="Choose" />
-                  <Button fx:id="nextButton" layoutY="495.0" mnemonicParsing="false" onAction="#next" prefHeight="52.0" prefWidth="155.0" text="Next" />
-                  <Button fx:id="backButton" layoutY="601.0" mnemonicParsing="false" onAction="#back" prefHeight="54.0" prefWidth="155.0" text="Back" />
-                  <Button fx:id="initialResourcesButton" layoutX="88.0" layoutY="667.0" mnemonicParsing="false" onAction="#getInitialResources" text="Initial resources" />
+                  <Button fx:id="cardsButton" mnemonicParsing="false" onAction="#showChooseCards" prefHeight="52.0" prefWidth="155.0" text="Leader hand" />
+                  <Button fx:id="marketBtn" mnemonicParsing="false" onAction="#showMarket" prefHeight="54.0" prefWidth="155.0" text="Market" />
+                  <Button fx:id="gridButton" mnemonicParsing="false" onAction="#showDevGrid" prefHeight="54.0" prefWidth="155.0" text="Development Grid" />
+                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" prefHeight="52.0" prefWidth="155.0" text="Next" />
+                  <Button fx:id="chooseButton" mnemonicParsing="false" onAction="#choose" prefHeight="54.0" prefWidth="155.0" text="Choose" />
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" prefHeight="54.0" prefWidth="155.0" text="Back" />
                </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
+            </VBox>
+            <Button fx:id="initialResourcesButton" disable="true" layoutX="36.0" layoutY="640.0" mnemonicParsing="false" onAction="#getInitialResources" opacity="0.0" prefHeight="30.0" prefWidth="155.0" text="Initial resources" />
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../png/logo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </right>
    <bottom>
-      <TextFlow prefHeight="43.0" prefWidth="1171.0" BorderPane.alignment="CENTER">
+      <TextFlow prefHeight="43.0" prefWidth="1171.0" stylesheets="@../css/gamepanel.css" BorderPane.alignment="CENTER">
          <children>
             <Label prefHeight="28.0" prefWidth="64.0" text="  Info:">
                <font>
                   <Font size="19.0" />
                </font>
             </Label>
-            <Label fx:id="out" prefHeight="39.0" prefWidth="861.0">
+            <Label fx:id="out" prefHeight="27.0" prefWidth="862.0">
                <font>
                   <Font size="21.0" />
                </font>
@@ -431,11 +493,46 @@
          </children>
       </TextFlow>
    </bottom>
-   <top>
-      <TitledPane prefHeight="23.0" prefWidth="1171.0" text="Masters of Renaissance" BorderPane.alignment="CENTER" />
-   </top>
    <left>
-      <Pane fx:id="leftPane" prefHeight="200.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+      <Pane fx:id="leftPane" prefHeight="200.0" prefWidth="250.0" stylesheets="@../css/gamepanel.css" BorderPane.alignment="CENTER">
       </Pane>
    </left>
+   <top>
+      <Pane prefHeight="37.0" prefWidth="1429.0" stylesheets="@../css/gamepanel.css" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="397.0" layoutY="6.0" text="Current player:" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <effect>
+                  <DropShadow height="18.62" radius="9.405000000000001" spread="0.47" />
+               </effect>
+            </Label>
+            <Label fx:id="turnPhaseLabel" layoutX="998.0" layoutY="6.0" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <effect>
+                  <DropShadow height="18.62" radius="9.405000000000001" spread="0.47" />
+               </effect>
+            </Label>
+            <Label layoutX="825.0" layoutY="6.0" text="Current turn phase:" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <effect>
+                  <DropShadow height="18.62" radius="9.405000000000001" spread="0.47" />
+               </effect>
+            </Label>
+            <Label fx:id="playerTurnLabel" layoutX="536.0" layoutY="6.0" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <effect>
+                  <DropShadow height="18.62" radius="9.405000000000001" spread="0.47" />
+               </effect>
+            </Label>
+         </children>
+      </Pane>
+   </top>
 </BorderPane>

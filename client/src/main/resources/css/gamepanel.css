@@ -4,7 +4,6 @@
     -fx-font-size: 16;
     -fx-font-family: Harrington;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
-
 }
 
 .pagination{
@@ -15,15 +14,11 @@
 
 }
 
-.tab-pane{
+/*.tab-pane{
 
 }
 .tab{
     -fx-background-color: linear-gradient(#c6c3b7, #858e92);
-}
-
-.anchor-pane{
-
 }
 .table-view{
     -fx-background-color: linear-gradient(#908b30, #dbd6c3);
@@ -41,35 +36,30 @@
     -fx-border-radius: 15px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
 
-}
+}*/
 .split-pane{
     -fx-background-image: url('../png/back.png');
     -fx-background-repeat: repeat;
-}
-.accordion{
-    fx-background-color: linear-gradient(#908b30, #dbd6c3);
-    -fx-font-size: 16;
-    -fx-border-width: 5;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
-    -fx-font-family: Harrington;
-}
-.titled-pane{
-    fx-background-color: linear-gradient(#908b30, #dbd6c3);
-    -fx-font-size: 16;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
-    -fx-font-family: Harrington;
 }
 .root{
     -fx-background-image: url('../png/back.png');
     -fx-background-repeat: repeat;
 }
 #labelLeaderCards{
-    -fx-effect: dropshadow(three-pass-box, rgba(243, 235, 233, 0.6), 25, 0.85, 10, 10);
+    -fx-effect: dropshadow(three-pass-box, rgba(243, 235, 233, 0.6), 25, 0.85, 0, 0);
+    -fx-font-size: 18;
+}
+
+#paymentPane>.label {
+    -fx-font-size: 18;
+}
+
+#phaseAnnouncementPane>.label {
+    -fx-font-size: 33;
 }
 
 .label {
     -fx-font-family: Harrington;
-    -fx-font-size: 18;
 }
 
 

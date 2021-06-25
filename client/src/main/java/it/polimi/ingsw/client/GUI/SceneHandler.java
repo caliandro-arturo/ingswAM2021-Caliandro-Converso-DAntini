@@ -18,7 +18,6 @@ public abstract class SceneHandler implements Initializable {
         App.setOut(out);
     }
 
-
     public GUI getGui() {
         return gui;
     }
@@ -30,5 +29,4 @@ public abstract class SceneHandler implements Initializable {
     public void setGui(GUI gui) {
         this.gui = gui;
     }
-
 }

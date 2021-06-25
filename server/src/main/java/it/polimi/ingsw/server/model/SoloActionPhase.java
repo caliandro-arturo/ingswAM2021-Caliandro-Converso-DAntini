@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class SoloActionPhase extends TurnPhase {
     private final SoloActionsStack soloActions = new SoloActionsStack();
     public SoloActionPhase(Game game) {
-        super(game, "Solo Action phase", true);
+        super(game, "Solo Action", true);
     }
 
     @Override

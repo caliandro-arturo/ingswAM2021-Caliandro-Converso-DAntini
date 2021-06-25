@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model;
 
 public class ActivateProdPhase extends TurnPhase {
     public ActivateProdPhase(Game game) {
-        super(game, "Activate productions phase", false);
+        super(game, "Activate productions", false);
     }
 
     @Override

@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model;
 
 public class MarketPhase extends TurnPhase {
     public MarketPhase(Game game) {
-        super(game,"Market phase",false);
+        super(game,"Market",false);
     }
 
     @Override

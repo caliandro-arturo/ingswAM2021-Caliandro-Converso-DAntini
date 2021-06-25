@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model;
 
 public class BuyDevCardPhase extends TurnPhase {
     public BuyDevCardPhase(Game game) {
-        super(game, "Buy a development card phase", false);
+        super(game, "Buy a development card", false);
     }
 
     @Override
