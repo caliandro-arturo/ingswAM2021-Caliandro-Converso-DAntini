@@ -660,4 +660,16 @@ public class PersonalBoardController extends BoardController {
         }
         return false;
     }
+
+    /**
+     * discard the actual shown resource in the hand sending the message DISCARDRES
+     * @param event
+     */
+    @FXML
+    void discardRes(ActionEvent event) {
+        Image image = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
+        String resToDiscard = GamePanel.imageResourceMap.get(image).name();
+        view.process("discardres: "+ resToDiscard);
+
+    }
 }

@@ -1,7 +1,14 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.GUI.App;
+import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.client.GUI.GUIView;
+import it.polimi.ingsw.client.GUI.GamePanel;
 import it.polimi.ingsw.commonFiles.messages.toClient.*;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Reads messages from server and updates the client version of the model, or notifies the player. It implements the
@@ -9,6 +16,7 @@ import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
  */
 public class ClientMessageVisitor implements ToClientMessageVisitor {
     private final ClientController controller;
+    private final View guiView = App.getGui().getView();
 
     public ClientMessageVisitor(ClientController controller) {
         this.controller = controller;
@@ -29,7 +37,17 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
 
     @Override
     public void visit(ErrorMessage msg) {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                guiView.show("");
+            }
+        };
+        Timer timer = new Timer();
+
         controller.showError(msg.getError());
+        guiView.showError("You can't do this");
+        timer.schedule(task, 4000);
     }
 
     @Override

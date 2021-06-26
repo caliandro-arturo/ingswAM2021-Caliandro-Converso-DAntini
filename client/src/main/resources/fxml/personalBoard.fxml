@@ -206,7 +206,7 @@
         <!--resource hand-->
       <AnchorPane fx:id="resourceHand" layoutX="700.0" layoutY="40.0" opacity="0.0" prefHeight="166.0" prefWidth="188.0">
          <children>
-              <Button fx:id="handButton" disable="true" layoutX="64.0" layoutY="151.0" mnemonicParsing="false" onAction="#discard" text="Discard" />
+              <Button fx:id="handButton" layoutX="64.0" layoutY="151.0" mnemonicParsing="false" onAction="#discardRes" text="Discard" />
               <Pagination fx:id="hand" layoutY="-3.0" maxPageIndicatorCount="0" onDragDetected="#moveFromResHand" pageCount="0" prefHeight="154.0" prefWidth="204.0" />
          </children>
       </AnchorPane>

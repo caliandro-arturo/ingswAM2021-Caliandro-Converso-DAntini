@@ -404,7 +404,11 @@ public class BoardController implements Initializable {
         }
     }
 
+    /**
+     * reads the model warehouse and updates the relative images
+     */
     public void updateWarehouse(){
+
         for (ArrayList<ImageView> imageViews: storesList){
             WarehouseStore store = board.getWarehouseStore();
             for (ImageView slot : imageViews) {

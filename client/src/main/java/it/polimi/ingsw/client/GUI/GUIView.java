@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -14,20 +16,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class GUIView extends View {
-
     private boolean isInGame = false;
-
     @Override
     public void show(String element) {
-        switch (element) {
-            case "hand": {}
-        }
-        Platform.runLater(() -> App.out.setText(element));
+        Platform.runLater(() -> {
+            App.out.setStyle("-fx-background-color: null");
+            App.out.setText(element);
+        });
     }
 
     @Override
     public void showError(String error) {
-        Platform.runLater(() -> App.error.setText(error));
+        Platform.runLater(() -> {
+            App.out.setStyle("-fx-background-color: red");
+            App.out.setText(error);
+        });
     }
 
     @Override
@@ -72,7 +75,6 @@ public class GUIView extends View {
         try {
             turnPhase = commandSlice[1];
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Wrong syntax: use the format \"CHOOSE: <turnphasename>\".");
             return;
         }
         getController().sendMessage(new ChooseTurnPhase(turnPhase.trim().toLowerCase()));
@@ -84,14 +86,12 @@ public class GUIView extends View {
         try {
             argument = commandSlice[1];
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Wrong syntax: use the format \"ACTIVATEPRODUCTION: <id>, <arg1>, ...\".");
             return;
         }
         String[] arguments = argument.split("\\s*,\\s*");
         String[] elements;
         ArrayList<Integer> cost = new ArrayList<>();
         int ID = Integer.parseInt(arguments[0]);
-        try {
             if (ID < 0)
                 throw new IllegalArgumentException("Invalid ID");
             if (ID == 0) {
@@ -111,27 +111,16 @@ public class GUIView extends View {
                 cost.add(Integer.parseInt(arguments[1]));
                 getController().sendMessage(new StartProduction(ID, cost, arguments[2]));
             }
-        } catch (NumberFormatException e) {
-            System.err.println("You must insert a number.");
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
-        }
+
     }
 
     @Override
     public void buyDevCard(String[] commandSlice) {
-        String arg;
-        try {
-            arg = commandSlice[1];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Wrong syntax: use the format \"BUYDEVCARD: <arg1>, <arg2>, ...\".");
-            return;
-        }
+        String arg = commandSlice[1];
         String[] arguments = arg.split("\\s*,\\s*");
         int level, space;
         String color;
         ArrayList<Integer> stores = new ArrayList<>();
-        try {
             level = Integer.parseInt(arguments[0]);
             color = arguments[1];
             space = Integer.parseInt(arguments[2]);
@@ -140,76 +129,34 @@ public class GUIView extends View {
                 stores.add(Integer.parseInt(argument));
             }
             getController().sendMessage(new BuyCard(level, color, space, stores));
-        } catch (NumberFormatException e) {
-            System.err.println("You must insert a number.");
-        }
     }
 
     @Override
     public void useMarket(String[] commandSlice) {
-        String argument;
-        try {
-            argument = commandSlice[1];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Wrong syntax: use the format \"USEMARKET: <rowOrColumn>, <number>\".");
-            return;
-        }
-        String[] args = commandSlice[1].split("\\s*,\\s*");
+        String argument = commandSlice[1];
+        String[] args = argument.split("\\s*,\\s*");
+
         if (args[0].toLowerCase().matches("[rc]") && args.length == 2) {
-            try {
                 getController().sendMessage(new UseMarket(args[0].charAt(0), Integer.parseInt(args[1])));
-            } catch (NumberFormatException e) {
-                System.err.println("Wrong parameter");
-            }
         } else
-            System.err.println("Wrong parameter");
+            showError("Wrong parameter");
     }
 
     @Override
     public void chooseWhite(String[] commandSlice) {
-        try {
-            getController().sendMessage(new ChooseWhiteMarble(Integer.parseInt(commandSlice[1].trim())));
-        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-            System.err.println("You must insert a leader position (1 or 2).");
-        }
+        getController().sendMessage(new ChooseWhiteMarble(Integer.parseInt(commandSlice[1].trim())));
     }
 
     @Override
     public void useLeader(String[] commandSlice) {
-        int pos;
-        String argument;
-        try {
-            argument = commandSlice[1];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Wrong syntax: use the format \"USELEADER: <position number>\".");
-            return;
-        }
-        try {
-            pos = Integer.parseInt(commandSlice[1]);
-            getController().sendMessage(new UseLeader(pos));
-        } catch (NumberFormatException e) {
-            System.err.println("You must insert a number.");
-        }
+        getController().sendMessage(new UseLeader(Integer.parseInt(commandSlice[1])));
     }
 
     @Override
     public void deployRes(String[] commandSlice) {
-        String argument;
-        try {
-            argument = commandSlice[1];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Wrong syntax: use the format \"DEPLOYRES: <resource name, depot position number>\".");
-            return;
-        }
+        String argument = commandSlice[1];
         String[] args = argument.split("\\s*,\\s*");
-        Optional<Resource> toGet = Optional.ofNullable(Utility.mapResource.get(args[0].trim().toLowerCase()));
-        toGet.ifPresentOrElse(res -> {
-            try {
-                getController().sendMessage(new DeployRes(res, Integer.parseInt(args[1])));
-            } catch (NumberFormatException e) {
-                System.err.println("Wrong parameter: you must insert the position in which you want to deploy the resource.");
-            }
-        }, () -> System.err.println("Wrong parameter: you must insert a resource name."));
+        getController().sendMessage(new DeployRes(Utility.mapResource.get(args[0].trim().toLowerCase()), Integer.parseInt(args[1])));
     }
 
     @Override
@@ -220,12 +167,8 @@ public class GUIView extends View {
     @Override
     public void takeRes(String[] commandSlice) {
         int depot;
-        try{
-            depot=Integer.parseInt(commandSlice[1]);
-            getController().sendMessage(new TakeRes(depot));
-        }catch(ArrayIndexOutOfBoundsException | NumberFormatException e){
-            System.err.println("you must insert a number");
-        }
+        depot=Integer.parseInt(commandSlice[1]);
+        getController().sendMessage(new TakeRes(depot));
     }
 
     @Override
@@ -252,22 +195,18 @@ public class GUIView extends View {
     @Override
     public void discardRes(String[] commandSlice) {
         String resource;
-        try {
-            resource = commandSlice[1];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Wrong syntax: use the format \"DISCARDRES: <resource name>\".");
-            return;
-        }
-        if (Utility.mapResource.get(commandSlice[1]) != null){
-            if (Utility.isStorable(Utility.mapResource.get(commandSlice[1]))){
-                getController().sendMessage(new DiscardRes(Utility.mapResource.get(commandSlice[1])));
+        resource = commandSlice[1].toLowerCase();
+        if (Utility.mapResource.get(resource) != null){
+            if (Utility.isStorable(Utility.mapResource.get(resource))){
+                getController().sendMessage(new DiscardRes(Utility.mapResource.get(resource)));
+                show("You have discarded a resource, each of your opponent earn a faith resource");
+                }
             }
-        }
     }
 
     @Override
     public void displayEndingScore(String[] categories, int[] scores, int ranking) {
-
+        //TODO : tabella finale con punteggi fxml
     }
 
     @Override
@@ -349,6 +288,7 @@ public class GUIView extends View {
 
     @Override
     public void showGetInitialResource() {
+        show("Choose one resource to get");
         Platform.runLater(() -> {
             GamePanel controller = (GamePanel) App.controller;
             controller.getInitialResourcesButton().setDisable(false);
@@ -361,22 +301,24 @@ public class GUIView extends View {
 
     @Override
     public void showGotResource(String resource) {
-
+        show("A " + resource + " has been added to your hand. Remember to deploy it!");
     }
 
     @Override
     public void showResourceTaken() {
-
+        show("Resource taken.");
     }
 
     @Override
     public void showMarketUsed() {
-
+        show("You have used the market: deploy or discard the resources in your hand.");
     }
 
     @Override
     public void showVaticanReport(int reportNum, boolean isPassed) {
-
+        show("You"
+        + (isPassed ? "passed" : "didn't pass")
+        + " the vatican report number " + reportNum + ".");
     }
 
     @Override
