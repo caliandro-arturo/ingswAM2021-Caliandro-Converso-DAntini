@@ -582,6 +582,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             newCard = null;
         }
         model.getDevelopmentGrid().setCard(msg.getLevel(), msg.getColor(), newCard);
+        if (msg.getPlayer().equals(model.getCurrentPlayerInTheGame())) {
+            model.getBoard().setIsProductionAlreadyUsed(true, msg.getSpace());
+        }
         refresh("developmentgrid", msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 

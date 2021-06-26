@@ -173,6 +173,10 @@ public class BoardController implements Initializable {
             put(Resource.STONE, boxStone);
         }};
         strongResources = new ArrayList<>(Arrays.asList(strongCoin, strongSerf, strongShield, strongStone));
+        strongCoin.setImage(GamePanel.imgCoin);
+        strongSerf.setImage(GamePanel.imgSerf);
+        strongStone.setImage(GamePanel.imgStone);
+        strongShield.setImage(GamePanel.imgShield);
         resSpots.addAll(Arrays.asList(res1, res21, res22, res31, res32, res33, specialDepot11, specialDepot12, specialDepot21, specialDepot22));
         storesList = new ArrayList<>(){{
             add(new ArrayList<>(Arrays.asList(res1)));

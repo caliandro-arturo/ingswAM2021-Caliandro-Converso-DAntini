@@ -15,6 +15,10 @@ public class AdditionalProductionPower implements LeaderPower, Production {
     @Override
     public void activatePower(Board board) {
         board.setPowerProd(cost);
+        if (board.getPowerProd().size() == 2){
+            board.setIsProductionAlreadyUsed(true,5);
+        }else
+            board.setIsProductionAlreadyUsed(true,4);
     }
 
     @Override

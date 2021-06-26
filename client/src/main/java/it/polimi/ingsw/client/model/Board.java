@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,6 +25,8 @@ public class Board {
     private final ObservableList<LeaderCard> leaderCards = FXCollections.observableArrayList();
     private final ResourceHand resHand  = new ResourceHand();
     private ArrayList<ArrayList<Resource>> powers;
+    private final ObservableList<Boolean> isProductionAlreadyUsed = FXCollections.observableArrayList(Arrays.asList(null,null,null,null,null,null));
+
 
     public Board() {
         this.developmentPlace = new DevelopmentPlace();
@@ -97,6 +100,14 @@ public class Board {
         return faithTrack;
     }
 
+    public ObservableList<Boolean> getIsProductionAlreadyUsed() {
+        return isProductionAlreadyUsed;
+    }
+
+    public void setIsProductionAlreadyUsed(boolean flag, int ID) {
+        this.isProductionAlreadyUsed.set(ID,flag);
+    }
+
     public Strongbox getStrongbox() {
         return strongbox;
     }
@@ -111,6 +122,14 @@ public class Board {
 
     public WarehouseStore getWarehouseStore() {
         return warehouseStore;
+    }
+
+    public void setProductionInterface(boolean flag){
+        for (int i = 0; i <isProductionAlreadyUsed.size() ; i++) {
+            if (isProductionAlreadyUsed.get(i)!=null){
+                isProductionAlreadyUsed.set(i,flag);
+            }
+        }
     }
 
     public void removeResource(int[] store, ArrayList<Resource> resources){

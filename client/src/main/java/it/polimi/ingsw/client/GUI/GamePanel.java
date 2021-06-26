@@ -801,7 +801,6 @@ public class GamePanel extends SceneHandler {
                 if (getModel().getCurrentTurnPhase().equals("Choose the next action")) {
                     chooseButton.setDisable(false);
                 }
-                personalBoardController.setProductionOff();
                 backButton.setDisable(true);
             }
         }
@@ -830,7 +829,6 @@ public class GamePanel extends SceneHandler {
         getGui().getView().process("choose: activateproduction");
         backButton.setDisable(false);
         //nextButton.setDisable(true);
-        personalBoardController.setProductionOn();
         closePopup(actionEvent);
     }
 

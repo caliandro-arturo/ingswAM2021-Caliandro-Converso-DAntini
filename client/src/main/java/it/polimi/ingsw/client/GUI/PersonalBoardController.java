@@ -8,6 +8,8 @@ import it.polimi.ingsw.client.model.LeaderCard;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -131,6 +133,12 @@ public class PersonalBoardController extends BoardController {
     private Button prodCard3;
     @FXML
     private Pane devProdPane3;
+    @FXML
+    private Pane boardProdPane;
+    @FXML
+    private Pane leaderProd1;
+    @FXML
+    private Pane leaderProd2;
 
     private View view;
     private ArrayList<Pane> devPlaces;
@@ -148,6 +156,7 @@ public class PersonalBoardController extends BoardController {
     private ArrayList<ArrayList<ImageView>> leaderProdImageView;
     private ArrayList<GridPane> leaderDepots;
     private ArrayList<HashMap<Resource, Label>> paymentLabels;
+    private ArrayList<Pane> productionsPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -217,7 +226,14 @@ public class PersonalBoardController extends BoardController {
            add(new ArrayList<>(Arrays.asList(resToGive1,leadProd1.getSelectionModel().getSelectedItem())));
            add(new ArrayList<>(Arrays.asList(resToGive2,leadProd2.getSelectionModel().getSelectedItem())));
         }};
-        setProductionOff();
+        productionsPane = new ArrayList<>(){{
+            add(boardProdPane);
+            add(devProdPane1);
+            add(devProdPane2);
+            add(devProdPane3);
+            add(leaderProd1);
+            add(leaderProd2);
+        }};
     }
 
     public Pane getDevProdPane1() {
@@ -290,11 +306,13 @@ public class PersonalBoardController extends BoardController {
     @Override
     public void setBoard(Board board) {
         super.setBoard(board);
+        board.getIsProductionAlreadyUsed().addListener((InvalidationListener) e -> Platform.runLater(this::updateProductionInterface));
         board.getFaithTrack().positionBProperty().addListener(e -> {
             if (crossB.getOpacity() < 1) crossB.setOpacity(1);
             increasePos(crossB, board.getFaithTrack().getPositionB());
         });
         if (board.getFaithTrack().getPositionB() == 0) crossB.setOpacity(1);
+        board.setIsProductionAlreadyUsed(true,0);
     }
 
     /**
@@ -342,73 +360,6 @@ public class PersonalBoardController extends BoardController {
             return;
         }
         view.process("discardres: " + resource.name());
-    }
-
-    public void setProductionOn(){
-        ClientModel model = view.getModel();
-        if (model.getBoard().getLeaderCards().size() == 1 && model.getBoard().getLeaderCards().get(0).getID() > 60 && model.getBoard().getLeaderCards().get(0).getID() < 65){
-            leadProd1.setOpacity(1);
-            leadProd1.setDisable(false);
-            resToGive1.setDisable(false);
-        } else if (model.getBoard().getLeaderCards().size() == 2){
-            if (model.getBoard().getLeaderCards().get(0).getID() > 60 && model.getBoard().getLeaderCards().get(0).getID() < 65) {
-                leadProd1.setOpacity(1);
-                leadProd1.setDisable(false);
-                resToGive1.setDisable(false);
-                prodButton1.setDisable(false);
-                prodButton1.setOpacity(1);
-            }
-            if (model.getBoard().getLeaderCards().get(1).getID() > 60 && model.getBoard().getLeaderCards().get(0).getID() < 65) {
-                leadProd2.setOpacity(1);
-                leadProd2.setDisable(false);
-                resToGive2.setDisable(false);
-                prodButton2.setDisable(false);
-                prodButton2.setOpacity(1);
-            }
-        }
-        resBaseProd.setOpacity(1);
-        resBaseProd.setDisable(false);
-        prodBaseButton.setOpacity(1);
-        prodBaseButton.setDisable(false);
-        leaderDepot1.setDisable(false);
-        leaderDepot2.setDisable(false);
-        int i = 0;
-        for (DevelopmentCard card: model.getBoard().getDevelopmentPlace().getTopCards()) {
-            if (card!=null){
-                devPlaces.get(i).setDisable(false);
-                devPlaces.get(i).setOpacity(1);
-                for(UtilityProductionAndCost cost: card.getProduction().getCost()){
-                    paymentLabels.get(i).get(cost.getResource()).setText(String.valueOf(cost.getQuantity()));
-                }
-            }
-            i++;
-        }
-    }
-
-    public void setProductionOff(){
-        leadProd1.setOpacity(0);
-        leadProd1.setDisable(true);
-        leadProd2.setOpacity(0);
-        leadProd2.setDisable(true);
-        resToGive1.setDisable(true);
-        resToGive2.setDisable(true);
-        prodButton1.setDisable(true);
-        prodButton1.setOpacity(0);
-        prodButton2.setDisable(true);
-        prodButton2.setOpacity(0);
-        resBaseProd.setOpacity(0);
-        resBaseProd.setDisable(true);
-        prodBaseButton.setOpacity(0);
-        prodBaseButton.setDisable(true);
-        leaderDepot1.setDisable(true);
-        leaderDepot2.setDisable(true);
-        devProdPane1.setOpacity(0);
-        devProdPane2.setOpacity(0);
-        devProdPane3.setOpacity(0);
-        devProdPane1.setDisable(true);
-        devProdPane2.setDisable(true);
-        devProdPane3.setDisable(true);
-        clearBuffer();
     }
 
     public void clearBuffer(){
@@ -485,7 +436,7 @@ public class PersonalBoardController extends BoardController {
                 }
             }
         }catch (NumberFormatException e){
-            destination.setImage(GamePanel.resourceImageMap.get(Utility.mapResource.get(event.getDragboard().getString())));
+            destination.setImage(GamePanel.resourceImageMap.get(Utility.mapResource.get(event.getDragboard().getString().toLowerCase())));
             depot = 0;
         }
         if(destination == baseProd1 || destination == baseProd2) {
@@ -504,15 +455,13 @@ public class PersonalBoardController extends BoardController {
      */
     @FXML
     public void moveResFromBox(MouseEvent event){
-        ImageView res = (ImageView) event.getSource();
-        if (Integer.parseInt(getStrongMap().get(res).getText()) > 0) {
-            res.setOnDragDetected(e -> {
-                Dragboard db = res.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putImage(res.getImage());
-                content.putString(GamePanel.imageResourceMap.get(res.getImage()).name().toLowerCase());
-                db.setContent(content);
-            });
+        ImageView target = (ImageView) event.getSource();
+        if (Integer.parseInt(getStrongMap().get(target).getText()) > 0) {
+            Dragboard db = ((Node)event.getSource()).startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putImage(target.getImage());
+            content.putString(GamePanel.imageResourceMap.get(target.getImage()).name());
+            db.setContent(content);
         }
     }
 
@@ -611,16 +560,33 @@ public class PersonalBoardController extends BoardController {
                 }
                 cmd.append(cost + ", " + GamePanel.imageResourceMap.get(resBaseProd.getSelectionModel().getSelectedItem().getImage()).name() + ", "+ store);
                 view.process(cmd.toString());
-                baseProd1.setImage(null);
-                baseProd2.setImage(null);
                 clearBuffer();
             } else {
                 refundResource(ID);
-                baseProd1.setImage(null);
-                baseProd2.setImage(null);
+            }
+            baseProd1.setImage(null);
+            baseProd2.setImage(null);
+        }
+    }
+
+    public void updateProductionInterface(){
+        ObservableList<Boolean> productionUsage = view.getModel().getBoard().getIsProductionAlreadyUsed();
+        for (int i = 0; i < productionsPane.size(); i++) {
+            if (productionUsage.get(i)!=null){
+                if (productionUsage.get(i)){
+                    productionsPane.get(i).setDisable(true);
+                    productionsPane.get(i).setOpacity(0);
+                } else {
+                    productionsPane.get(i).setDisable(false);
+                    productionsPane.get(i).setOpacity(1);
+                }
+            } else {
+                productionsPane.get(i).setDisable(true);
+                productionsPane.get(i).setOpacity(0);
             }
         }
     }
+
 
     public boolean isAProductionCard(int ID){
         return ID > 60 && ID < 65;
