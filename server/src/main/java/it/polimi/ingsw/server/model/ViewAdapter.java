@@ -127,7 +127,7 @@ public class ViewAdapter {
     }
 
     public void announceTurnPhase(Player player, String turnPhaseName, String turnPhaseInfo) {
-        virtualView.sendMessage(player, new TurnPhaseAnnouncement(turnPhaseName, turnPhaseInfo));
+        virtualView.sendMessage(new TurnPhaseAnnouncement(turnPhaseName, turnPhaseInfo));
     }
 
     /**

@@ -45,7 +45,7 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ImageView boardImg;
     @FXML
-    private Pane paneHand;
+    private AnchorPane paneHand;
     @FXML
     private Button buy;
     @FXML
@@ -366,11 +366,6 @@ public class GamePanel extends SceneHandler {
 
         getModel().getMarket().gridProperty().addListener(e ->Platform.runLater(this::setMarketPng));
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
-        getModel().getLeaderHand().handProperty().addListener((ListChangeListener<? super LeaderCard>) e -> {
-            if (e.next())
-                if (e.wasAdded() && currentPane != chooseCardPane) Platform.runLater(() -> showChooseCards(null));
-                else Platform.runLater(this::setLeaderCards);
-        });
         selectedLeader.addListener(e -> leaderButtonsProperty());
         if (getModel().getMarket().getGrid() != null) setMarketPng();
         if (getModel().getDevelopmentGrid().getGrid() != null) setDevGridPng();
@@ -386,13 +381,15 @@ public class GamePanel extends SceneHandler {
         Tab personalBoard = new Tab("Your board", board);
         boardAndControllerMap.put(personalBoard, personalBoardLoader.getController());
         personalBoardController = personalBoardLoader.getController();
-        boardsTabPane.getSelectionModel().selectedItemProperty().addListener(e -> {
+        boardsTabPane.getSelectionModel().selectedItemProperty().addListener((e, oldVal, newVal) -> {
             leftPane.getChildren().clear();
             paneHand.getChildren().clear();
-            leftPane.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getLeftPane());
-            paneHand.getChildren().add(boardAndControllerMap.get(boardsTabPane.getSelectionModel().getSelectedItem()).getResourceHand());
-            paneHand.setTranslateX(-5);
-            paneHand.setTranslateY(-150);
+            BoardController currentBoardController = boardAndControllerMap.get(newVal);
+            leftPane.getChildren().add(currentBoardController.getLeftPane());
+            paneHand.getChildren().add(currentBoardController.getResourceHand());
+            paneHand.getChildren().forEach(c -> c.relocate(0, 0));
+            /*paneHand.setTranslateX(-5);
+            paneHand.setTranslateY(-150);*/
         });
         personalBoardController.setView(getGui().getView());
         boardsTabPane.getSelectionModel().select(personalBoard);
@@ -400,16 +397,20 @@ public class GamePanel extends SceneHandler {
         getModel().boardsProperty().addListener(e -> setBoardsTabs());
         if (!getModel().getBoards().isEmpty()) setBoardsTabs();
         goFront(boardPane);
-        if (getGui().getView().getModel().getLeaderHand() != null &&
-                getGui().getView().getModel().getLeaderHand().getHand().size() > 2)
+        getModel().getLeaderHand().handProperty().addListener((ListChangeListener<? super LeaderCard>) e -> {
+            if (e.next())
+                if (e.wasAdded() && currentPane != chooseCardPane) Platform.runLater(() -> showChooseCards(null));
+                else Platform.runLater(this::setLeaderCards);
+        });
+        if (getModel().getLeaderHand() != null && getModel().getLeaderHand().getHand().size() > 2)
             showChooseCards(null);
         getModel().currentPlayerInTheGameProperty().addListener(e -> Platform.runLater(this::updateCurrentPlayerLabel));
         getModel().currentTurnPhaseProperty().addListener(e -> Platform.runLater(this::showTurnPhaseAnnouncement));
+        if (getModel().getCurrentPlayerInTheGame() != null) updateCurrentPlayerLabel();
+        if (getModel().getCurrentTurnPhase() != null) showTurnPhaseAnnouncement();
         backButton.setDisable(true);
         chooseButton.setDisable(true);
     }
-
-
 
     private ClientModel getModel() {
         return getGui().getView().getModel();
@@ -676,10 +677,10 @@ public class GamePanel extends SceneHandler {
         }
         rightPane.setDisable(true);
         boardPane.toFront();
-        if(!pane.equals(paymentPane)){
+        if (!pane.equals(paymentPane)) {
             boardPane.setDisable(true);
             boardPane.setEffect(new GaussianBlur());
-        }else{
+        } else {
             boardPane.setDisable(false);
             boardPane.setEffect(null);
         }
@@ -687,7 +688,6 @@ public class GamePanel extends SceneHandler {
         pane.toFront();
         pane.setOpacity(1);
         pane.setDisable(false);
-
     }
 
     /**

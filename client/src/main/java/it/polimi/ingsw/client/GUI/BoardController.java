@@ -4,6 +4,8 @@ import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -188,13 +190,13 @@ public class BoardController implements Initializable {
             add(activeLeaderCard1);
             add(activeLeaderCard2);
         }};
-        hand.setPageFactory((index) -> {
+        hand.setPageFactory((Integer index) -> {
             ImageView view = null;
             try {
                 view = handListImg.get(index);
                 view.setFitHeight(60);
                 view.setFitWidth(60);
-            } catch (IndexOutOfBoundsException ignore) {
+            } catch (IndexOutOfBoundsException e) {
             }
             return view;
         });
@@ -231,7 +233,6 @@ public class BoardController implements Initializable {
         for (int i = 0; i < board.getFaithTrack().getPosition(); i++)
             increasePos();
         board.getFaithTrack().positionProperty().addListener(e -> increasePos());
-        updateHandList();
         board.getResHand().getResources().addListener((InvalidationListener) e -> Platform.runLater(this::updateHandList));
         board.getLeaderCards().addListener((InvalidationListener) e -> Platform.runLater(this::updateActiveLeaderCards));
         board.getWarehouseStore().getRes().addListener((ListChangeListener<? super ObservableList<Resource>>)  newValue -> {
@@ -243,6 +244,9 @@ public class BoardController implements Initializable {
             slot.addListener((InvalidationListener) e-> Platform.runLater(this::updateWarehouse));
         }
         board.getStrongboxObject().addListener((InvalidationListener) e -> Platform.runLater(this::updateStrongbox));
+        updateHandList();
+        updateStrongbox();
+        updateWarehouse();
     }
     public ImageView getRes1() {
         return res1;
@@ -280,7 +284,7 @@ public class BoardController implements Initializable {
     public GridPane getLeaderDepot2() {
         return leaderDepot2;
     }
-    public Pane getResourceHand(){
+    public AnchorPane getResourceHand(){
         return resourceHand;
     }
     public Pagination getHand() {
@@ -365,11 +369,19 @@ public class BoardController implements Initializable {
      * Updates the resource hand pagination
      */
     public void updateHandList(){
-        handListImg.clear();
-        for(Resource res: board.getResHand().getResources()){
-            handListImg.add(new ImageView(GamePanel.resourceImageMap.get(res)));
+        if (board.getResHand().getResources().isEmpty()) {
+            resourceHand.setOpacity(0);
+            resourceHand.setDisable(true);
+        } else {
+            handListImg.clear();
+            for (Resource res : board.getResHand().getResources()) {
+                handListImg.add(new ImageView(GamePanel.resourceImageMap.get(res)));
+            }
+            hand.setPageCount(handListImg.size());
+            hand.setCurrentPageIndex(hand.getCurrentPageIndex() < hand.getPageCount() ? hand.getCurrentPageIndex() : hand.getCurrentPageIndex() - 1);
+            resourceHand.setOpacity(1);
+            resourceHand.setDisable(false);
         }
-        hand.setPageCount(handListImg.size());
     }
 
     /**

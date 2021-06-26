@@ -7,6 +7,7 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -457,8 +458,8 @@
    <right>
       <Pane fx:id="rightPane" prefHeight="699.0" prefWidth="227.0" stylesheets="@../css/gamepanel.css">
          <children>
-            <Pane fx:id="paneHand" layoutY="91.0" prefHeight="126.0" prefWidth="200.0" />
-            <VBox layoutX="36.0" layoutY="280.0" spacing="5.0">
+            <AnchorPane fx:id="paneHand" layoutX="11.0" layoutY="99.0" prefHeight="185.0" prefWidth="206.0" />
+            <VBox layoutX="36.0" layoutY="304.0" spacing="5.0">
                <children>
                   <Button fx:id="cardsButton" mnemonicParsing="false" onAction="#showChooseCards" prefHeight="52.0" prefWidth="155.0" text="Leader hand" />
                   <Button fx:id="marketBtn" mnemonicParsing="false" onAction="#showMarket" prefHeight="54.0" prefWidth="155.0" text="Market" />
@@ -466,9 +467,9 @@
                   <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" prefHeight="52.0" prefWidth="155.0" text="Next" />
                   <Button fx:id="chooseButton" mnemonicParsing="false" onAction="#choose" prefHeight="54.0" prefWidth="155.0" text="Choose" />
                   <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" prefHeight="54.0" prefWidth="155.0" text="Back" />
+                  <Button fx:id="initialResourcesButton" disable="true" mnemonicParsing="false" onAction="#getInitialResources" opacity="0.0" prefHeight="30.0" prefWidth="155.0" text="Initial resources" />
                </children>
             </VBox>
-            <Button fx:id="initialResourcesButton" disable="true" layoutX="36.0" layoutY="640.0" mnemonicParsing="false" onAction="#getInitialResources" opacity="0.0" prefHeight="30.0" prefWidth="155.0" text="Initial resources" />
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../png/logo.png" />

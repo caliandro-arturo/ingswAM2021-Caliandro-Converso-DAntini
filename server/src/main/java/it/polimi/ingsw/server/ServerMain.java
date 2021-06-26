@@ -43,7 +43,7 @@ public class ServerMain {
 
     public void removeVirtualView(VirtualView view) {
         clientToLobbyMap.forEach((c, v) -> {
-            if (v.equals(view)) clientToLobbyMap.replace(c, null);
+            if (v != null && v.equals(view)) clientToLobbyMap.replace(c, null);
         });
         virtualViews.remove(view);
     }
