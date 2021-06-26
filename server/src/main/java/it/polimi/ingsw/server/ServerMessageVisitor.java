@@ -230,6 +230,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         } catch (GameException.IllegalMove e) {
             denyMove(msg, e.getMessage());
         }
+        confirmMove(msg);
     }
 
     //------------------------------------------------------------------------------------------------------------------

@@ -406,11 +406,11 @@ public class GamePanel extends SceneHandler {
             showChooseCards(null);
         getModel().currentPlayerInTheGameProperty().addListener(e -> Platform.runLater(this::updateCurrentPlayerLabel));
         getModel().currentTurnPhaseProperty().addListener(e -> Platform.runLater(this::showTurnPhaseAnnouncement));
+        getModel().isFinishedProperty().addListener(e -> Platform.runLater(this::nextUpdate));
         if (getModel().getCurrentPlayerInTheGame() != null) updateCurrentPlayerLabel();
         if (getModel().getCurrentTurnPhase() != null) showTurnPhaseAnnouncement();
-        backButton.setDisable(true);
-        chooseButton.setDisable(true);
     }
+
 
     private ClientModel getModel() {
         return getGui().getView().getModel();
@@ -702,6 +702,9 @@ public class GamePanel extends SceneHandler {
         currentPane = null;
     }
 
+    private void nextUpdate() {
+        nextButton.setDisable(!getModel().isIsFinished());
+    }
 
     @FXML
     public void buyCard(ActionEvent event){
@@ -796,39 +799,24 @@ public class GamePanel extends SceneHandler {
 
     public void next(ActionEvent actionEvent) {
         getGui().getView().process("next");
-        if (getModel().getCurrentTurnPhase()!= null) {
-            if (getModel().getBoard().getResHand().isEmpty()) {
-                if (getModel().getCurrentTurnPhase().equals("Choose the next action")) {
-                    chooseButton.setDisable(false);
-                }
-                backButton.setDisable(true);
-            }
-        }
     }
 
     public void back(ActionEvent actionEvent) {
         getGui().getView().process("back");
-        backButton.setDisable(true);
     }
 
     public void goToMarketPhase(ActionEvent actionEvent) {
         getGui().getView().process("choose: usemarket");
-        backButton.setDisable(false);
-        //nextButton.setDisable(true);
         closePopup(actionEvent);
     }
 
     public void goToBuyDevCardPhase(ActionEvent actionEvent) {
         getGui().getView().process("choose: buydevelopmentcard");
-        backButton.setDisable(false);
-        //nextButton.setDisable(true);
         closePopup(actionEvent);
     }
 
     public void goToProductionPhase(ActionEvent actionEvent) {
         getGui().getView().process("choose: activateproduction");
-        backButton.setDisable(false);
-        //nextButton.setDisable(true);
         closePopup(actionEvent);
     }
 
@@ -870,9 +858,56 @@ public class GamePanel extends SceneHandler {
 
     public void showTurnPhaseAnnouncement() {
         String turnPhase = getModel().getCurrentTurnPhase();
+        if (getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame()))handlingInterface(turnPhase);
+        else {
+            backButton.setDisable(true);
+            nextButton.setDisable(true);
+            chooseButton.setDisable(true);
+        }
         turnPhaseLabel.setText(turnPhase);
         turnPhaseAnnouncementLabel.setText(turnPhase);
         showOverAndThenHide(phaseAnnouncementPane);
+    }
+
+    public void handlingInterface(String phase){
+        switch (phase){
+            case "Leader action" ->{
+                leadCardGrid.setDisable(false);
+                discardButton.setOpacity(1);
+                deployLButton.setOpacity(1);
+                backButton.setDisable(true);
+                discardButton.setDisable(false);
+                deployLButton.setDisable(false);
+                chooseButton.setDisable(true);
+                getModel().getBoard().setProductionInterface(true);
+            }
+            case "Choose the next action" ->{
+                getModel().setIsFinished(false);
+                discardButton.setOpacity(0);
+                deployLButton.setOpacity(0);
+                leadCardGrid.setDisable(true);
+                discardButton.setDisable(true);
+                deployLButton.setDisable(true);
+                chooseButton.setDisable(false);
+                getModel().getBoard().setProductionInterface(true);
+            }
+            case "Market", "Buy a development card" ->{
+                getModel().setIsFinished(false);
+                backButton.setDisable(false);
+            }
+            case "Activate productions" ->{
+                getModel().setIsFinished(false);
+                backButton.setDisable(false);
+                getModel().getBoard().setProductionInterface(false);
+            }
+            case "Solo Action" ->{
+                leadCardGrid.setDisable(true);
+                discardButton.setOpacity(0);
+                deployLButton.setOpacity(0);
+                discardButton.setDisable(true);
+                deployLButton.setDisable(true);
+            }
+        }
     }
 
     public void updateCurrentPlayerLabel() {
@@ -880,6 +915,7 @@ public class GamePanel extends SceneHandler {
                 getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame()) ?
                         "You" :
                         getModel().getCurrentPlayerInTheGame());
+        nextButton.setDisable(!getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame()));
     }
 
     public void showOverAndThenHide(Pane pane) {

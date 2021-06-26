@@ -161,6 +161,7 @@ public class PersonalBoardController extends BoardController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        setImage();
         devCostMap1 = new HashMap<>(){{
             put(stoneCost1, paymentStone1);
             put(serfCost1, paymentSerf1);
@@ -422,6 +423,10 @@ public class PersonalBoardController extends BoardController {
         return "0";
     }
 
+    /**
+     * accept drag & drop for the board production
+     * @param event
+     */
     @FXML
     public void dropResProd(DragEvent event) {
         ImageView destination = (ImageView) event.getSource();

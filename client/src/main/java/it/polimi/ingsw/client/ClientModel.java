@@ -2,10 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -15,6 +12,7 @@ public class ClientModel {
     private String playerUsername;
     private final StringProperty currentPlayerInTheGame = new SimpleStringProperty();
     private final StringProperty currentTurnPhase = new SimpleStringProperty();
+    private final BooleanProperty isFinished = new SimpleBooleanProperty(true);
     private int numOfPlayers;
     private int position;                                                   //position on the table (for turns order)
     private boolean isLast;
@@ -56,6 +54,18 @@ public class ClientModel {
 
     public StringProperty currentTurnPhaseProperty() {
         return currentTurnPhase;
+    }
+
+    public boolean isIsFinished() {
+        return isFinished.get();
+    }
+
+    public BooleanProperty isFinishedProperty() {
+        return isFinished;
+    }
+
+    public void setIsFinished(boolean isFinished) {
+        this.isFinished.set(isFinished);
     }
 
     public int getNumOfPlayers() {
