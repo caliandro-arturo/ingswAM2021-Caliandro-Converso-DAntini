@@ -24,4 +24,5 @@ public interface UpdateHandler {
     void visit(LorenzoPosition msg);
     void visit(GameStamp gameStamp);
     void visit(TimeUp timeUp);
+    void visit(AskWhiteMarble askWhiteMarble);
 }

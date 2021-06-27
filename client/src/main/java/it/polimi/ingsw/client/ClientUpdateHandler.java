@@ -443,6 +443,12 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     }
 
     @Override
+    public void visit(AskWhiteMarble msg) {
+        model.setWhiteMarbleQuantity(msg.getWhiteMarblesToChoose());
+        controller.getView().show("whitemarble");
+    }
+
+    @Override
     public void visit(LorenzoPick msg) {
         switch (msg.getAction()) {
             case "TWOPOSITIONS" -> {

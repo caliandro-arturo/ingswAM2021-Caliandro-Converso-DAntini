@@ -150,8 +150,11 @@ public abstract class View {
             case "lorenzoaction" -> showLorenzoAction(update[1]);
             case "connectionlost" -> showConnectionLost();
             case "timeup" -> showTimeUp(Boolean.parseBoolean(update[1]));
+            case "whitemarble" -> showWhiteMarble();
         }
     }
+
+    public abstract void showWhiteMarble();
 
     public abstract void showLorenzoAction(String announcement);
 

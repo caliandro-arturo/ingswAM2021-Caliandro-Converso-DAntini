@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.commonFiles.messages.toClient.AskWhiteMarble;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.AskWhiteMarble;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import it.polimi.ingsw.commonFiles.model.Card;

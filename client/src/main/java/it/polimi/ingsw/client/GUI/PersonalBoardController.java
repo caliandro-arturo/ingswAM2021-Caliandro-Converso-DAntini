@@ -42,14 +42,6 @@ public class PersonalBoardController extends BoardController {
     @FXML
     private ImageView baseProd2;
     @FXML
-    private ImageView strongCoin;
-    @FXML
-    private ImageView strongStone;
-    @FXML
-    private ImageView strongShield;
-    @FXML
-    private ImageView strongSerf;
-    @FXML
     private Button prodButton1;
     @FXML
     private ImageView resToGive1;
@@ -671,5 +663,16 @@ public class PersonalBoardController extends BoardController {
         String resToDiscard = GamePanel.imageResourceMap.get(image).name();
         view.process("discardres: "+ resToDiscard);
 
+    }
+
+    @Override
+    public void updateDevPlace() {
+        super.updateDevPlace();
+        ArrayList<DevelopmentCard> cards = view.getModel().getBoard().getDevelopmentPlace().getTopCards();
+        for (int i = 0; i < cards.size(); i++) {
+            for (UtilityProductionAndCost cost: cards.get(i).getCosts()){
+                paymentLabels.get(i).get(cost.getResource()).setText(String.valueOf(cost.getQuantity()));
+            }
+        }
     }
 }

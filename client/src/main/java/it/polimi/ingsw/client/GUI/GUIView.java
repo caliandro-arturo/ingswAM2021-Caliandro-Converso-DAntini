@@ -144,6 +144,7 @@ public class GUIView extends View {
 
     @Override
     public void chooseWhite(String[] commandSlice) {
+        getModel().setWhiteMarbleQuantity(getModel().getWhiteMarbleQuantity() - 1);
         getController().sendMessage(new ChooseWhiteMarble(Integer.parseInt(commandSlice[1].trim())));
     }
 
@@ -206,7 +207,7 @@ public class GUIView extends View {
 
     @Override
     public void displayEndingScore(String[] categories, int[] scores, int ranking) {
-        //TODO : tabella finale con punteggi fxml
+        //TODO : display ending score
     }
 
     @Override
@@ -216,6 +217,10 @@ public class GUIView extends View {
             launcher.lobbies.add(new Lobby(lobbiesName.get(i), lobbiesCurrentConnectedClientsNumber.get(i), lobbiesMaxPlayersNum.get(i)));
         }
 
+    }
+
+    @Override
+    public void showWhiteMarble() {
     }
 
     @Override

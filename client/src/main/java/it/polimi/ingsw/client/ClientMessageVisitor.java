@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.GUI.App;
-import it.polimi.ingsw.client.GUI.GUI;
-import it.polimi.ingsw.client.GUI.GUIView;
-import it.polimi.ingsw.client.GUI.GamePanel;
 import it.polimi.ingsw.commonFiles.messages.toClient.*;
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.AskWhiteMarble;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
 
 import java.util.Timer;
@@ -63,14 +61,6 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
     @Override
     public void visit(GameIsFull gameIsFull) {
         controller.showError("The game is full. You are being reconnected to another game.");
-    }
-
-    @Override
-    public void visit(AskWhiteMarble msg) {
-        setToDo("chooseleader", "You have to choose which leader to use to gain the resource from the " +
-                msg.getWhiteMarblesToChoose() + " white marble" +
-                (msg.getWhiteMarblesToChoose() > 1 ? "s" : "") +
-                " of the market.");
     }
 
     @Override

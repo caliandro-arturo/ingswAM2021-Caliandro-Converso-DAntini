@@ -227,7 +227,12 @@ public class GamePanel extends SceneHandler {
     private Label turnPhaseAnnouncementLabel;
     @FXML
     private Pane announcementMaskPane;
-
+    @FXML
+    private ImageView firstChoice;
+    @FXML
+    private ImageView secondChoice;
+    @FXML
+    private Pane whiteMarblePowerPane;
     @FXML
     private Label playerTurnLabel;
     @FXML
@@ -364,7 +369,7 @@ public class GamePanel extends SceneHandler {
 
         devPosCombo.getItems().addAll("1", "2", "3");
 
-        getModel().getMarket().gridProperty().addListener(e ->Platform.runLater(this::setMarketPng));
+        getModel().getMarket().marbleProperty().addListener(e ->Platform.runLater(this::updateMarketListener));
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
         selectedLeader.addListener(e -> leaderButtonsProperty());
         if (getModel().getMarket().getGrid() != null) setMarketPng();
@@ -388,8 +393,6 @@ public class GamePanel extends SceneHandler {
             leftPane.getChildren().add(currentBoardController.getLeftPane());
             paneHand.getChildren().add(currentBoardController.getResourceHand());
             paneHand.getChildren().forEach(c -> c.relocate(0, 0));
-            /*paneHand.setTranslateX(-5);
-            paneHand.setTranslateY(-150);*/
         });
         personalBoardController.setView(getGui().getView());
         boardsTabPane.getSelectionModel().select(personalBoard);
@@ -409,6 +412,7 @@ public class GamePanel extends SceneHandler {
         getModel().isFinishedProperty().addListener(e -> Platform.runLater(this::nextUpdate));
         if (getModel().getCurrentPlayerInTheGame() != null) updateCurrentPlayerLabel();
         if (getModel().getCurrentTurnPhase() != null) showTurnPhaseAnnouncement();
+        getModel().whiteMarbleQuantityProperty().addListener(e -> Platform.runLater(this::updateWhiteMarbleListener));
     }
 
 
@@ -522,6 +526,19 @@ public class GamePanel extends SceneHandler {
             }
         }
         mbEx.setImage(colorImageMap.get(exMarble.getColor()));
+
+    }
+
+    public void updateMarketListener(){
+        setMarketPng();
+    }
+
+    public void updateWhiteMarbleListener(){
+        if(getModel().getBoard().getPowerWhite().size() == 2 && getModel().getWhiteMarbleQuantity()!=0){
+            firstChoice.setImage(resourceImageMap.get(getModel().getBoard().getPowerWhite().get(0)));
+            secondChoice.setImage(resourceImageMap.get(getModel().getBoard().getPowerWhite().get(1)));
+            goFront(whiteMarblePowerPane);
+        }
     }
 
 
@@ -742,8 +759,11 @@ public class GamePanel extends SceneHandler {
 
     @FXML
     public void discardLeaderCard(ActionEvent actionEvent) {
-        //TODO use process instead of this
-        getGui().getView().discardLeader(new String[]{"", Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1)});
+        getGui().getView().process("discardleader: " + Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1));
+    }
+    @FXML
+    public void deployLeaderCard(ActionEvent actionEvent) {
+        getGui().getView().process("useleader: " + Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1));
     }
 
     /**
@@ -946,5 +966,13 @@ public class GamePanel extends SceneHandler {
         });
     }
 
-
+    public void chooseWhiteMarblePower(MouseEvent mouseEvent) {
+        ImageView target = (ImageView) mouseEvent.getSource();
+        if (target.getImage().equals(firstChoice.getImage())){
+            getGui().getView().process("choosewhite: 1");
+        } else {
+            getGui().getView().process("choosewhite: 2");
+        }
+        closePopup(null);
+    }
 }

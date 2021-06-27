@@ -236,12 +236,17 @@ public class BoardController implements Initializable {
         board.getResHand().getResources().addListener((InvalidationListener) e -> Platform.runLater(this::updateHandList));
         board.getLeaderCards().addListener((InvalidationListener) e -> Platform.runLater(this::updateActiveLeaderCards));
         board.getWarehouseStore().getRes().addListener((ListChangeListener<? super ObservableList<Resource>>)  newValue -> {
-            if(newValue.wasAdded()){
-                newValue.getAddedSubList().forEach(list-> list.addListener((InvalidationListener) e-> Platform.runLater(this::updateWarehouse)));
+            if (newValue.next()) {
+                if (newValue.wasAdded()) {
+                    newValue.getAddedSubList().forEach(list -> list.addListener((InvalidationListener) e -> Platform.runLater(this::updateWarehouse)));
+                }
             }
         });
         for(ObservableList<Resource> slot: board.getWarehouseStore().getRes()){
             slot.addListener((InvalidationListener) e-> Platform.runLater(this::updateWarehouse));
+        }
+        for (ObservableList<DevelopmentCard> cards: board.getDevelopmentPlace().getDevStack()){
+            cards.addListener((InvalidationListener) e -> Platform.runLater(this::updateDevPlace));
         }
         board.getStrongboxObject().addListener((InvalidationListener) e -> Platform.runLater(this::updateStrongbox));
         updateHandList();
@@ -396,11 +401,10 @@ public class BoardController implements Initializable {
      * Updates the active leader cards
      */
     public void updateActiveLeaderCards(){
-        activeLeaderCards.clear();
         ObservableList<LeaderCard> cards = board.getLeaderCards();
         for (int i = 0; i < cards.size(); i++) {
             activeLeaderCards.get(i).setImage(new Image(Objects.requireNonNull(getClass().
-                    getResourceAsStream("/png/" + cards.get(i).getID() + ".png"))));
+                    getResourceAsStream("/png/cards/" + cards.get(i).getID() + ".png"))));
         }
     }
 
@@ -408,7 +412,6 @@ public class BoardController implements Initializable {
      * reads the model warehouse and updates the relative images
      */
     public void updateWarehouse(){
-
         for (ArrayList<ImageView> imageViews: storesList){
             WarehouseStore store = board.getWarehouseStore();
             for (ImageView slot : imageViews) {
@@ -428,6 +431,18 @@ public class BoardController implements Initializable {
         Strongbox strongbox = board.getStrongbox();
         for (Map.Entry<Resource,Label> entry: resourceLabelHashMap.entrySet()){
             entry.getValue().setText(String.valueOf(strongbox.getResourcesQuantity(entry.getKey())));
+        }
+    }
+
+    public void updateDevPlace(){
+        for (ObservableList<DevelopmentCard> devPlaces: board.getDevelopmentPlace().getDevStack()){
+            for(ArrayList<ImageView> imageDevPlace: devPlace){
+                for (int i = 0; i < devPlaces.size(); i++) {
+                    imageDevPlace.get(i).setImage(new Image(Objects.requireNonNull(getClass().
+                            getResourceAsStream("/png/cards/" + devPlaces.get(i).getID() + ".png"))));
+
+                }
+            }
         }
     }
 }

@@ -137,6 +137,8 @@ public class CLIView extends View {
         System.err.println(error);
     }
 
+
+
     @Override
     public void joinGame(String[] commandSlice) {
         String lobbyName;
@@ -168,6 +170,14 @@ public class CLIView extends View {
                             + maxPlayersNum.get(i));
 
         }
+    }
+
+    @Override
+    public void showWhiteMarble() {
+        setToDo("chooseleader", "You have to choose which leader to use to gain the resource from the " +
+                getModel().getWhiteMarbleQuantity()+ " white marble" +
+                (getModel().getWhiteMarbleQuantity() > 1 ? "s" : "") +
+                " of the market.");
     }
 
     /**

@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
-import java.util.Stack;
 
 
 /**
@@ -9,17 +11,13 @@ import java.util.Stack;
  */
 public class DevelopmentPlace {
 
-    private final ArrayList<Stack<DevelopmentCard>> devStack;
+    private final ArrayList<ObservableList<DevelopmentCard>> devStack;
 
     public DevelopmentPlace() {
         devStack = new ArrayList<>();
-        devStack.add(new Stack<>());
-        devStack.add(new Stack<>());
-        devStack.add(new Stack<>());
-    }
-
-    public ArrayList<Stack<DevelopmentCard>> getDevStack() {
-        return devStack;
+        devStack.add(FXCollections.observableArrayList());
+        devStack.add(FXCollections.observableArrayList());
+        devStack.add(FXCollections.observableArrayList());
     }
 
     /**
@@ -28,23 +26,31 @@ public class DevelopmentPlace {
      * @param pos : position of the spot to insert in
      */
     public void setDevStack(DevelopmentCard developmentCard, int pos){
-        this.devStack.get(--pos).push(developmentCard);
+        this.devStack.get(--pos).add(developmentCard);
     }
 
+    public ArrayList<ObservableList<DevelopmentCard>> getDevStack() {
+        return devStack;
+    }
 
     public DevelopmentCard getTopCard(int pos){
-        return this.devStack.get(--pos).peek();
+        int size = devStack.get(--pos).size();
+        return this.devStack.get(pos).get(--size);
     }
 
     public ArrayList<DevelopmentCard> getTopCards(){
         ArrayList<DevelopmentCard> devCards = new ArrayList<>();
-        for (Stack<DevelopmentCard> devPlace: devStack){
+        for (ObservableList<DevelopmentCard> devPlace: devStack){
             if (devPlace.isEmpty()){
                 devCards.add(null);
             } else
-                devCards.add(devPlace.peek());
+                devCards.add(devPlace.get(devPlace.size()-1));
         }
         return devCards;
+    }
+
+    public ObservableList<DevelopmentCard> getDevPlace(int pos){
+        return devStack.get(--pos);
     }
 
     /**
@@ -76,28 +82,26 @@ public class DevelopmentPlace {
         String[] temp2;
         String[] temp3;
 
-        for(Stack<DevelopmentCard> stacks: devStack){
+        for(ObservableList<DevelopmentCard> stacks: devStack){
             if(stacks.isEmpty()) {
                 devString[i].append(emptyCard);
                 devString[i].append(emptySpace).append(emptySpace);
             }
             else{
-                devString[i].append(stacks.peek().toString());
-                switch (stacks.size()){
-                    case 1:
-                        devString[i].append(emptySpace).append(emptySpace);
-                        break;
-                    case 2:
+                devString[i].append(stacks.get(stacks.size()-1).toString());
+                switch (stacks.size()) {
+                    case 1 -> devString[i].append(emptySpace).append(emptySpace);
+                    case 2 -> {
                         int l = stacks.get(0).toString().length();
                         devString[i].append(stacks.get(0).toString(), l - 58, l);
                         devString[i].append(emptySpace);
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         int len = stacks.get(0).toString().length();
                         devString[i].append(stacks.get(0).toString(), len - 58, len);
                         devString[i].append(stacks.get(1).toString(), len - 58, len);
-                        break;
                     }
+                }
 
                 }
             i++;}

@@ -23,6 +23,15 @@ public class ClientModel {
     private final ObjectProperty<LinkedHashMap<String, Board>> boards = new SimpleObjectProperty<>(new LinkedHashMap<>());
     private boolean gameStarted = false;                                    //true if leader cards are distributed
     private boolean gameSelected = false;
+    private ObjectProperty<Integer> whiteMarbleQuantity = new SimpleObjectProperty<>(0);
+
+    public int getWhiteMarbleQuantity() {
+        return whiteMarbleQuantity.get();
+    }
+
+    public ObjectProperty<Integer> whiteMarbleQuantityProperty() {
+        return whiteMarbleQuantity;
+    }
 
     public boolean isGameStarted(){
         return gameStarted;
@@ -126,6 +135,10 @@ public class ClientModel {
 
     public void setCurrentPlayerInTheGame(String currentPlayerInTheGame) {
         this.currentPlayerInTheGame.set(currentPlayerInTheGame);
+    }
+
+    public void setWhiteMarbleQuantity(int quantity){
+        whiteMarbleQuantity.set(quantity);
     }
 
     public void setCurrentTurnPhase(String currentTurnPhase) {
