@@ -44,8 +44,6 @@ public class BoardController implements Initializable {
     @FXML
     private ImageView tile4;
 
-
-
     /**
      * Warehouse depots slots
      */
@@ -190,16 +188,6 @@ public class BoardController implements Initializable {
             add(activeLeaderCard1);
             add(activeLeaderCard2);
         }};
-        hand.setPageFactory((Integer index) -> {
-            ImageView view = null;
-            try {
-                view = handListImg.get(index);
-                view.setFitHeight(60);
-                view.setFitWidth(60);
-            } catch (IndexOutOfBoundsException e) {
-            }
-            return view;
-        });
         leaderDepot1.setDisable(true);
         leaderDepot2.setDisable(true);
         contextMenu = new ContextMenu();
@@ -233,7 +221,10 @@ public class BoardController implements Initializable {
         for (int i = 0; i < board.getFaithTrack().getPosition(); i++)
             increasePos();
         board.getFaithTrack().positionProperty().addListener(e -> increasePos());
-        board.getResHand().getResources().addListener((InvalidationListener) e -> Platform.runLater(this::updateHandList));
+        board.getResHand().getResources().addListener((ListChangeListener<? super Resource>) e -> {
+            if (e.next())
+                Platform.runLater(() -> updateHandList(e));
+        });
         board.getLeaderCards().addListener((InvalidationListener) e -> Platform.runLater(this::updateActiveLeaderCards));
         board.getWarehouseStore().getRes().addListener((ListChangeListener<? super ObservableList<Resource>>)  newValue -> {
             if (newValue.next()) {
@@ -249,7 +240,46 @@ public class BoardController implements Initializable {
             cards.addListener((InvalidationListener) e -> Platform.runLater(this::updateDevPlace));
         }
         board.getStrongboxObject().addListener((InvalidationListener) e -> Platform.runLater(this::updateStrongbox));
-        updateHandList();
+        updateHandList(new ListChangeListener.Change<>(board.getResHand().getResources()) {
+            @Override
+            public boolean next() {
+                return false;
+            }
+
+            @Override
+            public void reset() {
+            }
+
+            @Override
+            public int getFrom() {
+                return 0;
+            }
+
+            @Override
+            public int getTo() {
+                return 0;
+            }
+
+            @Override
+            public List<Resource> getRemoved() {
+                return null;
+            }
+
+            @Override
+            public boolean wasAdded() {
+                return true;
+            }
+
+            @Override
+            public List<Resource> getAddedSubList() {
+                return getList();
+            }
+
+            @Override
+            protected int[] getPermutation() {
+                return new int[0];
+            }
+        });
         updateStrongbox();
         updateWarehouse();
     }
@@ -291,6 +321,10 @@ public class BoardController implements Initializable {
         return leftPane;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
     public GridPane getLeaderDepot1() {
         return leaderDepot1;
     }
@@ -304,6 +338,37 @@ public class BoardController implements Initializable {
         return hand;
     }
 
+    public Label getBoxSerf() {
+        return boxSerf;
+    }
+
+    public Label getBoxShield() {
+        return boxShield;
+    }
+
+    public Label getBoxStone() {
+        return boxStone;
+    }
+
+    public Label getBoxCoin() {
+        return boxCoin;
+    }
+
+    public ImageView getStrongCoin() {
+        return strongCoin;
+    }
+
+    public ImageView getStrongStone() {
+        return strongStone;
+    }
+
+    public ImageView getStrongShield() {
+        return strongShield;
+    }
+
+    public ImageView getStrongSerf() {
+        return strongSerf;
+    }
 
     /**
      * prints the relative image for a development card
@@ -381,17 +446,46 @@ public class BoardController implements Initializable {
     /**
      * Updates the resource hand pagination
      */
-    public void updateHandList(){
-        if (board.getResHand().getResources().isEmpty()) {
+    public void updateHandList(ListChangeListener.Change<? extends Resource> e) {
+        if (e.wasAdded())
+            for (Resource res :
+                    e.getAddedSubList()) {
+                handListImg.add(new ImageView(GamePanel.resourceImageMap.get(res)));
+            }
+        else if (e.wasRemoved()) {
+            for (Resource res :
+                    e.getRemoved()) {
+                int currentSelectedResInHandIndex = hand.getCurrentPageIndex();
+                ImageView currentResource = handListImg.get(currentSelectedResInHandIndex);
+                Image resourceToRemove = GamePanel.resourceImageMap.get(res);
+                if (currentResource.getImage().equals(resourceToRemove))
+                    handListImg.remove(currentResource);
+                else {
+                    handListImg.stream()
+                            .filter(i -> i.getImage().equals(resourceToRemove))
+                            .findFirst()
+                            .ifPresent(handListImg::remove);
+                }
+            }
+        }
+        if (handListImg.isEmpty()) {
             resourceHand.setOpacity(0);
             resourceHand.setDisable(true);
         } else {
-            handListImg.clear();
-            for (Resource res : board.getResHand().getResources()) {
-                handListImg.add(new ImageView(GamePanel.resourceImageMap.get(res)));
+            if (resourceHand.isDisable()) {
+                hand.setPageFactory(index -> {
+                    ImageView view = null;
+                    try {
+                        view = handListImg.get(index);
+                        view.setFitHeight(60);
+                        view.setFitWidth(60);
+                    } catch (IndexOutOfBoundsException ignore) {
+                    }
+                    return view;
+                });
             }
-            hand.setPageCount(handListImg.size());
             hand.setCurrentPageIndex(hand.getCurrentPageIndex() < hand.getPageCount() ? hand.getCurrentPageIndex() : hand.getCurrentPageIndex() - 1);
+            hand.setPageCount(handListImg.size());
             resourceHand.setOpacity(1);
             resourceHand.setDisable(false);
         }

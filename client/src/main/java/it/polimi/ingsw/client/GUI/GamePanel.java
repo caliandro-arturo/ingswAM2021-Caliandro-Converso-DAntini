@@ -189,11 +189,19 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Label paymentCoin;
     @FXML
+    private ImageView paymentCoinImageView;
+    @FXML
     private Label paymentSerf;
+    @FXML
+    private ImageView paymentSerfImageView;
     @FXML
     private Label paymentShield;
     @FXML
+    private ImageView paymentShieldImageView;
+    @FXML
     private Label paymentStone;
+    @FXML
+    private ImageView paymentStoneImageView;
 
     @FXML
     private VBox vShield;
@@ -293,7 +301,7 @@ public class GamePanel extends SceneHandler {
         put("onepositionreset", onePositionReset);
     }};
 
-    private String command;
+    private StringBuilder command = new StringBuilder();
     private PersonalBoardController personalBoardController;
 
     /**
@@ -307,6 +315,7 @@ public class GamePanel extends SceneHandler {
     private ImageView[][] devCardSpots;
     private ArrayList<VBox> paymentSpots;
     private HashMap<ImageView, String> reinsertMap;
+    private List<ResourceAndDepot> paymentBuffer = new ArrayList<>();
 
     /**
      * map for resource and marbles.
@@ -315,6 +324,7 @@ public class GamePanel extends SceneHandler {
      */
     private HashMap<Color, Image> colorImageMap;
     private HashMap<Resource, Label> resourceLabelHashMap;
+    private HashMap<ImageView, Label> paymentImageLabelHashMap;
     private HashMap<Tab, BoardController> boardAndControllerMap = new HashMap<>();
 
     public GamePanel() {
@@ -350,6 +360,15 @@ public class GamePanel extends SceneHandler {
                 {devcard01, devcard11, devcard21, devcard31},
                 {devcard02, devcard12, devcard22, devcard32}
         };
+        for (int row = 0; row < devCardSpots.length; row++) {
+            for (int col = 0; col < devCardSpots[row].length; col++) {
+                int finalRow = row;
+                int finalCol = col;
+                devCardSpots[row][col].setOnMouseClicked(
+                        e -> showPayment(getModel().getDevelopmentGrid().getGrid()[finalRow][finalCol])
+                );
+            }
+        }
         colorImageMap = new HashMap<>(){{
             put(Color.BLUE, blueMarble);
             put(Color.GREY, greyMarble);
@@ -366,6 +385,23 @@ public class GamePanel extends SceneHandler {
         imgViewShield.setFitWidth(40);
         imgViewStone.setFitHeight(40);
         imgViewStone.setFitWidth(40);
+
+        paymentCoinImageView.setImage(imgCoin);
+        paymentSerfImageView.setImage(imgSerf);
+        paymentShieldImageView.setImage(imgShield);
+        paymentStoneImageView.setImage(imgStone);
+        paymentImageLabelHashMap = new HashMap<>() {{
+            put(paymentCoinImageView, paymentCoin);
+            put(paymentSerfImageView, paymentSerf);
+            put(paymentShieldImageView, paymentShield);
+            put(paymentStoneImageView, paymentStone);
+        }};
+        resourceLabelHashMap = new HashMap<>() {{
+            put(Resource.COIN, paymentCoin);
+            put(Resource.SERF, paymentSerf);
+            put(Resource.SHIELD, paymentShield);
+            put(Resource.STONE, paymentStone);
+        }};
 
         devPosCombo.getItems().addAll("1", "2", "3");
 
@@ -526,7 +562,6 @@ public class GamePanel extends SceneHandler {
             }
         }
         mbEx.setImage(colorImageMap.get(exMarble.getColor()));
-
     }
 
     public void updateMarketListener(){
@@ -559,46 +594,25 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * shows the Dev Grid pane on the click of the relative button
+     * shows the Dev Grid pane
      * @param event
      */
     @FXML
     void showDevGrid(ActionEvent event) {
         goFront(devGridPane);
-        for(int row=0; row<devCardSpots.length; row++) {
-            for (int col = 0; col < devCardSpots[row].length; col++) {
-                int finalRow = row;
-                int finalCol = col;
-                devCardSpots[row][col].setOnMouseClicked(event1 -> {
-                    showPayment(getModel().getDevelopmentGrid().getGrid()[finalRow][finalCol]);
-                });
-            }
-        }
     }
 
     private void showPayment(DevelopmentCard devCard) {
         selectedDevCard = devCard;
-        HashMap<Resource, Label> resourceLabelHashMap = new HashMap<>(){{
-            put(Resource.COIN, paymentCoin);
-            put(Resource.SERF, paymentSerf);
-            put(Resource.SHIELD, paymentShield);
-            put(Resource.STONE, paymentStone);
-        }};
-        StringBuilder cmd = new StringBuilder("buydevcard: ");
-        cmd.append(devCard.getLevel() + ", " + devCard.getColor().name() + ", " + devPosCombo.getValue() + ", ");
         devCardToBuy.setImage(Utility.getCardPng(devCard.getID()));
-        for(UtilityProductionAndCost cost: devCard.getCosts()){
+        for (UtilityProductionAndCost cost : devCard.getCosts()) {
             resourceLabelHashMap.get(cost.getResource()).setText(Integer.toString(cost.getQuantity()));
         }
+        for (Resource res : personalBoardController.getBoard().getPowerSale())
+            resourceLabelHashMap.get(res).setText(Integer.toString(Integer.parseInt(resourceLabelHashMap.get(res).getText()) - 1));
         colorLabel.setText("Color: " + devCard.getColor().name());
         levelLabel.setText("Level: " + devCard.getLevel());
-        for(VBox res: paymentSpots){
-            res.setOnDragOver(dragEvent -> {
-                dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                dragEvent.consume();
-            });
-        }
-        ArrayList<Integer> storesStone = new ArrayList<>();
+        /*ArrayList<Integer> storesStone = new ArrayList<>();
         ArrayList<Integer> storesShield = new ArrayList<>();
         ArrayList<Integer> storesSerf = new ArrayList<>();
         ArrayList<Integer> storesCoin = new ArrayList<>();
@@ -647,10 +661,65 @@ public class GamePanel extends SceneHandler {
                 }
             }
             command = cmd.toString();
-        }
+        }*/
         goFront(paymentPane);
     }
 
+    @FXML
+    public void acceptResInBuyCard(DragEvent event) {
+        if (!event.getDragboard().getString().equals("hand"))
+            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+    }
+
+    @FXML
+    public void buyCard(ActionEvent event){
+        command.setLength(0);
+        command.append("buydevcard: ")
+                .append(selectedDevCard.getLevel()).append(", ")
+                .append(selectedDevCard.getColor().name()).append(", ")
+                .append(devPosCombo.getValue()).append(", ");
+
+    }
+
+    public void backToDevGrid(ActionEvent actionEvent) {
+        revertBuyCard();
+        paymentCoin.setText("0");
+        paymentSerf.setText("0");
+        paymentShield.setText("0");
+        paymentStone.setText("0");
+        selectedDevCard = null;
+        goFront(devGridPane);
+    }
+
+    @FXML
+    public void dropResInCardCost(DragEvent event) {
+        Dragboard dragboard = event.getDragboard();
+        ImageView paymentDestination = (ImageView) event.getSource();
+        Image draggedResource = ((ImageView) event.getGestureSource()).getImage();
+        String resourceSource = dragboard.getString();
+        if (resourceSource.equals("hand")) {
+            event.setDropCompleted(false);
+            return;
+        } else if (paymentDestination.getImage().equals(draggedResource)) {
+            Label resourceNumber = paymentImageLabelHashMap.get(paymentDestination);
+            if (Integer.parseInt(resourceNumber.getText()) > 0) {
+                paymentBuffer.add(new ResourceAndDepot(
+                        imageResourceMap.get(draggedResource),
+                        resourceSource.substring(0, 1).matches("\\d") ? Integer.parseInt(resourceSource) : 0
+                        ));
+                resourceNumber.setText(Integer.toString(Integer.parseInt(resourceNumber.getText()) - 1));
+                event.setDropCompleted(true);
+                return;
+            }
+        }
+        event.setDropCompleted(false);
+    }
+
+    public void revertBuyCard() {
+
+    }
+
+    //LEADER CARDS PANE
     /**
      * shows the initial phase of the choose of the 2 leader cards
      * @param actionEvent
@@ -667,16 +736,55 @@ public class GamePanel extends SceneHandler {
             selectedLeader.get().setEffect(null);
             selectedLeader.set(null);
         }
-        for (ImageView img : leaderHand) {
-            img.setImage(null);
+        int i;
+        for (i = 0; i < leaderHand.size(); i++) {
+            try {
+                LeaderCard card = hand.getHand().get(i);
+                leaderHand.get(i).setImage(Utility.getCardPng(card.getID()));
+            } catch (IndexOutOfBoundsException e) {
+                leaderHand.get(i).setImage(null);
+            }
         }
-        try {
-            leaderHand.get(0).setImage(Utility.getCardPng(hand.getHand().get(0).getID()));
-            leaderHand.get(1).setImage(Utility.getCardPng(hand.getHand().get(1).getID()));
-            leaderHand.get(2).setImage(Utility.getCardPng(hand.getHand().get(2).getID()));
-            leaderHand.get(3).setImage(Utility.getCardPng(hand.getHand().get(3).getID()));
-        }catch(IndexOutOfBoundsException ignore){
+    }
+
+    private void leaderButtonsProperty() {
+        if (selectedLeader.get() == null) {
+            discardButton.setDisable(true);
+            deployLButton.setDisable(true);
+        } else {
+            discardButton.setDisable(false);
+            deployLButton.setDisable(false);
         }
+    }
+
+    @FXML
+    public void selectLeaderCard(MouseEvent e){
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setSaturation(0.5);
+        ImageView selectedCard = (ImageView)e.getSource();
+        //if no leader was previously selected, the leader is selected.
+        //if a leader was selected, remove the effect.
+        //if the leader is reselected, remove the selection.
+        if (selectedLeader.get() != null && selectedLeader.get() == selectedCard) {
+            selectedCard.setEffect(null);
+            selectedLeader.set(null);
+            return;
+        } else if (selectedLeader.get() != null) {
+            selectedLeader.get().setEffect(null);
+        }
+        selectedLeader.set(selectedCard);
+        selectedCard.setEffect(colorAdjust);
+    }
+
+    @FXML
+    public void discardLeaderCard(ActionEvent actionEvent) {
+        //TODO use process instead of this
+        getGui().getView().discardLeader(new String[]{"", Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1)});
+    }
+
+    @FXML
+    public void deployLeaderCard(ActionEvent actionEvent) {
+        getGui().getView().process("useleader: " + Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1));
     }
 
     /**
@@ -722,49 +830,7 @@ public class GamePanel extends SceneHandler {
     private void nextUpdate() {
         nextButton.setDisable(!getModel().isIsFinished());
     }
-
-    @FXML
-    public void buyCard(ActionEvent event){
-        getGui().getView().process(command);
-    }
-
-    private void leaderButtonsProperty() {
-        if (selectedLeader.get()==null) {
-            discardButton.setDisable(true);
-            deployLButton.setDisable(true);
-        } else {
-            discardButton.setDisable(false);
-            deployLButton.setDisable(false);
-        }
-    }
-
-    @FXML
-    public void selectLeaderCard(MouseEvent e){
-        ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setSaturation(0.5);
-        ImageView selectedCard = (ImageView)e.getSource();
-        //if no leader was previously selected, the leader is selected.
-        //if a leader was selected, remove the effect.
-        //if the leader is reselected, remove the selection.
-        if (selectedLeader.get() != null && selectedLeader.get() == selectedCard) {
-            selectedCard.setEffect(null);
-            selectedLeader.set(null);
-            return;
-        } else if (selectedLeader.get() != null) {
-            selectedLeader.get().setEffect(null);
-        }
-        selectedLeader.set(selectedCard);
-        selectedCard.setEffect(colorAdjust);
-    }
-
-    @FXML
-    public void discardLeaderCard(ActionEvent actionEvent) {
-        getGui().getView().process("discardleader: " + Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1));
-    }
-    @FXML
-    public void deployLeaderCard(ActionEvent actionEvent) {
-        getGui().getView().process("useleader: " + Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1));
-    }
+    //
 
     /**
      * accept drag&drop in the reinsert marble slots of the market
@@ -797,20 +863,6 @@ public class GamePanel extends SceneHandler {
         ClipboardContent content = new ClipboardContent();
         content.putImage(mbEx.getImage());
         db.setContent(content);
-    }
-
-    public void backToDevGrid(ActionEvent actionEvent) {
-        revertBuyCard();
-        paymentCoin.setText("0");
-        paymentSerf.setText("0");
-        paymentShield.setText("0");
-        paymentStone.setText("0");
-        selectedDevCard = null;
-        goFront(devGridPane);
-    }
-
-    public void revertBuyCard() {
-        
     }
 
     public void choose(ActionEvent actionEvent) {
@@ -944,13 +996,13 @@ public class GamePanel extends SceneHandler {
         blur.radiusProperty().bind(value);
         if (boardPane.getEffect() == null) boardPane.setEffect(blur);
         if (currentPane != null) currentPane.setEffect(blur);
-        Timeline blurring = new Timeline(new KeyFrame(Duration.seconds(0.5), new KeyValue(value, 10)));
-        FadeTransition paneFadeInTransition = new FadeTransition(Duration.seconds(0.5), pane);
+        Timeline blurring = new Timeline(new KeyFrame(Duration.seconds(0.1), new KeyValue(value, 10)));
+        FadeTransition paneFadeInTransition = new FadeTransition(Duration.seconds(0.3), pane);
         pane.toFront();
         pane.setOpacity(1);
         paneFadeInTransition.setFromValue(0);
         paneFadeInTransition.setToValue(1);
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.1));
         SequentialTransition trans = new SequentialTransition(blurring, paneFadeInTransition, pause);
         pane.setDisable(false);
         trans.setAutoReverse(true);

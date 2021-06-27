@@ -145,6 +145,7 @@ public class PersonalBoardController extends BoardController {
     private HashMap<ImageView, Label> devCostMap1;
     private HashMap<ImageView, Label> devCostMap2;
     private HashMap<ImageView, Label> devCostMap3;
+    private HashMap<Image, Label> strongImageMap;
     private ArrayList<ArrayList<ImageView>> leaderProdImageView;
     private ArrayList<GridPane> leaderDepots;
     private ArrayList<HashMap<Resource, Label>> paymentLabels;
@@ -153,6 +154,12 @@ public class PersonalBoardController extends BoardController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        strongImageMap = new HashMap<>() {{
+            put(getStrongCoin().getImage(), getBoxCoin());
+            put(getStrongSerf().getImage(), getBoxSerf());
+            put(getStrongShield().getImage(), getBoxShield());
+            put(getStrongStone().getImage(), getBoxStone());
+        }};
         setImage();
         devCostMap1 = new HashMap<>(){{
             put(stoneCost1, paymentStone1);
@@ -368,14 +375,40 @@ public class PersonalBoardController extends BoardController {
         ClipboardContent content = new ClipboardContent();
         Image res = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
         content.putImage(res);
+        content.putString("hand");
         db.setContent(content);
     }
     /**
-     * accept drag & drop
+     * Accepts drop into warehouse if the drag source corresponds to the hand.
      */
     @FXML
-    public void onDragOver(DragEvent event) {
-        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+    public void dragOverWarehouse(DragEvent event) {
+        if (event.getDragboard().getString().equals("hand"))
+            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+    }
+
+    /**
+     * Removes a resource from the depot from which the drag & drop started. Used in production and payment.
+     */
+    @FXML
+    public void withdrawRes(DragEvent event) {
+        Dragboard dragboard = event.getDragboard();
+        String source = dragboard.getString();
+        if (!event.isAccepted()) return;
+        int depot = source.substring(0, 1).matches("\\d") ? Integer.parseInt(source) : 0;
+        if (depot == 0) {
+            Label strongBoxLabel = strongImageMap.get(dragboard.getImage());
+            strongBoxLabel.setText(Integer.toString(Integer.parseInt(strongBoxLabel.getText()) - 1));
+        } else {
+            ListIterator<ImageView> iterator = getStoresList().get(depot - 1).listIterator(getStoresList().get(depot - 1).size());
+            while (iterator.hasPrevious()) {
+                ImageView currentImageView = iterator.previous();
+                if (currentImageView.getImage() != null) {
+                    currentImageView.setImage(null);
+                    return;
+                }
+            }
+        }
     }
 
     /**
@@ -398,6 +431,10 @@ public class PersonalBoardController extends BoardController {
      */
     @FXML
     public void dropResWar(DragEvent event){
+        if (!event.getDragboard().getString().equals("hand")) {
+            event.setDropCompleted(false);
+            return;
+        }
         StringBuilder command = new StringBuilder();
         ImageView destination = (ImageView) event.getSource();
         Image image = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
