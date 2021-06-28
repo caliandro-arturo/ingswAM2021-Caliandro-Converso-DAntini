@@ -380,10 +380,11 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             //parsing development cards
             JsonArray devSpace = board.getAsJsonArray("developmentPlaces");
             DevelopmentPlace developmentPlace = playerBoard.getDevelopmentPlace();
+            int devPlaceIndex = 0;
             for (JsonElement j :
                     devSpace) {
                 JsonArray devPlace = j.getAsJsonArray();
-                int devPlaceIndex = 0;
+                devPlaceIndex++;
                 for (JsonElement k :
                         devPlace) {
                     JsonObject devCard = k.getAsJsonObject();
@@ -398,7 +399,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                     int victoryPoints = devCard.get("victoryPoints").getAsInt();
                     int level = devCard.get("level").getAsInt();
                     DevelopmentCard card = new DevelopmentCard(ID, level, victoryPoints, color, cost, productionPower);
-                    developmentPlace.setDevStack(card, devPlaceIndex++);
+                    developmentPlace.setDevStack(card, devPlaceIndex);
                 }
             }
             //parsing the resource hand
@@ -595,6 +596,8 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         }
         model.setIsFinished(true);
         refresh("developmentgrid", msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
+        if (msg.getPlayer().equals(model.getPlayerUsername()))
+            showUpdate("cardbought");
     }
 
     @Override

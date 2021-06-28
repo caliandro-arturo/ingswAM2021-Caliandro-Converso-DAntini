@@ -1,16 +1,16 @@
-.button{
+.button {
     -fx-background-color: linear-gradient(#dc9f54, #955824);
     -fx-text-fill: linear-gradient(#0e0b0a, #32320d);
     -fx-font-size: 16;
     -fx-font-family: Harrington;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 }
 
-.pagination{
+.pagination {
     -fx-text-fill: linear-gradient(#ff8400, #ffdc00);
     -fx-font-size: 15;
     -fx-font-family: Harrington;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 
 }
 
@@ -37,24 +37,28 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
 
 }*/
-.split-pane{
+.split-pane {
     -fx-background-image: url('../png/back.png');
     -fx-background-repeat: repeat;
 }
-.root{
+
+.root {
     -fx-background-image: url('../png/back.png');
     -fx-background-repeat: repeat;
 }
-#labelLeaderCards{
+
+#labelLeaderCards {
     -fx-effect: dropshadow(three-pass-box, rgba(243, 235, 233, 0.6), 25, 0.85, 0, 0);
     -fx-font-size: 18;
 }
 
-#paymentPane>.label {
+#paymentPane.label,
+#paymentPositionQuest>.label,
+#paymentCoin, #paymentSerf, #paymentShield, #paymentStone {
     -fx-font-size: 18;
 }
 
-#phaseAnnouncementPane>.label {
+#phaseAnnouncementPane > .label {
     -fx-font-size: 33;
 }
 

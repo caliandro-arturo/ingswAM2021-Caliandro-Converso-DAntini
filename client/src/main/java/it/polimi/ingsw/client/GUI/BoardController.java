@@ -219,7 +219,7 @@ public class BoardController implements Initializable {
     public void setBoard(Board board) {
         this.board = board;
         for (int i = 0; i < board.getFaithTrack().getPosition(); i++)
-            increasePos();
+            increasePos(cross, i);
         board.getFaithTrack().positionProperty().addListener(e -> increasePos());
         board.getResHand().getResources().addListener((ListChangeListener<? super Resource>) e -> {
             if (e.next())
@@ -282,6 +282,7 @@ public class BoardController implements Initializable {
         });
         updateStrongbox();
         updateWarehouse();
+        updateDevPlace();
     }
 
     public void setImage(){
@@ -389,19 +390,19 @@ public class BoardController implements Initializable {
     @FXML
     void increasePos(ImageView cross, int oldPosition) {
         checkTile(oldPosition);
-        if (oldPosition<=2)
+        if (oldPosition<2)
             moveRight(cross);
-        else if(oldPosition<5)
+        else if(oldPosition<4)
             moveUp(cross);
-        else if(oldPosition<10)
+        else if(oldPosition<9)
             moveRight(cross);
-        else if(oldPosition<12)
+        else if(oldPosition<11)
             moveDown(cross);
-        else if(oldPosition<17)
+        else if(oldPosition<16)
             moveRight(cross);
-        else if(oldPosition<19)
+        else if(oldPosition<18)
             moveUp(cross);
-        else if(oldPosition<25)
+        else if(oldPosition<24)
             moveRight(cross);
     }
 
@@ -529,14 +530,10 @@ public class BoardController implements Initializable {
     }
 
     public void updateDevPlace(){
-        for (ObservableList<DevelopmentCard> devPlaces: board.getDevelopmentPlace().getDevStack()){
-            for(ArrayList<ImageView> imageDevPlace: devPlace){
-                for (int i = 0; i < devPlaces.size(); i++) {
-                    imageDevPlace.get(i).setImage(new Image(Objects.requireNonNull(getClass().
-                            getResourceAsStream("/png/cards/" + devPlaces.get(i).getID() + ".png"))));
-
-                }
-            }
+        ArrayList<ObservableList<DevelopmentCard>> devPlaces = board.getDevelopmentPlace().getDevStack();
+        for (int i = 0; i < devPlaces.size(); i++) {
+            for (int j = 0; j < devPlaces.get(i).size(); j++)
+                devPlace.get(i).get(j).setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/" + devPlaces.get(i).get(j).getID() + ".png"))));
         }
     }
 }

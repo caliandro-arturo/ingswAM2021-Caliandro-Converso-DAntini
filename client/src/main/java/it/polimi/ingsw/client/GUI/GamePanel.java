@@ -28,9 +28,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class GamePanel extends SceneHandler {
     /**
@@ -110,10 +108,16 @@ public class GamePanel extends SceneHandler {
     private ComboBox<String> devPosCombo;
     @FXML
     private Button cardsButton;
+
     @FXML
     private ImageView devCardToBuy;
     @FXML
-    private Button backToGridBtn;
+    private VBox paymentBox;
+    @FXML
+    private HBox paymentPositionQuest;
+    @FXML
+    private Button paymentButton;
+
     @FXML
     private Button gridButton;
     @FXML
@@ -128,8 +132,6 @@ public class GamePanel extends SceneHandler {
     private Button discardButton;
     @FXML
     private Button deployLButton;
-    @FXML
-    private Button chooseCardX;
     @FXML
     private ImageView leadCard1;
     @FXML
@@ -404,6 +406,9 @@ public class GamePanel extends SceneHandler {
         }};
 
         devPosCombo.getItems().addAll("1", "2", "3");
+        devPosCombo.valueProperty().addListener(e -> {
+            if (!devPosCombo.getSelectionModel().isEmpty()) paymentButton.setDisable(false);
+        });
 
         getModel().getMarket().marbleProperty().addListener(e ->Platform.runLater(this::updateMarketListener));
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
@@ -470,6 +475,22 @@ public class GamePanel extends SceneHandler {
 
     public Button getInitialResourcesButton() {
         return initialResourcesButton;
+    }
+
+    public VBox getPaymentBox() {
+        return paymentBox;
+    }
+
+    public HBox getPaymentPositionQuest() {
+        return paymentPositionQuest;
+    }
+
+    public Button getPaymentButton() {
+        return paymentButton;
+    }
+
+    public Button getNextButton() {
+        return nextButton;
     }
 
     /**
@@ -595,7 +616,6 @@ public class GamePanel extends SceneHandler {
 
     /**
      * shows the Dev Grid pane
-     * @param event
      */
     @FXML
     void showDevGrid(ActionEvent event) {
@@ -612,56 +632,6 @@ public class GamePanel extends SceneHandler {
             resourceLabelHashMap.get(res).setText(Integer.toString(Integer.parseInt(resourceLabelHashMap.get(res).getText()) - 1));
         colorLabel.setText("Color: " + devCard.getColor().name());
         levelLabel.setText("Level: " + devCard.getLevel());
-        /*ArrayList<Integer> storesStone = new ArrayList<>();
-        ArrayList<Integer> storesShield = new ArrayList<>();
-        ArrayList<Integer> storesSerf = new ArrayList<>();
-        ArrayList<Integer> storesCoin = new ArrayList<>();
-
-        for(VBox res: paymentSpots){
-            res.setOnDragDropped(dragEvent -> {
-                Resource resource = resourceImageMap.entrySet().stream()
-                        .filter(entry->entry.getValue().equals(dragEvent.getDragboard().getImage()))
-                        .findAny().get().getKey();
-                String cost = resourceLabelHashMap.get(resource).getText();
-
-                resourceLabelHashMap.get(resource).setText(Integer.toString(Integer.parseInt(cost)-1));
-
-                switch (resource){
-                    case COIN -> storesCoin.add(Integer.parseInt(dragEvent.getDragboard().getString()));
-                    case SERF -> storesSerf.add(Integer.parseInt(dragEvent.getDragboard().getString()));
-                    case SHIELD -> storesShield.add(Integer.parseInt(dragEvent.getDragboard().getString()));
-                    case STONE -> storesStone.add(Integer.parseInt(dragEvent.getDragboard().getString()));
-                }
-            });
-        }
-        if(paymentCoin.getText().equals("0") && paymentStone.getText().equals("0") &&
-                paymentShield.getText().equals("0") && paymentSerf.getText().equals("0")){
-            for(UtilityProductionAndCost cost: devCard.getCosts()){
-                switch (cost.getResource()){
-                    case COIN -> {
-                        for(Integer store: storesCoin){
-                            cmd.append(store + " ");
-                        }
-                    }
-                    case SERF -> {
-                        for(Integer store: storesSerf){
-                            cmd.append(store + " ");
-                        }
-                    }
-                    case SHIELD -> {
-                        for(Integer store: storesShield){
-                            cmd.append(store + " ");
-                        }
-                    }
-                    case STONE -> {
-                        for(Integer store: storesStone){
-                            cmd.append(store + " ");
-                        }
-                    }
-                }
-            }
-            command = cmd.toString();
-        }*/
         goFront(paymentPane);
     }
 
@@ -672,23 +642,37 @@ public class GamePanel extends SceneHandler {
     }
 
     @FXML
-    public void buyCard(ActionEvent event){
+    public void buyCard(ActionEvent event) {
+        int numOfRequiredResources = Arrays.stream(selectedDevCard.getCosts())
+                .mapToInt(UtilityProductionAndCost::getQuantity)
+                .sum();
+        if (numOfRequiredResources != paymentBuffer.size()) return;
         command.setLength(0);
         command.append("buydevcard: ")
                 .append(selectedDevCard.getLevel()).append(", ")
                 .append(selectedDevCard.getColor().name()).append(", ")
                 .append(devPosCombo.getValue()).append(", ");
-
+        for (UtilityProductionAndCost upc :
+                selectedDevCard.getCosts()) {
+            paymentBuffer.stream()
+                    .filter(element -> upc.getResource().equals(element.getResource()))
+                    .forEach(res -> command.append(res.getDepot()).append(" "));
+        }
+        getGui().getView().process(command.toString());
+        command.setLength(0);
     }
 
     public void backToDevGrid(ActionEvent actionEvent) {
         revertBuyCard();
+        goFront(devGridPane);
         paymentCoin.setText("0");
         paymentSerf.setText("0");
         paymentShield.setText("0");
         paymentStone.setText("0");
         selectedDevCard = null;
-        goFront(devGridPane);
+        paymentButton.setDisable(true);
+        paymentPositionQuest.setDisable(true);
+        devPosCombo.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -708,6 +692,10 @@ public class GamePanel extends SceneHandler {
                         resourceSource.substring(0, 1).matches("\\d") ? Integer.parseInt(resourceSource) : 0
                         ));
                 resourceNumber.setText(Integer.toString(Integer.parseInt(resourceNumber.getText()) - 1));
+                if (resourceLabelHashMap.values().stream()
+                        .mapToInt(label -> Integer.parseInt(label.getText()))
+                        .sum() == 0)
+                    paymentPositionQuest.setDisable(false);
                 event.setDropCompleted(true);
                 return;
             }
@@ -716,7 +704,9 @@ public class GamePanel extends SceneHandler {
     }
 
     public void revertBuyCard() {
-
+        personalBoardController.updateWarehouse();
+        personalBoardController.updateStrongbox();
+        paymentBuffer.clear();
     }
 
     //LEADER CARDS PANE
@@ -816,7 +806,7 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * Closes the pane and brings to front the Board pane.
+     * Closes any pane in front of the board pane.
      */
     public void closePopup(ActionEvent actionEvent){
         boardPane.toFront();
@@ -963,9 +953,14 @@ public class GamePanel extends SceneHandler {
                 chooseButton.setDisable(false);
                 getModel().getBoard().setProductionInterface(true);
             }
-            case "Market", "Buy a development card" ->{
+            case "Market" ->{
                 getModel().setIsFinished(false);
                 backButton.setDisable(false);
+            }
+            case "Buy a development card" -> {
+                getModel().setIsFinished(false);
+                backButton.setDisable(false);
+                paymentBox.setDisable(false);
             }
             case "Activate productions" ->{
                 getModel().setIsFinished(false);

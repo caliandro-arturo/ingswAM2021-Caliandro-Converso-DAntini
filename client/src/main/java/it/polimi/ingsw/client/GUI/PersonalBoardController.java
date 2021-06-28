@@ -707,6 +707,7 @@ public class PersonalBoardController extends BoardController {
         super.updateDevPlace();
         ArrayList<DevelopmentCard> cards = view.getModel().getBoard().getDevelopmentPlace().getTopCards();
         for (int i = 0; i < cards.size(); i++) {
+            if (cards.get(i) == null) continue;
             for (UtilityProductionAndCost cost: cards.get(i).getCosts()){
                 paymentLabels.get(i).get(cost.getResource()).setText(String.valueOf(cost.getQuantity()));
             }

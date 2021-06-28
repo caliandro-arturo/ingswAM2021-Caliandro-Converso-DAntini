@@ -704,6 +704,11 @@ public class CLIView extends View {
     }
 
     @Override
+    public void showCardBought() {
+        showUpdateText("Card bought successfully");
+    }
+
+    @Override
     public void showMarketUsed() {
         showUpdateText("You have used the market: deploy or discard the resources in your hand.");
     }

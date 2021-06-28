@@ -119,7 +119,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         try {
             newCard = controllerAdapter.buyCard(getPlayer(buyCard.getPlayer()), buyCard.getLevel(), buyCard.getColor(), buyCard.getSpace(),
                     buyCard.getStores());
-        } catch (GameException.IllegalMove e) {
+        } catch (GameException.IllegalMove | IllegalArgumentException e) {
             denyMove(buyCard, e.getMessage());
             return;
         }

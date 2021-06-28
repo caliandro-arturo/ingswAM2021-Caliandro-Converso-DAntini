@@ -315,13 +315,26 @@ public class GUIView extends View {
     }
 
     @Override
+    public void showCardBought() {
+        show("Card bought successfully.");
+        Platform.runLater(() -> {
+            GamePanel controller = (GamePanel) App.controller;
+            controller.closePopup(null);
+            controller.getPaymentButton().setDisable(true);
+            controller.getPaymentPositionQuest().setDisable(true);
+            controller.getPaymentBox().setDisable(true);
+            controller.getNextButton().fire();
+        });
+    }
+
+    @Override
     public void showMarketUsed() {
         show("You have used the market: deploy or discard the resources in your hand.");
     }
 
     @Override
     public void showVaticanReport(int reportNum, boolean isPassed) {
-        show("You"
+        show("You "
         + (isPassed ? "passed" : "didn't pass")
         + " the vatican report number " + reportNum + ".");
     }

@@ -144,6 +144,7 @@ public abstract class View {
             case "getinitialresource" -> showGetInitialResource();
             case "gotresource" -> showGotResource(update[1]);
             case "resourcetaken" -> showResourceTaken();
+            case "cardbought" -> showCardBought();
             case "marketused" -> showMarketUsed();
             case "vatican" -> showVaticanReport(Integer.parseInt(update[1]), Boolean.parseBoolean(update[2]));
             case "lastturns" -> showLastTurns(update[1]);
@@ -181,6 +182,8 @@ public abstract class View {
     public abstract void showGotResource(String resource);
 
     public abstract void showResourceTaken();
+
+    public abstract void showCardBought();
 
     public abstract void showMarketUsed();
 

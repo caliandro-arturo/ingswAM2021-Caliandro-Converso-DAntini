@@ -338,90 +338,6 @@
                   <Button layoutX="754.0" layoutY="26.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
                </children>
             </Pane>
-            <Pane fx:id="paymentPane" maxHeight="-Infinity" prefHeight="268.0" prefWidth="927.0" stylesheets="@../css/gamepanel.css" StackPane.alignment="TOP_CENTER">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#86d8f8" height="224.0" layoutX="20.0" layoutY="29.0" stroke="BLACK" strokeType="INSIDE" width="888.0" />
-                  <ImageView fx:id="devCardToBuy" fitHeight="208.0" fitWidth="150.0" layoutX="32.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
-                  <ComboBox fx:id="devPosCombo" layoutX="802.0" layoutY="115.0" prefHeight="25.0" prefWidth="65.0" />
-                  <Label layoutX="523.0" layoutY="117.0" text="Where do you want to put the card?">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="levelLabel" layoutX="211.0" layoutY="114.0" prefHeight="26.0" prefWidth="56.0">
-                     <font>
-                        <Font name="Harrington" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="colorLabel" layoutX="211.0" layoutY="156.0" prefHeight="26.0" prefWidth="138.0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <HBox layoutX="328.0" layoutY="169.0">
-                     <children>
-                        <VBox fx:id="vCoin" alignment="CENTER">
-                           <children>
-                              <ImageView fx:id="paymentCoinImageView" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropResInCardCost" onDragOver="#acceptResInBuyCard" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/coin.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="paymentCoin" text="0" textFill="WHITE">
-                                 <font>
-                                    <Font size="23.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox fx:id="vSerf" alignment="CENTER">
-                           <children>
-                              <ImageView fx:id="paymentSerfImageView" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropResInCardCost" onDragOver="#acceptResInBuyCard" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/serf.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="paymentSerf" text="0" textFill="WHITE">
-                                 <font>
-                                    <Font size="23.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox fx:id="vShield" alignment="CENTER">
-                           <children>
-                              <ImageView fx:id="paymentShieldImageView" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropResInCardCost" onDragOver="#acceptResInBuyCard" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/shield.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="paymentShield" text="0" textFill="WHITE">
-                                 <font>
-                                    <Font size="23.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox fx:id="vStone" alignment="CENTER">
-                           <children>
-                              <ImageView fx:id="paymentStoneImageView" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropResInCardCost" onDragOver="#acceptResInBuyCard" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../png/stone.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="paymentStone" text="0" textFill="WHITE">
-                                 <font>
-                                    <Font size="23.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <Button fx:id="backToGridBtn" layoutX="211.0" layoutY="213.0" mnemonicParsing="false" onAction="#backToDevGrid" text="Back" />
-                  <Button fx:id="paymentButton" layoutX="524.0" layoutY="191.0" mnemonicParsing="false" onAction="#buyCard" text="Buy" />
-               </children>
-            </Pane>
             <Pane fx:id="whiteMarblePowerPane" prefHeight="177.0" prefWidth="391.0" StackPane.alignment="CENTER">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="182.0" layoutX="274.0" layoutY="259.0" stroke="BLACK" strokeType="INSIDE" width="380.0" />
@@ -466,6 +382,98 @@
                   </Label>
                   <Button fx:id="chooseCardX" layoutX="802.0" layoutY="122.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
                   <Button fx:id="deployLButton" layoutX="464.0" layoutY="531.0" mnemonicParsing="false" onAction="#deployLeaderCard" prefHeight="40.0" prefWidth="147.0" text="Deploy" />
+               </children>
+            </Pane>
+            <Pane fx:id="paymentPane" maxHeight="-Infinity" prefHeight="268.0" prefWidth="927.0" stylesheets="@../css/gamepanel.css" StackPane.alignment="TOP_CENTER">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#86d8f8" height="224.0" layoutX="20.0" layoutY="29.0" stroke="BLACK" strokeType="INSIDE" width="888.0" />
+                  <ImageView fx:id="devCardToBuy" fitHeight="208.0" fitWidth="150.0" layoutX="32.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox fx:id="paymentBox" alignment="CENTER" disable="true" layoutX="489.0" layoutY="71.0" prefHeight="146.0" prefWidth="354.0" spacing="10.0">
+                     <children>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <VBox fx:id="vCoin" alignment="CENTER">
+                                 <children>
+                                    <ImageView fx:id="paymentCoinImageView" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropResInCardCost" onDragOver="#acceptResInBuyCard" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/coin.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="paymentCoin" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="vSerf" alignment="CENTER">
+                                 <children>
+                                    <ImageView fx:id="paymentSerfImageView" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropResInCardCost" onDragOver="#acceptResInBuyCard" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/serf.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="paymentSerf" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="vShield" alignment="CENTER">
+                                 <children>
+                                    <ImageView fx:id="paymentShieldImageView" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropResInCardCost" onDragOver="#acceptResInBuyCard" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/shield.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="paymentShield" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="vStone" alignment="CENTER">
+                                 <children>
+                                    <ImageView fx:id="paymentStoneImageView" fitHeight="40.0" fitWidth="40.0" onDragDropped="#dropResInCardCost" onDragOver="#acceptResInBuyCard" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png/stone.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="paymentStone" text="0" textFill="WHITE">
+                                       <font>
+                                          <Font size="23.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="paymentPositionQuest" disable="true" spacing="10.0">
+                           <children>
+                              <Label text="Where do you want to put the card?">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="devPosCombo" prefHeight="25.0" prefWidth="65.0" />
+                           </children>
+                        </HBox>
+                        <Button fx:id="paymentButton" disable="true" mnemonicParsing="false" onAction="#buyCard" text="Buy" />
+                     </children>
+                  </VBox>
+                  <Label fx:id="levelLabel" layoutX="217.0" layoutY="98.0" prefHeight="26.0" prefWidth="140.0">
+                     <font>
+                        <Font name="Harrington" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="colorLabel" layoutX="217.0" layoutY="144.0" prefHeight="26.0" prefWidth="138.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="867.0" layoutY="36.0" mnemonicParsing="false" onAction="#backToDevGrid" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
                </children>
             </Pane>
          </children>
