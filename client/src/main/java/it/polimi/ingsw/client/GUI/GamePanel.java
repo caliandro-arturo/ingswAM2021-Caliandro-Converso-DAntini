@@ -436,6 +436,8 @@ public class GamePanel extends SceneHandler {
         boardsTabPane.getSelectionModel().selectedItemProperty().addListener((e, oldVal, newVal) -> {
             paneHand.getChildren().clear();
             BoardController currentBoardController = boardAndControllerMap.get(newVal);
+            leaderCard1.getChildren().clear();
+            leaderCard2.getChildren().clear();
             leaderCard1.getChildren().add(currentBoardController.getLeaderCard1());
             leaderCard1.getChildren().forEach(c -> c.relocate(0, 0));
             leaderCard2.getChildren().add(currentBoardController.getLeaderCard2());
@@ -969,9 +971,11 @@ public class GamePanel extends SceneHandler {
             case "Market" ->{
                 getModel().setIsFinished(false);
                 backButton.setDisable(false);
+                chooseButton.setDisable(true);
             }
             case "Buy a development card" -> {
                 getModel().setIsFinished(false);
+                chooseButton.setDisable(true);
                 backButton.setDisable(false);
                 paymentBox.setDisable(false);
             }

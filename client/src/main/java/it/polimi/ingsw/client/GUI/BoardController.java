@@ -223,8 +223,10 @@ public class BoardController implements Initializable {
 
     public void setBoard(Board board) {
         this.board = board;
-        for (int i = 0; i < board.getFaithTrack().getPosition(); i++)
-            increasePos(cross, i);
+        if (board.getFaithTrack().getPosition() != 0) {
+            for (int i = 0; i < board.getFaithTrack().getPosition(); i++)
+                increasePos(cross, i + 1);
+        }
         board.getFaithTrack().positionProperty().addListener(e -> increasePos());
         board.getResHand().getResources().addListener((ListChangeListener<? super Resource>) e -> {
             if (e.next())
@@ -394,10 +396,11 @@ public class BoardController implements Initializable {
 
     /**
      * increase the position of the cross in the GUI
-     * @param oldPosition the initial position to increment
+     * @param position the initial position to increment
      */
     @FXML
-    void increasePos(ImageView cross, int oldPosition) {
+    void increasePos(ImageView cross, int position) {
+        int oldPosition = position - 1;
         checkTile(oldPosition);
         if (oldPosition<2)
             moveRight(cross);

@@ -157,13 +157,13 @@ public class PersonalBoardController extends BoardController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        setImage();
         strongImageMap = new HashMap<>() {{
             put(getStrongCoin().getImage(), getBoxCoin());
             put(getStrongSerf().getImage(), getBoxSerf());
             put(getStrongShield().getImage(), getBoxShield());
             put(getStrongStone().getImage(), getBoxStone());
         }};
-        setImage();
         devCostMap1 = new HashMap<>(){{
             put(stoneCost1, paymentStone1);
             put(serfCost1, paymentSerf1);
@@ -422,7 +422,8 @@ public class PersonalBoardController extends BoardController {
         if (!event.isAccepted()) return;
         int depot = source.substring(0, 1).matches("\\d") ? Integer.parseInt(source) : 0;
         if (depot == 0) {
-            Label strongBoxLabel = strongImageMap.get(dragboard.getImage());
+            Image strongbox = ((ImageView) event.getGestureSource()).getImage();
+            Label strongBoxLabel = strongImageMap.get(strongbox);
             strongBoxLabel.setText(Integer.toString(Integer.parseInt(strongBoxLabel.getText()) - 1));
         } else {
             ListIterator<ImageView> iterator = getStoresList().get(depot - 1).listIterator(getStoresList().get(depot - 1).size());
@@ -502,6 +503,7 @@ public class PersonalBoardController extends BoardController {
             depot = 0;
         }
         addElementToCost(destination,depot,finderProductionID(destination));
+        event.setDropCompleted(true);
     }
 
     public int finderProductionID(ImageView resource){
@@ -545,8 +547,9 @@ public class PersonalBoardController extends BoardController {
         }
         if (costInt > 0) {
             addElementToCost(destination, depot + 1, productionID);
+            event.setDropCompleted(true);
         } else {
-            incrementDepotQuantity(Integer.parseInt(event.getDragboard().getString()),destination.getImage());
+            event.setDropCompleted(false);
         }
     }
 
@@ -574,7 +577,6 @@ public class PersonalBoardController extends BoardController {
                 return;
             } else {
                 refundResource(ID);
-                prodImageView.get(ID-3).get(0).setImage(null);
             }
             return;
         }
@@ -608,8 +610,6 @@ public class PersonalBoardController extends BoardController {
             } else {
                 refundResource(ID);
             }
-            baseProd1.setImage(null);
-            baseProd2.setImage(null);
         }
     }
 
@@ -643,9 +643,13 @@ public class PersonalBoardController extends BoardController {
     }
 
     public void setImageAfterProduction(int ID){
-        if (ID == 0 || ID>3) {
-            for (ImageView spot : productionsImageView.get(ID)) {
+        for (ImageView spot : productionsImageView.get(ID)) {
+            if (ID == 0 || ID>3) {
                 spot.setImage(null);
+            } else {
+                for (UtilityProductionAndCost cost: getBoard().getDevelopmentPlace().getTopCard(ID).getProduction().getCost()) {
+                    paymentLabels.get(ID-1).get(cost.getResource()).setText(String.valueOf(cost.getQuantity()));
+                }
             }
         }
     }
