@@ -11,9 +11,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class GUIView extends View {
     private boolean isInGame = false;
@@ -27,10 +25,21 @@ public class GUIView extends View {
 
     @Override
     public void showError(String error) {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                show("");
+            }
+        };
+        Timer timer = new Timer();
+        error = "You can't do this";
+        String finalError = error;
         Platform.runLater(() -> {
-            App.out.setStyle("-fx-background-color: red");
-            App.out.setText(error);
+            App.out.setStyle("-fx-background-color: #d03c3c");
+            App.out.setText(finalError);
         });
+        timer.schedule(task, 4000);
+
     }
 
     @Override

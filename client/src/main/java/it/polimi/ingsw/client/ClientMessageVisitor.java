@@ -35,17 +35,7 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
 
     @Override
     public void visit(ErrorMessage msg) {
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                guiView.show("");
-            }
-        };
-        Timer timer = new Timer();
-
         controller.showError(msg.getError());
-        guiView.showError("You can't do this");
-        timer.schedule(task, 4000);
     }
 
     @Override
