@@ -557,6 +557,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
         }
         model.setIsFinished(true);
+        model.getBoard().setIsProductionAlreadyUsed(true,msg.getID());
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 

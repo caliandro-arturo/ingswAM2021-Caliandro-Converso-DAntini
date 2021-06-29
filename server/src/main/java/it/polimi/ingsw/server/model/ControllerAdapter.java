@@ -231,7 +231,7 @@ public class ControllerAdapter {
      */
     public void startLeaderProduction(Player player,int cost,String prod, int index) throws IllegalArgumentException, GameException.IllegalMove {
         checkIfMoveIsValid(player,"ActivateProduction");
-        Resource production = Utility.mapResource.get(prod);
+        Resource production = Utility.mapResource.get(prod.toLowerCase());
         player.startLeaderProduction(cost,production,index);
         Production productionPower = player.getBoard().getProductionList().get(index);
         productionPower.setProductionCanBeActivate(false);

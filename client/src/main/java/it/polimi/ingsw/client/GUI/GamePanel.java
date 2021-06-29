@@ -153,8 +153,6 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Pane pause;
     @FXML
-    private Pane leftPane;
-    @FXML
     private Pane paymentPane;
     @FXML
     private Pane devGridPane;
@@ -247,6 +245,10 @@ public class GamePanel extends SceneHandler {
     private Label playerTurnLabel;
     @FXML
     private Label turnPhaseLabel;
+    @FXML
+    private AnchorPane leaderCard1;
+    @FXML
+    private AnchorPane leaderCard2;
 
     private Pane currentPane;
 
@@ -428,10 +430,12 @@ public class GamePanel extends SceneHandler {
         boardAndControllerMap.put(personalBoard, personalBoardLoader.getController());
         personalBoardController = personalBoardLoader.getController();
         boardsTabPane.getSelectionModel().selectedItemProperty().addListener((e, oldVal, newVal) -> {
-            leftPane.getChildren().clear();
             paneHand.getChildren().clear();
             BoardController currentBoardController = boardAndControllerMap.get(newVal);
-            leftPane.getChildren().add(currentBoardController.getLeftPane());
+            leaderCard1.getChildren().add(currentBoardController.getLeaderCard1());
+            leaderCard1.getChildren().forEach(c -> c.relocate(0, 0));
+            leaderCard2.getChildren().add(currentBoardController.getLeaderCard2());
+            leaderCard2.getChildren().forEach(c -> c.relocate(0, 0));
             paneHand.getChildren().add(currentBoardController.getResourceHand());
             paneHand.getChildren().forEach(c -> c.relocate(0, 0));
         });
@@ -503,21 +507,21 @@ public class GamePanel extends SceneHandler {
     /**
      * activated when the connection is lost. Freeze the game and show "pause"
      */
-    public void pause(){
+/*    public void pause(){
         //if(connection problems...)
         goFront(pause);
         leftPane.setDisable(true);
         rightPane.setDisable(true);
-    }
+    }*/
 
     /**
      * activated when the connection is back after pause
      */
-    public void reconnect(){
+/*    public void reconnect(){
         pause.toBack();
         leftPane.setDisable(false);
         rightPane.setDisable(false);
-    }
+    }*/
 
     /**
      * remove a specific resource from the strongbox

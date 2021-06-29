@@ -520,7 +520,15 @@
    </bottom>
    <left>
       <Pane fx:id="leftPane" prefHeight="200.0" prefWidth="250.0" stylesheets="@../css/gamepanel.css" BorderPane.alignment="CENTER">
-      </Pane>
+         <children>
+            <VBox alignment="CENTER" layoutX="-2.0" layoutY="14.0" spacing="40.0">
+               <children>
+                  <Label text="Leader Cards" />
+                  <AnchorPane fx:id="leaderCard1" prefHeight="283.0" prefWidth="254.0" />
+                  <AnchorPane fx:id="leaderCard2" prefHeight="283.0" prefWidth="254.0" />
+               </children>
+            </VBox>
+         </children></Pane>
    </left>
    <top>
       <Pane prefHeight="37.0" prefWidth="1429.0" stylesheets="@../css/gamepanel.css" BorderPane.alignment="CENTER">
