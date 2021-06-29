@@ -249,6 +249,10 @@ public class GamePanel extends SceneHandler {
     private AnchorPane leaderCard1;
     @FXML
     private AnchorPane leaderCard2;
+    @FXML
+    private Tooltip toolTipHelp;
+    @FXML
+    private Button help;
 
     private Pane currentPane;
 
@@ -458,8 +462,13 @@ public class GamePanel extends SceneHandler {
         if (getModel().getCurrentPlayerInTheGame() != null) updateCurrentPlayerLabel();
         if (getModel().getCurrentTurnPhase() != null) showTurnPhaseAnnouncement();
         getModel().whiteMarbleQuantityProperty().addListener(e -> Platform.runLater(this::updateWhiteMarbleListener));
+        help.setTooltip(toolTipHelp);
+        toolTipHelp.setText("ciao come va");
     }
 
+    public Tooltip getToolTipHelp(){
+        return toolTipHelp;
+    }
 
     private ClientModel getModel() {
         return getGui().getView().getModel();

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -565,6 +566,11 @@
                   <DropShadow height="18.62" radius="9.405000000000001" spread="0.47" />
                </effect>
             </Label>
+            <Button fx:id="help" layoutX="7.0" layoutY="6.0" mnemonicParsing="false" text="Help">
+               <tooltip>
+                  <Tooltip fx:id="toolTipHelp" />
+               </tooltip>
+            </Button>
          </children>
       </Pane>
    </top>

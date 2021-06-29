@@ -55,6 +55,10 @@ public class GUIView extends View {
 
     @Override
     public void setToDo(String id, String toDo) {
+        Platform.runLater(()-> {
+            GamePanel gamePanel = (GamePanel) App.controller;
+            gamePanel.getToolTipHelp().setText(toDo);
+        });
 
     }
 
