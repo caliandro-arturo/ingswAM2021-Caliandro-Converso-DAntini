@@ -1,9 +1,13 @@
+@font-face {
+    src: url('HARNGTON.TTF');
+}
+
 .anchor {
     -fx-background-image: url("../png/board.png");
     -fx-background-size: 937, 708;
 }
 
 .label {
-    -fx-font-family: Harrington;
+    -fx-font-family: "Harrington";
     -fx-font-size: 18;
 }

@@ -1,10 +1,14 @@
+@font-face {
+    src: url('HARNGTON.TTF');
+}
+
 .root {
     -fx-background-image: url('../png/begin.png');
     -fx-background-size: 100% 100%;
 }
 
 .label {
-    -fx-font-family: Harrington;
+    -fx-font-family: "Harrington";
     -fx-font-size: 19;
     -fx-text-fill: white;
 }
@@ -12,7 +16,7 @@
     -fx-background-color: linear-gradient(#3381a7, #024e65);
     -fx-text-fill: linear-gradient(#ff8400, #ffdc00);
     -fx-font-size: 20;
-    -fx-font-family: Harrington;
+    -fx-font-family: "Harrington";
 }
 .button:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
@@ -24,7 +28,7 @@
 .table-view .column-header-background,
 .table-view .column-header {
     -fx-background-color: linear-gradient(#3381a7, #024e65);
-    -fx-font-family: Harrington;
+    -fx-font-family: "Harrington";
     -fx-min-height: 30;
 }
 
@@ -39,7 +43,7 @@
 }
 
 .table-view .cell {
-    -fx-font-family: Harrington;
+    -fx-font-family: "Harrington";
     -fx-font-size: 20;
     -fx-text-fill: white;
 }
