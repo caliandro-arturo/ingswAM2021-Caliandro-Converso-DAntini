@@ -1019,7 +1019,7 @@ public class GamePanel extends SceneHandler {
     public void updateCurrentPlayerLabel() {
         boolean isCurrentPlayer = getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame());
         playerTurnLabel.setText(isCurrentPlayer ? "You" : getModel().getCurrentPlayerInTheGame());
-        nextButton.setDisable(isCurrentPlayer);
+        nextButton.setDisable(!isCurrentPlayer);
         newPlayerTurnLabel.setText(isCurrentPlayer ? "your" : getModel().getCurrentPlayerInTheGame() + "'s");
         showOverAndThenHide(playerTurnAnnouncementPane);
     }
