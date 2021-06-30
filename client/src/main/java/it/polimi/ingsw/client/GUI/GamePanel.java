@@ -1053,4 +1053,8 @@ public class GamePanel extends SceneHandler {
         }
         closePopup(null);
     }
+
+    public void quit(ActionEvent actionEvent) {
+        System.exit(0);
+    }
 }
