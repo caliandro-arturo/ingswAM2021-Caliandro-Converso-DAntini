@@ -12,6 +12,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WritableIntegerValue;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -393,7 +394,7 @@ public class GamePanel extends SceneHandler {
                 int finalRow = row;
                 int finalCol = col;
                 devCardSpots[row][col].setOnMouseClicked(
-                        e -> showPayment(getModel().getDevelopmentGrid().getGrid()[finalRow][finalCol])
+                        e -> showPayment(getModel().getDevelopmentGrid().getCard(finalRow,finalCol))
                 );
             }
         }
@@ -438,7 +439,9 @@ public class GamePanel extends SceneHandler {
         scores.addAll(Arrays.asList(faithTrackVPLabel, devCardVPLabel, leadCardVPLabel, popeFavorVPLabel, resVPLabel));
 
         getModel().getMarket().marbleProperty().addListener(e ->Platform.runLater(this::updateMarketListener));
-        getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
+        for (int i = 0; i < 3; i++) {
+            getModel().getDevelopmentGrid().gridProperty(i).addListener((InvalidationListener) e -> setDevGridPng());
+        }
         selectedLeader.addListener(e -> leaderButtonsProperty());
         if (getModel().getMarket().getGrid() != null) setMarketPng();
         if (getModel().getDevelopmentGrid().getGrid() != null) setDevGridPng();
@@ -620,10 +623,13 @@ public class GamePanel extends SceneHandler {
      * relative card images
      */
     public void setDevGridPng(){
-        DevelopmentCard[][] devGrid = getModel().getDevelopmentGrid().getGrid();
-        for(int row=0; row<devGrid.length; row++){
-            for(int col=0; col<devGrid[row].length; col++){
-                devCardSpots[row][col].setImage(Utility.getCardPng(devGrid[row][col].getID()));
+        ArrayList<ObservableList<DevelopmentCard>> devGrid = getModel().getDevelopmentGrid().getGrid();
+        for(int row=0; row<devGrid.size(); row++){
+            for(int col=0; col<devGrid.get(row).size(); col++){
+                if (devGrid.get(row).get(col)!=null) {
+                    devCardSpots[row][col].setImage(Utility.getCardPng(devGrid.get(row).get(col).getID()));
+                } else
+                    devCardSpots[row][col].setImage(null);
             }
         }
     }

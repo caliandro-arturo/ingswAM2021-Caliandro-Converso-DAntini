@@ -245,12 +245,29 @@ public class PersonalBoardController extends BoardController {
         }};
         productionsImageView = new ArrayList<>(){{
             add(new ArrayList<>(Arrays.asList(baseProd1, baseProd2)));
-            add(new ArrayList<>(Arrays.asList(coinCost1, shieldCost1, serfCost1, shieldCost1)));
-            add(new ArrayList<>(Arrays.asList(coinCost2, shieldCost2, serfCost2, shieldCost2)));
-            add(new ArrayList<>(Arrays.asList(coinCost3, shieldCost3, serfCost3, shieldCost3)));
+            add(new ArrayList<>(Arrays.asList(coinCost1, shieldCost1, serfCost1, stoneCost1)));
+            add(new ArrayList<>(Arrays.asList(coinCost2, shieldCost2, serfCost2, stoneCost2)));
+            add(new ArrayList<>(Arrays.asList(coinCost3, shieldCost3, serfCost3, stoneCost3)));
             add(new ArrayList<>(Collections.singletonList(resToGive1)));
             add(new ArrayList<>(Collections.singletonList(resToGive2)));
         }};
+    }
+
+    @Override
+    public void setImage() {
+        super.setImage();
+        coinCost1.setImage(GamePanel.imgCoin);
+        coinCost2.setImage(GamePanel.imgCoin);
+        coinCost3.setImage(GamePanel.imgCoin);
+        stoneCost1.setImage(GamePanel.imgStone);
+        stoneCost2.setImage(GamePanel.imgStone);
+        stoneCost3.setImage(GamePanel.imgStone);
+        serfCost1.setImage(GamePanel.imgSerf);
+        serfCost2.setImage(GamePanel.imgSerf);
+        serfCost3.setImage(GamePanel.imgSerf);
+        shieldCost1.setImage(GamePanel.imgShield);
+        shieldCost2.setImage(GamePanel.imgShield);
+        shieldCost3.setImage(GamePanel.imgShield);
     }
 
     public Pane getDevProdPane1() {
@@ -547,6 +564,7 @@ public class PersonalBoardController extends BoardController {
         }
         if (costInt > 0) {
             addElementToCost(destination, depot + 1, productionID);
+            devCostList.get(productionID -1).get(destination).setText(String.valueOf(costInt-1));
             event.setDropCompleted(true);
         } else {
             event.setDropCompleted(false);
@@ -747,7 +765,7 @@ public class PersonalBoardController extends BoardController {
         ArrayList<DevelopmentCard> cards = view.getModel().getBoard().getDevelopmentPlace().getTopCards();
         for (int i = 0; i < cards.size(); i++) {
             if (cards.get(i) == null) continue;
-            for (UtilityProductionAndCost cost: cards.get(i).getCosts()){
+            for (UtilityProductionAndCost cost: cards.get(i).getProduction().getCost()){
                 paymentLabels.get(i).get(cost.getResource()).setText(String.valueOf(cost.getQuantity()));
             }
         }

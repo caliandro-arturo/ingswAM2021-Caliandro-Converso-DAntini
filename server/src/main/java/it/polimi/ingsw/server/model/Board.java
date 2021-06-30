@@ -205,8 +205,11 @@ public class Board {
     public ArrayList<DevelopmentCard> showActiveDevCards(){
         ArrayList<DevelopmentCard> activeDevCards = new ArrayList<>();
         for(DevelopmentPlace dev : developmentSpace){
-            if(!dev.getDevelopmentCards().isEmpty())
+            if(!dev.getDevelopmentCards().isEmpty()) {
                 activeDevCards.add(dev.getDevelopmentCards().peek());
+            } else {
+                activeDevCards.add(null);
+            }
 
         }
         return activeDevCards;
