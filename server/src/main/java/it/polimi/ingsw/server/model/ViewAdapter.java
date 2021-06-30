@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
-import it.polimi.ingsw.commonFiles.messages.toClient.DisplayEndingScores;
+import it.polimi.ingsw.commonFiles.messages.toClient.EndingScores;
 import it.polimi.ingsw.commonFiles.messages.toClient.ErrorMessage;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.*;
 import it.polimi.ingsw.commonFiles.model.Production;
@@ -9,6 +9,7 @@ import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import it.polimi.ingsw.server.VirtualView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * This class contains all the methods used by the it.polimi.ingsw.client.model to notify the player and/or to ask him to do an action.
@@ -112,8 +113,8 @@ public class ViewAdapter {
     /**
      * Notifies that the game is over and returns the final score and rank
      */
-    public void notifyGameEnded(Player player, int ranking, int[] points) {
-        sendMessage(player, new DisplayEndingScores(points,ranking));
+    public void notifyGameEnded(String player, int[] points, LinkedHashMap<String, Integer> ranking) {
+        virtualView.sendMessage(player, new EndingScores(points, ranking));
     }
 
     /**

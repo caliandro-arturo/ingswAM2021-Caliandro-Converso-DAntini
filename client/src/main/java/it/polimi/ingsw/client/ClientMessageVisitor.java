@@ -2,11 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.GUI.App;
 import it.polimi.ingsw.commonFiles.messages.toClient.*;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.AskWhiteMarble;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Reads messages from server and updates the client version of the model, or notifies the player. It implements the
@@ -54,7 +50,7 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
     }
 
     @Override
-    public void visit(DisplayEndingScores msg) {
-        controller.getView().displayEndingScore(msg.getNames(), msg.getPoints(), msg.getRanking());
+    public void visit(EndingScores msg) {
+        controller.getView().displayEndingScore(msg.getPoints(), msg.getRanking());
     }
 }

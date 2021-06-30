@@ -5,11 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 class CLIViewTest {
 
     CLIView view;
-    String[] names = {"faith path VP", "development card VP", "leader card VP", "pope's favor VP", "resource VP"};
     int[] scores = {3,15,6,2,4};
 
     @BeforeEach
@@ -62,7 +62,21 @@ class CLIViewTest {
 
     @Test
     void displayEndingScore() {
-        view.displayEndingScore(names,scores,1);
+        LinkedHashMap<String, Integer> playersMap = new LinkedHashMap<>() {{
+            put("michele", 25);
+            put("giovanni", 12);
+            put("pippo", 34);
+            put("mirella", 2);
+        }};
+        view.displayEndingScore(scores, playersMap);
+        LinkedHashMap<String, Integer> playersSoloMap = new LinkedHashMap<>() {{
+            put("pippo", -1);
+        }};
+        view.displayEndingScore(scores, playersSoloMap);
+        LinkedHashMap<String, Integer> playersWinningSoloMap = new LinkedHashMap<>() {{
+            put("pippo", -2);
+        }};
+        view.displayEndingScore(scores, playersWinningSoloMap);
     }
 
     @Test

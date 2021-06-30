@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.LorenzoPosition;
 
+import java.util.LinkedHashMap;
 import java.util.Stack;
 
 public class SinglePlayerGame extends Game {
@@ -56,9 +57,8 @@ public class SinglePlayerGame extends Game {
             isLost = true; //TODO
         }
         setFinished();
-        int rank = 1;
-        if(isLost)
-            rank = 2;
-        getViewAdapter().notifyGameEnded(getPlayer(0), rank, getPlayer(0).getVictoryPoints());
+        LinkedHashMap<String, Integer> ranking = new LinkedHashMap<>();
+        ranking.put(getPlayer(0).getUsername(),isLost ? -1 : -2);
+        getViewAdapter().notifyGameEnded(getPlayer(0).getUsername(), getPlayer(0).getVictoryPoints(),ranking);
     }
 }

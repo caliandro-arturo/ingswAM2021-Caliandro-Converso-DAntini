@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.Board;
+import it.polimi.ingsw.client.model.Color;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
@@ -10,6 +11,8 @@ import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Prints on {@link System#out} ASCII characters representing the game, updates.
@@ -603,43 +606,36 @@ public class CLIView extends View {
     }
 
     @Override
-    public void displayEndingScore(String[] categories, int[] scores, int ranking) {
-        int tot = 0;
-        StringBuilder endingTable = new StringBuilder("╔════════════════════════╗ \n");
-        endingTable.append("║").append(StringUtility.center(getModel().getPlayerUsername() + "'s score", 24)).
-                append("║ \n");
-        endingTable.append("╠════════════════════════╣ \n");
-        endingTable.append("║");
-        switch (ranking) {
-            case (1) :{
-                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "st", 24));
-                break;
-            }
-            case (2) :{
-                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "nd", 24));
-                break;
-            }
-            case (3) :{
-                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "rd", 24));
-                break;
-            }
-            default: {
-                endingTable.append(StringUtility.center("Your ranking is: " + ranking + "th", 24));
-                break;
-            }
+    public void displayEndingScore(int[] scores, LinkedHashMap<String, Integer> ranking) {
+        BiFunction<String, CLIColor, String> stringPainter = (str, color) -> color + str + CLIColor.ANSI_RESET;
+        List<String> pointCategoryNames = new ArrayList<>(
+                Arrays.asList("Faith track", "Development card", "Leader card", "Pope's favor", "Resources")
+        );
+        List<String> ordinals = new ArrayList<>(Arrays.asList("first", "second", "third", "fourth"));
+        int maxLength = ranking.keySet().stream().max(Comparator.comparingInt(String::length)).get().length();
+        Function<String, String> addPadding = string -> string + StringUtility.center("", maxLength - string.length());
+        clear();
+        System.out.print("The game is over: ");
+        if (ranking.get(getModel().getPlayerUsername()) < 0) {
+            int resultCode = ranking.get(getModel().getPlayerUsername());
+            String result = resultCode == -2 ? "win" : "lose";
+            CLIColor colorOfTheResult = resultCode == -2 ? CLIColor.ANSI_BRIGHT_GREEN : CLIColor.ANSI_RED;
+            System.out.println(stringPainter.apply("you " + result + ".", colorOfTheResult));
+        } else {
+            int position = ranking.keySet().stream().toList().indexOf(getModel().getPlayerUsername());
+            System.out.println(stringPainter.apply("you got the " + ordinals.get(position)
+                    + " place.", position == 0 ? CLIColor.ANSI_BRIGHT_GREEN : CLIColor.ANSI_RED));
+            System.out.println("\n Ranking:");
+            System.out.println("┌" + StringUtility.center("", maxLength + 6 - 2, '─') + "┐");
+            ranking.forEach((player, score) -> System.out.printf("│%s│%3d│%n", addPadding.apply(player), score));
+            System.out.println("└" + StringUtility.center("", maxLength + 6 - 2, '─') + "┘");
         }
-        endingTable.append("║ \n");
-        endingTable.append("╠════════════════════════╣ \n");
-        for (int i = 0; i < categories.length; i++){
-            endingTable.append("║").append(StringUtility.center(categories[i] + ": " + scores[i], 24)).
-                    append("║ \n");
-            endingTable.append("╠════════════════════════╣ \n");
-            tot += scores[i];
+        System.out.println("\n Victory points:");
+        System.out.println("┌" + StringUtility.center("", 21, '─') + "┐");
+        for (int i = 0; i < scores.length; i++) {
+            System.out.printf("│%-17s│%3d│%n", pointCategoryNames.get(i), scores[i]);
         }
-        endingTable.append("║").append(StringUtility.center("tot VP: " + tot, 24)).
-                append("║ \n");
-        endingTable.append("╚════════════════════════╝ \n");
-        System.out.println(endingTable);
+        System.out.println("└" + StringUtility.center("", 21, '─') + "┘");
     }
 
     @Override

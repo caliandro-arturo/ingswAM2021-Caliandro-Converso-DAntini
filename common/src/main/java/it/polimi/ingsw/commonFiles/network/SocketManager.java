@@ -53,7 +53,7 @@ public abstract class SocketManager {
             isConnected = false;
             throw e;
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+
         }
         pinger.interrupt();
         shutdown();

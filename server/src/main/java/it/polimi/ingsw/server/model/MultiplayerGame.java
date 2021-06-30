@@ -4,6 +4,7 @@ import it.polimi.ingsw.commonFiles.messages.toClient.updates.InitBoards;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class MultiplayerGame extends Game {
     private final int[] initialFaithPoints = new int[] {0, 0, 1, 1};
@@ -50,13 +51,21 @@ public class MultiplayerGame extends Game {
     @Override
     public void endGame() {
         setFinished();
-        AtomicInteger i = new AtomicInteger();
-        getPlayers().stream()
-                .sorted((p1, p2) ->
-                        Arrays.stream(p2.getVictoryPoints()).sum() - Arrays.stream(p1.getVictoryPoints()).sum())
-                .forEach(p ->
-                     getViewAdapter().notifyGameEnded(p, i.incrementAndGet(), p.getVictoryPoints()));
-    }
+        Map<Integer, List<Player>> ranking = getPlayers().stream()
+                .collect(Collectors.groupingBy(p -> Arrays.stream(p.getVictoryPoints()).sum()));
+        ArrayList<Integer> scores = new ArrayList<>(ranking.keySet());
+        scores.sort((s1, s2) -> s2 - s1);
+        LinkedHashMap<String, Integer> playerToScoreMap = new LinkedHashMap<>();
+        scores.forEach(score -> {
+            List<Player> players = ranking.get(score);
+            if (players.size() > 1) players.sort((c1, c2) -> c2.getResourceNumber() - c1.getResourceNumber());
+            for (Player p : players)
+                playerToScoreMap.put(p.getUsername(), score);
+        });
+        playerToScoreMap.forEach((player, rank) ->
+                getViewAdapter().notifyGameEnded(player, getPlayer(player).getVictoryPoints(), playerToScoreMap)
+        );
+}
 
     @Override
     public String toString() {

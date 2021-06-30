@@ -3,6 +3,8 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.commonFiles.messages.Message;
 import org.junit.jupiter.api.BeforeAll;
 
+import java.util.LinkedHashMap;
+
 public class ViewAdapterForTest {
     public static ViewAdapter testView;
 
@@ -46,7 +48,7 @@ public class ViewAdapterForTest {
             }
 
             @Override
-            public void notifyGameEnded(Player player, int ranking, int[] points) {
+            public void notifyGameEnded(String player, int[] points, LinkedHashMap<String, Integer> ranking) {
             }
 
             @Override

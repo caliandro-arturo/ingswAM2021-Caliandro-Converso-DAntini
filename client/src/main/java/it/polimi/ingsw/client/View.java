@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.commonFiles.messages.toServer.Next;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -251,7 +252,7 @@ public abstract class View {
 
     public abstract void discardRes(String[] commandSlice);
 
-    public abstract void displayEndingScore(String[] categories, int[] scores, int ranking);
+    public abstract void displayEndingScore(int[] scores, LinkedHashMap<String, Integer> ranking);
 
     public abstract void showGamesList(List<String> lobbiesName, List<Integer> lobbiesCurrentConnectedClientsNumber, List<Integer> lobbiesMaxPlayersNum);
 }

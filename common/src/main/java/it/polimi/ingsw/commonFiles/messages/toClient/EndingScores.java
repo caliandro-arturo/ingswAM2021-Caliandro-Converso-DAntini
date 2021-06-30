@@ -2,14 +2,13 @@ package it.polimi.ingsw.commonFiles.messages.toClient;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
 
+import java.util.LinkedHashMap;
 
-public class DisplayEndingScores extends Message implements ToClientMessage {
+public class EndingScores extends Message implements ToClientMessage {
+    private LinkedHashMap<String, Integer> ranking;
     private int[] points;
-    private int ranking;
-    private String[] names = {"faith path VP",
-            "development card VP", "leader card VP", "pope's favor VP", "resource VP"};
 
-    public DisplayEndingScores(int[] points, int ranking) {
+    public EndingScores(int[] points, LinkedHashMap<String, Integer> ranking) {
         this.points = points;
         this.ranking = ranking;
     }
@@ -18,12 +17,8 @@ public class DisplayEndingScores extends Message implements ToClientMessage {
         return points;
     }
 
-    public int getRanking() {
+    public LinkedHashMap<String, Integer> getRanking() {
         return ranking;
-    }
-
-    public String[] getNames() {
-        return names;
     }
 
     @Override

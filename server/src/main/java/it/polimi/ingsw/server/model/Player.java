@@ -100,18 +100,7 @@ public class Player {
         // index 3 Pope's favor VP
         victoryPoints[3]= board.getFaithTrack().getScoreCard();
         // index 4 resource VP
-        int boxRes = 0;
-        int storeRes = 0;
-        if(!board.getStrongbox().isEmptyBox()) {
-            boxRes += board.getStrongbox().getResourceMap().get(Resource.SERF);
-            boxRes += board.getStrongbox().getResourceMap().get(Resource.COIN);
-            boxRes += board.getStrongbox().getResourceMap().get(Resource.SHIELD);
-            boxRes += board.getStrongbox().getResourceMap().get(Resource.STONE);
-        }
-        for( WarehouseStore stores: board.getStore()){
-            storeRes =+ stores.getQuantity();
-        }
-        victoryPoints[4]= (boxRes+storeRes)/5;
+        victoryPoints[4]= getResourceNumber()/5;
         return victoryPoints;
     }
     public int getWhiteMarbleChoices() {
@@ -122,6 +111,14 @@ public class Player {
     }
     public int getProcessedResources() {
         return processedResources;
+    }
+    public int getResourceNumber() {
+        int boxRes = 0;
+        int storeRes = board.getStrongbox().getResourceMap().values().stream().mapToInt(i -> i).sum();
+        for( WarehouseStore stores: board.getStore()){
+            storeRes += stores.getQuantity();
+        }
+        return boxRes + storeRes;
     }
 
     public void setUsername(String username) {

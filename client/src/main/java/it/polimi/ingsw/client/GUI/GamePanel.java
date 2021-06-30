@@ -234,8 +234,6 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Label turnPhaseAnnouncementLabel;
     @FXML
-    private Pane announcementMaskPane;
-    @FXML
     private ImageView firstChoice;
     @FXML
     private ImageView secondChoice;
@@ -249,10 +247,34 @@ public class GamePanel extends SceneHandler {
     private AnchorPane leaderCard1;
     @FXML
     private AnchorPane leaderCard2;
+
     @FXML
     private Tooltip toolTipHelp;
     @FXML
     private Button help;
+
+    @FXML
+    private Pane endGamePane;
+    @FXML
+    private Label mainResultLabel;
+    @FXML
+    private Label specificResultLabel;
+    @FXML
+    private TableView<PlayerScorePair> rankingTabView;
+    @FXML
+    private TableColumn<PlayerScorePair, String> playersTabColumn;
+    @FXML
+    private TableColumn<PlayerScorePair, Integer> scoresTabColumn;
+    @FXML
+    private Label faithTrackVPLabel;
+    @FXML
+    private Label devCardVPLabel;
+    @FXML
+    private Label leadCardVPLabel;
+    @FXML
+    private Label popeFavorVPLabel;
+    @FXML
+    private Label resVPLabel;
 
     private Pane currentPane;
 
@@ -324,6 +346,7 @@ public class GamePanel extends SceneHandler {
     private ArrayList<VBox> paymentSpots;
     private HashMap<ImageView, String> reinsertMap;
     private List<ResourceAndDepot> paymentBuffer = new ArrayList<>();
+    private List<Label> scores = new ArrayList<>();
 
     /**
      * map for resource and marbles.
@@ -334,9 +357,6 @@ public class GamePanel extends SceneHandler {
     private HashMap<Resource, Label> resourceLabelHashMap;
     private HashMap<ImageView, Label> paymentImageLabelHashMap;
     private HashMap<Tab, BoardController> boardAndControllerMap = new HashMap<>();
-
-    public GamePanel() {
-    }
 
     /**
      * initialization of the images and the data structure used to collect similar objects
@@ -415,6 +435,7 @@ public class GamePanel extends SceneHandler {
         devPosCombo.valueProperty().addListener(e -> {
             if (!devPosCombo.getSelectionModel().isEmpty()) paymentButton.setDisable(false);
         });
+        scores.addAll(Arrays.asList(faithTrackVPLabel, devCardVPLabel, leadCardVPLabel, popeFavorVPLabel, resVPLabel));
 
         getModel().getMarket().marbleProperty().addListener(e ->Platform.runLater(this::updateMarketListener));
         getModel().getDevelopmentGrid().gridProperty().addListener(e-> setDevGridPng());
@@ -465,7 +486,6 @@ public class GamePanel extends SceneHandler {
         if (getModel().getCurrentTurnPhase() != null) showTurnPhaseAnnouncement();
         getModel().whiteMarbleQuantityProperty().addListener(e -> Platform.runLater(this::updateWhiteMarbleListener));
         help.setTooltip(toolTipHelp);
-        toolTipHelp.setText("ciao come va");
     }
 
     public Tooltip getToolTipHelp(){
@@ -508,6 +528,34 @@ public class GamePanel extends SceneHandler {
         return nextButton;
     }
 
+    public Pane getEndGamePane() {
+        return endGamePane;
+    }
+
+    public Label getMainResultLabel() {
+        return mainResultLabel;
+    }
+
+    public Label getSpecificResultLabel() {
+        return specificResultLabel;
+    }
+
+    public List<Label> getScores() {
+        return scores;
+    }
+
+    public void setMainResultLabel(String mainResult) {
+        mainResultLabel.setText(mainResult);
+    }
+
+    public void setSpecificResultLabel(String specificResult) {
+        specificResultLabel.setText(specificResult);
+    }
+
+    public TableView<PlayerScorePair> getRankingTabView() {
+        return rankingTabView;
+    }
+
     /**
      * prints in the bottom of the game a message passed as parameter
      * @param msg
@@ -516,23 +564,19 @@ public class GamePanel extends SceneHandler {
         out.setText(msg);
     }
     /**
-     * activated when the connection is lost. Freeze the game and show "pause"
+     * Stops the game when a player is reconnecting to avoid moves meanwhile.
      */
-/*    public void pause(){
-        //if(connection problems...)
+    public void startTimeUp(){
         goFront(pause);
-        leftPane.setDisable(true);
-        rightPane.setDisable(true);
-    }*/
+    }
 
     /**
-     * activated when the connection is back after pause
+     * Removes the time up.
      */
-/*    public void reconnect(){
+    public void removeTimeUp(){
         pause.toBack();
-        leftPane.setDisable(false);
         rightPane.setDisable(false);
-    }*/
+    }
 
     /**
      * remove a specific resource from the strongbox
@@ -1038,5 +1082,12 @@ public class GamePanel extends SceneHandler {
             getGui().getView().process("choosewhite: 2");
         }
         closePopup(null);
+    }
+
+    public void quit(ActionEvent actionEvent) {
+        /*App.setScene("launcher", "Masters of Renaissance");
+        getGui().getMessageReader().interrupt();
+        getGui().shutdown();*/
+        System.exit(0);
     }
 }

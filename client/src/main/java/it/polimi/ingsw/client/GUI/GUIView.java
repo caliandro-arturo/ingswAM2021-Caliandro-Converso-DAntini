@@ -8,18 +8,27 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
 import java.util.*;
 
 public class GUIView extends View {
-    private boolean isInGame = false;
+    public final int[] trial = new int[] {2, 3, 4, 5, 6};
+
     @Override
     public void show(String element) {
         Platform.runLater(() -> {
-            App.out.setStyle("-fx-background-color: null");
-            App.out.setText(element);
+            switch (element) {
+                case "hand", "board", "market" -> {
+                }
+                default -> {
+                    App.out.setStyle("-fx-background-color: null");
+                    App.out.setText(element);
+                }
+            }
         });
     }
 
@@ -39,7 +48,6 @@ public class GUIView extends View {
             App.out.setText(finalError);
         });
         timer.schedule(task, 4000);
-
     }
 
     @Override
@@ -47,9 +55,7 @@ public class GUIView extends View {
         if (elements[0].equals("")) return;
         GamePanel gamePanel = (GamePanel) App.controller;
         switch (elements[0]) {
-            case "hand" -> {}
-            case "board" -> {}
-            case "market" -> {}
+            case "hand", "board", "market" -> {}
         }
     }
 
@@ -59,7 +65,6 @@ public class GUIView extends View {
             GamePanel gamePanel = (GamePanel) App.controller;
             gamePanel.getToolTipHelp().setText(toDo);
         });
-
     }
 
     @Override
@@ -219,8 +224,33 @@ public class GUIView extends View {
     }
 
     @Override
-    public void displayEndingScore(String[] categories, int[] scores, int ranking) {
-        //TODO : display ending score
+    public void displayEndingScore(int[] scores, LinkedHashMap<String, Integer> ranking) {
+        Platform.runLater(() -> {
+            GamePanel gamePanel = (GamePanel) App.controller;
+            int playerScore = ranking.get(getModel().getPlayerUsername());
+            int position = ranking.keySet().stream().toList().indexOf(getModel().getPlayerUsername());
+            boolean hasWon;
+            if (playerScore < 0) {
+                hasWon = playerScore == -2;
+                gamePanel.setSpecificResultLabel("You " + (hasWon ? "win" : "lose") + ".");
+                gamePanel.getSpecificResultLabel().setTranslateY(80);
+            } else {
+                hasWon = position == 0;
+                List<String> ordinals = new ArrayList<>(Arrays.asList("first", "second", "third", "fourth"));
+                gamePanel.setSpecificResultLabel("You got the " + ordinals.get(position) + " place.");
+                ObservableList<PlayerScorePair> rankingForTableView = FXCollections.observableArrayList();
+                ranking.forEach((player, score) -> rankingForTableView.add(new PlayerScorePair(player, score)));
+                gamePanel.getRankingTabView().setDisable(false);
+                gamePanel.getRankingTabView().setOpacity(1);
+                gamePanel.getRankingTabView().setItems(rankingForTableView);
+            }
+            gamePanel.setMainResultLabel(hasWon ? "Victory" : "Defeat");
+            gamePanel.getMainResultLabel().setStyle("-fx-text-fill: " + (hasWon ? "#2fff00" : "#c70303"));
+            for (int i = 0; i < scores.length; i++) {
+                gamePanel.getScores().get(i).setText(Integer.toString(scores[i]));
+            }
+            gamePanel.goFront(gamePanel.getEndGamePane());
+        });
     }
 
     @Override
@@ -364,6 +394,12 @@ public class GUIView extends View {
 
     @Override
     public void showTimeUp(boolean timeIsUp) {
-        /*Platform.runLater(() -> ((GamePanel) App.controller).goFront(WaitingPane));*/
+        Platform.runLater(() -> ((GamePanel) App.controller).startTimeUp());
+    }
+
+    //debug purposes
+
+    public void displayEndingScores(LinkedHashMap<String, Integer> playersRanking) {
+        displayEndingScore(trial, playersRanking);
     }
 }
