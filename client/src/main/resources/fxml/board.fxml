@@ -672,6 +672,11 @@
                   <Tooltip fx:id="toolTipHelp" />
                </tooltip>
             </Button>
+            <Label fx:id="nickLabelBoard" layoutX="68.0" layoutY="5.0" prefHeight="31.0" prefWidth="266.0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </top>

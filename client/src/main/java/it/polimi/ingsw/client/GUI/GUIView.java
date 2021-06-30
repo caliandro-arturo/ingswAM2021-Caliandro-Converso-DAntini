@@ -49,11 +49,11 @@ public class GUIView extends View {
 
     @Override
     public void refresh(String... elements) {
-        if (elements[0].equals("")) return;
+        /*if (elements[0].equals("")) return;
         GamePanel gamePanel = (GamePanel) App.controller;
         switch (elements[0]) {
             case "hand", "board", "market" -> {}
-        }
+        }*/
     }
 
     @Override

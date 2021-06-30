@@ -263,6 +263,11 @@ public class GamePanel extends SceneHandler {
     private Label popeFavorVPLabel;
     @FXML
     private Label resVPLabel;
+    @FXML
+    private Label nickLabelBoard;
+
+
+
 
     private Pane currentPane;
 
@@ -474,6 +479,7 @@ public class GamePanel extends SceneHandler {
         if (getModel().getCurrentTurnPhase() != null) showTurnPhaseAnnouncement();
         getModel().whiteMarbleQuantityProperty().addListener(e -> Platform.runLater(this::updateWhiteMarbleListener));
         help.setTooltip(toolTipHelp);
+        nickLabelBoard.setText("Nickname: " + getModel().getPlayerUsername());
     }
 
     public Tooltip getToolTipHelp(){
