@@ -111,17 +111,17 @@ public class Controller {
         return model.isFinished();
     }
 
-    public void pauseGame() {
+    public void pauseGame(String reenteringPlayer) {
         isInPause = true;
         try {
             messageReader.join();
         } catch (InterruptedException | NullPointerException ignore) {
         }
-        virtualView.sendMessage(new TimeUp(true));
+        virtualView.sendMessageToOthers(reenteringPlayer, new TimeUp(true));
     }
 
-    public void restartGame() {
+    public void restartGame(String reenteringPlayer) {
         isInPause = false;
-        virtualView.sendMessage(new TimeUp(false));
+        virtualView.sendMessageToOthers(reenteringPlayer, new TimeUp(false));
     }
 }

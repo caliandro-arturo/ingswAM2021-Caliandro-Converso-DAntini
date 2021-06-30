@@ -84,6 +84,7 @@ public class GamePanel extends SceneHandler {
     @FXML
     private ImageView mbEx;
     @FXML
+
     private StackPane stackPane;
     @FXML
     private Pane rightPane;
@@ -132,13 +133,15 @@ public class GamePanel extends SceneHandler {
     private Label totalInitialResourcesAmount;
     @FXML
     private Button initialResourcesButton;
+
     @FXML
-    private Pane pause;
+    private Pane pausePane;
     @FXML
     private Pane paymentPane;
     @FXML
     private Pane devGridPane;
     @FXML
+
     private ImageView devcard00;
     @FXML
     private ImageView devcard10;
@@ -213,6 +216,11 @@ public class GamePanel extends SceneHandler {
     private Pane phaseAnnouncementPane;
     @FXML
     private Label turnPhaseAnnouncementLabel;
+    @FXML
+    private Pane playerTurnAnnouncementPane;
+    @FXML
+    private Label newPlayerTurnLabel;
+
     @FXML
     private ImageView firstChoice;
     @FXML
@@ -547,15 +555,14 @@ public class GamePanel extends SceneHandler {
      * Stops the game when a player is reconnecting to avoid moves meanwhile.
      */
     public void startTimeUp(){
-        goFront(pause);
+        goFront(pausePane);
     }
 
     /**
      * Removes the time up.
      */
     public void removeTimeUp(){
-        pause.toBack();
-        rightPane.setDisable(false);
+        closePopup(null);
     }
 
     private void setBoardsTabs() {
@@ -949,7 +956,8 @@ public class GamePanel extends SceneHandler {
 
     public void showTurnPhaseAnnouncement() {
         String turnPhase = getModel().getCurrentTurnPhase();
-        if (getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame()))handlingInterface(turnPhase);
+        if (getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame()))
+            handlingInterface(turnPhase);
         else {
             backButton.setDisable(true);
             nextButton.setDisable(true);
@@ -1009,11 +1017,11 @@ public class GamePanel extends SceneHandler {
     }
 
     public void updateCurrentPlayerLabel() {
-        playerTurnLabel.setText(
-                getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame()) ?
-                        "You" :
-                        getModel().getCurrentPlayerInTheGame());
-        nextButton.setDisable(!getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame()));
+        boolean isCurrentPlayer = getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame());
+        playerTurnLabel.setText(isCurrentPlayer ? "You" : getModel().getCurrentPlayerInTheGame());
+        nextButton.setDisable(isCurrentPlayer);
+        newPlayerTurnLabel.setText(isCurrentPlayer ? "your" : getModel().getCurrentPlayerInTheGame() + "'s");
+        showOverAndThenHide(playerTurnAnnouncementPane);
     }
 
     public void showOverAndThenHide(Pane pane) {

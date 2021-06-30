@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -26,7 +27,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 <BorderPane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.GamePanel">
    <center>
       <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="699.0" prefWidth="927.0" stylesheets="@../css/gamepanel.css" BorderPane.alignment="CENTER">
@@ -412,9 +412,39 @@
                   </HBox>
                </children>
             </Pane>
-            <Pane fx:id="endGamePane" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="chooseCardPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c9b18c" height="700.0" stroke="BLACK" strokeType="INSIDE" width="927.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#72d1e4" height="470.0" layoutX="86.0" layoutY="115.0" stroke="BLACK" strokeType="INSIDE" width="756.0" />
+                  <GridPane fx:id="leadCardGrid" layoutX="96.0" layoutY="213.0" prefHeight="292.0" prefWidth="731.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ImageView fx:id="leadCard1" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="leadCard2" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                        <ImageView fx:id="leadCard3" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                        <ImageView fx:id="leadCard4" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
+                     </children>
+                  </GridPane>
+                  <Button fx:id="discardButton" layoutX="671.0" layoutY="531.0" mnemonicParsing="false" onAction="#discardLeaderCard" prefHeight="40.0" prefWidth="147.0" text="Discard" />
+                  <Label fx:id="leaderHandLabel" alignment="CENTER" layoutX="329.0" layoutY="137.0" prefHeight="52.0" prefWidth="270.0" text="Leader cards hand">
+                     <font>
+                        <Font name="Harrington" size="25.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="802.0" layoutY="122.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
+                  <Button fx:id="deployLButton" layoutX="464.0" layoutY="531.0" mnemonicParsing="false" onAction="#deployLeaderCard" prefHeight="40.0" prefWidth="147.0" text="Deploy" />
+               </children>
+            </Pane>
+            <Pane fx:id="endGamePane" prefHeight="200.0" prefWidth="946.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c9b18c" height="685.0" layoutX="16.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="902.0" />
                   <Label fx:id="specificResultLabel" alignment="CENTER" layoutX="210.0" layoutY="140.0" prefHeight="43.0" prefWidth="505.0">
                      <font>
                         <Font size="36.0" />
@@ -518,34 +548,28 @@
                   <Button layoutX="422.0" layoutY="632.0" mnemonicParsing="false" onAction="#quit" prefHeight="32.0" prefWidth="84.0" text="Quit" />
                </children>
             </Pane>
-            <Pane fx:id="chooseCardPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
+            <Pane fx:id="playerTurnAnnouncementPane" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#72d1e4" height="470.0" layoutX="86.0" layoutY="115.0" stroke="BLACK" strokeType="INSIDE" width="756.0" />
-                  <GridPane fx:id="leadCardGrid" layoutX="96.0" layoutY="213.0" prefHeight="292.0" prefWidth="731.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                  <Rectangle arcHeight="1.0" arcWidth="5.0" fill="#3fe339" height="248.0" layoutX="262.0" layoutY="226.0" stroke="BLACK" strokeLineJoin="ROUND" strokeType="INSIDE" width="403.0" />
+                  <VBox alignment="CENTER" layoutX="274.0" layoutY="270.0">
                      <children>
-                        <ImageView fx:id="leadCard1" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="leadCard2" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                        <ImageView fx:id="leadCard3" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                        <ImageView fx:id="leadCard4" fitHeight="290.0" fitWidth="180.0" onMouseClicked="#selectLeaderCard" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
+                        <Label alignment="CENTER" prefHeight="54.0" prefWidth="111.0" text="It's ">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="newPlayerTurnLabel" alignment="CENTER" prefHeight="53.0" prefWidth="379.0">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="54.0" prefWidth="134.0" text="turn!">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
                      </children>
-                  </GridPane>
-                  <Button fx:id="discardButton" layoutX="671.0" layoutY="531.0" mnemonicParsing="false" onAction="#discardLeaderCard" prefHeight="40.0" prefWidth="147.0" text="Discard" />
-                  <Label fx:id="leaderHandLabel" alignment="CENTER" layoutX="329.0" layoutY="137.0" prefHeight="52.0" prefWidth="270.0" text="Leader cards hand">
-                     <font>
-                        <Font name="Harrington" size="25.0" />
-                     </font>
-                  </Label>
-                  <Button layoutX="802.0" layoutY="122.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="29.0" prefWidth="29.0" style="-fx-background-color: red;" text="X" />
-                  <Button fx:id="deployLButton" layoutX="464.0" layoutY="531.0" mnemonicParsing="false" onAction="#deployLeaderCard" prefHeight="40.0" prefWidth="147.0" text="Deploy" />
+                  </VBox>
                </children>
             </Pane>
          </children>

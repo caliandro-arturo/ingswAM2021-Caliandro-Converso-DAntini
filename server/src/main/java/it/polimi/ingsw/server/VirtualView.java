@@ -90,11 +90,11 @@ public class VirtualView {
      * @param clientHandler the new client handler to link with the nickname
      */
     public synchronized void reAddPlayer(String nickname, ClientHandler clientHandler) {
-        controller.pauseGame();
+        controller.pauseGame(nickname);
         clientMap.replace(nickname, clientHandler);
         controller.getPlayer(nickname).setConnected(true);
         controller.sendGameStatus(nickname);
-        controller.restartGame();
+        controller.restartGame(nickname);
     }
 
     /**

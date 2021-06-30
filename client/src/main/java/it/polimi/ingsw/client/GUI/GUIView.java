@@ -59,8 +59,11 @@ public class GUIView extends View {
     @Override
     public void setToDo(String id, String toDo) {
         Platform.runLater(()-> {
-            GamePanel gamePanel = (GamePanel) App.controller;
-            gamePanel.getToolTipHelp().setText(toDo);
+            try {
+                GamePanel gamePanel = (GamePanel) App.controller;
+                gamePanel.getToolTipHelp().setText(toDo);
+            } catch (ClassCastException ignore) {
+            }
         });
     }
 
@@ -71,7 +74,13 @@ public class GUIView extends View {
 
     @Override
     public void setNick(String[] commandSlice) {
-        getController().sendMessage(new SetNickname(commandSlice[0]));
+        String nickname;
+        nickname = commandSlice[1].trim();
+        if (nickname.equals("")){
+            App.out.setText("Empty nickname");
+            return;
+        }
+        getController().sendMessage(new SetNickname(nickname));
     }
 
     @Override
@@ -290,10 +299,13 @@ public class GUIView extends View {
     @Override
     public void showResume() {
         Launcher launcher = (Launcher) App.controller;
-        launcher.setCurrentPane(launcher.resumePane);
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4),
-                event -> Platform.runLater(() -> App.setScene("board", "Masters of Renaissance"))));
-        timeline.play();
+        Platform.runLater(() -> {
+            launcher.getNicknameLabel().setText(getModel().getPlayerUsername());
+            launcher.setCurrentPane(launcher.resumePane);
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4),
+                    event -> App.setScene("board", "Masters of Renaissance")));
+            timeline.play();
+        });
     }
 
     @Override
@@ -391,7 +403,11 @@ public class GUIView extends View {
 
     @Override
     public void showTimeUp(boolean timeIsUp) {
-        Platform.runLater(() -> ((GamePanel) App.controller).startTimeUp());
+        if (timeIsUp) {
+            Platform.runLater(() -> ((GamePanel) App.controller).startTimeUp());
+        } else {
+            Platform.runLater(() -> ((GamePanel) App.controller).removeTimeUp());
+        }
     }
 
 }

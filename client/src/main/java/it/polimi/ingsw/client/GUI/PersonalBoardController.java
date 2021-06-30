@@ -13,9 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -28,24 +26,43 @@ import java.util.*;
 
 public class PersonalBoardController extends BoardController {
 
+    /**
+     * Black cross for single player.
+     */
     @FXML
     private ImageView crossB;
+
+    /**
+     * Nodes that implement the board production.
+     */
+    @FXML
+    private Pane boardProdPane;
     @FXML
     private ComboBox<ImageView> resBaseProd;
-    @FXML
-    private ComboBox<ImageView> leadProd1;
-    @FXML
-    private ComboBox<ImageView> leadProd2;
     @FXML
     private ImageView baseProd1;
     @FXML
     private ImageView baseProd2;
     @FXML
-    private Button prodButton1;
+    private Button prodBaseButton;
+
+    /**
+     * Nodes that implement leader productions and depots
+     */
+    @FXML
+    private Pane leaderProd1;
+    @FXML
+    private Pane leaderProd2;
+    @FXML
+    private ComboBox<ImageView> leadProd1;
+    @FXML
+    private ComboBox<ImageView> leadProd2;
     @FXML
     private ImageView resToGive1;
     @FXML
     private ImageView resToGive2;
+    @FXML
+    private Button prodButton1;
     @FXML
     private Button prodButton2;
     @FXML
@@ -53,13 +70,19 @@ public class PersonalBoardController extends BoardController {
     @FXML
     private ImageView activeLeaderCard2;
     @FXML
-    private AnchorPane resourceHand;
-    @FXML
     private HBox leaderDepot1;
     @FXML
     private HBox leaderDepot2;
+
+    /**
+     * Resource hand pane that includes the discard button.
+     */
     @FXML
-    private Button prodBaseButton;
+    private AnchorPane resourceHand;
+
+    /**
+     * Nodes that implement the payment pane.
+     */
     @FXML
     private Label paymentStone1;
     @FXML
@@ -84,6 +107,10 @@ public class PersonalBoardController extends BoardController {
     private Label paymentShield3;
     @FXML
     private Label paymentCoin3;
+
+    /**
+     * Nodes that implement the development card productions.
+     */
     @FXML
     private ImageView stoneCost1;
     @FXML
@@ -113,19 +140,16 @@ public class PersonalBoardController extends BoardController {
     @FXML
     private Pane devProdPane2;
     @FXML
+    private Pane devProdPane3;
+    @FXML
     private Button prodCard1;
     @FXML
     private Button prodCard2;
     @FXML
     private Button prodCard3;
-    @FXML
-    private Pane devProdPane3;
-    @FXML
-    private Pane boardProdPane;
-    @FXML
-    private Pane leaderProd1;
-    @FXML
-    private Pane leaderProd2;
+
+    private ContextMenu contextMenu;
+    private MenuItem menuItem;
 
     private View view;
     private final ArrayList<ArrayList<ResourceAndDepot>> resourceAndDepotBuffer = new ArrayList<>(){{
@@ -244,6 +268,9 @@ public class PersonalBoardController extends BoardController {
             add(new ArrayList<>(Collections.singletonList(resToGive1)));
             add(new ArrayList<>(Collections.singletonList(resToGive2)));
         }};
+        contextMenu = new ContextMenu();
+        menuItem = new MenuItem("Back to hand");
+        contextMenu.getItems().add(menuItem);
     }
 
     @Override
@@ -290,18 +317,8 @@ public class PersonalBoardController extends BoardController {
     public void backToHand(ContextMenuEvent contextMenuEvent){
         ImageView target = (ImageView)contextMenuEvent.getSource();
         if(target.getImage()!= null){
-            getContextMenu().show(target, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
-            String posRes;
-            if(target == getRes1()){
-                posRes = "1";
-            }
-            else if(target == getRes21() || target == getRes22())
-                posRes = "2";
-            else{
-                posRes = "3";
-            }
-
-            getMenuItem().setOnAction(event-> view.process("takeres: "+ posRes));
+            contextMenu.show(target, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
+            menuItem.setOnAction(e -> view.process("takeres: "+ returnResourcePosition(target)));
         }
     }
 
@@ -471,7 +488,7 @@ public class PersonalBoardController extends BoardController {
         }
         if (costInt > 0) {
             addElementToCost(destination, depot + 1, productionID);
-            devCostList.get(productionID -1).get(destination).setText(String.valueOf(costInt-1));
+            devCostList.get(productionID - 1).get(destination).setText(String.valueOf(costInt-1));
             event.setDropCompleted(true);
         } else {
             event.setDropCompleted(false);

@@ -140,9 +140,6 @@ public class BoardController implements Initializable {
     @FXML
     private HBox leaderDepot2;
 
-    private ContextMenu contextMenu;
-
-    private MenuItem menuItem;
     /**
      * strongbox
      */
@@ -191,15 +188,6 @@ public class BoardController implements Initializable {
         }};
         leaderDepot1.setDisable(true);
         leaderDepot2.setDisable(true);
-        contextMenu = new ContextMenu();
-        menuItem = new MenuItem("back to hand");
-        contextMenu.getItems().add(menuItem);
-    }
-    public MenuItem getMenuItem() {
-        return menuItem;
-    }
-    public ContextMenu getContextMenu() {
-        return contextMenu;
     }
 
     public HashMap<Resource, Label> getResourceLabelHashMap() {
@@ -405,7 +393,7 @@ public class BoardController implements Initializable {
     }
 
     /**
-     * check the position and set the relative tile visiblle
+     * check the position and set the relative tile visible
      * @param pos player position
      */
     private void checkTile(int pos){

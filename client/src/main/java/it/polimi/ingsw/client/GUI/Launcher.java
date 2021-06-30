@@ -50,6 +50,9 @@ public class Launcher extends SceneHandler {
     public ObservableList<Lobby> lobbies = FXCollections.observableArrayList();
 
     @FXML
+    public Label nicknameLabel;
+
+    @FXML
     private TextField hostname;
 
     @FXML
@@ -61,6 +64,8 @@ public class Launcher extends SceneHandler {
     @FXML
     private Button joinSelectedButton;
 
+
+
     private AnchorPane currentPane;
 
     @Override
@@ -71,6 +76,10 @@ public class Launcher extends SceneHandler {
         currentPane = connectionPane;
         connectionPane.setOpacity(1);
         currentPane.setDisable(false);
+    }
+
+    public Label getNicknameLabel() {
+        return nicknameLabel;
     }
 
     public void initTableView() {
@@ -121,7 +130,7 @@ public class Launcher extends SceneHandler {
             App.out.setText("You must insert a nickname.");
         else {
             App.out.setText("Logging with nickname: " + nameTextField.getText() + "...");
-            getGui().getView().setNick(new String[]{nameTextField.getText()});
+            getGui().getView().process("setnick: " + nameTextField.getText());
         }
     }
 
@@ -159,12 +168,9 @@ public class Launcher extends SceneHandler {
         getGui().getView().getController().sendMessage(new SetGame(playersNum));
     }
 
-
-
     //back button
+
     public void backOnCreateOrJoin(ActionEvent actionEvent) {
         setCurrentPane(createOrJoinPane);
     }
-
-
 }
