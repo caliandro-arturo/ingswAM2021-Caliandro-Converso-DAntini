@@ -7,19 +7,17 @@ import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
-import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.beans.value.WritableIntegerValue;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,17 +36,9 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Label out;
     @FXML
-    private BorderPane mainPane;
-    @FXML
     private TabPane boardsTabPane;
     @FXML
-    private ImageView boardImg;
-    @FXML
     private AnchorPane paneHand;
-    @FXML
-    private Button buy;
-    @FXML
-    private Button res;
     @FXML
     private Button marketBtn;
     @FXML
@@ -93,14 +83,6 @@ public class GamePanel extends SceneHandler {
     private ImageView col2;
     @FXML
     private ImageView mbEx;
-    @FXML
-    private Label infoBox;
-    @FXML
-    private TableView<String> tabVP;
-    @FXML
-    private TableColumn<String, String> columnCategory;
-    @FXML
-    private TableColumn<String, Integer> columnVP;
     @FXML
     private StackPane stackPane;
     @FXML
@@ -150,15 +132,12 @@ public class GamePanel extends SceneHandler {
     private Label totalInitialResourcesAmount;
     @FXML
     private Button initialResourcesButton;
-
     @FXML
     private Pane pause;
     @FXML
     private Pane paymentPane;
     @FXML
     private Pane devGridPane;
-    @FXML
-    private Button buyCardButton;
     @FXML
     private ImageView devcard00;
     @FXML
@@ -332,7 +311,7 @@ public class GamePanel extends SceneHandler {
         put("onepositionreset", onePositionReset);
     }};
 
-    private StringBuilder command = new StringBuilder();
+    private final StringBuilder command = new StringBuilder();
     private PersonalBoardController personalBoardController;
 
     /**
@@ -344,10 +323,9 @@ public class GamePanel extends SceneHandler {
     private final ObjectProperty<ImageView> selectedLeader = new SimpleObjectProperty<>();
     private DevelopmentCard selectedDevCard;
     private ImageView[][] devCardSpots;
-    private ArrayList<VBox> paymentSpots;
     private HashMap<ImageView, String> reinsertMap;
-    private List<ResourceAndDepot> paymentBuffer = new ArrayList<>();
-    private List<Label> scores = new ArrayList<>();
+    private final List<ResourceAndDepot> paymentBuffer = new ArrayList<>();
+    private final List<Label> scores = new ArrayList<>();
 
     /**
      * map for resource and marbles.
@@ -357,7 +335,7 @@ public class GamePanel extends SceneHandler {
     private HashMap<Color, Image> colorImageMap;
     private HashMap<Resource, Label> resourceLabelHashMap;
     private HashMap<ImageView, Label> paymentImageLabelHashMap;
-    private HashMap<Tab, BoardController> boardAndControllerMap = new HashMap<>();
+    private final HashMap<Tab, BoardController> boardAndControllerMap = new HashMap<>();
 
     /**
      * initialization of the images and the data structure used to collect similar objects
@@ -383,7 +361,6 @@ public class GamePanel extends SceneHandler {
                 {mb02, mb12, mb22, mb32}
         };
         leaderHand = new ArrayList<>(Arrays.asList(leadCard1, leadCard2, leadCard3, leadCard4));
-        paymentSpots = new ArrayList<>(Arrays.asList(vShield, vCoin, vSerf, vStone));
         devCardSpots = new ImageView[][]{
                 {devcard00, devcard10, devcard20, devcard30},
                 {devcard01, devcard11, devcard21, devcard31},
@@ -579,19 +556,6 @@ public class GamePanel extends SceneHandler {
     public void removeTimeUp(){
         pause.toBack();
         rightPane.setDisable(false);
-    }
-
-    /**
-     * remove a specific resource from the strongbox
-     * @param resource
-     */
-    public void removeBoxResources(Resource resource){
-        int quantity = Integer.parseInt(resourceLabelHashMap.get(resource).getText());
-        int compare = quantity;
-        if(--compare>0){
-            quantity--;
-            resourceLabelHashMap.get(resource).setText((Integer.toString(quantity)));
-        } //TODO: error message
     }
 
     private void setBoardsTabs() {
@@ -1088,12 +1052,5 @@ public class GamePanel extends SceneHandler {
             getGui().getView().process("choosewhite: 2");
         }
         closePopup(null);
-    }
-
-    public void quit(ActionEvent actionEvent) {
-        /*App.setScene("launcher", "Masters of Renaissance");
-        getGui().getMessageReader().interrupt();
-        getGui().shutdown();*/
-        System.exit(0);
     }
 }

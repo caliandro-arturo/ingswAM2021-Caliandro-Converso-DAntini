@@ -49,10 +49,6 @@ public class DevelopmentPlace {
         return devCards;
     }
 
-    public ObservableList<DevelopmentCard> getDevPlace(int pos){
-        return devStack.get(--pos);
-    }
-
     /**
      * representation method for Development Place (CLI)
      * @return String with the representation
@@ -67,17 +63,23 @@ public class DevelopmentPlace {
         int i=0;
         String space = "       ";
         String emptyCard =
-                "┌─────────────────┐\n"+
-                "│                 │\n"+
-                "│                 │\n"+
-                "│                 │\n"+
-                "│                 │\n"+
-                "│                 │\n"+
-                "│                 │\n"+
-                "│                 │\n"+
-                "│                 │\n"+
-                "└─────────────────┘\n";
-        String emptySpace = "                   \n"+"                   \n"+"                   \n";
+                """
+                        ┌─────────────────┐
+                        │                 │
+                        │                 │
+                        │                 │
+                        │                 │
+                        │                 │
+                        │                 │
+                        │                 │
+                        │                 │
+                        └─────────────────┘
+                        """;
+        String emptySpace = """
+                                  \s
+                                  \s
+                                  \s
+                """;
         String[] temp1;
         String[] temp2;
         String[] temp3;

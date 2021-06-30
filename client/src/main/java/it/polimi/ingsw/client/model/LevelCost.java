@@ -12,10 +12,6 @@ public class LevelCost extends ColorCost implements Requirements{
         this.level = level;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
     @Override
     public String toString() {
         Color color = getColors().get(0);

@@ -4,8 +4,6 @@ import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -18,9 +16,7 @@ import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.*;
@@ -205,12 +201,7 @@ public class BoardController implements Initializable {
     public ContextMenu getContextMenu() {
         return contextMenu;
     }
-    public ArrayList<ImageView> getResSpots() {
-        return resSpots;
-    }
-    public ArrayList<ImageView> getStrongResources() {
-        return strongResources;
-    }
+
     public HashMap<Resource, Label> getResourceLabelHashMap() {
         return resourceLabelHashMap;
     }
@@ -303,18 +294,6 @@ public class BoardController implements Initializable {
         return res1;
     }
 
-    public ImageView getRes33() {
-        return res33;
-    }
-
-    public ImageView getRes32() {
-        return res32;
-    }
-
-    public ImageView getRes31() {
-        return res31;
-    }
-
     public ImageView getRes22() {
         return res22;
     }
@@ -336,12 +315,7 @@ public class BoardController implements Initializable {
     public AnchorPane getLeaderCard2() {
         return leaderCard2;
     }
-    public HBox getLeaderDepot1() {
-        return leaderDepot1;
-    }
-    public HBox getLeaderDepot2() {
-        return leaderDepot2;
-    }
+
     public AnchorPane getResourceHand(){
         return resourceHand;
     }
@@ -381,18 +355,6 @@ public class BoardController implements Initializable {
         return strongSerf;
     }
 
-
-    /**
-     * prints the relative image for a development card
-     * @param cardId
-     * @param lev
-     * @param pos
-     */
-    public void setDevCard(int pos, int lev, int cardId){
-        pos--;
-        lev--;
-        devPlace.get(pos).get(lev).setImage(Utility.getCardPng(cardId));
-    }
 
     /**
      * increase the position of the cross in the GUI
@@ -444,7 +406,7 @@ public class BoardController implements Initializable {
 
     /**
      * check the position and set the relative tile visiblle
-     * @param pos
+     * @param pos player position
      */
     private void checkTile(int pos){
         if(pos == 9)

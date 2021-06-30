@@ -5,8 +5,8 @@ import it.polimi.ingsw.commonFiles.messages.Message;
 import java.util.LinkedHashMap;
 
 public class EndingScores extends Message implements ToClientMessage {
-    private LinkedHashMap<String, Integer> ranking;
-    private int[] points;
+    private final LinkedHashMap<String, Integer> ranking;
+    private final int[] points;
 
     public EndingScores(int[] points, LinkedHashMap<String, Integer> ranking) {
         this.points = points;

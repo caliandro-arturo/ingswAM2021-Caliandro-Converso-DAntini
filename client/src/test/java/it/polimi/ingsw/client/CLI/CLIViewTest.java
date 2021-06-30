@@ -42,7 +42,6 @@ class CLIViewTest {
                         for (String element : elements) {
                             cost.add(Integer.parseInt(element));
                         }
-                        elements = arguments[1].split("\\s");
                     } else if (ID <= 3) {
                         elements = arguments[1].split("\\s");
                         for (String element : elements) {

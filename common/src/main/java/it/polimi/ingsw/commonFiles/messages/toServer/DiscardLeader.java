@@ -3,7 +3,7 @@ package it.polimi.ingsw.commonFiles.messages.toServer;
 import it.polimi.ingsw.commonFiles.messages.Message;
 
 public class DiscardLeader extends Message implements ToServerMessage {
-    private int pos;
+    private final int pos;
 
     public DiscardLeader(int pos) {
         this.pos = pos;

@@ -5,8 +5,6 @@ import it.polimi.ingsw.commonFiles.utility.StringUtility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-
 public class SpecialWarehouse implements LeaderPower{
     ObservableList<Resource> resources = FXCollections.observableArrayList();
     Resource resourceType;

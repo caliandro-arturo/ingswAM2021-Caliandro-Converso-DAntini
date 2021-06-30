@@ -4,8 +4,6 @@ package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -18,13 +16,13 @@ import java.util.List;
  */
 
 public class Board {
-    private DevelopmentPlace developmentPlace;
+    private final DevelopmentPlace developmentPlace;
     private final FaithTrack faithTrack;
     private final Strongbox strongbox ;
     private final WarehouseStore warehouseStore;
     private final ObservableList<LeaderCard> leaderCards = FXCollections.observableArrayList();
     private final ResourceHand resHand  = new ResourceHand();
-    private ArrayList<ArrayList<Resource>> powers;
+    private final ArrayList<ArrayList<Resource>> powers;
     private final ObservableList<Boolean> isProductionAlreadyUsed = FXCollections.observableArrayList(Arrays.asList(null,null,null,null,null,null));
 
 
@@ -70,10 +68,6 @@ public class Board {
 
     public ResourceHand getResHand() {
         return resHand;
-    }
-
-    public void setDevelopmentPlace(DevelopmentPlace developmentPlace) {
-        this.developmentPlace = developmentPlace;
     }
 
     public void addResourcesToHand(List<Resource> resources) {
@@ -170,16 +164,10 @@ public class Board {
                         └─────────────────┘
                         """;
         StringBuilder tempArt = new StringBuilder();
-        switch(leaderCards.size()){
-            case(0):
-                tempArt.append(emptyCard).append(emptyCard);
-                break;
-            case(1):
-                tempArt.append(leaderCards.get(0).toString()).append(emptyCard);
-                break;
-            case(2):
-                tempArt.append(leaderCards.get(0).toString()).append(leaderCards.get(1).toString());
-                break;
+        switch (leaderCards.size()) {
+            case (0) -> tempArt.append(emptyCard).append(emptyCard);
+            case (1) -> tempArt.append(leaderCards.get(0).toString()).append(emptyCard);
+            case (2) -> tempArt.append(leaderCards.get(0).toString()).append(leaderCards.get(1).toString());
         }
         String[] leaderArt = tempArt.toString().split("\n");
         for(int k=0; k<4; k++){

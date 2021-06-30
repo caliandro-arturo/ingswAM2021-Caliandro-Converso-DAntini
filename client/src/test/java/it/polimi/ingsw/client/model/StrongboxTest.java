@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.model;
 import org.junit.jupiter.api.Test;
 
 class StrongboxTest {
-    private Strongbox strongbox = new Strongbox();
+    private final Strongbox strongbox = new Strongbox();
     @Test
     public void printTest(){
         strongbox.setResources(123,0);

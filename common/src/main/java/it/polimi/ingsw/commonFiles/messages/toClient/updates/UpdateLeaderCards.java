@@ -4,9 +4,9 @@ import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
 
 public class UpdateLeaderCards extends Message implements GameUpdate {
-    private int victoryPoints;
-    private String[] requirements;
-    private String[] leaderPower;
+    private final int victoryPoints;
+    private final String[] requirements;
+    private final String[] leaderPower;
     private int ID;
 
     public int getVictoryPoints() {

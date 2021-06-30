@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BoardTest {
 
-    private Board board = new Board();
-    private ArrayList<Resource> resources = new ArrayList<>(Arrays.asList(Resource.SERF, Resource.SERF));
+    private final Board board = new Board();
+    private final ArrayList<Resource> resources = new ArrayList<>(Arrays.asList(Resource.SERF, Resource.SERF));
 
     @BeforeEach
     void setUp(){

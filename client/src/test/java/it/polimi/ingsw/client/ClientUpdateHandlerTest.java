@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -54,7 +55,7 @@ class ClientUpdateHandlerTest {
                         }
                     }
                 } else {
-                    model.updateResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Arrays.asList(model.getBoard().getPowerProd().get(msg.getID()-4))));
+                    model.updateResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Collections.singletonList(model.getBoard().getPowerProd().get(msg.getID() - 4))));
                     model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
                             get(msg.getProduction()));
                     model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
@@ -92,10 +93,7 @@ class ClientUpdateHandlerTest {
             @Override
             public void visit(LorenzoPick msg) {
                 switch (msg.getAction()) {
-                    case "TWOPOSITIONS" -> {
-
-                    }
-                    case "ONEPOSITIONRESET" -> {
+                    case "TWOPOSITIONS", "ONEPOSITIONRESET" -> {
 
                     }
                     default -> {
@@ -159,18 +157,18 @@ class ClientUpdateHandlerTest {
         UtilityProductionAndCost[] prod = new UtilityProductionAndCost[]{unit1};
         ProductionPower productionPower = new ProductionPower(cost,prod);
         model.getBoard().getDevelopmentPlace().setDevStack(new DevelopmentCard(1,1,1,Color.BLUE,cost,productionPower),1);
-        StartProduction msg = new StartProduction(1,new ArrayList<>(Arrays.asList(1)));
+        StartProduction msg = new StartProduction(1,new ArrayList<>(Collections.singletonList(1)));
         msg.setPlayer("test");
         updateHandler.visit(msg);
         System.out.println(model.getBoard().getWarehouseStore());
         assertEquals(1,model.getBoard().getStrongbox().getResources()[Utility.mapStrongbox.get(Resource.SERF)]);
-        msg = new StartProduction(0,new ArrayList<Integer>(Arrays.asList(1,0)),"coin", new String[]{"stone", "serf"});
+        msg = new StartProduction(0, new ArrayList<>(Arrays.asList(1, 0)),"coin", new String[]{"stone", "serf"});
         msg.setPlayer("test");
         model.getBoard().getWarehouseStore().setRes(Resource.STONE,1);
         updateHandler.visit(msg);
         assertEquals(0, model.getBoard().getStrongbox().getResources()[Utility.mapStrongbox.get(Resource.SERF)]);
         assertEquals(1, model.getBoard().getStrongbox().getResources()[Utility.mapStrongbox.get(Resource.COIN)]);
-        msg = new StartProduction(4,new ArrayList<Integer>(Arrays.asList(0)),"shield");
+        msg = new StartProduction(4, new ArrayList<>(Collections.singletonList(0)),"shield");
         msg.setPlayer("test");
         model.getBoard().setLeaderCards(new LeaderCard(1,1,null,new AdditionalProductionPower(Resource.COIN)));
         model.getBoard().getLeaderCards().get(0).getPower().activatePower(model.getBoard());

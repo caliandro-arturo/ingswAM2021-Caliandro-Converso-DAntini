@@ -7,12 +7,12 @@ import it.polimi.ingsw.commonFiles.utility.StringUtility;
 import java.util.Arrays;
 
 public class DevelopmentCard {
-    private int level;
-    private int ID;
-    private int victoryPoints;
+    private final int level;
+    private final int ID;
+    private final int victoryPoints;
     private Color color;
-    private UtilityProductionAndCost[] costs;
-    private Production production;
+    private final UtilityProductionAndCost[] costs;
+    private final Production production;
 
     public DevelopmentCard(int ID, int level, int victoryPoints, Color color, UtilityProductionAndCost[] costs, Production production) {
         this.ID = ID;
@@ -31,16 +31,8 @@ public class DevelopmentCard {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public int getVictoryPoints() {
         return victoryPoints;
-    }
-
-    public void setVictoryPoints(int victoryPoints) {
-        this.victoryPoints = victoryPoints;
     }
 
     public Color getColor() {
@@ -55,16 +47,8 @@ public class DevelopmentCard {
         return costs;
     }
 
-    public void setCosts(UtilityProductionAndCost[] costs) {
-        this.costs = costs;
-    }
-
     public Production getProduction() {
         return production;
-    }
-
-    public void setProduction(Production production) {
-        this.production = production;
     }
 
     @Override

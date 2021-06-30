@@ -16,5 +16,5 @@ public class TakeRes extends Message implements ToServerMessage {
         this.depot = depot;
     }
     @Override
-    public void accept(ToServerMessageHandler v){v.visit(this);};
+    public void accept(ToServerMessageHandler v){v.visit(this);}
 }

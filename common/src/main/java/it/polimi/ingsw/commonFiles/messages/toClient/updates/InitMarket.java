@@ -4,8 +4,8 @@ import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
 
 public class InitMarket extends Message implements GameUpdate {
-    private String[][] tray;
-    private String extraMarble;
+    private final String[][] tray;
+    private final String extraMarble;
 
     public InitMarket(String[][] tray, String extraMarble) {
         this.tray = tray;

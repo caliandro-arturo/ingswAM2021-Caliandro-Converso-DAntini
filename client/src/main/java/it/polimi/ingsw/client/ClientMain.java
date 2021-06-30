@@ -26,17 +26,15 @@ public class ClientMain {
         do {
             try {
                 switch (choice) {
-                    case "CLI": {
+                    case "CLI" -> {
                         ui = new CLI();
                         isRunning = true;
-                        break;
                     }
-                    case "GUI": {
+                    case "GUI" -> {
                         ui = new GUI();
                         isRunning = true;
-                        break;
                     }
-                    default: {
+                    default -> {
                         System.err.println("You must select between CLI or GUI.");
                         choice = in.readLine().toUpperCase().trim();
                     }

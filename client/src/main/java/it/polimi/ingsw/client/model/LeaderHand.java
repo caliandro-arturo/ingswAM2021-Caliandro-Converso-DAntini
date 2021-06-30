@@ -31,9 +31,6 @@ public class LeaderHand {
         return hand;
     }
 
-    public void discardLeaderCard(LeaderCard leaderCard){
-        this.hand.remove(leaderCard);
-    }
     /**
      * representation method for the hand of the player (CLI)
      * @return String with the representation
@@ -53,14 +50,14 @@ public class LeaderHand {
                 tempArt.append(hand.get(0).toString()).append(hand.get(1).toString());
                 String[] handArt2 = tempArt.toString().split("\n");
                 for(int i=0; i<10; i++){
-                    handArt.append(handArt2[i]).append(" "+handArt2[i+10]).append("\n");
+                    handArt.append(handArt2[i]).append(" ").append(handArt2[i + 10]).append("\n");
                 }
                 return handArt.toString();
             case(3):
                 tempArt.append(hand.get(0).toString()).append(hand.get(1).toString()).append(hand.get(2).toString());
                 String[] handArt3 = tempArt.toString().split("\n");
                 for(int i=0; i<10; i++){
-                    handArt.append(handArt3[i]).append(" "+handArt3[i+10]).append(" "+handArt3[i+20]).append("\n");
+                    handArt.append(handArt3[i]).append(" ").append(handArt3[i + 10]).append(" ").append(handArt3[i + 20]).append("\n");
                 }
                 return handArt.toString();
             case(4):
@@ -68,8 +65,7 @@ public class LeaderHand {
                 append(hand.get(3).toString());
                 String[] handArt4 = tempArt.toString().split("\n");
                 for(int i=0; i<10; i++){
-                handArt.append(handArt4[i]).append(" "+handArt4[i+10]).append(" "+handArt4[i+20]).
-                        append(" "+handArt4[i+30]).append("\n");
+                handArt.append(handArt4[i]).append(" ").append(handArt4[i + 10]).append(" ").append(handArt4[i + 20]).append(" ").append(handArt4[i + 30]).append("\n");
 
                 }
                 return handArt.toString();

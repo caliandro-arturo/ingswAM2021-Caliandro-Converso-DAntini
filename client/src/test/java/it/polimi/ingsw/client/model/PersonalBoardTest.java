@@ -24,14 +24,12 @@ class PersonalBoardTest {
 
     LeaderCard card1;
     LeaderCard card2;
-    LeaderHand leaderHand;
     public AdditionalProductionPower production ;
 
     @Test
     public void printTest(){
         track.setPositionB(3);
         production = new AdditionalProductionPower(Resource.COIN);
-        ArrayList<LeaderCard> leaderCards = new ArrayList<>();
         ArrayList<Color> colors = new ArrayList<>();
         ArrayList<Integer> quantity = new ArrayList<>();
         colors.add(Color.BLUE);

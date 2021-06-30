@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.client.ClientModel;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.Board;
 import it.polimi.ingsw.client.model.DevelopmentCard;
@@ -21,7 +20,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
@@ -51,13 +49,9 @@ public class PersonalBoardController extends BoardController {
     @FXML
     private Button prodButton2;
     @FXML
-    private Pane leftPane;
-    @FXML
     private ImageView activeLeaderCard1;
     @FXML
     private ImageView activeLeaderCard2;
-    @FXML
-    private Label labelLeaderCards;
     @FXML
     private AnchorPane resourceHand;
     @FXML
@@ -134,8 +128,7 @@ public class PersonalBoardController extends BoardController {
     private Pane leaderProd2;
 
     private View view;
-    private ArrayList<Pane> devPlaces;
-    private ArrayList<ArrayList<ResourceAndDepot>> resourceAndDepotBuffer = new ArrayList<>(){{
+    private final ArrayList<ArrayList<ResourceAndDepot>> resourceAndDepotBuffer = new ArrayList<>(){{
         add(new ArrayList<>());
         add(new ArrayList<>());
         add(new ArrayList<>());
@@ -270,65 +263,6 @@ public class PersonalBoardController extends BoardController {
         shieldCost3.setImage(GamePanel.imgShield);
     }
 
-    public Pane getDevProdPane1() {
-        return devProdPane1;
-    }
-
-    public Pane getDevProdPane2() {
-        return devProdPane2;
-    }
-
-    public Pane getDevProdPane3() {
-        return devProdPane3;
-    }
-
-    /**
-     * setter for the active leader card images
-     * @param cardID must be greater than 48
-     */
-    public void setActiveLeaderCard(int cardID){
-        if(cardID>48){
-
-            if(activeLeaderCard1.getImage()==null){
-                activeLeaderCard1.setImage(Utility.getCardPng(cardID));
-                //let the production drag&drop appear
-                if(cardID > 60){
-                    resToGive1.setDisable(false);
-                    leadProd1.setDisable(false);
-                    leadProd1.setOpacity(1);
-                    prodButton1.setOpacity(1);
-                    prodButton1.setDisable(false);
-                }else {
-                    resToGive1.setDisable(true);
-                    leadProd1.setDisable(true);
-                    leadProd1.setOpacity(0);
-                    prodButton1.setDisable(true);
-                    prodButton1.setOpacity(0);
-
-                }
-            }
-            else if(activeLeaderCard2.getImage()== null){
-                activeLeaderCard2.setImage(Utility.getCardPng(cardID));
-                //let the production drag&drop appear
-                if(cardID > 60){
-                    resToGive2.setDisable(false);
-                    leadProd2.setDisable(false);
-                    leadProd2.setOpacity(1);
-                    prodButton2.setDisable(false);
-                    prodButton2.setOpacity(1);
-
-                }else {
-                    resToGive2.setDisable(true);
-                    leadProd2.setDisable(true);
-                    leadProd2.setOpacity(0);
-                    prodButton2.setDisable(true);
-                    prodButton2.setOpacity(0);
-                }
-            }
-        }
-        //TODO : else error message FULL ACTIVE LEADER CARDS
-    }
-
     public void setView(View view) {
         this.view = view;
     }
@@ -350,19 +284,7 @@ public class PersonalBoardController extends BoardController {
     }
 
     /**
-     * is called by the production to add resources in the strongbox
-     * @param num: the number of resources to add
-     * @param resource: the type of resources to add
-     */
-    public void addBoxResource(int num, Resource resource){
-        int quantity = Integer.parseInt(getResourceLabelHashMap().get(resource).getText());
-        quantity+=num;
-        getResourceLabelHashMap().get(resource).setText((Integer.toString(quantity)));
-    }
-
-    /**
      * put the images of resources in the context menu for the base production of the board
-     * @param contextMenuEvent
      */
     @FXML
     public void backToHand(ContextMenuEvent contextMenuEvent){
@@ -379,21 +301,8 @@ public class PersonalBoardController extends BoardController {
                 posRes = "3";
             }
 
-            getMenuItem().setOnAction(event-> {
-                view.process("takeres: "+ posRes);
-            });
+            getMenuItem().setOnAction(event-> view.process("takeres: "+ posRes));
         }
-    }
-
-    public void discard(ActionEvent actionEvent) {
-        Resource resource;
-        try {
-            resource = GamePanel.imageViewResourceMap.get(getHandListImg().get(getHand().getCurrentPageIndex()));
-            getHandListImg().remove(getHand().getCurrentPageIndex());
-        }catch (IndexOutOfBoundsException e){
-            return;
-        }
-        view.process("discardres: " + resource.name());
     }
 
     public void clearBuffer(){
@@ -482,7 +391,7 @@ public class PersonalBoardController extends BoardController {
         ImageView destination = (ImageView) event.getSource();
         Image image = getHandListImg().get(getHand().getCurrentPageIndex()).getImage();
         command.append(GamePanel.imageResourceMap.get(image).name());
-        command.append(", " + returnResourcePosition(destination));
+        command.append(", ").append(returnResourcePosition(destination));
         view.process("deployres: " + command);
     }
 
@@ -500,7 +409,6 @@ public class PersonalBoardController extends BoardController {
 
     /**
      * accept drag & drop for the board & leader productions
-     * @param event
      */
     @FXML
     public void dropResProd(DragEvent event) {
@@ -549,7 +457,6 @@ public class PersonalBoardController extends BoardController {
 
     /**
      * accept drag & drop to the cost request in the development card production
-     * @param event
      */
     @FXML
     public void dropProdCost(DragEvent event){
@@ -586,9 +493,9 @@ public class PersonalBoardController extends BoardController {
         if (ID>3){
             if (checkIfTheConditionsForTheProdAreMet(ID)) {
                 if (isOneLeaderProductionActive() && !isAProductionCard(view.getModel().getBoard().getLeaderCards().get(0).getID())){
-                    cmd.append(ID-1 + ", ");
+                    cmd.append(ID - 1).append(", ");
                 } else
-                    cmd.append(ID + ", ");
+                    cmd.append(ID).append(", ");
                 cmd.append(resourceAndDepotBuffer.get(ID).get(0).getDepot()).append(", ").append(GamePanel.imageResourceMap.
                         get(prodImageView.get(ID - 3).get(1).getImage()).name());
                 view.process(cmd.toString());
@@ -598,14 +505,14 @@ public class PersonalBoardController extends BoardController {
             }
             return;
         }
-        cmd.append(ID + ", ");
+        cmd.append(ID).append(", ");
         if (ID>0){
             if (checkIfTheConditionsForTheProdAreMet(ID)){
                 StringBuilder cost = new StringBuilder();
                 for (UtilityProductionAndCost cost1: view.getModel().getBoard().getDevelopmentPlace().getTopCard(ID).getProduction().getCost()){
                     for (ResourceAndDepot resourceAndDepot : resourceAndDepotBuffer.get(ID)){
                         if (resourceAndDepot.getResource() == cost1.getResource()){
-                            cost.append(resourceAndDepot.getDepot() + " ");
+                            cost.append(resourceAndDepot.getDepot()).append(" ");
                         }
                     }
                 }
@@ -619,10 +526,10 @@ public class PersonalBoardController extends BoardController {
                 StringBuilder cost = new StringBuilder();
                 StringBuilder store = new StringBuilder();
                 for (ResourceAndDepot resourceAndDepot :resourceAndDepotBuffer.get(0)){
-                    store.append(resourceAndDepot.getDepot() + " ");
-                    cost.append(resourceAndDepot.getResource().name() + " ");
+                    store.append(resourceAndDepot.getDepot()).append(" ");
+                    cost.append(resourceAndDepot.getResource().name()).append(" ");
                 }
-                cmd.append(cost + ", " + GamePanel.imageResourceMap.get(resBaseProd.getSelectionModel().getSelectedItem().getImage()).name() + ", "+ store);
+                cmd.append(cost).append(", ").append(GamePanel.imageResourceMap.get(resBaseProd.getSelectionModel().getSelectedItem().getImage()).name()).append(", ").append(store);
                 view.process(cmd.toString());
                 clearBuffer();
             } else {
@@ -749,7 +656,6 @@ public class PersonalBoardController extends BoardController {
 
     /**
      * discard the actual shown resource in the hand sending the message DISCARDRES
-     * @param event
      */
     @FXML
     void discardRes(ActionEvent event) {

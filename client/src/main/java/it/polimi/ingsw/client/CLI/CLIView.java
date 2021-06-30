@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.Board;
-import it.polimi.ingsw.client.model.Color;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
@@ -62,15 +61,9 @@ public class CLIView extends View {
     public void show(String element) {
         String[] target = element.split("\\s*,\\s*");
         switch (target[0]) {
-            case "asknickname": {
-                System.out.println("Insert your nickname by typing SETNICK: <your nickname>:");
-                break;
-            }
-            case "turnphase": {
-                System.out.println("Next turn phase: " + getModel().getCurrentTurnPhase());
-                break;
-            }
-            case "board": {
+            case "asknickname" -> System.out.println("Insert your nickname by typing SETNICK: <your nickname>:");
+            case "turnphase" -> System.out.println("Next turn phase: " + getModel().getCurrentTurnPhase());
+            case "board" -> {
                 clear();
                 printHead();
                 if (target.length == 1) {
@@ -86,47 +79,39 @@ public class CLIView extends View {
                         System.err.println("Player not found.");
                     });
                 }
-                break;
             }
-            case "hand": {
+            case "hand" -> {
                 clear();
                 printHead();
                 currentView = element;
                 System.out.println(getModel().getLeaderHand());
-                break;
             }
-            case "market":{
+            case "market" -> {
                 clear();
                 printHead();
                 currentView = element;
                 System.out.println(getModel().getMarket());
-                break;
             }
-            case "devgrid":{
+            case "devgrid" -> {
                 clear();
                 printHead();
                 currentView = element;
                 System.out.println(getModel().getDevelopmentGrid());
-                break;
             }
-            case "players": {
+            case "players" -> {
                 System.out.println();
                 getModel().getPlayersUsernames().forEach(p -> {
                     if (p.equals(getModel().getPlayerUsername()))
                         System.out.println(CLIColor.ANSI_BRIGHT_GREEN + p + CLIColor.ANSI_RESET);
                     else System.out.println(p);
                 });
-                break;
             }
-            case "gameslist": {
+            case "gameslist" -> {
                 if (getModel().isGameSelected())
                     showError("You cannot do this now.");
                 else getController().sendMessage(new GamesList());
-                break;
             }
-            default:
-                System.out.println(element);
-                break;
+            default -> System.out.println(element);
         }
     }
 
@@ -219,35 +204,19 @@ public class CLIView extends View {
         }
         String[] boardCmd = target.split("\\s*,\\s*");
         switch (boardCmd[0].toLowerCase()) {
-            case "board": {
-                if (boardCmd.length==1) {
+            case "board" -> {
+                if (boardCmd.length == 1) {
                     show("board");
                 } else {
                     show(target);
                 }
-                break;
             }
-            case "hand": {
-                show("hand");
-                break;
-            }
-            case "market": {
-                show("market");
-                break;
-            } case "devgrid":{
-                show("devgrid");
-                break;
-            }
-            case "players": {
-                show("players");
-                break;
-            }
-            case "gameslist": {
-                show("gameslist");
-                break;
-            }
-            default:
-                showError("Cannot show \"" + commandSlice[1] + "\".");
+            case "hand" -> show("hand");
+            case "market" -> show("market");
+            case "devgrid" -> show("devgrid");
+            case "players" -> show("players");
+            case "gameslist" -> show("gameslist");
+            default -> showError("Cannot show \"" + commandSlice[1] + "\".");
         }
     }
 

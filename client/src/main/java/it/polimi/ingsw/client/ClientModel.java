@@ -3,10 +3,11 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.model.*;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 public class ClientModel {
     private String playerUsername;
@@ -15,7 +16,6 @@ public class ClientModel {
     private final BooleanProperty isFinished = new SimpleBooleanProperty(true);
     private int numOfPlayers;
     private int position;                                                   //position on the table (for turns order)
-    private boolean isLast;
     private DevelopmentGrid developmentGrid;
     private Market market;
     private final ObjectProperty<LeaderHand> leaderHand = new SimpleObjectProperty<>(new LeaderHand());
@@ -23,7 +23,7 @@ public class ClientModel {
     private final ObjectProperty<LinkedHashMap<String, Board>> boards = new SimpleObjectProperty<>(new LinkedHashMap<>());
     private boolean gameStarted = false;                                    //true if leader cards are distributed
     private boolean gameSelected = false;
-    private ObjectProperty<Integer> whiteMarbleQuantity = new SimpleObjectProperty<>(0);
+    private final ObjectProperty<Integer> whiteMarbleQuantity = new SimpleObjectProperty<>(0);
 
     public int getWhiteMarbleQuantity() {
         return whiteMarbleQuantity.get();
@@ -81,10 +81,6 @@ public class ClientModel {
         return numOfPlayers;
     }
 
-    public boolean isLast() {
-        return isLast;
-    }
-
     public DevelopmentGrid getDevelopmentGrid() {
         return developmentGrid;
     }
@@ -107,10 +103,6 @@ public class ClientModel {
 
     public LeaderHand getLeaderHand() {
         return leaderHand.get();
-    }
-
-    public ObjectProperty<LeaderHand> leaderHandProperty() {
-        return leaderHand;
     }
 
     public int getResourcesToGet() {
@@ -157,8 +149,7 @@ public class ClientModel {
         this.position = position;
     }
 
-    public void setLast(boolean last) {
-        isLast = last;
+    public void setLast() {
     }
 
     public void setDevelopmentGrid(DevelopmentGrid developmentGrid) {

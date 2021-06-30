@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.GUI.App;
 import it.polimi.ingsw.commonFiles.messages.toClient.*;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
 
@@ -10,18 +9,9 @@ import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
  */
 public class ClientMessageVisitor implements ToClientMessageVisitor {
     private final ClientController controller;
-    private final View guiView = App.getGui().getView();
 
     public ClientMessageVisitor(ClientController controller) {
         this.controller = controller;
-    }
-
-    private void setToDo(String id, String toDo) {
-        controller.getView().setToDo(id, toDo);
-    }
-
-    private void deleteToDo(String id) {
-        controller.getView().deleteToDo(id);
     }
 
     @Override

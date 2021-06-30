@@ -2,19 +2,15 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.ArrayList;
 
 /**
  * light version of WarehouseStore class for representation purposes
  */
 public class WarehouseStore {
 
-    private ObservableList<ObservableList<Resource>> res
+    private final ObservableList<ObservableList<Resource>> res
             = FXCollections.observableArrayList();
 
     public WarehouseStore() {
@@ -63,8 +59,8 @@ public class WarehouseStore {
      */
     @Override
     public String toString(){
-        StringBuilder storeArt = new StringBuilder("");
-        String resString1 = "";
+        StringBuilder storeArt = new StringBuilder();
+        String resString1;
         String resString2 = "";
         String resString3 = "";
 
@@ -95,13 +91,7 @@ public class WarehouseStore {
             else if(res.get(2).size()==3)
                 resString3 = "│     /   "+res.get(2).get(0)+"    "+res.get(2).get(1)+"    "+res.get(2).get(2)+"   \\  \n";
 
-        storeArt.append("│       "+"\u001B[100m"+"Warehouse Store" + CLIColor.ANSI_RESET+ "    \n"+
-                        "│          /───────\\       \n" + resString1 +
-                        "│        /───────────\\     \n" + resString2 +
-                        "│      /───────────────\\   \n" + resString3 +
-                        "│    /───────────────────\\ \n"+
-                        "│                          \n"
-        );
+        storeArt.append("│       " + "\u001B[100m" + "Warehouse Store" + CLIColor.ANSI_RESET + "    \n" + "│          /───────\\       \n").append(resString1).append("│        /───────────\\     \n").append(resString2).append("│      /───────────────\\   \n").append(resString3).append("│    /───────────────────\\ \n").append("│                          \n");
         return storeArt.toString();
     }
 

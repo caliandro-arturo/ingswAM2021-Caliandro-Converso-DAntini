@@ -15,7 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -72,11 +72,6 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             showUpdate("newplayer", gameRejoin.getPlayer());
     }
 
-    @Override
-    public void visit(ResourceUpdate msg) {
-
-    }
-
     /**
      * Handles the game setting.
      */
@@ -100,10 +95,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     /**
      * Handles the last turn message.
-     * @param msg
      */
     public void visit(LastTurn msg) {
-        model.setLast(true);
+        model.setLast();
         showUpdate("lastturns", msg.getReason());
     }
 
@@ -127,24 +121,16 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     private LeaderCard translator(int ID, int victoryPoints, String[] leaderPowerString, String[] requirementString) {
         LeaderPower leaderPower;
         Requirements requirement;
-        switch (leaderPowerString[0]) {
-            case "saleOnDevelopment":
-                leaderPower = new SaleOnDevelopment(Utility.mapRepresentationResource.
-                        get(leaderPowerString[1]));
-                break;
-            case "whiteMarbleConversion":
-                leaderPower = new WhiteMarbleConversion(Utility.mapRepresentationResource.
-                        get(leaderPowerString[1]));
-                break;
-            case "specialWarehouse":
-                leaderPower = new SpecialWarehouse(Utility.mapRepresentationResource.
-                        get(leaderPowerString[1]));
-                break;
-            default:
-                leaderPower = new AdditionalProductionPower(Utility.mapRepresentationResource.
-                        get(leaderPowerString[1]));
-                break;
-        }
+        leaderPower = switch (leaderPowerString[0]) {
+            case "saleOnDevelopment" -> new SaleOnDevelopment(Utility.mapRepresentationResource.
+                    get(leaderPowerString[1]));
+            case "whiteMarbleConversion" -> new WhiteMarbleConversion(Utility.mapRepresentationResource.
+                    get(leaderPowerString[1]));
+            case "specialWarehouse" -> new SpecialWarehouse(Utility.mapRepresentationResource.
+                    get(leaderPowerString[1]));
+            default -> new AdditionalProductionPower(Utility.mapRepresentationResource.
+                    get(leaderPowerString[1]));
+        };
         if (requirementString[0].equals("resourceCost")) {
             requirement = new ResourceCost(new UtilityProductionAndCost(Integer.parseInt(requirementString[2]),
                     Utility.mapRepresentationResource.get(requirementString[1])));
@@ -452,12 +438,8 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(LorenzoPick msg) {
         switch (msg.getAction()) {
-            case "TWOPOSITIONS" -> {
-                showUpdate("lorenzoaction", "twopositions");
-            }
-            case "ONEPOSITIONRESET" -> {
-                showUpdate("lorenzoaction", "onepositionreset");
-            }
+            case "TWOPOSITIONS" -> showUpdate("lorenzoaction", "twopositions");
+            case "ONEPOSITIONRESET" -> showUpdate("lorenzoaction", "onepositionreset");
             default -> {
                 Color color = Utility.mapColor.get(msg.getAction().substring(3));
                 model.getDevelopmentGrid().lorenzoRemoveAction(color, msg.getCard(), msg.isTakenCardsOfDifferentLevel());
@@ -551,7 +533,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                 }
             }
         } else {
-            model.updateResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Arrays.asList(model.getBoard().getPowerProd().get(msg.getID()-4))));
+            model.updateResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Collections.singletonList(model.getBoard().getPowerProd().get(msg.getID() - 4))));
             model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
                     get(msg.getProduction().toLowerCase()));
             model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.model;
 
 public class LeaderCard {
-    private int ID;
-    private int victoryPoints;
-    private Requirements requirements;
-    private LeaderPower power;
+    private final int ID;
+    private final int victoryPoints;
+    private final Requirements requirements;
+    private final LeaderPower power;
 
     public LeaderCard(int ID, int victoryPoints, Requirements requirements, LeaderPower power) {
         this.ID = ID;
@@ -17,28 +17,8 @@ public class LeaderCard {
         return ID;
     }
 
-    public int getVictoryPoints() {
-        return victoryPoints;
-    }
-
-    public void setVictoryPoints(int victoryPoints) {
-        this.victoryPoints = victoryPoints;
-    }
-
-    public Requirements getRequirements() {
-        return requirements;
-    }
-
-    public void setRequirements(Requirements requirements) {
-        this.requirements = requirements;
-    }
-
     public LeaderPower getPower() {
         return power;
-    }
-
-    public void setPower(LeaderPower power) {
-        this.power = power;
     }
 
     @Override

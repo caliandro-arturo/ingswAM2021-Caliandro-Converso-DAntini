@@ -2,8 +2,6 @@ package it.polimi.ingsw.commonFiles.messages.toClient.updates;
 
 import it.polimi.ingsw.commonFiles.messages.Message;
 import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.GameUpdate;
-import it.polimi.ingsw.commonFiles.messages.toClient.updates.UpdateHandler;
 
 public class AskWhiteMarble extends Message implements GameUpdate {
     private final int whiteMarblesToChoose;

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.client.model.Utility;
 import it.polimi.ingsw.commonFiles.messages.toServer.*;
@@ -10,13 +9,11 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Label;
 import javafx.util.Duration;
 
 import java.util.*;
 
 public class GUIView extends View {
-    public final int[] trial = new int[] {2, 3, 4, 5, 6};
 
     @Override
     public void show(String element) {
@@ -397,9 +394,4 @@ public class GUIView extends View {
         Platform.runLater(() -> ((GamePanel) App.controller).startTimeUp());
     }
 
-    //debug purposes
-
-    public void displayEndingScores(LinkedHashMap<String, Integer> playersRanking) {
-        displayEndingScore(trial, playersRanking);
-    }
 }

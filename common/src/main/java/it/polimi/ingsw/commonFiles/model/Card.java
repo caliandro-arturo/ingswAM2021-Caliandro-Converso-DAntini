@@ -3,10 +3,10 @@ package it.polimi.ingsw.commonFiles.model;
 import java.io.Serializable;
 
 public class Card implements Serializable {
-    private int ID;
-    private UtilityProductionAndCost[] newCardCost;
-    private int newCardVictoryPoints;
-    private Production productions;
+    private final int ID;
+    private final UtilityProductionAndCost[] newCardCost;
+    private final int newCardVictoryPoints;
+    private final Production productions;
     private int level;
 
     public UtilityProductionAndCost[] getNewCardCost() {

@@ -5,8 +5,8 @@ import it.polimi.ingsw.commonFiles.messages.Message;
 import java.util.ArrayList;
 
 public class StartProduction extends Message implements ToServerMessage {
-    private int ID;
-    private ArrayList<Integer> cost;
+    private final int ID;
+    private final ArrayList<Integer> cost;
     private String production;
     private String[] costResource;
 

@@ -5,8 +5,8 @@ import it.polimi.ingsw.commonFiles.messages.toClient.ToClientMessageVisitor;
 import it.polimi.ingsw.commonFiles.model.Card;
 
 public class LorenzoPick extends Message implements GameUpdate{
-    private String action;
-    private boolean takenCardsOfDifferentLevel;
+    private final String action;
+    private final boolean takenCardsOfDifferentLevel;
     private Card card;
 
     public LorenzoPick(String action, boolean takenCardsOfDifferentLevel) {

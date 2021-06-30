@@ -39,78 +39,26 @@ public abstract class View {
         String[] commandSlice = input.split("\\s*:\\s*", 2);
         switch (commandSlice[0].toLowerCase()) {
             //each case is an identifier
-            case "setnick": {
-                setNick(commandSlice);
-                break;
-            }
-            case "joingame": {
-                joinGame(commandSlice);
-                break;
-            }
-            case "setgame": {
-                setGame(commandSlice);
-                break;
-            }
-            case "back": {
-                back();
-                break;
-            }
-            case "choose": {
-                choose(commandSlice);
-                break;
-            }
-            case "activateprod": {
-                activateProduction(commandSlice);
-                break;
-            }
-            case "usemarket": {
-                useMarket(commandSlice);
-                break;
-            }
-            case "choosewhite": {
-                chooseWhite(commandSlice);
-                break;
-            }
-            case "buydevcard": {
-                buyDevCard(commandSlice);
-                break;
-            }
-            case "useleader": {
-                useLeader(commandSlice);
-                break;
-            }
-            case "discardleader": {
-                discardLeader(commandSlice);
-                break;
-            }
-            case "deployres": {
-                deployRes(commandSlice);
-                break;
-            }
-            case "takeres": {
-                takeRes(commandSlice);
-                break;
-            }
-            case "discardres": {
-                discardRes(commandSlice);
-                break;
-            }
-            case "getres": {
-                getRes(commandSlice);
-                break;
-            }
-            case "show":{
-                showHandler(commandSlice);
-                break;
-            }
-            case "next": {
-                getController().sendMessage(new Next());
-                break;
-            }
-            default:
-                System.err.println("Invalid command, retry.");
+            case "setnick" -> setNick(commandSlice);
+            case "joingame" -> joinGame(commandSlice);
+            case "setgame" -> setGame(commandSlice);
+            case "back" -> back();
+            case "choose" -> choose(commandSlice);
+            case "activateprod" -> activateProduction(commandSlice);
+            case "usemarket" -> useMarket(commandSlice);
+            case "choosewhite" -> chooseWhite(commandSlice);
+            case "buydevcard" -> buyDevCard(commandSlice);
+            case "useleader" -> useLeader(commandSlice);
+            case "discardleader" -> discardLeader(commandSlice);
+            case "deployres" -> deployRes(commandSlice);
+            case "takeres" -> takeRes(commandSlice);
+            case "discardres" -> discardRes(commandSlice);
+            case "getres" -> getRes(commandSlice);
+            case "show" -> showHandler(commandSlice);
+            case "next" -> getController().sendMessage(new Next());
+            default -> System.err.println("Invalid command, retry.");
         }
-    };
+    }
 
     /**
      * Shows elements to the user.

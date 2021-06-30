@@ -3,8 +3,6 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.model.Card;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
