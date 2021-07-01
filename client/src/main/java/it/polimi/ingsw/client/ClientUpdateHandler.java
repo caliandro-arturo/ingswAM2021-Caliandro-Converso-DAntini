@@ -527,7 +527,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                     model.getBoard(msg.getPlayer()).getStrongbox().addResources(prod[i].getQuantity(),
                             prod[i].getResource());
                 }else {
-                    for (int k=0; k<prod[i].getQuantity(); i++){
+                    for (int k=0; k<prod[i].getQuantity(); k++){
                         model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
                     }
                 }
