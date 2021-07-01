@@ -1,1 +1,1 @@
-java -p JavaFX --add-modules ALL-MODULE-PATH -jar client.jar
+java -p JavaFX --add-modules ALL-MODULE-PATH -jar client.jar %1
