@@ -8,11 +8,6 @@ import java.util.Stack;
 public class SinglePlayerGame extends Game {
     private boolean isLost;
 
-    @Override
-    public void setOver(boolean over) {
-        super.setOver(over);
-        endGame();
-    }
     public SinglePlayerGame(Player player, int playersNum, Market market, Stack<LeaderCard> leaderDeck,
                             DevelopmentGrid developmentGrid) {
         super(player, playersNum, market, leaderDeck, developmentGrid);
@@ -65,6 +60,12 @@ public class SinglePlayerGame extends Game {
         LinkedHashMap<String, Integer> ranking = new LinkedHashMap<>();
         ranking.put(getPlayer(0).getUsername(),isLost ? -1 : -2);
         getViewAdapter().notifyGameEnded(getPlayer(0).getUsername(), getPlayer(0).getVictoryPoints(),ranking);
+    }
+
+    @Override
+    public void setOver(boolean over) {
+        super.setOver(over);
+        endGame();
     }
 
     //debug purposes

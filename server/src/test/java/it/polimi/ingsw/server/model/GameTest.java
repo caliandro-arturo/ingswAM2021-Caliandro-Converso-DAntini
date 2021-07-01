@@ -41,15 +41,18 @@ public class GameTest {
         multiTest.setStarted(false);
         try {
             multiTest.addPlayer(testPlayer2);
-        } catch (Exception e) {}
+        } catch (Exception ignore) {}
         try {
             multiTest.addPlayer(testPlayer3);
-        } catch (Exception e) {}
+        } catch (Exception ignore) {}
         try {
             multiTest.addPlayer(testPlayer4);
-        } catch (Exception e) {}
+        } catch (Exception ignore) {}
     }
 
+    /**
+     * Sets up the single player.
+     */
     void singleSetUp() {
         creator = new GameCreator();
         leaderDeck = creator.getLeaderDeck();
@@ -112,6 +115,9 @@ public class GameTest {
         assertTrue(multiTest.isOver());
     }
 
+    /**
+     * Tests if the game ends correctly in three possible cases.
+     */
     @Test
     void singlePlayerOverTest() {
         //asserting that the single player game ends when the player reaches the last position
