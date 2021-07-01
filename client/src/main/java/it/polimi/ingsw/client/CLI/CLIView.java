@@ -32,8 +32,7 @@ public class CLIView extends View {
     @Override
     public void setToDo(String id, String toDo) {
         this.toDo.put(id, toDo);
-        if (currentView != null)
-            refresh(currentView);
+        refresh(currentView);
     }
 
     /**
@@ -47,8 +46,7 @@ public class CLIView extends View {
             toDo.clear();
         else
             toDo.remove(id);
-        if (currentView != null)
-            refresh(currentView);
+        refresh(currentView);
     }
 
 
@@ -547,13 +545,14 @@ public class CLIView extends View {
      */
     @Override
     public void refresh(String... viewsToRefresh) {
-        for (String s : viewsToRefresh) {
-            if (s.equals("") || currentView.equals(s)) {
-                clear();
-                break;
-            }
+        ArrayList<String> views = new ArrayList<>(Arrays.asList(viewsToRefresh));
+        if (views.contains("")) {
+            clear();
+            if (!currentView.equals("")) show(currentView);
+        } else if (views.contains(currentView)) {
+            clear();
+            show(currentView);
         }
-        if (!currentView.equals("")) show(currentView);
     }
 
     /**

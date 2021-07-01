@@ -606,8 +606,6 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         if (!msg.getPlayer().equals(model.getPlayerUsername()))
             return;
         model.getLeaderHand().removeCardFromHand(msg.getPos());
-        if (model.getLeaderHand().getHand().size() == 2)
-            deleteToDo("discardleader");
         refresh("hand");
     }
 
