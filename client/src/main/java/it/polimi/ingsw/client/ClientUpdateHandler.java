@@ -97,7 +97,6 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      * Handles the last turn message.
      */
     public void visit(LastTurn msg) {
-        model.setLast();
         showUpdate("lastturns", msg.getReason());
     }
 
@@ -213,17 +212,6 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(InitBoards msg) {
         model.setBoards(msg.getUsernames());
-    }
-
-    /**
-     * Set the position of the player and shows it.
-     *
-     * @param msg contains the position
-     */
-    @Override
-    public void visit(TablePosition msg) {
-        model.setPosition(msg.getPosition());
-        controller.getView().showTablePosition(msg.getPosition());
     }
 
     /**

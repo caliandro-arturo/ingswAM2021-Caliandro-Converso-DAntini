@@ -79,7 +79,8 @@
     -fx-font-size: 18;
 }
 
-#phaseAnnouncementPane > .label {
+#phaseAnnouncementPane>.label,
+#playerTurnAnnouncementPane>.label {
     -fx-font-size: 33;
 }
 

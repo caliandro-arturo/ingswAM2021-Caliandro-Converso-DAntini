@@ -11,3 +11,7 @@
     -fx-font-family: "Harrington";
     -fx-font-size: 18;
 }
+
+#tablePositionLabel {
+    -fx-font-size: 36;
+}

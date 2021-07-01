@@ -585,6 +585,7 @@ public class GamePanel extends SceneHandler {
                 .forEach(p -> {
                     if (p.getKey().equals(getModel().getPlayerUsername())) {
                         personalBoardController.setBoard(p.getValue());
+                        personalBoardController.setTablePositionLabel(new ArrayList<>(getModel().getBoards().values()).indexOf(p.getValue()) + 1);
                         return;
                     }
                     AnchorPane board = null;
@@ -600,6 +601,7 @@ public class GamePanel extends SceneHandler {
                     boardsTabPane.getTabs().add(newBoard);
                     boardAndControllerMap.put(newBoard, loader.getController());
                     ((BoardController) loader.getController()).setBoard(p.getValue());
+                    ((BoardController) loader.getController()).setTablePositionLabel(new ArrayList<>(getModel().getBoards().values()).indexOf(p.getValue()) + 1);
                 });
     }
 
@@ -1154,6 +1156,9 @@ public class GamePanel extends SceneHandler {
         });
     }
 
+    /**
+     * Selects the white marble power and sends the message.
+     */
     public void chooseWhiteMarblePower(MouseEvent mouseEvent) {
         ImageView target = (ImageView) mouseEvent.getSource();
         if (target.getImage().equals(firstChoice.getImage())) {
@@ -1164,6 +1169,9 @@ public class GamePanel extends SceneHandler {
         closePopup(null);
     }
 
+    /**
+     * Closes the program.
+     */
     public void quit(ActionEvent actionEvent) {
         System.exit(0);
     }

@@ -5,9 +5,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class App extends Application {
     public static Stage stage;
@@ -44,6 +46,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         App.stage = stage;
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/inkwell.png"))));
         stage.setOnCloseRequest(e -> System.exit(0));
         setScene("launcher", "Masters of Renaissance");
     }

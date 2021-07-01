@@ -7,7 +7,6 @@ public class PassTurnPhase extends TurnPhase {
 
     @Override
     public void start() {
-        getGame().getViewAdapter().notifyTurnPass();
         getGame().nextTurnPhase();
     }
 
@@ -27,8 +26,6 @@ public class PassTurnPhase extends TurnPhase {
         do {
             getGame().setCurrentPlayer(nextPlayer());
             game.getViewAdapter().notifyNewTurn(game.getCurrentPlayer());
-            if (!game.getCurrentPlayer().isConnected())
-                getGame().getViewAdapter().notifyTurnPass();
         } while (!getGame().getCurrentPlayer().isConnected());
         return getGame().getTurnPhase("UseLeader");
     }

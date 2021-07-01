@@ -127,9 +127,9 @@ public class FaithTrack {
                 {
                     "position": %d,
                     "vaticanReport": {
-                        "8": %s,
-                        "16": %s,
-                        "24": %s
+                        "1": %s,
+                        "2": %s,
+                        "3": %s
                     }
                 }""".formatted(
                 position,

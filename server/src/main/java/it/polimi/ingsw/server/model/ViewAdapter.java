@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 /**
- * This class contains all the methods used by the it.polimi.ingsw.client.model to notify the player and/or to ask him to do an action.
+ * This class contains all the methods used by the it.polimi.ingsw.client.model to notify the player and/or to ask him
+ * to do an action.
  */
 public class ViewAdapter {
     /**
@@ -26,7 +27,6 @@ public class ViewAdapter {
     }
 
     public ViewAdapter() {
-
     }
 
     public void setVirtualView(VirtualView virtualView) {
@@ -40,20 +40,11 @@ public class ViewAdapter {
     /**
      * sends a message to a player.
      *
-     * @param player the player who receive the message
+     * @param player  the player who receive the message
      * @param message the information to send to a player
      */
     public void sendMessage(Player player, Message message) {
         virtualView.sendMessage(player, message);
-    }
-
-    /**
-     * Sends a text to the player.
-     * @deprecated create a specific method to send specific messages.
-     */
-    @Deprecated
-    public void sendMessage(Player player, String message) {
-
     }
 
     /**
@@ -83,13 +74,6 @@ public class ViewAdapter {
     }
 
     /**
-     * Sends the request to the current player to use the market.
-     */
-    public void askToUseTheMarket() {
-
-    }
-
-    /**
      * Sends the request to the current player to choose between deploying a leader, discarding a leader or skipping the
      * turn phase.
      */
@@ -105,46 +89,21 @@ public class ViewAdapter {
     }
 
     /**
-     * This method sends the request to the current player to choose a card to buy from the Development Grid.
-     */
-    public void askWhichCardToBuyFromTheDevelopmentGrid() {
-    }
-
-    /**
-     * Notifies that the game is over and returns the final score and rank
+     * Notifies that the game is over and returns the final score and rank.
      */
     public void notifyGameEnded(String player, int[] points, LinkedHashMap<String, Integer> ranking) {
         virtualView.sendMessage(player, new EndingScores(points, ranking));
     }
 
     /**
-     * Notifies a player that his turn is a certain number.
+     * Announces the next turn phase.
      *
-     * @param player the player to notify
-     * @param number the position order of the player
+     * @param player        the player to send the message to
+     * @param turnPhaseName the name of the turn phase
+     * @param turnPhaseInfo information about the turn phase
      */
-    public void notifyPlayerTurnNumber(Player player, int number) {
-        virtualView.sendMessage(player, new TablePosition(number));
-    }
-
     public void announceTurnPhase(Player player, String turnPhaseName, String turnPhaseInfo) {
         virtualView.sendMessage(new TurnPhaseAnnouncement(turnPhaseName, turnPhaseInfo));
-    }
-
-    /**
-     * Notifies that the turn will pass to the next player.
-     */
-    public void notifyTurnPass() {
-
-    }
-
-    /**
-     * Sends an error message.
-     *
-     * @see GameException
-     */
-    public void sendErrorMessage(Message message, String error) {
-        virtualView.sendMessage(message.getPlayer(), new ErrorMessage( error));
     }
 
     /**
@@ -158,20 +117,23 @@ public class ViewAdapter {
 
     /**
      * send the update of leader on board after a useLeader command
+     *
      * @param leaderCard the card to sent
      */
-    public void sendLeaderUpdate(LeaderCard leaderCard){
+    public void sendLeaderUpdate(LeaderCard leaderCard) {
         UpdateLeaderCards updateLeaderCards = new UpdateLeaderCards(leaderCard.getID(),
-                leaderCard.getVictoryPoints(),leaderCard.getRequirements().identifier(),
+                leaderCard.getVictoryPoints(), leaderCard.getRequirements().identifier(),
                 leaderCard.getLeaderPower().identifier());
         updateLeaderCards.setPlayer(game.getCurrentPlayer().getUsername());
         sendMessage(updateLeaderCards);
     }
 
     /**
-     * Sends initial configurations of development grid and market.
+     * Sends initial configurations of development grid and market to the player.
+     *
+     * @param player to send the message to
      */
-    public void sendTable(Player player){
+    public void sendTable(Player player) {
         ArrayList<DevelopmentCard> cards = game.getDevelopmentGrid().getTopDevelopmentCards();
         ArrayList<Integer> level = new ArrayList<>();
         ArrayList<Integer> victoryPoints = new ArrayList<>();
@@ -179,7 +141,7 @@ public class ViewAdapter {
         ArrayList<UtilityProductionAndCost[]> costs = new ArrayList<>();
         ArrayList<Production> productions = new ArrayList<>();
         ArrayList<Integer> IDs = new ArrayList<>();
-        for (DevelopmentCard card : cards){
+        for (DevelopmentCard card : cards) {
             IDs.add(card.getID());
             level.add(card.getLevel());
             victoryPoints.add(card.getVictoryPoints());
@@ -187,18 +149,21 @@ public class ViewAdapter {
             costs.add(card.getCost());
             productions.add(card.getProduction());
         }
-        sendMessage(player, new InitDevGrid(IDs,colors,costs,level,victoryPoints,productions));
+        sendMessage(player, new InitDevGrid(IDs, colors, costs, level, victoryPoints, productions));
         Market market = game.getMarket();
         String extraMarble = market.getExtraMarble().getColorString();
         String[][] tray = new String[market.getRows()][market.getColumns()];
-        for (int i = 0; i < market.getRows(); i++){
-            for (int j = 0; j < market.getColumns(); j++){
+        for (int i = 0; i < market.getRows(); i++) {
+            for (int j = 0; j < market.getColumns(); j++) {
                 tray[i][j] = market.getTray()[i][j].getColorString();
             }
         }
-        sendMessage(player, new InitMarket(tray,extraMarble));
+        sendMessage(player, new InitMarket(tray, extraMarble));
     }
 
+    /**
+     * Sends initial configurations of development grid and market to all the players.
+     */
     public void sendTable() {
         for (Player p :
                 game.getPlayers()) {
@@ -211,19 +176,19 @@ public class ViewAdapter {
      *
      * @param player the player to send the leader cards to
      */
-    public void sendLeaderHand(Player player){
+    public void sendLeaderHand(Player player) {
         ArrayList<LeaderCard> cards = player.getLeaderCards();
         ArrayList<String[]> requirements = new ArrayList<>();
         ArrayList<String[]> leaderPowers = new ArrayList<>();
         ArrayList<Integer> victoryPoints = new ArrayList<>();
         ArrayList<Integer> IDs = new ArrayList<>();
-        for (LeaderCard leaderCard : cards){
+        for (LeaderCard leaderCard : cards) {
             IDs.add(leaderCard.getID());
             requirements.add(leaderCard.getRequirements().identifier());
             leaderPowers.add(leaderCard.getLeaderPower().identifier());
             victoryPoints.add(leaderCard.getVictoryPoints());
         }
-        sendMessage(player,new InitLeaderHand(IDs, victoryPoints,requirements,leaderPowers));
+        sendMessage(player, new InitLeaderHand(IDs, victoryPoints, requirements, leaderPowers));
     }
 
     /**

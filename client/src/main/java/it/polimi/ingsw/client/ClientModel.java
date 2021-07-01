@@ -15,7 +15,6 @@ public class ClientModel {
     private final StringProperty currentTurnPhase = new SimpleStringProperty();
     private final BooleanProperty isFinished = new SimpleBooleanProperty(true);
     private int numOfPlayers;
-    private int position;                                                   //position on the table (for turns order)
     private DevelopmentGrid developmentGrid;
     private Market market;
     private final ObjectProperty<LeaderHand> leaderHand = new SimpleObjectProperty<>(new LeaderHand());
@@ -143,13 +142,6 @@ public class ClientModel {
 
     public void setNumOfPlayers(int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public void setLast() {
     }
 
     public void setDevelopmentGrid(DevelopmentGrid developmentGrid) {

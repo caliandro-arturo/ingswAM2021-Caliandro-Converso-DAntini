@@ -36,7 +36,7 @@ public class FaithTrack {
         return positionB.get();
     }
 
-    public void setVaticanMap(int num, boolean passed){
+    public void setVaticanMap(int num, Boolean passed){
         vaticanMap.get(num).set(passed);
     }
 

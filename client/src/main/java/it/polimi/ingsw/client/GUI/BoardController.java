@@ -9,9 +9,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -137,6 +135,9 @@ public class BoardController implements Initializable {
     private HBox leaderDepot1;
     @FXML
     private HBox leaderDepot2;
+
+    @FXML
+    private Label tablePositionLabel;
 
     /**
      * strongbox
@@ -283,18 +284,6 @@ public class BoardController implements Initializable {
         strongShield.setImage(GamePanel.imgShield);
     }
 
-    public ImageView getRes1() {
-        return res1;
-    }
-
-    public ImageView getRes22() {
-        return res22;
-    }
-
-    public ImageView getRes21() {
-        return res21;
-    }
-
     public HashMap<ImageView, Label> getStrongMap() {
         return strongMap;
     }
@@ -351,6 +340,9 @@ public class BoardController implements Initializable {
         return strongSerf;
     }
 
+    public void setTablePositionLabel(int tablePositionLabel) {
+        this.tablePositionLabel.setText(Integer.toString(tablePositionLabel));
+    }
 
     /**
      * increase the position of the cross in the GUI

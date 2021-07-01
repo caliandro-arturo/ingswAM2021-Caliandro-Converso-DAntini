@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeAll;
 
 import java.util.LinkedHashMap;
 
+/**
+ * An empty view adapter used to bypass network in tests.
+ */
 public class ViewAdapterForTest {
     public static ViewAdapter testView;
 
@@ -16,19 +19,11 @@ public class ViewAdapterForTest {
             }
 
             @Override
-            public void sendMessage(Player player, String message) {
-            }
-
-            @Override
             public void sendMessage(Message message) {
             }
 
             @Override
             public void notifyInitialResourcesAmount(Player player, int resourceQuantity) {
-            }
-
-            @Override
-            public void askToUseTheMarket() {
             }
 
             @Override
@@ -44,27 +39,11 @@ public class ViewAdapterForTest {
             }
 
             @Override
-            public void askWhichCardToBuyFromTheDevelopmentGrid() {
-            }
-
-            @Override
             public void notifyGameEnded(String player, int[] points, LinkedHashMap<String, Integer> ranking) {
             }
 
             @Override
-            public void notifyPlayerTurnNumber(Player player, int number) {
-            }
-
-            @Override
             public void announceTurnPhase(Player player, String turnPhaseName, String turnPhaseInfo) {
-            }
-
-            @Override
-            public void notifyTurnPass() {
-            }
-
-            @Override
-            public void sendErrorMessage(Message message, String error) {
             }
 
             @Override

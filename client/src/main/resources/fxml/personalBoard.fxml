@@ -426,5 +426,10 @@
             <DropShadow offsetY="2.0" />
          </effect>
       </ImageView>
+      <Label fx:id="tablePositionLabel" alignment="CENTER" layoutX="893.0" layoutY="624.0" prefHeight="43.0" prefWidth="42.0" textFill="WHITE">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

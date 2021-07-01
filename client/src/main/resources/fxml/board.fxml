@@ -672,10 +672,13 @@
                   <Tooltip fx:id="toolTipHelp" />
                </tooltip>
             </Button>
-            <Label fx:id="nickLabelBoard" layoutX="68.0" layoutY="5.0" prefHeight="31.0" prefWidth="266.0">
+            <Label fx:id="nickLabelBoard" layoutX="68.0" layoutY="5.0" prefHeight="31.0" prefWidth="266.0" textFill="WHITE">
                <font>
                   <Font size="22.0" />
                </font>
+               <effect>
+                  <DropShadow height="13.85" radius="8.2125" spread="0.47" />
+               </effect>
             </Label>
          </children>
       </Pane>

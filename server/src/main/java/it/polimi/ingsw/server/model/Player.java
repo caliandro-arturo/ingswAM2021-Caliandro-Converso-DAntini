@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commonFiles.messages.toServer.DeployRes;
+import it.polimi.ingsw.commonFiles.messages.toServer.DiscardRes;
+import it.polimi.ingsw.commonFiles.messages.toServer.GetResource;
 import it.polimi.ingsw.commonFiles.model.Production;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
@@ -154,6 +157,9 @@ public class Player {
                             Resource randomResource = Resource.values()[new Random().nextInt(5)];
                             if (Utility.isStorable(randomResource)) {
                                 board.getResHand().add(randomResource);
+                                GetResource getRes = new GetResource(randomResource);
+                                getRes.setPlayer(getUsername());
+                                game.getViewAdapter().sendMessage(getRes);
                                 initialResources--;
                             }
                         }
@@ -163,10 +169,12 @@ public class Player {
                             for (WarehouseStore w : board.getStore()) {
                                 try {
                                     board.deployResource(r, board.getStore().indexOf(w) + 1);
+                                    DeployRes deployRes = new DeployRes(r, board.getStore().indexOf(w) + 1);
+                                    deployRes.setPlayer(getUsername());
+                                    game.getViewAdapter().sendMessage(deployRes);
+                                    break;
                                 } catch (IllegalArgumentException e) {
-                                    continue;
                                 }
-                                break;
                             }
                         //discard initial leader cards
                         while (leaderCards.size() > 2)
@@ -179,20 +187,27 @@ public class Player {
                 } else if (this.equals(game.getCurrentPlayer())) {
                     if (!board.getResHand().isEmpty()) {
                         //tries to deploy resources from the hand
-                        for (Resource r : board.getResHand())
+                        ArrayList<Resource> resources = new ArrayList<>(board.getResHand());
+                        for (Resource r : resources)
                             for (WarehouseStore w : board.getStore()) {
                                 try {
                                     board.deployResource(r, board.getStore().indexOf(w) + 1);
-                                } catch (Exception e) {
-                                    continue;
+                                    DeployRes deployRes = new DeployRes(r, board.getStore().indexOf(w) + 1);
+                                    deployRes.setPlayer(getUsername());
+                                    game.getViewAdapter().sendMessage(deployRes);
+                                    break;
+                                } catch (Exception ignore) {
                                 }
-                                break;
                             }
                         //if there is not free depot, discard resources.
+                        resources = new ArrayList<>(board.getResHand());
                         if (!board.getResHand().isEmpty())
-                            for (Resource r : board.getResHand())
+                            for (Resource r : resources)
                                 try {
                                     board.discardResource(r);
+                                    DiscardRes discardRes = new DiscardRes(r);
+                                    discardRes.setPlayer(getUsername());
+                                    game.getViewAdapter().sendMessage(discardRes);
                                 } catch (Exception ignore) {
                                 }
                     }

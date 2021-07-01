@@ -229,6 +229,11 @@ public class GUIView extends View {
             }
     }
 
+    /**
+     * Shows the end game pane with the final result, the ranking and specific victory points.
+     * @param scores scores of
+     * @param ranking
+     */
     @Override
     public void displayEndingScore(int[] scores, LinkedHashMap<String, Integer> ranking) {
         Platform.runLater(() -> {
