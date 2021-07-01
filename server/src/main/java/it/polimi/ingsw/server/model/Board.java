@@ -129,7 +129,11 @@ public class Board {
      */
     public void takeOutResource(int pos){
         pos--;
-        resHand.add(store.get(pos).takeOutResource());
+        try {
+            resHand.add(store.get(pos).takeOutResource());
+        } catch (IndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("The selected depot does not exist.");
+        }
     }
 
     /**

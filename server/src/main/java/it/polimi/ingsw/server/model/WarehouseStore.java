@@ -82,7 +82,7 @@ public class WarehouseStore {
             return resToTake;
         }
         else
-            throw new IllegalArgumentException("This shelf is empty.");
+            throw new IllegalArgumentException("This depot is empty.");
     }
 
     @Override
