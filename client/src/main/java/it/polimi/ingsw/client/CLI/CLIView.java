@@ -240,7 +240,7 @@ public class CLIView extends View {
             System.err.println("Wrong syntax: use the format \"DISCARDRES: <resource name>\".");
             return;
         }
-        if (Utility.mapResource.get(commandSlice[1]) != null){
+        if (Utility.mapResource.get(resource) != null){
             if (Utility.isStorable(Utility.mapResource.get(commandSlice[1]))){
                 getController().sendMessage(new DiscardRes(Utility.mapResource.get(commandSlice[1])));
             } else
@@ -354,6 +354,8 @@ public class CLIView extends View {
             System.err.println("You must insert a number.");
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
+        } catch (ArrayIndexOutOfBoundsException e){
+            System.err.println("Wrong syntax: use the format \"ACTIVATEPRODUCTION: <id>, <arg1>, ...\".");
         }
     }
 
@@ -386,6 +388,8 @@ public class CLIView extends View {
             getController().sendMessage(new BuyCard(level, color, space, stores));
         } catch (NumberFormatException e) {
             System.err.println("You must insert a number.");
+        } catch (ArrayIndexOutOfBoundsException e){
+            System.err.println("Wrong syntax: use the format \"BUYDEVCARD: <arg1>, <arg2>, ...\".");
         }
     }
 
@@ -402,7 +406,7 @@ public class CLIView extends View {
             System.err.println("Wrong syntax: use the format \"USEMARKET: <rowOrColumn>, <number>\".");
             return;
         }
-        String[] args = commandSlice[1].split("\\s*,\\s*");
+        String[] args = argument.split("\\s*,\\s*");
         if (args[0].toLowerCase().matches("[rc]") && args.length == 2) {
             try {
                 getController().sendMessage(new UseMarket(args[0].charAt(0), Integer.parseInt(args[1])));
@@ -440,7 +444,7 @@ public class CLIView extends View {
             return;
         }
         try {
-            pos = Integer.parseInt(commandSlice[1]);
+            pos = Integer.parseInt(argument);
             getController().sendMessage(new UseLeader(pos));
         } catch (NumberFormatException e) {
             System.err.println("You must insert a number.");
@@ -467,6 +471,8 @@ public class CLIView extends View {
                 getController().sendMessage(new DeployRes(res, Integer.parseInt(args[1])));
             } catch (NumberFormatException e) {
                 System.err.println("Wrong parameter: you must insert the position in which you want to deploy the resource.");
+            } catch (ArrayIndexOutOfBoundsException e){
+                System.err.println("Wrong syntax: use the format \"DEPLOYRES: <resource name, depot position number>\".");
             }
                 }, () -> System.err.println("Wrong parameter: you must insert a resource name."));
     }
