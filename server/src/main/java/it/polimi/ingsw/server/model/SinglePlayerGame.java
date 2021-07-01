@@ -25,13 +25,18 @@ public class SinglePlayerGame extends Game {
             }
 
             @Override
-            public void increasePosition() {
-                if(getPosition()<24) {
-                    setPosition(getPosition()+1);
-                    getGame().getViewAdapter().sendMessage(new LorenzoPosition());
-                    checkPosition();
-                }
-                if (getPosition() == 24) {
+            public void notifyPositionChange() {
+                getGame().getViewAdapter().sendMessage(new LorenzoPosition());
+            }
+
+            @Override
+            public void checkPosition() {
+                if (getPosition() == 8 || getPosition() == 16) {
+                    if (!getGame().getVaticanMap().get(getPosition())) {
+                        getGame().vaticanReport(getPosition());
+                    }
+                }else if (getPosition() == 24){
+                    getPlayer(0).getBoard().getFaithTrack().isInVatican(24);
                     isLost = true;
                     setOver(true);
                 }
@@ -53,12 +58,19 @@ public class SinglePlayerGame extends Game {
 
     @Override
     public void endGame() {
-        if (!getDevelopmentGrid().isStillWinnable() && this.getPlayers().get(0).getNumOfCards() != 7){
-            isLost = true; //TODO
+        if (!getDevelopmentGrid().isStillWinnable() && this.getPlayers().get(0).getNumOfCards() != 7) {
+            isLost = true;
         }
         setFinished();
         LinkedHashMap<String, Integer> ranking = new LinkedHashMap<>();
         ranking.put(getPlayer(0).getUsername(),isLost ? -1 : -2);
         getViewAdapter().notifyGameEnded(getPlayer(0).getUsername(), getPlayer(0).getVictoryPoints(),ranking);
+    }
+
+    //debug purposes
+
+
+    public boolean isLost() {
+        return isLost;
     }
 }

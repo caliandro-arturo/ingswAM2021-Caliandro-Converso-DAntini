@@ -2,8 +2,7 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 
 import java.util.HashMap;
 import java.util.function.BiFunction;
@@ -15,13 +14,13 @@ import java.util.function.Function;
 public class FaithTrack {
     private final IntegerProperty position = new SimpleIntegerProperty(0);
     private final IntegerProperty positionB = new SimpleIntegerProperty(-1);
-    private final HashMap<Integer, Boolean> vaticanMap = new HashMap<>(){{
-        put(1, null);
-        put(2, null);
-        put(3, null);
+    private final HashMap<Integer, ObjectProperty<Boolean>> vaticanMap = new HashMap<>(){{
+        put(1, new SimpleObjectProperty<>(null));
+        put(2, new SimpleObjectProperty<>(null));
+        put(3, new SimpleObjectProperty<>(null));
     }};
 
-    public HashMap<Integer, Boolean> getVaticanMap() {
+    public HashMap<Integer, ObjectProperty<Boolean>> getVaticanMap() {
         return vaticanMap;
     }
 
@@ -38,7 +37,7 @@ public class FaithTrack {
     }
 
     public void setVaticanMap(int num, boolean passed){
-        vaticanMap.replace(num,passed);
+        vaticanMap.get(num).set(passed);
     }
 
     public void addPosition(){
@@ -120,7 +119,7 @@ public class FaithTrack {
 
         for (int i = 1; i <= 3; i++) {
             faithFT.append(cellPadder.apply(7)).append(stringPainter.apply("FT: " + i, CLIColor.ANSI_YELLOW)).append("  ");
-            Boolean key = vaticanMap.get(i);
+            Boolean key = vaticanMap.get(i).get();
             if (key == null) {
                 faithFT.append(stringPainter.apply("-", CLIColor.ANSI_GREY));
             } else if (key) {

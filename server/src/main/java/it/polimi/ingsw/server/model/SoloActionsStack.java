@@ -31,7 +31,7 @@ public class SoloActionsStack {
      */
     public void pick(Game game) {
         SoloAction token = soloActions.get(actionPointer++);
-        if (token.name().substring(0,3).equals("DEL")) {
+        if (token.name().startsWith("DEL")) {
             Color color = Utility.mapColor.get(token.name().substring(3));
             boolean flag = checkIfLorenzoDiscardCardOfDifferentLevel(game.getDevelopmentGrid(), color);
             Card card = game.getDevelopmentGrid().lorenzoCardsUpdate(color,flag);
@@ -58,5 +58,9 @@ public class SoloActionsStack {
     /* for debug purposes */
     public ArrayList<SoloAction> getSoloActions() {
         return soloActions;
+    }
+
+    public void setActionPointer(int actionPointer) {
+        this.actionPointer = actionPointer;
     }
 }

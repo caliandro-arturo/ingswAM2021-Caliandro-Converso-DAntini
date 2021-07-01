@@ -76,6 +76,10 @@ public class ViewAdapterForTest {
             }
 
             @Override
+            public void sendTable(Player player) {
+            }
+
+            @Override
             public void sendLeaderHand(Player player) {
             }
 

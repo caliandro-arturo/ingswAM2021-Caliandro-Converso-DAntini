@@ -129,8 +129,6 @@ public class BoardController implements Initializable {
     @FXML
     private AnchorPane resourceHand;
 
-
-
     @FXML
     private AnchorPane leaderCard1;
     @FXML
@@ -148,41 +146,40 @@ public class BoardController implements Initializable {
     private final ArrayList<ImageView> resSpots = new ArrayList<>();
     private ArrayList<ImageView> activeLeaderCards;
     private ArrayList<ArrayList<ImageView>> devPlace;
-    private HashMap<ImageView, Label> strongMap ;
+    private HashMap<ImageView, Label> strongMap;
     private ArrayList<ArrayList<ImageView>> storesList;
-
-    public BoardController() {
-    }
+    private ArrayList<ImageView> tilesList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        strongMap = new HashMap<>(){{
+        strongMap = new HashMap<>() {{
             put(strongSerf, boxSerf);
             put(strongCoin, boxCoin);
             put(strongShield, boxShield);
             put(strongStone, boxStone);
         }};
-        resourceLabelHashMap = new HashMap<>(){{
+        resourceLabelHashMap = new HashMap<>() {{
             put(Resource.SERF, boxSerf);
             put(Resource.COIN, boxCoin);
             put(Resource.SHIELD, boxShield);
             put(Resource.STONE, boxStone);
         }};
+        tilesList = new ArrayList<>(Arrays.asList(tile2, tile3, tile4));
         strongResources = new ArrayList<>(Arrays.asList(strongCoin, strongSerf, strongShield, strongStone));
         resSpots.addAll(Arrays.asList(res1, res21, res22, res31, res32, res33, specialDepot11, specialDepot12, specialDepot21, specialDepot22));
-        storesList = new ArrayList<>(){{
-            add(new ArrayList<>(Arrays.asList(res1)));
-            add(new ArrayList<>(Arrays.asList(res21,res22)));
-            add(new ArrayList<>(Arrays.asList(res31,res32,res33)));
-            add(new ArrayList<>(Arrays.asList(specialDepot11,specialDepot12)));
-            add(new ArrayList<>(Arrays.asList(specialDepot21,specialDepot22)));
+        storesList = new ArrayList<>() {{
+            add(new ArrayList<>(Collections.singletonList(res1)));
+            add(new ArrayList<>(Arrays.asList(res21, res22)));
+            add(new ArrayList<>(Arrays.asList(res31, res32, res33)));
+            add(new ArrayList<>(Arrays.asList(specialDepot11, specialDepot12)));
+            add(new ArrayList<>(Arrays.asList(specialDepot21, specialDepot22)));
         }};
-        devPlace = new ArrayList<>(){{
+        devPlace = new ArrayList<>() {{
             add(new ArrayList<>(Arrays.asList(devP11, devP12, devP13)));
             add(new ArrayList<>(Arrays.asList(devP21, devP22, devP23)));
             add(new ArrayList<>(Arrays.asList(devP31, devP32, devP33)));
         }};
-        activeLeaderCards = new ArrayList<>(){{
+        activeLeaderCards = new ArrayList<>() {{
             add(activeLeaderCard1);
             add(activeLeaderCard2);
         }};
@@ -193,9 +190,11 @@ public class BoardController implements Initializable {
     public HashMap<Resource, Label> getResourceLabelHashMap() {
         return resourceLabelHashMap;
     }
+
     public ObservableList<ImageView> getHandListImg() {
         return handListImg;
     }
+
     public ArrayList<ArrayList<ImageView>> getStoresList() {
         return storesList;
     }
@@ -207,22 +206,25 @@ public class BoardController implements Initializable {
                 increasePos(cross, i + 1);
         }
         board.getFaithTrack().positionProperty().addListener(e -> increasePos());
+        board.getFaithTrack().getVaticanMap().forEach((reportNum, objectVal) -> {
+            objectVal.addListener((c, oldVal, newVal) -> updateTale(reportNum, newVal));
+        });
         board.getResHand().getResources().addListener((ListChangeListener<? super Resource>) e -> {
             if (e.next())
                 Platform.runLater(() -> updateHandList(e));
         });
         board.getLeaderCards().addListener((InvalidationListener) e -> Platform.runLater(this::updateActiveLeaderCards));
-        board.getWarehouseStore().getRes().addListener((ListChangeListener<? super ObservableList<Resource>>)  newValue -> {
+        board.getWarehouseStore().getRes().addListener((ListChangeListener<? super ObservableList<Resource>>) newValue -> {
             if (newValue.next()) {
                 if (newValue.wasAdded()) {
                     newValue.getAddedSubList().forEach(list -> list.addListener((InvalidationListener) e -> Platform.runLater(this::updateWarehouse)));
                 }
             }
         });
-        for(ObservableList<Resource> slot: board.getWarehouseStore().getRes()){
-            slot.addListener((InvalidationListener) e-> Platform.runLater(this::updateWarehouse));
+        for (ObservableList<Resource> slot : board.getWarehouseStore().getRes()) {
+            slot.addListener((InvalidationListener) e -> Platform.runLater(this::updateWarehouse));
         }
-        for (ObservableList<DevelopmentCard> cards: board.getDevelopmentPlace().getDevStack()){
+        for (ObservableList<DevelopmentCard> cards : board.getDevelopmentPlace().getDevStack()) {
             cards.addListener((InvalidationListener) e -> Platform.runLater(this::updateDevPlace));
         }
         board.getStrongboxObject().addListener((InvalidationListener) e -> Platform.runLater(this::updateStrongbox));
@@ -269,9 +271,12 @@ public class BoardController implements Initializable {
         updateStrongbox();
         updateWarehouse();
         updateDevPlace();
+        for (int i = 1; i <= 3; i++) {
+            updateTale(i, board.getFaithTrack().getVaticanMap().get(i).get());
+        }
     }
 
-    public void setImage(){
+    public void setImage() {
         strongCoin.setImage(GamePanel.imgCoin);
         strongSerf.setImage(GamePanel.imgSerf);
         strongStone.setImage(GamePanel.imgStone);
@@ -289,6 +294,7 @@ public class BoardController implements Initializable {
     public ImageView getRes21() {
         return res21;
     }
+
     public HashMap<ImageView, Label> getStrongMap() {
         return strongMap;
     }
@@ -296,6 +302,7 @@ public class BoardController implements Initializable {
     public Board getBoard() {
         return board;
     }
+
     public AnchorPane getLeaderCard1() {
         return leaderCard1;
     }
@@ -304,9 +311,10 @@ public class BoardController implements Initializable {
         return leaderCard2;
     }
 
-    public AnchorPane getResourceHand(){
+    public AnchorPane getResourceHand() {
         return resourceHand;
     }
+
     public Pagination getHand() {
         return hand;
     }
@@ -346,25 +354,25 @@ public class BoardController implements Initializable {
 
     /**
      * increase the position of the cross in the GUI
+     *
      * @param position the initial position to increment
      */
     @FXML
     void increasePos(ImageView cross, int position) {
         int oldPosition = position - 1;
-        checkTile(oldPosition);
-        if (oldPosition<2)
+        if (oldPosition < 2)
             moveRight(cross);
-        else if(oldPosition<4)
+        else if (oldPosition < 4)
             moveUp(cross);
-        else if(oldPosition<9)
+        else if (oldPosition < 9)
             moveRight(cross);
-        else if(oldPosition<11)
+        else if (oldPosition < 11)
             moveDown(cross);
-        else if(oldPosition<16)
+        else if (oldPosition < 16)
             moveRight(cross);
-        else if(oldPosition<18)
+        else if (oldPosition < 18)
             moveUp(cross);
-        else if(oldPosition<24)
+        else if (oldPosition < 24)
             moveRight(cross);
     }
 
@@ -391,20 +399,6 @@ public class BoardController implements Initializable {
     private void moveDown(ImageView cross) {
         cross.setLayoutY(cross.getLayoutY() + 46);
     }
-
-    /**
-     * check the position and set the relative tile visible
-     * @param pos player position
-     */
-    private void checkTile(int pos){
-        if(pos == 9)
-            tile2.setOpacity(100);
-        else if (pos == 17)
-            tile3.setOpacity(100);
-        else if (pos== 24)
-            tile4.setOpacity(100);
-    }
-
 
     /**
      * Updates the resource hand pagination
@@ -457,7 +451,7 @@ public class BoardController implements Initializable {
     /**
      * Updates the active leader cards
      */
-    public void updateActiveLeaderCards(){
+    public void updateActiveLeaderCards() {
         ObservableList<LeaderCard> cards = board.getLeaderCards();
         for (int i = 0; i < cards.size(); i++) {
             activeLeaderCards.get(i).setImage(new Image(Objects.requireNonNull(getClass().
@@ -468,8 +462,8 @@ public class BoardController implements Initializable {
     /**
      * reads the model warehouse and updates the relative images
      */
-    public void updateWarehouse(){
-        for (ArrayList<ImageView> imageViews: storesList){
+    public void updateWarehouse() {
+        for (ArrayList<ImageView> imageViews : storesList) {
             WarehouseStore store = board.getWarehouseStore();
             for (ImageView slot : imageViews) {
                 if (slot != null) {
@@ -484,18 +478,25 @@ public class BoardController implements Initializable {
         }
     }
 
-    public void updateStrongbox(){
+    public void updateStrongbox() {
         Strongbox strongbox = board.getStrongbox();
-        for (Map.Entry<Resource,Label> entry: resourceLabelHashMap.entrySet()){
+        for (Map.Entry<Resource, Label> entry : resourceLabelHashMap.entrySet()) {
             entry.getValue().setText(String.valueOf(strongbox.getResourcesQuantity(entry.getKey())));
         }
     }
 
-    public void updateDevPlace(){
+    public void updateDevPlace() {
         ArrayList<ObservableList<DevelopmentCard>> devPlaces = board.getDevelopmentPlace().getDevStack();
         for (int i = 0; i < devPlaces.size(); i++) {
             for (int j = 0; j < devPlaces.get(i).size(); j++)
                 devPlace.get(i).get(j).setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/cards/" + devPlaces.get(i).get(j).getID() + ".png"))));
         }
+    }
+
+    public void updateTale(int reportNum, Boolean val) {
+        if (val == null) return;
+        tilesList.get(reportNum - 1).setImage(
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/tile" + (reportNum + 1) + (val ? "y" : "n") + ".png"))));
+        tilesList.get(reportNum - 1).setOpacity(1);
     }
 }

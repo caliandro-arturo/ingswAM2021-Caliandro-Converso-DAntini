@@ -15,6 +15,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="668.0" prefWidth="936.0" styleClass="anchor" stylesheets="@../css/playersBoard.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.BoardController">
     <children>
+        <!--resource hand -->
+      <AnchorPane fx:id="resourceHand" disable="true" layoutX="664.0" layoutY="60.0" opacity="0.0" prefHeight="183.0" prefWidth="250.0">
+         <children>
+              <Pagination fx:id="hand" layoutX="22.0" layoutY="14.0" maxPageIndicatorCount="0" pageCount="0" prefHeight="156.0" prefWidth="206.0" />
+         </children>
+      </AnchorPane>
 
         <!--faith track-->
         <ImageView fx:id="cross" fitHeight="42.0" fitWidth="42.0" layoutX="36.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true">
@@ -25,20 +31,20 @@
                 <DropShadow blurType="TWO_PASS_BOX" />
             </effect>
         </ImageView>
-        <ImageView fx:id="tile2" fitHeight="66.0" fitWidth="66.0" layoutX="231.0" layoutY="98.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../png/yellow square.png" />
-            </image>
+        <ImageView fx:id="tile2" fitHeight="66.0" fitWidth="66.0" layoutX="230.0" layoutY="97.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow offsetY="2.0" />
+         </effect>
         </ImageView>
-        <ImageView fx:id="tile3" fitHeight="66.0" fitWidth="66.0" layoutX="460.0" layoutY="50.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../png/orange square.png" />
-            </image>
+        <ImageView fx:id="tile3" fitHeight="66.0" fitWidth="66.0" layoutX="460.0" layoutY="49.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow offsetY="2.0" />
+         </effect>
         </ImageView>
-        <ImageView fx:id="tile4" fitHeight="66.0" fitWidth="66.0" layoutX="736.0" layoutY="98.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../png/red square.png" />
-            </image>
+        <ImageView fx:id="tile4" fitHeight="66.0" fitWidth="66.0" layoutX="736.0" layoutY="97.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow offsetY="2.0" />
+         </effect>
         </ImageView>
 
         <!--Warehouse depots-->
@@ -165,12 +171,6 @@
             </Pane>
          </children>
       </HBox>
-        <!--resource hand -->
-      <AnchorPane fx:id="resourceHand" disable="true" layoutX="664.0" layoutY="60.0" opacity="0.0" prefHeight="183.0" prefWidth="250.0">
-         <children>
-              <Pagination fx:id="hand" layoutX="22.0" layoutY="14.0" maxPageIndicatorCount="0" pageCount="0" prefHeight="156.0" prefWidth="206.0" />
-         </children>
-      </AnchorPane>
       <AnchorPane fx:id="leaderCard2" layoutX="32.0" layoutY="363.0" prefHeight="283.0" prefWidth="226.0">
          <children>
             <ImageView fx:id="activeLeaderCard2" fitHeight="260.0" fitWidth="200.0" layoutX="14.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="39.90830993652344" AnchorPane.topAnchor="2.0" />

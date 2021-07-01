@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commonFiles.messages.toClient.updates.LorenzoPosition;
 import it.polimi.ingsw.commonFiles.messages.toClient.updates.VaticanReport;
 
 import java.util.HashMap;
@@ -51,15 +52,21 @@ public class FaithTrack {
     }
 
     /**
-     * this method increase the position of the Faith Marker in the faith track,
-     * if it's in 8,16 or 24 invokes the vaticanReport method
+     * Increase the position of the Faith Marker on the faith track, if it's in 8,16 or 24 triggers a vatican report.
      */
     public void increasePosition(){
         if(this.position<24) {
             this.position++;
-            game.getViewAdapter().incrementFaithTrackPosition(player);
+            notifyPositionChange();
             checkPosition();
         }
+    }
+
+    /**
+     * Notifies the player about the update of his position.
+     */
+    public void notifyPositionChange() {
+        game.getViewAdapter().incrementFaithTrackPosition(player);
     }
 
     /**
@@ -86,28 +93,27 @@ public class FaithTrack {
         VaticanReport vaticanReport = new VaticanReport();
         vaticanReport.setPlayer(player.getUsername());
         boolean isPassed = false;
-        switch(papalSpace){
-            case 8: {
+        switch (papalSpace) {
+            case 8 -> {
                 vaticanReport.setNum(1);
                 if (position > 4 && position < 9) {
                     scoreCard += 2;
                     isPassed = true;
-                } else break;
+                }
             }
-            case 16: {
+            case 16 -> {
                 vaticanReport.setNum(2);
                 if (position > 11 && position < 17) {
                     scoreCard += 3;
                     isPassed = true;
                 }
-                break;
             }
-            case 24: {
+            case 24 -> {
                 vaticanReport.setNum(3);
                 if (position > 18 && position < 25) {
                     scoreCard += 4;
                     isPassed = true;
-                } else break;
+                }
             }
         }
         vaticanReport.setPassed(isPassed);

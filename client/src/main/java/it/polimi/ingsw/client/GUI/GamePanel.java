@@ -266,10 +266,9 @@ public class GamePanel extends SceneHandler {
     @FXML
     private Label nickLabelBoard;
 
-
-
-
     private Pane currentPane;
+
+    private boolean isOver = false;
 
 
     private final Image blueMarble = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/png/blue_marble.png")));
@@ -548,6 +547,14 @@ public class GamePanel extends SceneHandler {
 
     public TableView<PlayerScorePair> getRankingTabView() {
         return rankingTabView;
+    }
+
+    public boolean isOver() {
+        return isOver;
+    }
+
+    public void setOver(boolean over) {
+        isOver = over;
     }
 
     /**
@@ -860,7 +867,7 @@ public class GamePanel extends SceneHandler {
     }
 
     private void nextUpdate() {
-        nextButton.setDisable(!getModel().isIsFinished());
+        nextButton.setDisable(!getModel().isFinished());
     }
     //
 
@@ -961,17 +968,19 @@ public class GamePanel extends SceneHandler {
     }
 
     public void showTurnPhaseAnnouncement() {
-        String turnPhase = getModel().getCurrentTurnPhase();
-        if (getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame()))
-            handlingInterface(turnPhase);
-        else {
-            backButton.setDisable(true);
-            nextButton.setDisable(true);
-            chooseButton.setDisable(true);
+        if (!isOver) {
+            String turnPhase = getModel().getCurrentTurnPhase();
+            if (getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame()))
+                handlingInterface(turnPhase);
+            else {
+                backButton.setDisable(true);
+                nextButton.setDisable(true);
+                chooseButton.setDisable(true);
+            }
+            turnPhaseLabel.setText(turnPhase);
+            turnPhaseAnnouncementLabel.setText(turnPhase);
+            showOverAndThenHide(phaseAnnouncementPane);
         }
-        turnPhaseLabel.setText(turnPhase);
-        turnPhaseAnnouncementLabel.setText(turnPhase);
-        showOverAndThenHide(phaseAnnouncementPane);
     }
 
     public void handlingInterface(String phase){
@@ -987,7 +996,7 @@ public class GamePanel extends SceneHandler {
                 getModel().getBoard().setProductionInterface(true);
             }
             case "Choose the next action" ->{
-                getModel().setIsFinished(false);
+                getModel().setFinished(false);
                 discardButton.setOpacity(0);
                 deployLButton.setOpacity(0);
                 leadCardGrid.setDisable(true);
@@ -997,18 +1006,18 @@ public class GamePanel extends SceneHandler {
                 getModel().getBoard().setProductionInterface(true);
             }
             case "Market" ->{
-                getModel().setIsFinished(false);
+                getModel().setFinished(false);
                 backButton.setDisable(false);
                 chooseButton.setDisable(true);
             }
             case "Buy a development card" -> {
-                getModel().setIsFinished(false);
+                getModel().setFinished(false);
                 chooseButton.setDisable(true);
                 backButton.setDisable(false);
                 paymentBox.setDisable(false);
             }
             case "Activate productions" ->{
-                getModel().setIsFinished(false);
+                getModel().setFinished(false);
                 backButton.setDisable(false);
                 getModel().getBoard().setProductionInterface(false);
             }

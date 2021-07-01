@@ -233,6 +233,8 @@ public class GUIView extends View {
     public void displayEndingScore(int[] scores, LinkedHashMap<String, Integer> ranking) {
         Platform.runLater(() -> {
             GamePanel gamePanel = (GamePanel) App.controller;
+            gamePanel.closePopup(null);
+            gamePanel.setOver(true);
             int playerScore = ranking.get(getModel().getPlayerUsername());
             int position = ranking.keySet().stream().toList().indexOf(getModel().getPlayerUsername());
             boolean hasWon;

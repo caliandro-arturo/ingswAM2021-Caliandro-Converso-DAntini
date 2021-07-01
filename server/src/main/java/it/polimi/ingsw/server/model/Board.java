@@ -141,8 +141,10 @@ public class Board {
         if(resHand.contains(resource)) {
             resHand.remove(resource);
             for (Player player : game.getPlayers()) {
-                if (!player.equals(game.getCurrentPlayer()))
-                    player.getBoard().getFaithTrack().increasePosition();
+                if (!player.equals(game.getCurrentPlayer())) {
+                    player.getBoard().getFaithTrack().setPosition(player.getBoard().getFaithTrack().getPosition() + 1);
+                    player.getBoard().getFaithTrack().notifyPositionChange();
+                }
             }
             for (Player player : game.getPlayers()) {
                 if (!player.equals(game.getCurrentPlayer()))

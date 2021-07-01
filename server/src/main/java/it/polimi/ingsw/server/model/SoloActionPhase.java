@@ -35,4 +35,8 @@ public class SoloActionPhase extends TurnPhase {
     public int getSoloActionsActionPointer() {
         return soloActions.actionPointer;
     }
+
+    public void setActionPointer(int actionPointer) {
+        soloActions.setActionPointer(actionPointer);
+    }
 }

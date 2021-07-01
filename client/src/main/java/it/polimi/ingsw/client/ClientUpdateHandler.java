@@ -312,7 +312,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             playerTrack.setPosition(faithTrack.get("position").getAsInt());
             JsonObject vaticanReport = faithTrack.getAsJsonObject("vaticanReport");
             for (Map.Entry<String, JsonElement> j : vaticanReport.entrySet()) {
-                playerTrack.getVaticanMap().replace(
+                playerTrack.setVaticanMap(
                         Integer.parseInt(j.getKey()), j.getValue().isJsonNull() ? null : j.getValue().getAsBoolean());
             }
             //parsing leader cards
@@ -488,7 +488,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             showUpdate("marketused");
         }
         model.getMarket().reinsertExtraMarble(msg.getRowOrColumn(),msg.getNum());
-        model.setIsFinished(true);
+        model.setFinished(true);
         refresh("market");
     }
 
@@ -538,7 +538,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                     get(msg.getProduction().toLowerCase()));
             model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
         }
-        model.setIsFinished(true);
+        model.setFinished(true);
         model.getBoard().setIsProductionAlreadyUsed(true,msg.getID());
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
@@ -577,7 +577,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         if (msg.getPlayer().equals(model.getCurrentPlayerInTheGame())) {
             model.getBoard().setIsProductionAlreadyUsed(true, msg.getSpace());
         }
-        model.setIsFinished(true);
+        model.setFinished(true);
         refresh("developmentgrid", msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
         if (msg.getPlayer().equals(model.getPlayerUsername()))
             showUpdate("cardbought");
@@ -638,7 +638,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(ChooseTurnPhase chooseTurnPhase) {
-        model.setIsFinished(false);
+        model.setFinished(false);
     }
 
     /**

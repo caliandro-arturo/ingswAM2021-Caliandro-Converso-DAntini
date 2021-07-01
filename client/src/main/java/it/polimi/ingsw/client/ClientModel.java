@@ -65,7 +65,7 @@ public class ClientModel {
         return currentTurnPhase;
     }
 
-    public boolean isIsFinished() {
+    public boolean isFinished() {
         return isFinished.get();
     }
 
@@ -73,7 +73,7 @@ public class ClientModel {
         return isFinished;
     }
 
-    public void setIsFinished(boolean isFinished) {
+    public void setFinished(boolean isFinished) {
         this.isFinished.set(isFinished);
     }
 

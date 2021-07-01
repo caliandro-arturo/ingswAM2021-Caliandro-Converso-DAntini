@@ -13,20 +13,6 @@ public class DevelopmentGrid {
         return developmentGrid[level-1][Utility.colorPosition.get(color)];
     }
 
-    public boolean isStillWinnable(){
-        int i = 0;
-        while (i<4){
-            if (developmentGrid[2][i].getDeck().empty()){
-                if (developmentGrid[1][i].getDeck().empty()){
-                    if (developmentGrid[0][i].getDeck().empty())
-                        return false;
-                }
-            }
-            i++;
-        }
-        return true;
-    }
-
     public DevelopmentGrid(DevelopmentCard[] cards){
         developmentGrid = new Deck[3][4];
         for (int i =0; i < 3; i++){
@@ -55,10 +41,11 @@ public class DevelopmentGrid {
     }
 
     /**
-     * take the card from the grid and return to the player
-     * @param color color ask by the player
-     * @param level level ask by the player
-     * @return the card chosen
+     * Takes the first card of the deck specified by color and level.
+     *
+     * @param color the color of the card
+     * @param level the level of the card
+     * @return the card, or null if there are no more cards of the required color and/or level
      */
     public DevelopmentCard buyCard(Color color,int level){
         for (Map.Entry<Color,Integer> entry : Utility.colorPosition.entrySet()){
@@ -69,6 +56,12 @@ public class DevelopmentGrid {
         return null;
     }
 
+    /**
+     * Checks if the first non-empty deck of the deck column of the selected color has only one card.
+     *
+     * @param color the color of the deck to check
+     * @return true if the first non-empty deck of the selected color has only one card, false otherwise.
+     */
     public boolean lorenzoUpdate(Color color){
         for (int i=0; i<3; i++) {
             if (!developmentGrid[i][Utility.colorPosition.get(color)].getDeck().isEmpty()){
@@ -78,6 +71,16 @@ public class DevelopmentGrid {
         return false;
     }
 
+    /**
+     * Solo Action method.
+     * <p>
+     * Takes what was under the last removed card before the Solo Action.
+     *
+     * @param color the color of the
+     * @param flag  true if the solo action removed two cards of different level
+     * @return the card that was under the last removed card, or {@code null} if the removed card was the last card of
+     * the deck
+     */
     public Card lorenzoCardsUpdate(Color color, boolean flag){
         DevelopmentCard card;
         int index;
@@ -102,12 +105,35 @@ public class DevelopmentGrid {
             }
         }
         return null;
-        //a solution may be add level in Card
     }
 
     /**
-     * SinglePlayer action of lorenzo
-     * @param color action's color
+     * Solo Action method.
+     * <p>
+     * Checks if the development grid has not any empty decks column.
+     *
+     * @return true if there is no empty deck column, false otherwise
+     */
+    public boolean isStillWinnable() {
+        int i = 0;
+        while (i < 4) {
+            if (developmentGrid[2][i].getDeck().empty()) {
+                if (developmentGrid[1][i].getDeck().empty()) {
+                    if (developmentGrid[0][i].getDeck().empty())
+                        return false;
+                }
+            }
+            i++;
+        }
+        return true;
+    }
+
+    /**
+     * Solo Action method.
+     * <p>
+     * Removes two cards from a deck column of the specified color.
+     *
+     * @param color the deck column color
      */
     public void removeCard(Color color){
         int i = 0;
@@ -126,7 +152,9 @@ public class DevelopmentGrid {
     }
 
     /**
+     * Collects the top card of each deck in the grid.
      *
+     * @return a collection of development cards containing the top cards
      */
     public ArrayList<DevelopmentCard> getTopDevelopmentCards(){
         ArrayList<DevelopmentCard> cards = new ArrayList<>();

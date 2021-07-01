@@ -19,7 +19,7 @@ public class BuyDevCardPhase extends TurnPhase {
     public TurnPhase nextTurnPhase() {
         this.setFinished(false);
         if (getGame().getCurrentPlayer().getNumOfCards() == 7) {
-            getGame().getViewAdapter().notifyLastTurn("someone has bought his seven card");
+            getGame().getViewAdapter().notifyLastTurn(getGame().getCurrentPlayer().getUsername() + " has bought his seventh card.");
             getGame().setOver(true);
         }
         return getGame().getTurnPhase("UseAgainLeader");

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.util.Arrays;
 import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -20,19 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GameTest {
-    DevelopmentGrid testGrid = new DevelopmentGrid(new DevelopmentCard[]{
-            new DevelopmentCard(1, 0,1, Color.GREEN, null, null)});
-
-    LeaderCard cardPower1 = new LeaderCard(0,1, null, null);
-    LeaderCard cardPower2 = new LeaderCard(0,1, null, null);
-    LeaderCard cardPower3 = new LeaderCard(0,1, null, null);
-    LeaderCard cardPower4 = new LeaderCard(0,1, null, null);
-    Stack<LeaderCard> leaderDeck = new Stack<LeaderCard>() {{
-        addAll(Arrays.asList(cardPower1, cardPower2, cardPower3, cardPower4,
-                cardPower1, cardPower2, cardPower3, cardPower4,
-                cardPower1, cardPower2, cardPower3, cardPower4,
-                cardPower1, cardPower2, cardPower3, cardPower4));
-    }};
+    GameCreator creator;
+    DevelopmentGrid testGrid;
+    Stack<LeaderCard> leaderDeck;
     Player testPlayer0 = new Player("Test0");
     Player testPlayer1 = new Player("Test1");
     Player testPlayer2 = new Player("Test2");
@@ -43,10 +32,12 @@ public class GameTest {
 
     @BeforeAll
     void setUp() {
+        creator = new GameCreator();
+        testGrid = creator.getDevelopmentGrid();
+        leaderDeck = creator.getLeaderDeck();
         multiTest = new MultiplayerGame(testPlayer1, 4, null, leaderDeck, testGrid);
         ViewAdapterForTest.setUp();
         multiTest.setViewAdapter(ViewAdapterForTest.testView);
-        singleTest = new SinglePlayerGame(testPlayer0, 1, null, leaderDeck, testGrid);
         multiTest.setStarted(false);
         try {
             multiTest.addPlayer(testPlayer2);
@@ -57,6 +48,19 @@ public class GameTest {
         try {
             multiTest.addPlayer(testPlayer4);
         } catch (Exception e) {}
+    }
+
+    void singleSetUp() {
+        creator = new GameCreator();
+        leaderDeck = creator.getLeaderDeck();
+        testGrid = creator.getDevelopmentGrid();
+        singleTest = new SinglePlayerGame(testPlayer0, 1, null, leaderDeck, testGrid);
+        singleTest.setViewAdapter(ViewAdapterForTest.testView);
+        singleTest.setUpPlayers();
+        for (int i = 0; i < 2; i++) {
+            testPlayer0.discardLeaderCard(testPlayer0.getLeaderCards().get(0));
+        }
+        singleTest.setCurrentPlayer(testPlayer0);
     }
 
     /**
@@ -106,5 +110,38 @@ public class GameTest {
         testPlayer1.getBoard().getFaithTrack().setPosition(23);
         testPlayer1.getBoard().getFaithTrack().increasePosition();
         assertTrue(multiTest.isOver());
+    }
+
+    @Test
+    void singlePlayerOverTest() {
+        //asserting that the single player game ends when the player reaches the last position
+        singleSetUp();
+        for (int i = 0; i <= 24; i++) {
+            testPlayer0.getBoard().getFaithTrack().increasePosition();
+        }
+        assertTrue(singleTest.isOver());
+        assertTrue(singleTest.isFinished());
+        assertFalse(((SinglePlayerGame) singleTest).isLost());
+
+        singleSetUp();
+        for (int i = 0; i <= 24; i++) {
+            singleTest.getPlayer(1).getBoard().getFaithTrack().increasePosition();
+        }
+        assertTrue(singleTest.isOver());
+        assertTrue(singleTest.isFinished());
+        assertTrue(((SinglePlayerGame) singleTest).isLost());
+
+        singleSetUp();
+        SoloActionPhase soloPhase = (SoloActionPhase)singleTest.getTurnPhase("EndTurn");
+        for (int i = 0; i < 6; i++) {
+            singleTest.setCurrentTurnPhase(soloPhase);
+            soloPhase.getSoloActions().set(0, SoloAction.DELPURPLE);
+            soloPhase.setActionPointer(0);
+            soloPhase.start();
+            singleTest.nextTurnPhase();
+        }
+        assertTrue(singleTest.isOver());
+        assertTrue(singleTest.isFinished());
+        assertTrue(((SinglePlayerGame) singleTest).isLost());
     }
 }
