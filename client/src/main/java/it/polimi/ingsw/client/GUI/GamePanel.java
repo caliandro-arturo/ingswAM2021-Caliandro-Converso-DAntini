@@ -619,7 +619,6 @@ public class GamePanel extends SceneHandler {
         }
     }
 
-
     /**
      * Requires as a parameter the marble tray of the market and set the marketSpots
      * so the market is set with the relatives marbles Images.
@@ -656,7 +655,6 @@ public class GamePanel extends SceneHandler {
     public int getCardId(Image image) {
         return Integer.parseInt(image.getUrl().substring(11, 14));
     }
-
 
     /**
      * Shows the Market pane on the click of the relative button.
@@ -790,6 +788,9 @@ public class GamePanel extends SceneHandler {
      */
     @FXML
     public void showChooseCards(ActionEvent actionEvent) {
+        discardButton.setDisable(true);
+        deployLButton.setDisable(true);
+        selectedLeader.set(null);
         setLeaderCards();
         goFront(chooseCardPane);
     }
@@ -828,17 +829,16 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * Highlights the selected leader card.
+     * Manages the selection of a leader card. If no leader was previously selected, the leader is selected.
+     * If a leader was selected, removes the effect. If the leader is reselected, removes the selection.
      */
     @FXML
     public void selectLeaderCard(MouseEvent e) {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setSaturation(0.5);
         ImageView selectedCard = (ImageView) e.getSource();
-        //if no leader was previously selected, the leader is selected.
-        //if a leader was selected, remove the effect.
-        //if the leader is reselected, remove the selection.
-        if (selectedLeader.get() != null && selectedLeader.get() == selectedCard) {
+        if (selectedCard.getImage() == null) return;
+        if (selectedLeader.get() != null && selectedLeader.get() == selectedCard && selectedCard.getImage() != null) {
             selectedCard.setEffect(null);
             selectedLeader.set(null);
             return;
@@ -856,6 +856,8 @@ public class GamePanel extends SceneHandler {
     @FXML
     public void discardLeaderCard(ActionEvent actionEvent) {
         getGui().getView().process("discardleader: " + (leaderHand.indexOf(selectedLeader.get()) + 1));
+        selectedLeader.get().setEffect(null);
+        selectedLeader.set(null);
     }
 
     /**
@@ -866,6 +868,7 @@ public class GamePanel extends SceneHandler {
     @FXML
     public void deployLeaderCard(ActionEvent actionEvent) {
         getGui().getView().process("useleader: " + (leaderHand.indexOf(selectedLeader.get()) + 1));
+        selectedLeader.set(null);
     }
 
     /**
@@ -1079,21 +1082,13 @@ public class GamePanel extends SceneHandler {
         switch (phase) {
             case "Leader action" -> {
                 leadCardGrid.setDisable(false);
-                discardButton.setOpacity(1);
-                deployLButton.setOpacity(1);
                 backButton.setDisable(true);
-                discardButton.setDisable(false);
-                deployLButton.setDisable(false);
                 chooseButton.setDisable(true);
                 getModel().getBoard().setProductionInterface(true);
             }
             case "Choose the next action" -> {
                 getModel().setFinished(false);
-                discardButton.setOpacity(0);
-                deployLButton.setOpacity(0);
                 leadCardGrid.setDisable(true);
-                discardButton.setDisable(true);
-                deployLButton.setDisable(true);
                 chooseButton.setDisable(false);
                 getModel().getBoard().setProductionInterface(true);
             }
@@ -1112,13 +1107,6 @@ public class GamePanel extends SceneHandler {
                 getModel().setFinished(false);
                 backButton.setDisable(false);
                 getModel().getBoard().setProductionInterface(false);
-            }
-            case "Solo Action" -> {
-                leadCardGrid.setDisable(true);
-                discardButton.setOpacity(0);
-                deployLButton.setOpacity(0);
-                discardButton.setDisable(true);
-                deployLButton.setDisable(true);
             }
         }
     }
@@ -1175,6 +1163,7 @@ public class GamePanel extends SceneHandler {
         }
         closePopup(null);
     }
+
     public void quit(ActionEvent actionEvent) {
         System.exit(0);
     }
