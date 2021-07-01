@@ -31,7 +31,7 @@ import java.util.*;
 
 public class GamePanel extends SceneHandler {
     /**
-     * list of FXML item on the board
+     * List of FXML item on the board.
      */
     @FXML
     private Label out;
@@ -44,9 +44,9 @@ public class GamePanel extends SceneHandler {
     @FXML
     private GridPane marketTray;
     @FXML
-    private ImageView mb00 ;
+    private ImageView mb00;
     @FXML
-    private ImageView mb10 ;
+    private ImageView mb10;
     @FXML
     private ImageView mb20;
     @FXML
@@ -282,13 +282,13 @@ public class GamePanel extends SceneHandler {
     public static final Image imgSerf = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/serf.png")));
     public static final Image imgShield = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/shield.png")));
     public static final Image imgStone = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/stone.png")));
-    public static final HashMap<Image,Resource> imageResourceMap = new HashMap<>(){{
-        put(GamePanel.imgCoin,Resource.COIN);
-        put(GamePanel.imgSerf,Resource.SERF);
-        put(GamePanel.imgShield,Resource.SHIELD);
-        put(GamePanel.imgStone,Resource.STONE);
+    public static final HashMap<Image, Resource> imageResourceMap = new HashMap<>() {{
+        put(GamePanel.imgCoin, Resource.COIN);
+        put(GamePanel.imgSerf, Resource.SERF);
+        put(GamePanel.imgShield, Resource.SHIELD);
+        put(GamePanel.imgStone, Resource.STONE);
     }};
-    public static final  HashMap<Resource,Image>resourceImageMap = new HashMap<>(){{
+    public static final HashMap<Resource, Image> resourceImageMap = new HashMap<>() {{
         put(Resource.SHIELD, GamePanel.imgShield);
         put(Resource.COIN, GamePanel.imgCoin);
         put(Resource.SERF, GamePanel.imgSerf);
@@ -299,11 +299,11 @@ public class GamePanel extends SceneHandler {
     public static final ImageView imgViewSerf = new ImageView(imgSerf);
     public static final ImageView imgViewShield = new ImageView(imgShield);
     public static final ImageView imgViewStone = new ImageView(imgStone);
-    public static final HashMap<ImageView,Resource> imageViewResourceMap = new HashMap<>(){{
-        put(imgViewCoin,Resource.COIN);
-        put(imgViewSerf,Resource.SERF);
-        put(imgViewShield,Resource.SHIELD);
-        put(imgViewStone,Resource.STONE);
+    public static final HashMap<ImageView, Resource> imageViewResourceMap = new HashMap<>() {{
+        put(imgViewCoin, Resource.COIN);
+        put(imgViewSerf, Resource.SERF);
+        put(imgViewShield, Resource.SHIELD);
+        put(imgViewStone, Resource.STONE);
     }};
 
     public static final Image soloActionBack = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/back.png")));
@@ -314,7 +314,7 @@ public class GamePanel extends SceneHandler {
     public static final Image twoPositions = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/twopositions.png")));
     public static final Image onePositionReset = new Image(Objects.requireNonNull(BoardController.class.getResourceAsStream("/png/soloTokens/onepositionreset.png")));
 
-    private final HashMap<String, Image> soloActionMap = new HashMap<>(){{
+    private final HashMap<String, Image> soloActionMap = new HashMap<>() {{
         put("delblue", delBlue);
         put("delyellow", delYellow);
         put("delpurple", delPurple);
@@ -327,8 +327,8 @@ public class GamePanel extends SceneHandler {
     private PersonalBoardController personalBoardController;
 
     /**
-     * data structures with the imageView for the images in the board
-     * they represents the empty spots in the board
+     * Data structures with the imageView for the images in the board
+     * they represents the empty spots in the board.
      */
     private ImageView[][] marketSpots;
     private List<ImageView> leaderHand;
@@ -340,9 +340,9 @@ public class GamePanel extends SceneHandler {
     private final List<Label> scores = new ArrayList<>();
 
     /**
-     * map for resource and marbles.
-     * color of the marble match with the relative image
-     * resource match with the relative image
+     * Map for resource and marbles.
+     * Color of the marble match with the relative image.
+     * Resource match with the relative image.
      */
     private HashMap<Color, Image> colorImageMap;
     private HashMap<Resource, Label> resourceLabelHashMap;
@@ -350,15 +350,13 @@ public class GamePanel extends SceneHandler {
     private final HashMap<Tab, BoardController> boardAndControllerMap = new HashMap<>();
 
     /**
-     * initialization of the images and the data structure used to collect similar objects
-     * @param location
-     * @param resources
+     * Initialization of the images and the data structure used to collect similar objects.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
         setGui(App.getGui());
-        reinsertMap = new HashMap<>(){{
+        reinsertMap = new HashMap<>() {{
             put(row0, "r, 3");
             put(row1, "r, 2");
             put(row2, "r, 1");
@@ -383,11 +381,11 @@ public class GamePanel extends SceneHandler {
                 int finalRow = row;
                 int finalCol = col;
                 devCardSpots[row][col].setOnMouseClicked(
-                        e -> showPayment(getModel().getDevelopmentGrid().getCard(finalRow,finalCol))
+                        e -> showPayment(getModel().getDevelopmentGrid().getCard(finalRow, finalCol))
                 );
             }
         }
-        colorImageMap = new HashMap<>(){{
+        colorImageMap = new HashMap<>() {{
             put(Color.BLUE, blueMarble);
             put(Color.GREY, greyMarble);
             put(Color.PURPLE, purpleMarble);
@@ -427,7 +425,7 @@ public class GamePanel extends SceneHandler {
         });
         scores.addAll(Arrays.asList(faithTrackVPLabel, devCardVPLabel, leadCardVPLabel, popeFavorVPLabel, resVPLabel));
 
-        getModel().getMarket().marbleProperty().addListener(e ->Platform.runLater(this::updateMarketListener));
+        getModel().getMarket().marbleProperty().addListener(e -> Platform.runLater(this::updateMarketListener));
         for (int i = 0; i < 3; i++) {
             getModel().getDevelopmentGrid().gridProperty(i).addListener((InvalidationListener) e -> setDevGridPng());
         }
@@ -439,7 +437,7 @@ public class GamePanel extends SceneHandler {
         AnchorPane board = null;
         try {
             board = personalBoardLoader.load();
-        }catch (IOException e) {
+        } catch (IOException e) {
             System.err.println("Error when trying to load the personal board.");
             System.exit(0);
         }
@@ -481,7 +479,7 @@ public class GamePanel extends SceneHandler {
         nickLabelBoard.setText("Nickname: " + getModel().getPlayerUsername());
     }
 
-    public Tooltip getToolTipHelp(){
+    public Tooltip getToolTipHelp() {
         return toolTipHelp;
     }
 
@@ -558,26 +556,29 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * prints in the bottom of the game a message passed as parameter
-     * @param msg
+     * Prints in the bottom of the game a message passed as parameter.
      */
-    public void printOut(String msg){
+    public void printOut(String msg) {
         out.setText(msg);
     }
+
     /**
      * Stops the game when a player is reconnecting to avoid moves meanwhile.
      */
-    public void startTimeUp(){
+    public void startTimeUp() {
         goFront(pausePane);
     }
 
     /**
      * Removes the time up.
      */
-    public void removeTimeUp(){
+    public void removeTimeUp() {
         closePopup(null);
     }
 
+    /**
+     * Set up the fxml file for the personal boards and sets its controller for each player.
+     */
     private void setBoardsTabs() {
         getModel().getBoards().entrySet().stream()
                 .filter(p -> boardsTabPane.getTabs().stream().noneMatch(t -> t.getText().equals(p.getKey())))
@@ -603,14 +604,14 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * requires as a parameter the development card grid and set the devCardSpots with the
-     * relative card images
+     * Requires as a parameter the development card grid and set the devCardSpots with the
+     * relative card images.
      */
-    public void setDevGridPng(){
+    public void setDevGridPng() {
         ArrayList<ObservableList<DevelopmentCard>> devGrid = getModel().getDevelopmentGrid().getGrid();
-        for(int row=0; row<devGrid.size(); row++){
-            for(int col=0; col<devGrid.get(row).size(); col++){
-                if (devGrid.get(row).get(col)!=null) {
+        for (int row = 0; row < devGrid.size(); row++) {
+            for (int col = 0; col < devGrid.get(row).size(); col++) {
+                if (devGrid.get(row).get(col) != null) {
                     devCardSpots[row][col].setImage(Utility.getCardPng(devGrid.get(row).get(col).getID()));
                 } else
                     devCardSpots[row][col].setImage(null);
@@ -620,57 +621,64 @@ public class GamePanel extends SceneHandler {
 
 
     /**
-     * requires as a parameter the marble tray of the market and set the marketSpots
-     * so the market is set with the relatives marbles Images
+     * Requires as a parameter the marble tray of the market and set the marketSpots
+     * so the market is set with the relatives marbles Images.
      */
-    public void setMarketPng(){
+    public void setMarketPng() {
         Marble[][] tray = getModel().getMarket().getGrid();
         Marble exMarble = getModel().getMarket().getExtraMarble();
-        for(int row=0; row< tray.length; row++){
-            for(int col=0; col< tray[row].length; col++){
-                marketSpots[2-row][3-col].setImage(colorImageMap.get(tray[row][col].getColor()));
+        for (int row = 0; row < tray.length; row++) {
+            for (int col = 0; col < tray[row].length; col++) {
+                marketSpots[2 - row][3 - col].setImage(colorImageMap.get(tray[row][col].getColor()));
             }
         }
         mbEx.setImage(colorImageMap.get(exMarble.getColor()));
     }
 
-    public void updateMarketListener(){
+    /**
+     * Modifies market GUI on each update from the model.
+     */
+    public void updateMarketListener() {
         setMarketPng();
     }
 
-    public void updateWhiteMarbleListener(){
-        if(getModel().getBoard().getPowerWhite().size() == 2 && getModel().getWhiteMarbleQuantity()!=0){
+    /**
+     * Sets the resources to choose from the white marble powers.
+     */
+    public void updateWhiteMarbleListener() {
+        if (getModel().getBoard().getPowerWhite().size() == 2 && getModel().getWhiteMarbleQuantity() != 0) {
             firstChoice.setImage(resourceImageMap.get(getModel().getBoard().getPowerWhite().get(0)));
             secondChoice.setImage(resourceImageMap.get(getModel().getBoard().getPowerWhite().get(1)));
             goFront(whiteMarblePowerPane);
         }
     }
 
-
-    public int getCardId(Image image){
-        return Integer.parseInt(image.getUrl().substring(11,14));
+    public int getCardId(Image image) {
+        return Integer.parseInt(image.getUrl().substring(11, 14));
     }
 
 
     /**
-     * shows the Market pane on the click of the relative button
-     * @param actionEvent
+     * Shows the Market pane on the click of the relative button.
      */
     @FXML
-    public void showMarket(ActionEvent actionEvent){
+    public void showMarket(ActionEvent actionEvent) {
         goFront(marketPane);
         Market modelMarket = getGui().getView().getModel().getMarket();
         setMarketPng();
     }
 
     /**
-     * shows the Dev Grid pane
+     * Shows the Dev Grid pane.
      */
     @FXML
     void showDevGrid(ActionEvent event) {
         goFront(devGridPane);
     }
 
+    /**
+     * Shows the payment pane on development card click in the grid and sets its cost labels.
+     */
     private void showPayment(DevelopmentCard devCard) {
         selectedDevCard = devCard;
         devCardToBuy.setImage(Utility.getCardPng(devCard.getID()));
@@ -684,12 +692,19 @@ public class GamePanel extends SceneHandler {
         goFront(paymentPane);
     }
 
+    /**
+     * Accepts drop in the payment pane.
+     */
     @FXML
     public void acceptResInBuyCard(DragEvent event) {
         if (!event.getDragboard().getString().equals("hand"))
             event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
     }
 
+    /**
+     * Creates and sends the message for the server to buy the development card.
+     * {@link it.polimi.ingsw.commonFiles.messages.toServer.BuyCard}
+     */
     @FXML
     public void buyCard(ActionEvent event) {
         int numOfRequiredResources = Arrays.stream(selectedDevCard.getCosts())
@@ -711,6 +726,9 @@ public class GamePanel extends SceneHandler {
         command.setLength(0);
     }
 
+    /**
+     * Goes back to the dev grid from payment.
+     */
     public void backToDevGrid(ActionEvent actionEvent) {
         revertBuyCard();
         goFront(devGridPane);
@@ -724,6 +742,9 @@ public class GamePanel extends SceneHandler {
         devPosCombo.getSelectionModel().clearSelection();
     }
 
+    /**
+     * Handles the drag from the stores to the card payment.
+     */
     @FXML
     public void dropResInCardCost(DragEvent event) {
         Dragboard dragboard = event.getDragboard();
@@ -739,7 +760,7 @@ public class GamePanel extends SceneHandler {
                 paymentBuffer.add(new ResourceAndDepot(
                         imageResourceMap.get(draggedResource),
                         resourceSource.substring(0, 1).matches("\\d") ? Integer.parseInt(resourceSource) : 0
-                        ));
+                ));
                 resourceNumber.setText(Integer.toString(Integer.parseInt(resourceNumber.getText()) - 1));
                 if (resourceLabelHashMap.values().stream()
                         .mapToInt(label -> Integer.parseInt(label.getText()))
@@ -752,6 +773,10 @@ public class GamePanel extends SceneHandler {
         event.setDropCompleted(false);
     }
 
+    /**
+     * Restores the resources in depots and strongbox from where resource have been taken
+     * to buy a card.
+     */
     public void revertBuyCard() {
         personalBoardController.updateWarehouse();
         personalBoardController.updateStrongbox();
@@ -759,16 +784,19 @@ public class GamePanel extends SceneHandler {
     }
 
     //LEADER CARDS PANE
+
     /**
-     * shows the initial phase of the choose of the 2 leader cards
-     * @param actionEvent
+     * Shows the initial phase of the choose of the 2 leader cards.
      */
     @FXML
-    public void showChooseCards(ActionEvent actionEvent){
+    public void showChooseCards(ActionEvent actionEvent) {
         setLeaderCards();
         goFront(chooseCardPane);
     }
 
+    /**
+     * Sets leader cards in GUI from model leader hand.
+     */
     private void setLeaderCards() {
         LeaderHand hand = getGui().getView().getModel().getLeaderHand();
         if (selectedLeader.get() != null) {
@@ -786,6 +814,9 @@ public class GamePanel extends SceneHandler {
         }
     }
 
+    /**
+     * Handles the discard and deploy buttons in the leader hand pane when a card is selected or not.
+     */
     private void leaderButtonsProperty() {
         if (selectedLeader.get() == null) {
             discardButton.setDisable(true);
@@ -796,11 +827,14 @@ public class GamePanel extends SceneHandler {
         }
     }
 
+    /**
+     * Highlights the selected leader card.
+     */
     @FXML
-    public void selectLeaderCard(MouseEvent e){
+    public void selectLeaderCard(MouseEvent e) {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setSaturation(0.5);
-        ImageView selectedCard = (ImageView)e.getSource();
+        ImageView selectedCard = (ImageView) e.getSource();
         //if no leader was previously selected, the leader is selected.
         //if a leader was selected, remove the effect.
         //if the leader is reselected, remove the selection.
@@ -815,25 +849,34 @@ public class GamePanel extends SceneHandler {
         selectedCard.setEffect(colorAdjust);
     }
 
+    /**
+     * Creates and sends the message to the server to discard a leader.
+     * {@link it.polimi.ingsw.commonFiles.messages.toServer.DiscardLeader}
+     */
     @FXML
     public void discardLeaderCard(ActionEvent actionEvent) {
-        //TODO use process instead of this
-        getGui().getView().discardLeader(new String[]{"", Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1)});
-    }
-
-    @FXML
-    public void deployLeaderCard(ActionEvent actionEvent) {
-        getGui().getView().process("useleader: " + Integer.toString(leaderHand.indexOf(selectedLeader.get()) + 1));
+        getGui().getView().process("discardleader: " + (leaderHand.indexOf(selectedLeader.get()) + 1));
     }
 
     /**
-     * utility method to show in the front the pane gave as a parameter
-     * and disable the other panes in the back
+     * Creates and sends the message to the server to use a leader.
+     * {@link it.polimi.ingsw.commonFiles.messages.toServer.UseLeader}
+     *
+     */
+    @FXML
+    public void deployLeaderCard(ActionEvent actionEvent) {
+        getGui().getView().process("useleader: " + (leaderHand.indexOf(selectedLeader.get()) + 1));
+    }
+
+    /**
+     * Utility method to show in the front the pane gave as a parameter
+     * and disable the other panes in the back.
+     *
      * @param pane
      */
-    public void goFront(Pane pane){
-        for(int i=0; i<stackPane.getChildren().size(); i++){
-            if(!stackPane.getChildren().get(i).equals(pane)){
+    public void goFront(Pane pane) {
+        for (int i = 0; i < stackPane.getChildren().size(); i++) {
+            if (!stackPane.getChildren().get(i).equals(pane)) {
                 stackPane.getChildren().get(i).toBack();
                 stackPane.getChildren().get(i).setOpacity(0);
                 stackPane.getChildren().get(i).setDisable(true);
@@ -857,7 +900,7 @@ public class GamePanel extends SceneHandler {
     /**
      * Closes any pane in front of the board pane.
      */
-    public void closePopup(ActionEvent actionEvent){
+    public void closePopup(ActionEvent actionEvent) {
         boardPane.toFront();
         boardPane.setOpacity(1);
         boardPane.setDisable(false);
@@ -866,17 +909,21 @@ public class GamePanel extends SceneHandler {
         currentPane = null;
     }
 
+    /**
+     * Handles the next button on/off.
+     */
     private void nextUpdate() {
         nextButton.setDisable(!getModel().isFinished());
     }
     //
 
     /**
-     * accept drag&drop in the reinsert marble slots of the market
-     * @param dragevent
+     * Accept drag&drop in the reinsert marble slots of the market.
+     * Creates and sens the usemarket message to the server.
+     * {@link it.polimi.ingsw.commonFiles.messages.toServer.UseMarket}
      */
     @FXML
-    public void dropMarble(DragEvent dragevent){
+    public void dropMarble(DragEvent dragevent) {
         ImageView target = (ImageView) dragevent.getSource();
         StringBuilder command = new StringBuilder();
         command.append(reinsertMap.get(target));
@@ -884,7 +931,7 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * accept drag & drop
+     * Modifies the mouse cursor when a drag is over the designed target.
      */
     @FXML
     public void onDragOver(DragEvent event) {
@@ -893,46 +940,73 @@ public class GamePanel extends SceneHandler {
     }
 
     /**
-     * start drag & drop for the extra marble in the market
-     * @param event
+     * Start drag & drop for the extra marble in the market
+     *
      */
     @FXML
-    public void moveExMarble(MouseEvent event){
+    public void moveExMarble(MouseEvent event) {
         Dragboard db = mbEx.startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
         content.putImage(mbEx.getImage());
         db.setContent(content);
     }
 
+    /**
+     * Brings the action choose pane on front.
+     */
     public void choose(ActionEvent actionEvent) {
         goFront(chooseActionPane);
     }
 
+    /**
+     * Creates and sends the next message to the server.
+     * {@link it.polimi.ingsw.commonFiles.messages.toServer.Next}
+     */
     public void next(ActionEvent actionEvent) {
         getGui().getView().process("next");
     }
 
+    /**
+     * Create and sends the back message to the server.
+     * {@link it.polimi.ingsw.commonFiles.messages.toServer.Back}
+     */
     public void back(ActionEvent actionEvent) {
         getGui().getView().process("back");
     }
 
+    /**
+     * Create and sends the choose market message to the server.
+     * {@link it.polimi.ingsw.commonFiles.messages.toServer.ChooseTurnPhase}
+     */
     public void goToMarketPhase(ActionEvent actionEvent) {
         getGui().getView().process("choose: usemarket");
         closePopup(actionEvent);
     }
 
+    /**
+     * Create and sends the choose buy development card message to the server.
+     * {@link it.polimi.ingsw.commonFiles.messages.toServer.ChooseTurnPhase}
+     */
     public void goToBuyDevCardPhase(ActionEvent actionEvent) {
         getGui().getView().process("choose: buydevelopmentcard");
         closePopup(actionEvent);
     }
 
+    /**
+     * Create and sends the choose activate production message to the server.
+     * {@link it.polimi.ingsw.commonFiles.messages.toServer.ChooseTurnPhase}
+     */
     public void goToProductionPhase(ActionEvent actionEvent) {
         getGui().getView().process("choose: activateproduction");
         closePopup(actionEvent);
     }
 
+    /**
+     * Create and sends the get initial resource message to the server.
+     * {@link it.polimi.ingsw.commonFiles.messages.toClient.updates.InitialResourcesAmount}
+     */
     public void getInitialResource(MouseEvent mouseEvent) {
-        String resourceName = ((ImageView)mouseEvent.getSource())
+        String resourceName = ((ImageView) mouseEvent.getSource())
                 .getId()
                 .replaceAll("initial", "");
         getGui().getView().process("getres:" + resourceName);
@@ -943,6 +1017,10 @@ public class GamePanel extends SceneHandler {
         } else initialResourceIndex.setText(Integer.toString(Integer.parseInt(initialResourceIndex.getText()) + 1));
     }
 
+    /**
+     * Shows Lorenzo's action pane in single player.
+     * @param tokenId: string that contains Lorenzo's action.
+     */
     public void showSoloAction(String tokenId) {
         soloActionOut.setText("Reveal the action of Lorenzo");
         soloActionOkButton.setDisable(true);
@@ -952,6 +1030,10 @@ public class GamePanel extends SceneHandler {
         goFront(soloActionPane);
     }
 
+    /**
+     * Reveals Lorenzo's action in single player.
+     * @param tokenId: string that contains Lorenzo's action.
+     */
     public void revealToken(String tokenId) {
         switch (tokenId) {
             case "onepositionreset" -> soloActionOut.setText("Lorenzo goes one position ahead");
@@ -963,10 +1045,16 @@ public class GamePanel extends SceneHandler {
         soloActionOkButton.setOpacity(1);
     }
 
+    /**
+     * Shows the Initial resource pane on front.
+     */
     public void getInitialResources(ActionEvent actionEvent) {
         goFront(getInitialResourcesPane);
     }
 
+    /**
+     * Shows the actual turn phase with a pop-up pane.
+     */
     public void showTurnPhaseAnnouncement() {
         if (!isOver) {
             String turnPhase = getModel().getCurrentTurnPhase();
@@ -983,9 +1071,13 @@ public class GamePanel extends SceneHandler {
         }
     }
 
-    public void handlingInterface(String phase){
-        switch (phase){
-            case "Leader action" ->{
+    /**
+     * Handles the buttons or hides game objects in the game based on the active phase of the turn.
+     * @param phase
+     */
+    public void handlingInterface(String phase) {
+        switch (phase) {
+            case "Leader action" -> {
                 leadCardGrid.setDisable(false);
                 discardButton.setOpacity(1);
                 deployLButton.setOpacity(1);
@@ -995,7 +1087,7 @@ public class GamePanel extends SceneHandler {
                 chooseButton.setDisable(true);
                 getModel().getBoard().setProductionInterface(true);
             }
-            case "Choose the next action" ->{
+            case "Choose the next action" -> {
                 getModel().setFinished(false);
                 discardButton.setOpacity(0);
                 deployLButton.setOpacity(0);
@@ -1005,7 +1097,7 @@ public class GamePanel extends SceneHandler {
                 chooseButton.setDisable(false);
                 getModel().getBoard().setProductionInterface(true);
             }
-            case "Market" ->{
+            case "Market" -> {
                 getModel().setFinished(false);
                 backButton.setDisable(false);
                 chooseButton.setDisable(true);
@@ -1016,12 +1108,12 @@ public class GamePanel extends SceneHandler {
                 backButton.setDisable(false);
                 paymentBox.setDisable(false);
             }
-            case "Activate productions" ->{
+            case "Activate productions" -> {
                 getModel().setFinished(false);
                 backButton.setDisable(false);
                 getModel().getBoard().setProductionInterface(false);
             }
-            case "Solo Action" ->{
+            case "Solo Action" -> {
                 leadCardGrid.setDisable(true);
                 discardButton.setOpacity(0);
                 deployLButton.setOpacity(0);
@@ -1031,6 +1123,9 @@ public class GamePanel extends SceneHandler {
         }
     }
 
+    /**
+     * Prints the actual current player in a label on top of the board.
+     */
     public void updateCurrentPlayerLabel() {
         boolean isCurrentPlayer = getModel().getPlayerUsername().equals(getModel().getCurrentPlayerInTheGame());
         playerTurnLabel.setText(isCurrentPlayer ? "You" : getModel().getCurrentPlayerInTheGame());
@@ -1039,6 +1134,10 @@ public class GamePanel extends SceneHandler {
         showOverAndThenHide(playerTurnAnnouncementPane);
     }
 
+    /**
+     * Shows the pop-up that communicate actual phase and subsequently hides them.
+     * @param pane: the pane needs to be hidden.
+     */
     public void showOverAndThenHide(Pane pane) {
         DoubleProperty value = new SimpleDoubleProperty(0);
         GaussianBlur blur = new GaussianBlur();
@@ -1069,14 +1168,13 @@ public class GamePanel extends SceneHandler {
 
     public void chooseWhiteMarblePower(MouseEvent mouseEvent) {
         ImageView target = (ImageView) mouseEvent.getSource();
-        if (target.getImage().equals(firstChoice.getImage())){
+        if (target.getImage().equals(firstChoice.getImage())) {
             getGui().getView().process("choosewhite: 1");
         } else {
             getGui().getView().process("choosewhite: 2");
         }
         closePopup(null);
     }
-
     public void quit(ActionEvent actionEvent) {
         System.exit(0);
     }
