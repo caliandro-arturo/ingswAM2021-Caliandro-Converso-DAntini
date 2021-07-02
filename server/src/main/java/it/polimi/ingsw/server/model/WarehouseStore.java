@@ -5,8 +5,7 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import java.util.ArrayList;
 
 /**
- * class that represents the three different shelves of the Warehouse store
- * it is connected with a Composition link to the Board
+ * Represents one of the three different shelves of the Warehouse store.
  */
 
 public class WarehouseStore {
@@ -43,45 +42,46 @@ public class WarehouseStore {
     }
 
     /**
-     * is used to check if there is space for a new resource in this depot
+     * Checks if there is space for a new resource in this depot.
+     *
      * @param resource the player wants to check for space
      * @return true if there is space to store a new resource of the specified type, false otherwise
      */
-    public boolean hasRoomForResource(Resource resource){
+    public boolean hasRoomForResource(Resource resource) {
         return resources.size() < size;
     }
 
     /**
-     * add a resource compatibility to the rules of adding
+     * Adds a resource compatibility to the rules of storing.
+     *
      * @param resource the resource to add in the depot
      * @throws IllegalArgumentException if the player can't add this resource in this depot because the depot is full
-     * or not matching with the current resource
+     *                                  or not matching with the current resource
      */
-    public void addResource(Resource resource){
-        if(hasRoomForResource(resource)){
+    public void addResource(Resource resource) {
+        if (hasRoomForResource(resource)) {
             resources.add(resource);
-            if(typeOfResource==null) {
-                typeOfResource=resource;
+            if (typeOfResource == null) {
+                typeOfResource = resource;
             }
-        }
-        else
-            throw new IllegalArgumentException ("you can't add this resource in this depot");
+        } else
+            throw new IllegalArgumentException("you can't add this resource in this depot");
     }
 
     /**
-     * take out a resource from this depot
+     * Takes out a resource from this depot.
+     *
      * @return the resource taken out from the depot
      * @throws IllegalArgumentException if the shelf is already empty
      */
-    public Resource takeOutResource(){
-        if(!resources.isEmpty()){
+    public Resource takeOutResource() {
+        if (!resources.isEmpty()) {
             Resource resToTake = resources.get(0);
             resources.remove(0);
-            if(resources.isEmpty())
-                typeOfResource=null;
+            if (resources.isEmpty())
+                typeOfResource = null;
             return resToTake;
-        }
-        else
+        } else
             throw new IllegalArgumentException("This depot is empty.");
     }
 

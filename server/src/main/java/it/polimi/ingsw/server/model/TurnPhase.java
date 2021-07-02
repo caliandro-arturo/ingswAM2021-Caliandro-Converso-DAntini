@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 /**
- * This class represents the turn phases. Each phase of the turn extends this class.
+ * Represents the turn phases. Each phase of the turn extends this class.
  */
 public abstract class TurnPhase {
     private final Game game;

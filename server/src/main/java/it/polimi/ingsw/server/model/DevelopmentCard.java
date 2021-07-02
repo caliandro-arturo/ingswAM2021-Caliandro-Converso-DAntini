@@ -5,14 +5,17 @@ import it.polimi.ingsw.commonFiles.model.ProductionPower;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 /**
- * this class represent a special type of card (Development type)
- *
- * level -> level of the card
- * color -> color of the card
- * cost -> cost in resource of the card
- * productionPower -> the power of production of the card
- * ID -> identifier of the card
- *
+ * Represents a special type of card (Development type).
+ * <p>
+ * level -> level of the card.
+ * <p>
+ * color -> color of the card.
+ * <p>
+ * cost -> cost in resource of the card.
+ * <p>
+ * productionPower -> the power of production of the card.
+ * <p>
+ * ID -> identifier of the card.
  */
 public class DevelopmentCard {
     private final int victoryPoints;
@@ -22,7 +25,7 @@ public class DevelopmentCard {
     private final Production productionPower;
     private final int ID;
 
-    public DevelopmentCard(int victoryPoints,int ID, int level, Color color, UtilityProductionAndCost[] cost, ProductionPower productionPower){
+    public DevelopmentCard(int victoryPoints, int ID, int level, Color color, UtilityProductionAndCost[] cost, ProductionPower productionPower) {
         this.ID = ID;
         this.victoryPoints = victoryPoints;
         this.level = level;
@@ -34,20 +37,28 @@ public class DevelopmentCard {
     public int getVictoryPoints() {
         return victoryPoints;
     }
-    public int getID(){return ID;}
-    public Color getColor(){
+
+    public int getID() {
+        return ID;
+    }
+
+    public Color getColor() {
         return color;
     }
-    public int getLevel(){
+
+    public int getLevel() {
         return level;
     }
-    public UtilityProductionAndCost[] getCost(){
+
+    public UtilityProductionAndCost[] getCost() {
         return cost;
     }
-    public Production getProduction(){
+
+    public Production getProduction() {
         return productionPower;
     }
-    public String getColorString(){
+
+    public String getColorString() {
         return color.name();
     }
 
@@ -75,28 +86,28 @@ public class DevelopmentCard {
                     "production": {
                 """);
         devCardJson.append("""
-                    "cost": [""");
+                "cost": [""");
         for (UtilityProductionAndCost upc : productionPower.getCost()) {
             devCardJson.append("""
-                        {
-                            "resource": "%s",
-                            "quantity": %d
-                        },
-                        """.formatted(
+                    {
+                        "resource": "%s",
+                        "quantity": %d
+                    },
+                    """.formatted(
                     upc.getResource().name(),
                     upc.getQuantity()));
         }
         devCardJson.deleteCharAt(devCardJson.lastIndexOf(","));
         devCardJson.append("""
-                    ],
-                    "products": [""");
+                ],
+                "products": [""");
         for (UtilityProductionAndCost upc : productionPower.getProd()) {
             devCardJson.append("""
-                        {
-                            "resource": "%s",
-                            "quantity": %d
-                        },
-                        """.formatted(
+                    {
+                        "resource": "%s",
+                        "quantity": %d
+                    },
+                    """.formatted(
                     upc.getResource().name(),
                     upc.getQuantity()));
         }

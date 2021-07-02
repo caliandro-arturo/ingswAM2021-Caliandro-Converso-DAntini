@@ -4,24 +4,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * This class represents the market, which consists of a tray with marbles and an extra marble that
+ * Represents the market, which consists of a tray with marbles and an extra marble that
  * must be inserted in a row (or a column) any time a player chooses to use the market in his/her turn
  */
 public class Market {
     private final int rows;
     private final int columns;
+
     /**
-     * This attribute is the tray of the market
+     * Tray of the market.
      */
     private final Marble[][] tray;
 
     /**
-     * this attribute represents the extra marble
+     * Represents the extra marble.
      */
     private Marble extraMarble;
 
     /**
-     * This constructor initializes the market inserting the marbles into the market tray
+     * Constructor that initializes the market inserting the marbles into the market tray.
+     *
      * @param marbles list of marbles that goes into the market
      */
     public Market(int rows, int columns, ArrayList<Marble> marbles) {
@@ -29,12 +31,12 @@ public class Market {
         this.columns = columns;
         tray = new Marble[rows][columns];
         Collections.shuffle(marbles);
-        for(int i = 0; i < rows; i++)
-            for(int j = 0; j < columns; j++)
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < columns; j++)
                 tray[i][j] = marbles.get(i * columns + j);
         extraMarble = marbles.get(rows * columns);
     }
-  
+
     public Market() {
         this(3, 4, new ArrayList<Marble>() {{
             add(new Marble(Color.WHITE));
@@ -73,24 +75,23 @@ public class Market {
      * Returns a selected row or column of marbles from the tray
      *
      * @param rowOrColumn selection between row or column (it must be 'r' or 'c')
-     * @param num position of the selected row/column
+     * @param num         position of the selected row/column
      */
     public Marble[] getRowOrColumn(char rowOrColumn, int num) {
-        if(!(rowOrColumn == 'r' || rowOrColumn == 'c'))
+        if (!(rowOrColumn == 'r' || rowOrColumn == 'c'))
             throw new IllegalArgumentException("You must choose between 'r' or 'c'.");
-        else if(num < 1)
+        else if (num < 1)
             throw new IllegalArgumentException("Number cannot be less than 1.");
-        else if(rowOrColumn == 'r' && num > rows)
+        else if (rowOrColumn == 'r' && num > rows)
             throw new IllegalArgumentException("Maximum number accepted for rows is " + rows + ".");
-        else if(rowOrColumn == 'c' && num > columns)
+        else if (rowOrColumn == 'c' && num > columns)
             throw new IllegalArgumentException("Maximum number accepted for columns is " + columns + ".");
         num--;
         Marble[] marbleArray;
         if (rowOrColumn == 'r') {
             marbleArray = new Marble[columns];
             System.arraycopy(tray[num], 0, marbleArray, 0, columns);
-        }
-        else {
+        } else {
             marbleArray = new Marble[rows];
             for (int i = 0; i < rows; i++)
                 marbleArray[i] = tray[i][num];
@@ -101,8 +102,9 @@ public class Market {
     /**
      * Updates the market after the selection of a row or a column, inserting the extra marble at the first
      * position and shifting the others down/right
+     *
      * @param rowOrColumn the choice between row or column
-     * @param num position of the selected row/column
+     * @param num         position of the selected row/column
      */
     public void reinsertExtraMarble(char rowOrColumn, int num) {
         Marble temp;
@@ -124,9 +126,10 @@ public class Market {
 
     /**
      * Gives the current player resources or faith point based on the row or column selected.
-     * @param game the game in which the current player uses the market
+     *
+     * @param game        the game in which the current player uses the market
      * @param rowOrColumn selection between row or column
-     * @param num position of the selected row/column
+     * @param num         position of the selected row/column
      * @throws IllegalArgumentException if parameters are invalids
      */
     public void getMarblesResources(Game game, char rowOrColumn, int num) {

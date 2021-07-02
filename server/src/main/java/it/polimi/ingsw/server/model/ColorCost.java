@@ -3,12 +3,15 @@ package it.polimi.ingsw.server.model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Color requirements of a leader card.
+ */
 public class ColorCost implements Requirements {
     private final HashMap<Color, Integer> cost = new HashMap<>();
 
-    public ColorCost(Color[] colors, Integer[] quantity){
-        for (int i = 0;i<colors.length;i++){
-            cost.put(colors[i],quantity[i]);
+    public ColorCost(Color[] colors, Integer[] quantity) {
+        for (int i = 0; i < colors.length; i++) {
+            cost.put(colors[i], quantity[i]);
         }
     }
 
@@ -19,11 +22,11 @@ public class ColorCost implements Requirements {
 
     @Override
     public boolean checkRequirements(Player player) {
-        HashMap<Color,Integer> checkColor = new HashMap<>();
-        checkColor.put(Color.GREEN,0);
-        checkColor.put(Color.BLUE,0);
-        checkColor.put(Color.YELLOW,0);
-        checkColor.put(Color.PURPLE,0);
+        HashMap<Color, Integer> checkColor = new HashMap<>();
+        checkColor.put(Color.GREEN, 0);
+        checkColor.put(Color.BLUE, 0);
+        checkColor.put(Color.YELLOW, 0);
+        checkColor.put(Color.PURPLE, 0);
         int j;
         DevelopmentPlace[] devPlace = player.getBoard().getDevelopmentSpace();
         for (DevelopmentPlace developmentPlace : devPlace) {
@@ -34,9 +37,9 @@ public class ColorCost implements Requirements {
                 }
             }
         }
-        for (Map.Entry<Color, Integer> entry: cost.entrySet()){
-            if (entry.getValue()!=0) {
-                if (checkColor.get(entry.getKey()) - entry.getValue() < 0){
+        for (Map.Entry<Color, Integer> entry : cost.entrySet()) {
+            if (entry.getValue() != 0) {
+                if (checkColor.get(entry.getKey()) - entry.getValue() < 0) {
                     return false;
                 }
             }
@@ -48,12 +51,12 @@ public class ColorCost implements Requirements {
     public String[] identifier() {
         StringBuilder arguments = new StringBuilder();
         StringBuilder quantity = new StringBuilder();
-        for (Map.Entry<Color,Integer> entry: cost.entrySet()){
-            if (entry.getValue()!=0) {
+        for (Map.Entry<Color, Integer> entry : cost.entrySet()) {
+            if (entry.getValue() != 0) {
                 arguments.append(entry.getKey().toString()).append(" ");
                 quantity.append(entry.getValue()).append(" ");
             }
         }
-        return new String[]{"colorCost", arguments.toString(), quantity.toString() };
+        return new String[]{"colorCost", arguments.toString(), quantity.toString()};
     }
 }

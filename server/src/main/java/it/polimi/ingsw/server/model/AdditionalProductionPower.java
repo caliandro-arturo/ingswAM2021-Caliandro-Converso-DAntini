@@ -6,14 +6,14 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 /**
- * Power of the leader that add a possible production
+ * Power of the leader that adds a possible production.
  */
-public class AdditionalProductionPower  implements LeaderPower, Production {
+public class AdditionalProductionPower implements LeaderPower, Production {
 
     private final Resource cost;
     private boolean productionCanBeActivate = true;
 
-    public AdditionalProductionPower(Resource cost){
+    public AdditionalProductionPower(Resource cost) {
         this.cost = cost;
     }
 
@@ -29,7 +29,7 @@ public class AdditionalProductionPower  implements LeaderPower, Production {
 
     @Override
     public UtilityProductionAndCost[] getCost() {
-        return new UtilityProductionAndCost[]{new UtilityProductionAndCost(1,cost)};
+        return new UtilityProductionAndCost[]{new UtilityProductionAndCost(1, cost)};
     }
 
     @Override

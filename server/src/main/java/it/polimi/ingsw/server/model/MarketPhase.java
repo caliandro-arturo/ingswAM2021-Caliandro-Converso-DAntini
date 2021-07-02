@@ -1,8 +1,11 @@
 package it.polimi.ingsw.server.model;
 
+/**
+ * Market phase. The player can use the market in this phase.
+ */
 public class MarketPhase extends TurnPhase {
     public MarketPhase(Game game) {
-        super(game,"Market",false);
+        super(game, "Market", false);
     }
 
     @Override

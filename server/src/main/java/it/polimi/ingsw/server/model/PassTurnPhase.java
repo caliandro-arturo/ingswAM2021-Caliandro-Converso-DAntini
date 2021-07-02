@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.model;
 
+/**
+ * Pass the turn to the next player using this phase.
+ */
 public class PassTurnPhase extends TurnPhase {
     public PassTurnPhase(Game game) {
         super(game, "Pass the turn to the next player", false);

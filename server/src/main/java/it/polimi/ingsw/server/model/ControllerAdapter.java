@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.EmptyStackException;
 
 /**
- * methods of the it.polimi.ingsw.client.model that can be called by {@link ServerMessageVisitor}.
+ * Methods of the it.polimi.ingsw.client.model that can be called by {@link ServerMessageVisitor}.
  */
 public class ControllerAdapter {
     private final Game game;

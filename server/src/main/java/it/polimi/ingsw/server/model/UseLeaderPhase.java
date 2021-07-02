@@ -1,8 +1,12 @@
 package it.polimi.ingsw.server.model;
 
-
+/**
+ * In this phase the player can deploy or discard a leader.
+ * This phase is in the beginning and in the end of a game turn.
+ */
 public class UseLeaderPhase extends TurnPhase {
     private final boolean isFirst;
+
     public UseLeaderPhase(Game game, boolean isFirst) {
         super(game, "Leader action", true);
         this.isFirst = isFirst;
@@ -10,7 +14,7 @@ public class UseLeaderPhase extends TurnPhase {
 
     @Override
     public void start() {
-        if(getGame().getCurrentPlayer().getLeaderCards().isEmpty()) {
+        if (getGame().getCurrentPlayer().getLeaderCards().isEmpty()) {
             getGame().nextTurnPhase();
             return;
         }
@@ -28,7 +32,7 @@ public class UseLeaderPhase extends TurnPhase {
 
     @Override
     public TurnPhase nextTurnPhase() {
-        if(isFirst)
+        if (isFirst)
             return getGame().getTurnPhase("ChooseAction");
         else
             return getGame().getTurnPhase("EndTurn");

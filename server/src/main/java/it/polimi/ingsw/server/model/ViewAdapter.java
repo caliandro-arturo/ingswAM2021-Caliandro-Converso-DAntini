@@ -38,7 +38,7 @@ public class ViewAdapter {
     }
 
     /**
-     * sends a message to a player.
+     * Sends a message to a player.
      *
      * @param player  the player who receive the message
      * @param message the information to send to a player
@@ -48,7 +48,7 @@ public class ViewAdapter {
     }
 
     /**
-     * sends a message to all players.
+     * Sends a message to all players.
      *
      * @param message the information to send to all players
      */
@@ -116,7 +116,7 @@ public class ViewAdapter {
     }
 
     /**
-     * send the update of leader on board after a useLeader command
+     * Send the update of leader on board after a useLeader command.
      *
      * @param leaderCard the card to sent
      */

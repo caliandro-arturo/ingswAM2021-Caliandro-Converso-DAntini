@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * this class implements all the methods used by a player
+ * Implements all the methods used by a player.
  */
 public class Player {
     private String username;
     private Board board;
     private final ArrayList<LeaderCard> leaderCards;
-    private final ArrayList<Resource> whiteAlt ;
+    private final ArrayList<Resource> whiteAlt;
     private final ArrayList<Resource> sale;
     private Game game;
     private final int[] victoryPoints;
@@ -27,10 +27,11 @@ public class Player {
     private boolean isConnected = true;
 
     /**
-     * customised constructor for player that initialises all attributes a player needs
+     * Customised constructor for player that initialises all attributes a player needs.
+     *
      * @param username chosen by the player
      */
-    public Player(String username){
+    public Player(String username) {
         this.username = username;
         this.board = new Board(this);
         this.leaderCards = new ArrayList<>();
@@ -42,83 +43,94 @@ public class Player {
     public String getUsername() {
         return username;
     }
+
     public Board getBoard() {
         return board;
     }
+
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
     }
+
     public ArrayList<Resource> getWhiteAlt() {
         return whiteAlt;
     }
+
     public ArrayList<Resource> getSale() {
         return sale;
     }
+
     public Game getGame() {
         return game;
     }
+
     public boolean isConnected() {
         return isConnected;
     }
 
     /**
-     * in the last turn this method sum all the victory points the player is entitled to
+     * In the last turn this method sum all the victory points the player is entitled to
      * <p> index 0 faith path VP
      * <p> index 1 dev card VP
      * <p> index 2 lead card VP
      * <p> index 3 Pope's favor VP
      * <p> index 4 resource VP
+     *
      * @return array of int containing VictoryPoints already summed in different indexes
      */
-    public int[] getVictoryPoints(){
+    public int[] getVictoryPoints() {
         // index 0 faith path VP
         int pos = getBoard().getFaithTrack().getPosition();
-        if(pos>=3 && pos<6) {
-            victoryPoints[0]=1;
-        }else if(pos>=6 && pos<9) {
-            victoryPoints[0]=2;
-        }else if(pos>=9 && pos<12) {
-            victoryPoints[0]=4;
-        }else if(pos>=12 && pos<15){
-            victoryPoints[0]=6;
-        }else if(pos>=15 && pos<18){
-            victoryPoints[0]=9;
-        }else if(pos>=18 && pos<21){
-            victoryPoints[0]=12;
-        }else if(pos>=21 && pos<24) {
-            victoryPoints[0]=16;
-        }else if(pos==24) {
+        if (pos >= 3 && pos < 6) {
+            victoryPoints[0] = 1;
+        } else if (pos >= 6 && pos < 9) {
+            victoryPoints[0] = 2;
+        } else if (pos >= 9 && pos < 12) {
+            victoryPoints[0] = 4;
+        } else if (pos >= 12 && pos < 15) {
+            victoryPoints[0] = 6;
+        } else if (pos >= 15 && pos < 18) {
+            victoryPoints[0] = 9;
+        } else if (pos >= 18 && pos < 21) {
+            victoryPoints[0] = 12;
+        } else if (pos >= 21 && pos < 24) {
+            victoryPoints[0] = 16;
+        } else if (pos == 24) {
             victoryPoints[0] = 20;
         }
         // index 1 dev card VP
-        for(DevelopmentPlace devPlace: board.getDevelopmentSpace()){
-            for(DevelopmentCard devCard : devPlace.getDevelopmentCards()){
-                victoryPoints[1]+=devCard.getVictoryPoints();
+        for (DevelopmentPlace devPlace : board.getDevelopmentSpace()) {
+            for (DevelopmentCard devCard : devPlace.getDevelopmentCards()) {
+                victoryPoints[1] += devCard.getVictoryPoints();
             }
         }
         // index 2 lead card VP
-        for(LeaderCard lead: getBoard().getActiveLeaders()){
+        for (LeaderCard lead : getBoard().getActiveLeaders()) {
             victoryPoints[2] += lead.getVictoryPoints();
         }
         // index 3 Pope's favor VP
-        victoryPoints[3]= board.getFaithTrack().getScoreCard();
+        victoryPoints[3] = board.getFaithTrack().getScoreCard();
         // index 4 resource VP
-        victoryPoints[4]= getResourceNumber()/5;
+        victoryPoints[4] = getResourceNumber() / 5;
         return victoryPoints;
     }
+
     public int getWhiteMarbleChoices() {
         return whiteMarbleChoices;
     }
+
     public int getInitialResources() {
         return initialResources;
     }
+
     public int getProcessedResources() {
         return processedResources;
     }
+
     public int getResourceNumber() {
         int boxRes = 0;
         int storeRes = board.getStrongbox().getResourceMap().values().stream().mapToInt(i -> i).sum();
-        for( WarehouseStore stores: board.getStore()){
+        for (WarehouseStore stores : board.getStore()) {
             storeRes += stores.getQuantity();
         }
         return boxRes + storeRes;
@@ -127,9 +139,11 @@ public class Player {
     public void setUsername(String username) {
         this.username = username;
     }
+
     public void setBoard(Board board) {
         this.board = board;
     }
+
     public void addLeaderCards(LeaderCard leader) {
         this.leaderCards.add(leader);
     }
@@ -139,6 +153,7 @@ public class Player {
         board.setGame(game);
         board.getFaithTrack().setGame(game);
     }
+
     public void setInitialResources(int initialResources) {
         this.initialResources = initialResources;
     }
@@ -217,18 +232,20 @@ public class Player {
     public void addWhiteAlt(Resource resource) {
         whiteAlt.add(resource);
     }
-    public void changeWhiteMarbleChoicesNumber(int variation){
+
+    public void changeWhiteMarbleChoicesNumber(int variation) {
         whiteMarbleChoices += variation;
     }
+
     public void addSale(Resource resource) {
         sale.add(resource);
     }
 
     /**
-     * this method is used in the beginning of the game to discard 2 leaderCards of your choice
-     * or during a player turn
-     * @param leader the leader the player decides to discard
+     * Discards one of the 2 leaderCards of your choice in the beginning or
+     * or during a player turn.
      *
+     * @param leader the leader the player decides to discard
      */
     public void discardLeaderCard(LeaderCard leader) throws IllegalArgumentException {
         if (game.getCurrentTurnPhase() == null)
@@ -242,61 +259,64 @@ public class Player {
     }
 
     /**
-     * buying method of Development Cards
-     * @param card the card to buy
-     * @param box box from where take the resource
+     * Buy method for Development Cards.
+     *
+     * @param card  the card to buy
+     * @param box   box from where take the resource
      * @param index the position of development place where the player wants to place the card
      */
-    public void buyDevelopmentCard (DevelopmentCard card,int[] box,int index){
-        processedResources =0;
-        if (box.length < card.getCost().length){
+    public void buyDevelopmentCard(DevelopmentCard card, int[] box, int index) {
+        processedResources = 0;
+        if (box.length < card.getCost().length) {
             throw new IllegalArgumentException("invalid cmd");
         }
         if (sale.isEmpty())
             handlingCost(card.getCost(), box);
-        else{
+        else {
             ArrayList<UtilityProductionAndCost> costArrayList = new ArrayList<>();
-            for (UtilityProductionAndCost cost: card.getCost()){
-                if (sale.contains(cost.getResource())){
-                    costArrayList.add(new UtilityProductionAndCost(cost.getQuantity()-1, cost.getResource()));
+            for (UtilityProductionAndCost cost : card.getCost()) {
+                if (sale.contains(cost.getResource())) {
+                    costArrayList.add(new UtilityProductionAndCost(cost.getQuantity() - 1, cost.getResource()));
                 } else
                     costArrayList.add(new UtilityProductionAndCost(cost.getQuantity(), cost.getResource()));
             }
             UtilityProductionAndCost[] utilityProductionAndCosts = new UtilityProductionAndCost[costArrayList.size()];
-            handlingCost(costArrayList.toArray(utilityProductionAndCosts),box);
+            handlingCost(costArrayList.toArray(utilityProductionAndCosts), box);
         }
-        board.addCard( game.getDevelopmentGrid().buyCard(card.getColor(), card.getLevel()),index);
+        board.addCard(game.getDevelopmentGrid().buyCard(card.getColor(), card.getLevel()), index);
     }
 
 
     /**
-     * this method is used to activate a leader power
+     * Activates a leader power.
+     *
      * @param leader the leader you want to activate power from
      */
-    public void useLeader(LeaderCard leader){
-        if(leaderCards.contains(leader)) {
+    public void useLeader(LeaderCard leader) {
+        if (leaderCards.contains(leader)) {
             if (leader.getRequirements().checkRequirements(game.getCurrentPlayer())) {
                 leader.getLeaderPower().activatePower(game.getCurrentPlayer());
                 board.addActiveLeader(leader);
                 leaderCards.remove(leader);
                 game.getViewAdapter().sendLeaderUpdate(leader);
-            }else
+            } else
                 throw new IllegalArgumentException("you don't have these requirements");
-        }else
+        } else
             throw new IllegalArgumentException("you don't own this Leader Card");
 
     }
 
     /**
-     * Board Production
-     * @param box store from where you take resource
-     * @param cost cost chosen by the player
+     * Board Production.
+     *
+     * @param box        store from where you take resource
+     * @param cost       cost chosen by the player
      * @param production production chose by the player
      */
-    public void startBoardProduction(int[] box,String[] cost,Resource production){
+    public void startBoardProduction(int[] box, String[] cost, Resource production) {
         if (!Utility.isStorable(production)) {
             throw new IllegalArgumentException("Not valid production input");
-        } else if (!board.getProductionList().get(0).getProductionCanBeActivate()){
+        } else if (!board.getProductionList().get(0).getProductionCanBeActivate()) {
             throw new IllegalArgumentException("You have already used this production");
         }
         for (int i = 0; i < 2; i++) {
@@ -338,17 +358,18 @@ public class Player {
     }
 
     /**
-     * Leader Production
-     * @param cost store from where you take the resource
+     * Leader Production.
+     *
+     * @param cost       store from where you take the resource
      * @param production resource chose by the player
      */
-    public void startLeaderProduction(int cost,Resource production,int index){
+    public void startLeaderProduction(int cost, Resource production, int index) {
         Production productionPower = this.getBoard().getProductionList().get(index);
         if (!Utility.isStorable(production)) {
             throw new IllegalArgumentException("Not valid production input");
-        }else if (this.getBoard().getProductionList().get(index) == null) {
+        } else if (this.getBoard().getProductionList().get(index) == null) {
             throw new IllegalArgumentException("You don't have leader card on your board");
-        }else if (!productionPower.getProductionCanBeActivate()){
+        } else if (!productionPower.getProductionCanBeActivate()) {
             throw new IllegalArgumentException("You have already used this production");
         }
         Resource costResource = productionPower.getCost()[0].getResource();
@@ -382,19 +403,20 @@ public class Player {
     }
 
     /**
-     * Development production
+     * Development production.
+     *
      * @param index index of the production selected
-     * @param box store from where the player take the resources
+     * @param box   store from where the player take the resources
      */
-    public void startDevProduction(int index,int[] box){
+    public void startDevProduction(int index, int[] box) {
         ArrayList<DevelopmentCard> devCards = this.getBoard().showActiveDevCards();
         processedResources = 0;
-        if (devCards.isEmpty() || devCards.get(index-1) == null) {
+        if (devCards.isEmpty() || devCards.get(index - 1) == null) {
             throw new IllegalArgumentException("The Development place selected is empty");
         }
-        UtilityProductionAndCost[] cost = devCards.get(index-1).getProduction().getCost();
-        Production production = devCards.get(index-1).getProduction();
-        if (!production.getProductionCanBeActivate()){
+        UtilityProductionAndCost[] cost = devCards.get(index - 1).getProduction().getCost();
+        Production production = devCards.get(index - 1).getProduction();
+        if (!production.getProductionCanBeActivate()) {
             throw new IllegalArgumentException("You have already used this production");
         }
         if (box.length < cost.length) {
@@ -414,15 +436,20 @@ public class Player {
         }
     }
 
-    public void handlingCost(UtilityProductionAndCost[] cost, int[] box) throws IllegalArgumentException{
+    /**
+     * Handles the cost of a card.
+     *
+     * @throws IllegalArgumentException
+     */
+    public void handlingCost(UtilityProductionAndCost[] cost, int[] box) throws IllegalArgumentException {
         int j = 0;
         for (UtilityProductionAndCost utilityProductionAndCost : cost) {
             Resource resource = utilityProductionAndCost.getResource();
             j += utilityProductionAndCost.getQuantity();
             for (; processedResources < j; processedResources++) {
-                if (box.length == cost.length && utilityProductionAndCost.getQuantity()>1) {
-                    processedResources=processedResources-1;
-                    throw  new IllegalArgumentException("Invalid cmd");
+                if (box.length == cost.length && utilityProductionAndCost.getQuantity() > 1) {
+                    processedResources = processedResources - 1;
+                    throw new IllegalArgumentException("Invalid cmd");
                 }
                 if (box[processedResources] == 0) {
                     if (board.getStrongbox().getResourceMap().get(resource) != 0) {
@@ -448,12 +475,13 @@ public class Player {
 
 
     /**
-     * method called by the production in case of error
+     * Method called by the production in case of error, it refunds the stores with the resources erroneously used.
+     *
      * @param size number of resource processed before the error
-     * @param box command by the player
+     * @param box  command by the player
      * @param cost cost of the production that need to be refund
      */
-    public void refundCost(int size,int[] box, UtilityProductionAndCost[] cost) {
+    public void refundCost(int size, int[] box, UtilityProductionAndCost[] cost) {
         if (size < 0) return;
         int j = 0;
         processedResources = 0;
@@ -469,13 +497,13 @@ public class Player {
             }
         }
     }
+
     /**
-     *
-     * @return number of dev cards owned by the player
+     * @return number of dev cards owned by the player.
      */
-    public int getNumOfCards(){
+    public int getNumOfCards() {
         int numOfDevCards = 0;
-        for (DevelopmentPlace devPlace : board.getDevelopmentSpace()){
+        for (DevelopmentPlace devPlace : board.getDevelopmentSpace()) {
             numOfDevCards += devPlace.getDevelopmentCards().size();
         }
         return numOfDevCards;

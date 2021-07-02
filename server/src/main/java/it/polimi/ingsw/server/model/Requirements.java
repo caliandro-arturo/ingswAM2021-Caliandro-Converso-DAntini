@@ -1,19 +1,20 @@
 package it.polimi.ingsw.server.model;
 
 /**
- * standard requirements for the leader card
+ * Standard requirements for the leader card.
  */
 public interface Requirements {
 
     /**
-     * check if the requirements for the deploying of the leader card are met
+     * Checks if the requirements for the deploying of the leader card are valid.
+     *
      * @param player who deploy the card
      * @return true if the requirements are met or false
      */
     boolean checkRequirements(Player player);
 
     /**
-     * Identifier for message to client
+     * Identifier for message to client.
      */
     String[] identifier();
 }

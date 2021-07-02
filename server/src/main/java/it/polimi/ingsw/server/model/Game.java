@@ -166,19 +166,19 @@ public abstract class Game {
     }
 
     /**
-     * command used by the player
+     * Goes back from a chosen action and rehabilitates the choose of an action.
      *
      * @param validPhases the phases which the player can go back
      * @throws GameException.IllegalMove if the player can't do this action
      */
     public void back(ArrayList<String> validPhases) throws GameException.IllegalMove {
         ArrayList<TurnPhase> validTurn = new ArrayList<>();
-        for (String turn: validPhases){
+        for (String turn : validPhases) {
             validTurn.add(turnPhases.get(turn));
         }
-        if (validTurn.contains(currentTurnPhase) && !currentTurnPhase.isFinished()){
+        if (validTurn.contains(currentTurnPhase) && !currentTurnPhase.isFinished()) {
             setCurrentTurnPhase(turnPhases.get("ChooseAction"));
-            viewAdapter.announceTurnPhase(currentPlayer,getCurrentTurnPhase().getName(),
+            viewAdapter.announceTurnPhase(currentPlayer, getCurrentTurnPhase().getName(),
                     getCurrentTurnPhase().getPhaseInfo());
         } else
             throw new GameException.IllegalMove();
@@ -227,8 +227,8 @@ public abstract class Game {
      */
     public void setPlayerReady(Player player) {
         if (player.getBoard().getResHand().isEmpty() &&
-        player.getInitialResources() == 0 &&
-        player.getLeaderCards().size() == 2) {
+                player.getInitialResources() == 0 &&
+                player.getLeaderCards().size() == 2) {
             playersToWait.remove(player);
             if (playersToWait.isEmpty()) startGame();
         }
@@ -296,10 +296,10 @@ public abstract class Game {
     public String toString() {
         StringBuilder gameJson = new StringBuilder();
         gameJson.append("""
-                {
-                    "currentPlayer": %s,
-                    "currentTurnPhase": %s,
-                    "players": [""".formatted(
+                        {
+                            "currentPlayer": %s,
+                            "currentTurnPhase": %s,
+                            "players": [""".formatted(
                 (currentPlayer != null ? "\"" + currentPlayer.getUsername() + "\"" : "null"),
                 (currentTurnPhase != null ? "\"" + currentTurnPhase.getName() + "\"" : "null")
                 )
@@ -314,12 +314,6 @@ public abstract class Game {
         return gameJson.toString();
     }
 
-    //------------------------------------------------------------------------------------------------------------------
-    /* for debug purposes */
-
-    public void setControllerAdapter(ControllerAdapter controllerAdapter) {
-        this.controllerAdapter = controllerAdapter;
-    }
 
     public void setViewAdapter(ViewAdapter viewAdapter) {
         this.viewAdapter = viewAdapter;

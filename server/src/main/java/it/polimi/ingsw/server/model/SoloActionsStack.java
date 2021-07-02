@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Stack;
 
 /**
- * This class simulates the behaviour of the Solo Action stack for single player games.
+ * Simulates the behaviour of the Solo Action stack for single player games.
  */
 public class SoloActionsStack {
     protected final ArrayList<SoloAction> soloActions = new ArrayList<>();
@@ -27,6 +27,7 @@ public class SoloActionsStack {
 
     /**
      * Picks a Solo action from the stack, like {@link Stack#pop()}.
+     *
      * @param game the game (a single player one) in which the Solo Action has effect
      */
     public void pick(Game game) {
@@ -34,7 +35,7 @@ public class SoloActionsStack {
         if (token.name().startsWith("DEL")) {
             Color color = Utility.mapColor.get(token.name().substring(3));
             boolean flag = checkIfLorenzoDiscardCardOfDifferentLevel(game.getDevelopmentGrid(), color);
-            Card card = game.getDevelopmentGrid().lorenzoCardsUpdate(color,flag);
+            Card card = game.getDevelopmentGrid().lorenzoCardsUpdate(color, flag);
             token.act(game, this);
             game.getViewAdapter().sendMessage(new LorenzoPick(token.name(), flag, card));
         } else {
@@ -43,7 +44,7 @@ public class SoloActionsStack {
         }
     }
 
-    private boolean checkIfLorenzoDiscardCardOfDifferentLevel(DevelopmentGrid grid, Color color){
+    private boolean checkIfLorenzoDiscardCardOfDifferentLevel(DevelopmentGrid grid, Color color) {
         return grid.lorenzoUpdate(color);
     }
 
@@ -54,8 +55,7 @@ public class SoloActionsStack {
         actionPointer = 0;
         Collections.shuffle(soloActions);
     }
-    //------------------------------------------------------------------------------------------------------------------
-    /* for debug purposes */
+
     public ArrayList<SoloAction> getSoloActions() {
         return soloActions;
     }

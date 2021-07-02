@@ -30,7 +30,7 @@ public class SinglePlayerGame extends Game {
                     if (!getGame().getVaticanMap().get(getPosition())) {
                         getGame().vaticanReport(getPosition());
                     }
-                }else if (getPosition() == 24){
+                } else if (getPosition() == 24) {
                     getPlayer(0).getBoard().getFaithTrack().isInVatican(24);
                     isLost = true;
                     setOver(true);
@@ -58,8 +58,8 @@ public class SinglePlayerGame extends Game {
         }
         setFinished();
         LinkedHashMap<String, Integer> ranking = new LinkedHashMap<>();
-        ranking.put(getPlayer(0).getUsername(),isLost ? -1 : -2);
-        getViewAdapter().notifyGameEnded(getPlayer(0).getUsername(), getPlayer(0).getVictoryPoints(),ranking);
+        ranking.put(getPlayer(0).getUsername(), isLost ? -1 : -2);
+        getViewAdapter().notifyGameEnded(getPlayer(0).getUsername(), getPlayer(0).getVictoryPoints(), ranking);
     }
 
     @Override
@@ -67,9 +67,6 @@ public class SinglePlayerGame extends Game {
         super.setOver(over);
         endGame();
     }
-
-    //debug purposes
-
 
     public boolean isLost() {
         return isLost;

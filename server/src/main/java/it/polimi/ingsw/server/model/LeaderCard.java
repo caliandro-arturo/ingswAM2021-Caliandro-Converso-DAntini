@@ -1,14 +1,19 @@
 package it.polimi.ingsw.server.model;
 
 /**
- *  a special type of card (Leader type)
- *
- *  victoryPoints points of the card
- *  requirements to deploy the card
- *  leaderPower special power of the card
- *  ID identifier of the card
+ * Represents a Leader card.
+ * <p>
+ * Attributes:
+ * <p>
+ * victoryPoints points of the card
+ * <p>
+ * requirements to deploy the card
+ * <p>
+ * leaderPower special power of the card
+ * <p>
+ * ID identifier of the card
  */
-public class LeaderCard{
+public class LeaderCard {
     private final int ID;
     private final int victoryPoints;
     private final Requirements requirements;
@@ -26,9 +31,11 @@ public class LeaderCard{
         return leaderPower;
     }
 
-    public int getID(){return ID;}
+    public int getID() {
+        return ID;
+    }
 
-    public LeaderCard(int ID,int victoryPoints, Requirements requirements, LeaderPower leaderPower){
+    public LeaderCard(int ID, int victoryPoints, Requirements requirements, LeaderPower leaderPower) {
         this.ID = ID;
         this.victoryPoints = victoryPoints;
         this.requirements = requirements;

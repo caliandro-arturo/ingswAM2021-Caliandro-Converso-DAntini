@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 /**
- * This class represents the marbles in the market.
+ * Represents the marbles in the market.
  */
 public class Marble {
     private final Color color;
@@ -15,13 +15,15 @@ public class Marble {
     }
 
     /**
-     * This method starts the action corresponding to the color of the marble.
+     * Starts the action corresponding to the color of the marble.
+     *
      * @param game the game where there is the market from which the marble is picked
      */
     public void pick(Game game) {
         color.act(game);
     }
-    public String getColorString(){
+
+    public String getColorString() {
         return color.name();
     }
 

@@ -6,8 +6,7 @@ import it.polimi.ingsw.commonFiles.messages.toClient.updates.VaticanReport;
 import java.util.HashMap;
 
 /**
- * this class represents the faith path,
- * each faith path is connected with a Composition link to the Board
+ * Represents the faith path.
  */
 public class FaithTrack {
 
@@ -27,6 +26,7 @@ public class FaithTrack {
     public void setPosition(int position) {
         this.position = position;
     }
+
     public void setScoreCard(int scoreCard) {
         this.scoreCard = scoreCard;
     }
@@ -35,8 +35,14 @@ public class FaithTrack {
         return vaticanReportsMap;
     }
 
-    public int getPosition() {        return position;    }
-    public int getScoreCard() { return scoreCard; }
+    public int getPosition() {
+        return position;
+    }
+
+    public int getScoreCard() {
+        return scoreCard;
+    }
+
     private Game game;
 
     public void setPlayer(Player player) {
@@ -52,10 +58,10 @@ public class FaithTrack {
     }
 
     /**
-     * Increase the position of the Faith Marker on the faith track, if it's in 8,16 or 24 triggers a vatican report.
+     * Increases the position of the Faith Marker on the faith track, if it's in 8,16 or 24 triggers a vatican report.
      */
-    public void increasePosition(){
-        if(this.position<24) {
+    public void increasePosition() {
+        if (this.position < 24) {
             this.position++;
             notifyPositionChange();
             checkPosition();
@@ -70,14 +76,14 @@ public class FaithTrack {
     }
 
     /**
-     * checks the behavior of each position
+     * Checks the behavior of each position.
      */
-    public void checkPosition(){
+    public void checkPosition() {
         if (this.position == 8 || this.position == 16 || this.position == 24) {
             if (!game.getVaticanMap().get(this.position)) {
                 game.vaticanReport(this.position);
             }
-            if (this.position == 24){
+            if (this.position == 24) {
                 game.getViewAdapter().notifyLastTurn("someone has reached the finish line");
                 game.setOver(true);
             }
@@ -86,10 +92,11 @@ public class FaithTrack {
 
 
     /**
-     * this method check if a player is in a papal space and adds victory points to it
+     * Checks if a player is in a papal space and adds victory points to it.
+     *
      * @param papalSpace identify the Pope space we are checking for
      */
-    public void isInVatican(int papalSpace){
+    public void isInVatican(int papalSpace) {
         VaticanReport vaticanReport = new VaticanReport();
         vaticanReport.setPlayer(player.getUsername());
         boolean isPassed = false;

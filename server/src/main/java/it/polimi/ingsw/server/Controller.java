@@ -62,6 +62,11 @@ public class Controller {
         return model.getPlayersNum();
     }
 
+    /**
+     * Reads a message coming from the client.
+     *
+     * @param message
+     */
     public void readMessage(Message message) {
         try {
             messageReader.join();
@@ -73,7 +78,7 @@ public class Controller {
         if (isInPause) sendMessage(message.getPlayer(), new ErrorMessage("Game in pause to re-add a player."));
         else if (isFinished()) sendMessage(message.getPlayer(), new ErrorMessage("Game is finished."));
         else {
-            messageReader = new Thread (() -> ((ToServerMessage) message).accept(messageVisitor));
+            messageReader = new Thread(() -> ((ToServerMessage) message).accept(messageVisitor));
             messageReader.start();
         }
     }
@@ -86,6 +91,9 @@ public class Controller {
         sendMessage(player.getUsername(), message);
     }
 
+    /**
+     * Starts the game and sets it sending a message.
+     */
     public void startGame() {
         isGameStarted = true;
         virtualView.sendMessage(new GameStarted());
@@ -102,6 +110,11 @@ public class Controller {
         return model.getPlayer(nick);
     }
 
+    /**
+     * Sets the game status sending a message.
+     *
+     * @param nickname
+     */
     public void sendGameStatus(String nickname) {
         GameStamp gameStamp = new GameStamp(model.toString());
         gameStamp.setPlayer(nickname);
@@ -110,10 +123,20 @@ public class Controller {
         model.getViewAdapter().sendLeaderHand(getPlayer(nickname));
     }
 
+    /**
+     * Checks if a game is finished.
+     *
+     * @return
+     */
     public boolean isFinished() {
         return model.isFinished();
     }
 
+    /**
+     * Pause the game.
+     *
+     * @param reenteringPlayer
+     */
     public void pauseGame(String reenteringPlayer) {
         isInPause = true;
         try {
@@ -123,6 +146,11 @@ public class Controller {
         virtualView.sendMessageToOthers(reenteringPlayer, new TimeUp(true));
     }
 
+    /**
+     * Restarts the game.
+     *
+     * @param reenteringPlayer
+     */
     public void restartGame(String reenteringPlayer) {
         isInPause = false;
         virtualView.sendMessageToOthers(reenteringPlayer, new TimeUp(false));

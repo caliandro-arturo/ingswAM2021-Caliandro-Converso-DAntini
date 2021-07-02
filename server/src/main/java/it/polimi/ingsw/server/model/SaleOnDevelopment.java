@@ -3,7 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.commonFiles.model.Resource;
 
 /**
- * power that make a discount on the development card
+ * Leader power that makes a discount on the development card cost.
  */
 public class SaleOnDevelopment implements LeaderPower {
     private final Resource resource;
@@ -12,7 +12,7 @@ public class SaleOnDevelopment implements LeaderPower {
         return resource;
     }
 
-    public SaleOnDevelopment(Resource resource){
+    public SaleOnDevelopment(Resource resource) {
         this.resource = resource;
     }
 

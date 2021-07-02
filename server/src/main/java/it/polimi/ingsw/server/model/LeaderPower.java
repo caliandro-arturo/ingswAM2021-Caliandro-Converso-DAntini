@@ -2,18 +2,19 @@ package it.polimi.ingsw.server.model;
 
 
 /**
- * standard powers of leader card
+ * Standard powers of leader card.
  */
 public interface LeaderPower {
 
     /**
-     * when the card is deploy activates the power of the leader
+     * When the card is deploy activates the power of the leader.
+     *
      * @param player current player
      */
     void activatePower(Player player);
 
     /**
-     * Identifier for message to client
+     * Identifier for message to client.
      */
     String[] identifier();
 }

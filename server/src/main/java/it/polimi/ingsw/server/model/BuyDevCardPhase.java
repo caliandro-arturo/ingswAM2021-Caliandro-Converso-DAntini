@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.model;
 
+/**
+ * Buy development card phase.
+ */
 public class BuyDevCardPhase extends TurnPhase {
     public BuyDevCardPhase(Game game) {
         super(game, "Buy a development card", false);

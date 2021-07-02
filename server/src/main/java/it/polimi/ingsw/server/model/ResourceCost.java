@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
+/**
+ * Resource requirements.
+ */
 public class ResourceCost implements Requirements {
     private final UtilityProductionAndCost cost;
 

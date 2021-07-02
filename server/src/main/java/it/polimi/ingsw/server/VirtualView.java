@@ -86,7 +86,7 @@ public class VirtualView {
     /**
      * Re-adds a player that has previously lost the connection.
      *
-     * @param nickname the previous nickname
+     * @param nickname      the previous nickname
      * @param clientHandler the new client handler to link with the nickname
      */
     public synchronized void reAddPlayer(String nickname, ClientHandler clientHandler) {

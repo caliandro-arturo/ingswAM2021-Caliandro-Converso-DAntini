@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * Represents the level requirements the player needs to deploy a leader card.
+ */
 public class LevelCost extends ColorCost implements Requirements {
     private final int level;
 
-    public LevelCost(Color[] colors, Integer[] quantity, int level){
-        super(colors,quantity);
+    public LevelCost(Color[] colors, Integer[] quantity, int level) {
+        super(colors, quantity);
         this.level = level;
     }
 
@@ -31,7 +34,7 @@ public class LevelCost extends ColorCost implements Requirements {
                 }
             }
         }
-        if (!flag){
+        if (!flag) {
             return false;
         } else {
             for (DevelopmentPlace developmentPlace : devPlace) {
@@ -46,7 +49,7 @@ public class LevelCost extends ColorCost implements Requirements {
     }
 
     @Override
-    public String[] identifier(){
+    public String[] identifier() {
         ArrayList<String> arguments = new ArrayList<>(Arrays.asList(super.identifier()));
         arguments.set(0, "levelCost");
         arguments.add(Integer.toString(level));

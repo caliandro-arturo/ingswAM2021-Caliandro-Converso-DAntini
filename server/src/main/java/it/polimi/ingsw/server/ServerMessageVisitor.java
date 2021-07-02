@@ -34,6 +34,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     private void sendMessage(Player player, Message message) {
         controller.sendMessage(player, message);
     }
+
     private void sendMessage(String player, Message message) {
         controller.sendMessage(getPlayer(player), message);
     }
@@ -64,22 +65,34 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
             sendMessage(player, new AskWhiteMarble(player.getWhiteMarbleChoices()));
     }
 
+    /**
+     * Calls the method implementing the go back function.
+     * {@link ControllerAdapter#back(String)}.
+     *
+     * @param back
+     */
     @Override
-    public void visit(Back back){
+    public void visit(Back back) {
         try {
             controllerAdapter.back(back.getPlayer());
-        } catch (GameException.IllegalMove e){
+        } catch (GameException.IllegalMove e) {
             denyMove(back, e.getMessage());
         }
 
     }
 
+    /**
+     * Calls the method to discard a resource
+     * {@link ControllerAdapter#discardResource(Player, Resource)}.
+     *
+     * @param discardRes
+     */
     @Override
     public void visit(DiscardRes discardRes) {
         try {
-            controllerAdapter.discardResource(getPlayer(discardRes.getPlayer()),discardRes.getResource());
-        }  catch (GameException.IllegalMove e) {
-            denyMove(discardRes,e.getMessage());
+            controllerAdapter.discardResource(getPlayer(discardRes.getPlayer()), discardRes.getResource());
+        } catch (GameException.IllegalMove e) {
+            denyMove(discardRes, e.getMessage());
             return;
         }
         confirmMove(discardRes);
@@ -87,24 +100,27 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
 
     /**
      * Calls a startProduction method based on the production indicated in the message.
+     * {@link ControllerAdapter#startBoardProduction(Player, String[], String, int[])}.
+     * {@link ControllerAdapter#startDevProduction(Player, int[], int)} .
+     * {@link ControllerAdapter#startLeaderProduction(Player, int, String, int)}.
      */
     @Override
     public void visit(StartProduction startProduction) {
         int ID = startProduction.getID();
         Player player = getPlayer(startProduction.getPlayer());
         String[] costResource = startProduction.getCostResource();
-        String production =  startProduction.getProduction();
-        int[] costs = startProduction.getCost().stream().mapToInt(i->i).toArray();
-        try{
-            if (ID == 0){
-                controllerAdapter.startBoardProduction(player,costResource,production,costs);
-            } else if (ID<=3){
-                controllerAdapter.startDevProduction(player,costs,ID);
+        String production = startProduction.getProduction();
+        int[] costs = startProduction.getCost().stream().mapToInt(i -> i).toArray();
+        try {
+            if (ID == 0) {
+                controllerAdapter.startBoardProduction(player, costResource, production, costs);
+            } else if (ID <= 3) {
+                controllerAdapter.startDevProduction(player, costs, ID);
             } else {
-                controllerAdapter.startLeaderProduction(player,costs[0],production,ID-3);
+                controllerAdapter.startLeaderProduction(player, costs[0], production, ID - 3);
             }
-        }catch (GameException.IllegalMove e){
-            denyMove(startProduction,e.getMessage());
+        } catch (GameException.IllegalMove e) {
+            denyMove(startProduction, e.getMessage());
             return;
         }
         confirmMove(startProduction);
@@ -144,23 +160,35 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         confirmMove(msg);
     }
 
+    /**
+     * Calls the method to deploy a leader.
+     * {@link ControllerAdapter#useLeader(Player, int)}.
+     *
+     * @param useLeader
+     */
     @Override
     public void visit(UseLeader useLeader) {
-        try{
+        try {
             controllerAdapter.useLeader(getPlayer(useLeader.getPlayer()), useLeader.getIDCard());
-        } catch (IllegalArgumentException | GameException.IllegalMove e){
-            denyMove(useLeader,e.getMessage());
+        } catch (IllegalArgumentException | GameException.IllegalMove e) {
+            denyMove(useLeader, e.getMessage());
             return;
         }
         confirmMove(useLeader);
     }
 
+    /**
+     * Calls the method to discard a leader card.
+     * {@link ControllerAdapter#discardLeader(Player, int)}.
+     *
+     * @param discardLeader
+     */
     @Override
     public void visit(DiscardLeader discardLeader) {
-        try{
+        try {
             controllerAdapter.discardLeader(getPlayer(discardLeader.getPlayer()), discardLeader.getPos());
-        } catch (IllegalArgumentException | GameException.IllegalMove e){
-            denyMove(discardLeader,e.getMessage());
+        } catch (IllegalArgumentException | GameException.IllegalMove e) {
+            denyMove(discardLeader, e.getMessage());
             return;
         } catch (IndexOutOfBoundsException e) {
             denyMove(discardLeader, "The selected leader is not present.");
@@ -169,11 +197,17 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         confirmMove(discardLeader);
     }
 
+    /**
+     * Calls the method to take out a resource from the warehouse and put in in the hand.
+     * {@link ControllerAdapter#takeOutResource(Player, int)}.
+     *
+     * @param msg
+     */
     @Override
     public void visit(TakeRes msg) {
-        try{
+        try {
             controllerAdapter.takeOutResource(getPlayer(msg.getPlayer()), msg.getDepot());
-        } catch (Exception e){
+        } catch (Exception e) {
             denyMove(msg, e.getMessage());
             return;
         }
@@ -182,6 +216,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
 
     /**
      * Handles the taking of an initial resource by a player.
+     * {@link ControllerAdapter#takeInitialResource(Player, Resource)}.
      */
     @Override
     public void visit(GetResource msg) {
@@ -196,6 +231,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
 
     /**
      * Handles the choice of the leader to use when a white marble has been picked.
+     * {@link ControllerAdapter#giveChosenWhiteMarbleResource(Player, int)}.
      */
     @Override
     public void visit(ChooseWhiteMarble msg) {
@@ -211,6 +247,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
 
     /**
      * Handles requests to go to the next turn phase.
+     * {@link ControllerAdapter#nextTurnPhase(Player)}.
      */
     @Override
     public void visit(Next next) {
@@ -223,6 +260,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
 
     /**
      * Handles requests to choose the turn action.
+     * {@link ControllerAdapter#startChosenTurnPhase(Player, String)}.
      */
     @Override
     public void visit(ChooseTurnPhase msg) {
@@ -241,6 +279,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     /* These methods are dedicated to the initial phases of game.
      * For this reason, error handling is implemented differently than the others above.
      */
+
     /**
      * Calls {@link Controller#createGame(SetGame)}.
      */

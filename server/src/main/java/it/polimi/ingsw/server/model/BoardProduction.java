@@ -4,7 +4,7 @@ import it.polimi.ingsw.commonFiles.model.Production;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 
 /**
- * special Board Production
+ * Special Board Production.
  */
 public class BoardProduction implements Production {
 

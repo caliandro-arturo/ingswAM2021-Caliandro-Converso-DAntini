@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.model;
 
+/**
+ * Choose action phase.
+ */
 public class ChooseActionPhase extends TurnPhase {
     public ChooseActionPhase(Game game) {
         super(game, "Choose the next action", false);
