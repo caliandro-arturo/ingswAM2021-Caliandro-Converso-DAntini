@@ -16,6 +16,7 @@ public class ControllerAdapter {
     private final ArrayList<String> selectablePhases = new ArrayList<>(
             Arrays.asList("UseMarket", "BuyDevelopmentCard", "ActivateProduction")
     );
+
     public ControllerAdapter(Game game) {
         this.game = game;
     }
@@ -33,8 +34,8 @@ public class ControllerAdapter {
     }
 
     /**
-     * Checks if the player can do the action he selected (i.e. if it's his turn
-     * and it's the right turn phase to do the action).
+     * Checks if the player can do the action he selected (i.e. if it's his turn and it's the right turn phase to do the
+     * action).
      *
      * @param player    the player who wants to do an action
      * @param turnPhase the phase in which the action is acceptable
@@ -55,11 +56,21 @@ public class ControllerAdapter {
             throw new GameException.IllegalMove();
     }
 
+    /**
+     * Checks if the player can activate productions.
+     */
+    private void checkIfIsProductionPhase() throws GameException.IllegalMove {
+        TurnPhase prodPhase = game.getTurnPhase("ActivateProduction");
+        if (!prodPhase.equals(game.getCurrentTurnPhase()))
+            throw new GameException.IllegalMove();
+    }
+
     //main methods
+
     /**
      * Gives the player the indicated initial resource.
      *
-     * @param player the player who has selected the resource
+     * @param player   the player who has selected the resource
      * @param resource the initial resource to give to the player
      */
     public void takeInitialResource(Player player, Resource resource) throws GameException.IllegalMove {
@@ -123,8 +134,8 @@ public class ControllerAdapter {
     }
 
     /**
-     * Gives the player the resource he has chosen when he picked the white Marble from the Market.
-     * Only called if the player has two leaders with White Marble Conversion power.
+     * Gives the player the resource he has chosen when he picked the white Marble from the Market. Only called if the
+     * player has two leaders with White Marble Conversion power.
      *
      * @param player the player to give the resources to
      * @param num    the chosen resource (indicated by its position in the WhiteAlt ArrayList, defined in Player)
@@ -192,7 +203,7 @@ public class ControllerAdapter {
         else if (!(game.getCurrentTurnPhase().isFinished()))
             if (!(game.getCurrentTurnPhase().isSkippable()))
                 throw new GameException.IllegalMove();
-            game.nextTurnPhase();
+        game.nextTurnPhase();
     }
 
     /**
@@ -204,24 +215,27 @@ public class ControllerAdapter {
      * @param box    the depots the player chooses to take resources from
      */
     public void startBoardProduction(Player player, String[] cost, String prod, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
-        checkIfMoveIsValid(player,"ActivateProduction");
+        checkIfPlayerCanDoThingsNow(player);
+        checkIfIsProductionPhase();
         Resource production = Utility.mapResource.get(prod.toLowerCase());
-        player.startBoardProduction(box,cost,production);
+        player.startBoardProduction(box, cost, production);
         player.getBoard().getProductionList().get(0).setProductionCanBeActivate(false);
         game.getCurrentTurnPhase().setFinished(true);
     }
 
     /**
      * Leader Production
+     *
      * @param player current player
-     * @param cost command of the player
-     * @param prod command of the player
-     * @param index index of the production selected
+     * @param cost   command of the player
+     * @param prod   command of the player
+     * @param index  index of the production selected
      */
-    public void startLeaderProduction(Player player,int cost,String prod, int index) throws IllegalArgumentException, GameException.IllegalMove {
-        checkIfMoveIsValid(player,"ActivateProduction");
+    public void startLeaderProduction(Player player, int cost, String prod, int index) throws IllegalArgumentException, GameException.IllegalMove {
+        checkIfPlayerCanDoThingsNow(player);
+        checkIfIsProductionPhase();
         Resource production = Utility.mapResource.get(prod.toLowerCase());
-        player.startLeaderProduction(cost,production,index);
+        player.startLeaderProduction(cost, production, index);
         Production productionPower = player.getBoard().getProductionList().get(index);
         productionPower.setProductionCanBeActivate(false);
         game.getCurrentTurnPhase().setFinished(true);
@@ -235,12 +249,13 @@ public class ControllerAdapter {
      * @param index  index of the production selected
      */
     public void startDevProduction(Player player, int[] box, int index) throws IllegalArgumentException, GameException.IllegalMove {
-        checkIfMoveIsValid(player, "ActivateProduction");
+        checkIfPlayerCanDoThingsNow(player);
+        checkIfIsProductionPhase();
         try {
             player.startDevProduction(index, box);
         } catch (IllegalArgumentException e) {
             UtilityProductionAndCost[] cost = player
-                    .getBoard().showActiveDevCards().get(index-1).getProduction().getCost();
+                    .getBoard().showActiveDevCards().get(index - 1).getProduction().getCost();
             player.refundCost(player.getProcessedResources(), box, cost);
             throw e;
         }
@@ -251,34 +266,36 @@ public class ControllerAdapter {
     }
 
     /**
+     * Goes back to the choose action phase.
      *
      * @throws GameException.IllegalMove when it's not Market,Production or buyCard phase
      */
-    public void back(String username) throws GameException.IllegalMove{
+    public void back(String username) throws GameException.IllegalMove {
         checkIfPlayerCanDoThingsNow(game.getPlayer(username));
         game.back(selectablePhases);
     }
 
     /**
      * controls for buycard
-     * @param player current player
-     * @param level level of the card
+     *
+     * @param player      current player
+     * @param level       level of the card
      * @param colorString color of the card
-     * @param devSpace space
-     * @param box box from where take the resource
+     * @param devSpace    space
+     * @param box         box from where take the resource
      */
-    public DevelopmentCard buyCard(Player player,int level,String colorString,int devSpace, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
-        checkIfMoveIsValid(player,"BuyDevelopmentCard");
+    public DevelopmentCard buyCard(Player player, int level, String colorString, int devSpace, int[] box) throws IllegalArgumentException, GameException.IllegalMove {
+        checkIfMoveIsValid(player, "BuyDevelopmentCard");
         Color color = Utility.mapColor.get(colorString);
-        if (level<1 || level>3 )
+        if (level < 1 || level > 3)
             throw new IllegalArgumentException("the level must be 1,2 or 3");
         else if (Utility.colorPosition.get(color) == null)
             throw new IllegalArgumentException("Invalid Color");
-        else if (game.getDevelopmentGrid().getDeck(level,color).getDeck().empty())
+        else if (game.getDevelopmentGrid().getDeck(level, color).getDeck().empty())
             throw new IllegalArgumentException("this place in empty");
-        else if (!player.getBoard().getDevelopmentSpace()[devSpace-1].hasRoomForCard(level))
+        else if (!player.getBoard().getDevelopmentSpace()[devSpace - 1].hasRoomForCard(level))
             throw new IllegalArgumentException("this development place is empty");
-        DevelopmentCard card = game.getDevelopmentGrid().getDeck(level,color).getTopCard();
+        DevelopmentCard card = game.getDevelopmentGrid().getDeck(level, color).getTopCard();
         try {
             player.buyDevelopmentCard(card, box, devSpace);
         } catch (IllegalArgumentException e) {

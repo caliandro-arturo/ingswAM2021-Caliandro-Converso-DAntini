@@ -64,8 +64,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(GameRejoin gameRejoin) {
-        if (model.getPlayerUsername() == null) {
-            model.setPlayerUsername(gameRejoin.getPlayer());
+        if (model.getPlayerUsername().equals(gameRejoin.getPlayer())) {
             showUpdate("resume");
         }
         else
@@ -275,6 +274,7 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      */
     @Override
     public void visit(GameStamp gameStamp) {
+        model.setPlayerUsername(gameStamp.getPlayer());
         model.setGameSelected(true);
         model.setGameStarted(true);
         String status = gameStamp.getGameStatus();
@@ -397,6 +397,21 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
                 playerBoard.setPowerSale(Utility.mapResource.get(j.getAsString().toLowerCase()));
             }
         });
+        //initializing productions
+        Board playerBoard = model.getBoard();
+            //board production
+        playerBoard.getIsProductionAlreadyUsed().set(0, true);
+            //development card productions
+        for (int i = 0; i < playerBoard.getDevelopmentPlace().getTopCards().size(); i++) {
+            if (playerBoard.getDevelopmentPlace().getTopCards().get(i) != null)
+                playerBoard.getIsProductionAlreadyUsed().set(i + 1, true);
+        }
+            //leader card productions
+        if (playerBoard.getPowerProd().size() >= 1) {
+            playerBoard.getIsProductionAlreadyUsed().set(4, true);
+            if (playerBoard.getPowerProd().size() == 2)
+                playerBoard.getIsProductionAlreadyUsed().set(5, true);
+        }
     }
 
     private UtilityProductionAndCost[] utilityProductionAndCostsParser(JsonArray upsRawArray) {

@@ -548,10 +548,10 @@
                   <Button layoutX="422.0" layoutY="632.0" mnemonicParsing="false" onAction="#quit" prefHeight="32.0" prefWidth="84.0" text="Quit" />
                </children>
             </Pane>
-            <Pane fx:id="playerTurnAnnouncementPane" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="playerTurnAnnouncementPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
                <children>
                   <Rectangle arcHeight="1.0" arcWidth="5.0" fill="#3fe339" height="248.0" layoutX="262.0" layoutY="226.0" stroke="BLACK" strokeLineJoin="ROUND" strokeType="INSIDE" width="403.0" />
-                  <VBox alignment="CENTER" layoutX="274.0" layoutY="270.0">
+                  <VBox alignment="CENTER" layoutX="274.0" layoutY="270.0" styleClass="label" stylesheets="@../css/gamepanel.css">
                      <children>
                         <Label alignment="CENTER" prefHeight="54.0" prefWidth="111.0" text="It's ">
                            <font>

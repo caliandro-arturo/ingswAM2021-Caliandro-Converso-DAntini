@@ -43,7 +43,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     }
 
     private void denyMove(Message message, String error) {
-        sendMessage(message.getPlayer(), new ErrorMessage( error));
+        sendMessage(message.getPlayer(), new ErrorMessage(error));
     }
 
     /**
@@ -148,7 +148,7 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
     public void visit(UseLeader useLeader) {
         try{
             controllerAdapter.useLeader(getPlayer(useLeader.getPlayer()), useLeader.getIDCard());
-        } catch (GameException.IllegalMove e){
+        } catch (IllegalArgumentException | GameException.IllegalMove e){
             denyMove(useLeader,e.getMessage());
             return;
         }

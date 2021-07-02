@@ -208,6 +208,7 @@ public class Player {
                                 } catch (Exception ignore) {
                                 }
                     }
+                    getBoard().getStrongbox().emptyProdBox();
                     game.getCurrentTurnPhase().setFinished(false);
                     game.nextTurnPhase("EndTurn");
                 }

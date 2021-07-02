@@ -26,6 +26,7 @@ public class UpdateLeaderCards extends Message implements GameUpdate {
     }
 
     public UpdateLeaderCards(int ID, int victoryPoints, String[] requirements, String[] leaderPower) {
+        this.ID = ID;
         this.victoryPoints = victoryPoints;
         this.requirements = requirements;
         this.leaderPower = leaderPower;

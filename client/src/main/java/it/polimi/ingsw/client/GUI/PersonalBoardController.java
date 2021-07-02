@@ -693,6 +693,4 @@ public class PersonalBoardController extends BoardController {
             }
         }
     }
-
-
 }

@@ -71,6 +71,7 @@ public class Controller {
         } catch (NullPointerException ignore) {
         }
         if (isInPause) sendMessage(message.getPlayer(), new ErrorMessage("Game in pause to re-add a player."));
+        else if (isFinished()) sendMessage(message.getPlayer(), new ErrorMessage("Game is finished."));
         else {
             messageReader = new Thread (() -> ((ToServerMessage) message).accept(messageVisitor));
             messageReader.start();
@@ -102,7 +103,9 @@ public class Controller {
     }
 
     public void sendGameStatus(String nickname) {
-        sendMessage(nickname, new GameStamp(model.toString()));
+        GameStamp gameStamp = new GameStamp(model.toString());
+        gameStamp.setPlayer(nickname);
+        sendMessage(nickname, gameStamp);
         model.getViewAdapter().sendTable(getPlayer(nickname));
         model.getViewAdapter().sendLeaderHand(getPlayer(nickname));
     }
