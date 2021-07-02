@@ -9,7 +9,6 @@ import java.util.Stack;
 public class Deck {
     private final Stack<DevelopmentCard> deck;
 
-
     public Deck(){
         this.deck = new Stack<>();
     }

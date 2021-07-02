@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Main class of the client. Starts the selected user interface.
+ */
 public class ClientMain {
     private UI ui;
 

@@ -9,6 +9,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Representation of the model for client.
+ */
 public class ClientModel {
     private String playerUsername;
     private final StringProperty currentPlayerInTheGame = new SimpleStringProperty();

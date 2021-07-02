@@ -6,7 +6,6 @@ public interface ToClientMessageVisitor {
     void visit(CreateGame createGame);
     void visit(ErrorMessage errorMessage);
     void visit(GameUpdate gameUpdate);
-    void visit(GameIsFull gameIsFull);
     void visit(EndingScores endingScores);
     void visit(WaitGameStart waitGameStart);
 }

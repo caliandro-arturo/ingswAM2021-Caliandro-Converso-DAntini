@@ -24,6 +24,4 @@ public class ClientSocketManager extends SocketManager {
     public void setController(ClientController controller) {
         this.controller = controller;
     }
-
-
 }

@@ -352,10 +352,6 @@ public class GUIView extends View {
         Platform.runLater(() -> ((GamePanel) App.controller).showSoloAction(announcement));
     }
 
-    @Override
-    public void showTablePosition(int position) {
-    }
-
     /**
      * Shows that the nickname has been set.
      */
@@ -484,9 +480,8 @@ public class GUIView extends View {
         show("Card bought successfully.");
         Platform.runLater(() -> {
             GamePanel controller = (GamePanel) App.controller;
+            controller.emptyPaymentBuffer();
             controller.closePopup(null);
-            controller.getPaymentButton().setDisable(true);
-            controller.getPaymentPositionQuest().setDisable(true);
             controller.getPaymentBox().setDisable(true);
             controller.getNextButton().fire();
         });

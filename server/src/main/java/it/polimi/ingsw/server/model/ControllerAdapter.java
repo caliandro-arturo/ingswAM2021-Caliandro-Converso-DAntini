@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.ServerMessageVisitor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EmptyStackException;
 
 /**
  * methods of the it.polimi.ingsw.client.model that can be called by {@link ServerMessageVisitor}.
@@ -303,7 +304,13 @@ public class ControllerAdapter {
             throw e;
         }
         game.getCurrentTurnPhase().setFinished(true);
-        return game.getDevelopmentGrid().getDeck(level, color).getTopCard();
+        DevelopmentCard newCard;
+        try  {
+            newCard = game.getDevelopmentGrid().getDeck(level, color).getTopCard();
+        } catch (EmptyStackException e) {
+            return null;
+        }
+        return newCard;
     }
 }
 

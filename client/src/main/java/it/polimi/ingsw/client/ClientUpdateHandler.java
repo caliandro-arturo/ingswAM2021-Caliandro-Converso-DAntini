@@ -464,11 +464,17 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         showUpdate("nicknameset");
     }
 
+    /**
+     * Handles the list of games received via message.
+     */
     @Override
     public void visit(GamesList gamesList) {
         controller.getView().showGamesList(gamesList.getLobbiesName(), gamesList.getLobbiesCurrentConnectedClientsNumber(), gamesList.getLobbiesMaxPlayersNum());
     }
 
+    /**
+     * Visits the JoinGame message.
+     */
     @Override
     public void visit(JoinGame joinGame) {
         model.setGameSelected(true);
@@ -504,9 +510,12 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(Back back) {
-
+        //not use: instead of this message, the server sends a TurnPhaseAnnouncement one.
     }
 
+    /**
+     * Starts a production inside the representation model.
+     */
     @Override
     public void visit(StartProduction msg) {
         Board board = model.getBoard(msg.getPlayer());
@@ -551,11 +560,17 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
+    /**
+     * Visits the DiscardRes message.
+     */
     @Override
     public void visit(DiscardRes discardRes) {
         model.getBoard(discardRes.getPlayer()).removeResourceFromHand(discardRes.getResource());
     }
 
+    /**
+     * Buys a card into the client model.
+     */
     @Override
     public void visit(BuyCard msg) {
         Board board = model.getBoard(msg.getPlayer());
@@ -591,6 +606,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             showUpdate("cardbought");
     }
 
+    /**
+     * Visits the DeployRes message.
+     */
     @Override
     public void visit(DeployRes msg) {
         Board board = model.getBoard(msg.getPlayer());
@@ -599,6 +617,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
+    /**
+     * Visits the UseLeader message.
+     */
     @Override
     public void visit(UseLeader msg) {
         if(msg.getPlayer().equals(model.getPlayerUsername())) {
@@ -610,6 +631,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         refresh("hand", "board");
     }
 
+    /**
+     * Visits the DiscardLeader message.
+     */
     @Override
     public void visit(DiscardLeader msg) {
         if (!msg.getPlayer().equals(model.getPlayerUsername()))
@@ -618,6 +642,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
         refresh("hand");
     }
 
+    /**
+     * Visits the TakeRes message.
+     */
     @Override
     public void visit(TakeRes msg) {
         Board board = model.getBoard(msg.getPlayer());
@@ -628,6 +655,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             showUpdate("resourcetaken");
     }
 
+    /**
+     * Visits the GetResource message.
+     */
     @Override
     public void visit(GetResource msg) {
         model.getBoard(msg.getPlayer()).addResourceToHand(msg.getResource());
@@ -644,6 +674,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     public void visit(Next msg) {
     }
 
+    /**
+     * Sets the phase as finished to allow the player to choose an action.
+     */
     @Override
     public void visit(ChooseTurnPhase chooseTurnPhase) {
         model.setFinished(false);

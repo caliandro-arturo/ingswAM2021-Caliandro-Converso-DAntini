@@ -14,31 +14,41 @@ public class ClientMessageVisitor implements ToClientMessageVisitor {
         this.controller = controller;
     }
 
+    /**
+     * Visits CreateGame message.
+     */
     @Override
     public void visit(CreateGame msg) {
         controller.showUpdate("creategame");
     }
 
+    /**
+     * Visits ErrorMessage message.
+     */
     @Override
     public void visit(ErrorMessage msg) {
         controller.showError(msg.getError());
     }
 
+    /**
+     * Visits WaitGameStart message.
+     */
     @Override
     public void visit(WaitGameStart waitGameStart) {
         controller.showUpdate("waitgamestart");
     }
 
+    /**
+     * Visits GameUpdate message.
+     */
     @Override
     public void visit(GameUpdate msg) {
         controller.manageUpdate(msg);
     }
 
-    @Override
-    public void visit(GameIsFull gameIsFull) {
-        controller.showError("The game is full. You are being reconnected to another game.");
-    }
-
+    /**
+     * Visits EndingScores message.
+     */
     @Override
     public void visit(EndingScores msg) {
         controller.getView().displayEndingScore(msg.getPoints(), msg.getRanking());

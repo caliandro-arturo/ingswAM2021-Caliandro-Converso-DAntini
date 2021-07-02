@@ -512,6 +512,10 @@ public class GamePanel extends SceneHandler {
         return paymentBox;
     }
 
+    public ComboBox<String> getDevPosCombo() {
+        return devPosCombo;
+    }
+
     public HBox getPaymentPositionQuest() {
         return paymentPositionQuest;
     }
@@ -668,7 +672,6 @@ public class GamePanel extends SceneHandler {
     @FXML
     public void showMarket(ActionEvent actionEvent) {
         goFront(marketPane);
-        Market modelMarket = getGui().getView().getModel().getMarket();
         setMarketPng();
     }
 
@@ -686,13 +689,18 @@ public class GamePanel extends SceneHandler {
     private void showPayment(DevelopmentCard devCard) {
         selectedDevCard = devCard;
         devCardToBuy.setImage(Utility.getCardPng(devCard.getID()));
+        paymentPositionQuest.setDisable(true);
+        devPosCombo.getSelectionModel().clearSelection();
+        paymentButton.setDisable(true);
         for (UtilityProductionAndCost cost : devCard.getCosts()) {
             resourceLabelHashMap.get(cost.getResource()).setText(Integer.toString(cost.getQuantity()));
         }
         for (Resource res : personalBoardController.getBoard().getPowerSale())
+            if (!resourceLabelHashMap.get(res).getText().equals("0"))
             resourceLabelHashMap.get(res).setText(Integer.toString(Integer.parseInt(resourceLabelHashMap.get(res).getText()) - 1));
         colorLabel.setText("Color: " + devCard.getColor().name());
         levelLabel.setText("Level: " + devCard.getLevel());
+
         goFront(paymentPane);
     }
 
@@ -714,7 +722,8 @@ public class GamePanel extends SceneHandler {
         int numOfRequiredResources = Arrays.stream(selectedDevCard.getCosts())
                 .mapToInt(UtilityProductionAndCost::getQuantity)
                 .sum();
-        if (numOfRequiredResources != paymentBuffer.size()) return;
+        if (numOfRequiredResources != paymentBuffer.size())
+            return;
         command.setLength(0);
         command.append("buydevcard: ")
                 .append(selectedDevCard.getLevel()).append(", ")
@@ -728,6 +737,13 @@ public class GamePanel extends SceneHandler {
         }
         getGui().getView().process(command.toString());
         command.setLength(0);
+    }
+
+    /**
+     * Empties the payment buffer.
+     */
+    public void emptyPaymentBuffer() {
+        paymentBuffer.clear();
     }
 
     /**

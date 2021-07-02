@@ -185,20 +185,6 @@ public class CLIView extends View {
                 + CLIColor.ANSI_RESET);
     }
 
-    /**
-     * Shows the player position on the table.
-     *
-     * @param position the position of the player
-     */
-    @Override
-    public void showTablePosition(int position) {
-        showUpdate("You are the player #" + position + ".");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ignore) {
-        }
-    }
-
     @Override
     public void showHandler(String[] commandSlice) {
         String target;

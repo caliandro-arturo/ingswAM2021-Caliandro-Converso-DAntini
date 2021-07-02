@@ -46,6 +46,10 @@ public class ClientController {
             manageUpdate((ToServerMessage) msg);
     }
 
+    /**
+     * Sends a message to the server.
+     * @param message the message to send
+     */
     public synchronized void sendMessage(ToServerMessage message) {
         message.setPlayer(model.getPlayerUsername());
         try {
@@ -55,22 +59,42 @@ public class ClientController {
         }
     }
 
+    /**
+     * Shows an element.
+     * @param element the element to show
+     */
     public void show(String element) {
         view.show(element);
     }
 
+    /**
+     * Shows an error.
+     * @param error the error to show
+     */
     public void showError(String error) {
         view.showError(error);
     }
 
+    /**
+     * Shows an update.
+     * @param update the update to show
+     */
     public void showUpdate(String... update) {
         view.showUpdate(update);
     }
 
+    /**
+     * Manages an update.
+     * @param msg the update message
+     */
     public void manageUpdate(ToServerMessage msg) {
         msg.accept(updateHandler);
     }
 
+    /**
+     * Manages an update.
+     * @param msg the update message
+     */
     public void manageUpdate(GameUpdate msg) {
         msg.accept(updateHandler);
     }
