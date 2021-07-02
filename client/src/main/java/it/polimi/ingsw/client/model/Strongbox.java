@@ -8,16 +8,16 @@ import javafx.collections.ObservableList;
 import java.util.Arrays;
 
 /**
- * light version of Strongbox class for representation purposes
+ * Representation of the strongbox for client
  */
 public class Strongbox {
     private final ObservableList<Integer> strongboxList;
 
     public Strongbox() {
-        this.strongboxList = FXCollections.observableArrayList(Arrays.asList(0,0,0,0));
+        this.strongboxList = FXCollections.observableArrayList(Arrays.asList(0, 0, 0, 0));
     }
 
-    public int getResourcesQuantity(Resource resource){
+    public int getResourcesQuantity(Resource resource) {
         return strongboxList.get(Utility.mapStrongbox.get(resource));
     }
 
@@ -26,33 +26,36 @@ public class Strongbox {
     }
 
     /**
-     * add a num of resource in the strongbox
-     * @param num : number of the resources to add
-     * @param resource : resource to add
+     * Adds a num of resource in the strongbox.
+     *
+     * @param num      number of the resources to add
+     * @param resource resource to add
      */
     public void addResources(int num, Resource resource) {
-        strongboxList.set(Utility.mapStrongbox.get(resource),strongboxList.get(Utility.mapStrongbox.get(resource))+num);
+        strongboxList.set(Utility.mapStrongbox.get(resource), strongboxList.get(Utility.mapStrongbox.get(resource)) + num);
     }
 
     /**
-     * remove a resource from the strongbox
-     * @param resource : resource to add
+     * Removes a resource from the strongbox.
+     *
+     * @param resource resource to add
      */
     public void removeResources(Resource resource) {
-        strongboxList.set(Utility.mapStrongbox.get(resource),strongboxList.get(Utility.mapStrongbox.get(resource))-1);
+        strongboxList.set(Utility.mapStrongbox.get(resource), strongboxList.get(Utility.mapStrongbox.get(resource)) - 1);
     }
 
     /**
      * representation method for Strongbox (CLI)
+     *
      * @return String with the representation
      */
     @Override
-    public String toString(){
+    public String toString() {
         return "" +
                 "│          " + "\u001b[43m" + "StrongBox" + CLIColor.ANSI_RESET + "       \n" +
                 "│  ┌──────────────────────┐\n" +
                 "│  │   " + Resource.COIN + " :" + String.format("%3d", strongboxList.get(0)) +
-                "     " + Resource.SERF + " :" + String.format("%3d",strongboxList.get(1)) +
+                "     " + Resource.SERF + " :" + String.format("%3d", strongboxList.get(1)) +
                 "  │\n" +
                 "│  │                      │\n" +
                 "│  │   " + Resource.STONE + " :" + String.format("%3d", strongboxList.get(2)) +
@@ -62,11 +65,12 @@ public class Strongbox {
     }
 
     //for testing purpose
-    
+
     public Integer[] getResources() {
         return strongboxList.toArray(new Integer[0]);
     }
+
     public void setResources(int quantity, int depot) {
-        strongboxList.set(depot,quantity);
+        strongboxList.set(depot, quantity);
     }
 }

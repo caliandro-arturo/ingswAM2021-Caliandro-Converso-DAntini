@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * DevelopmentGrid class for client
+ * Development grid representation for client. It contains only the top cards of the decks in the original development grid.
  */
 public class DevelopmentGrid{
     private final ArrayList<ObservableList<DevelopmentCard>> grid = new ArrayList<>(){{
@@ -54,6 +54,12 @@ public class DevelopmentGrid{
         return grid.get(row).get(column);
     }
 
+    /**
+     * Implements the lorenzo action that removes cards.
+     * @param color the color of the cards to remove
+     * @param card the new card to insert as a replace
+     * @param flag whenever the cards are to be taken from different levels
+     */
     public void lorenzoRemoveAction(Color color, Card card, boolean flag){
         for (int i = 0; i<4; i++) {
             if (grid.get(i).get(Utility.colorPosition.get(color)) != null){
@@ -79,6 +85,12 @@ public class DevelopmentGrid{
         }
     }
 
+    /**
+     * Sets a card in the coordinates expressed as level and color.
+     * @param level the level of the card
+     * @param color the color of the card
+     * @param newCard the card to set in the development grid
+     */
     public void setCard(int level, String color, DevelopmentCard newCard) {
         grid.get(level-1).set(Utility.colorPosition.get(Utility.mapColor.get(color)), newCard);
     }

@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
 
+/**
+ * Marble representation for client.
+ */
 public class Marble {
     private final Color color;
 

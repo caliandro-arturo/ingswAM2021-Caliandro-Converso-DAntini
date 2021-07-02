@@ -6,7 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * light version of WarehouseStore class for representation purposes
+ * WarehouseStore representation for client.
  */
 public class WarehouseStore {
 

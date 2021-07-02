@@ -6,6 +6,9 @@ import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
 import java.util.Arrays;
 
+/**
+ * Client representation of development cards.
+ */
 public class DevelopmentCard {
     private final int level;
     private final int ID;

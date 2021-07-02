@@ -4,6 +4,9 @@ import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the cost of leaders, when the cost is expressed as the possession of development cards of a certain color.
+ */
 public class ColorCost implements Requirements{
     private final ArrayList<Color> colors;
     private final ArrayList <Integer> quantity;

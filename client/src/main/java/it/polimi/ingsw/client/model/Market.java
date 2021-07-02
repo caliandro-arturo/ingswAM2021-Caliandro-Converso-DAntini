@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Market representation for client.
+ */
 public class Market {
     private final ObjectProperty<Marble> extraMarble = new SimpleObjectProperty<>();
     private final Marble[][] grid;
@@ -32,6 +35,12 @@ public class Market {
         return extraMarble;
     }
 
+    /**
+     * Reinserts the extra marble into the market.
+     *
+     * @param rowOrColumn the row/column decision value
+     * @param num the position
+     */
     public void reinsertExtraMarble(char rowOrColumn, int num) {
         Marble temp;
         num -= 1;
@@ -50,6 +59,12 @@ public class Market {
         }
     }
 
+    /**
+     * Gets a row or a column.
+     * @param rowOrColumn the row/column decision value
+     * @param num the number
+     * @return the row/column at the position indicated by the number
+     */
     public Marble[] getRowOrColumn(char rowOrColumn, int num) {
         num--;
         Marble[] marbleArray;
@@ -65,6 +80,12 @@ public class Market {
         return marbleArray;
     }
 
+    /**
+     * Converts a row/column of the market into a resource list
+     * @param rowOrColumn the row/column decision value
+     * @param num the position
+     * @return a list with the resources represented by the marbles
+     */
     public List<Resource> marbleArrayToResourceList(char rowOrColumn, int num) {
         List<Resource> resources = new ArrayList<>();
         Arrays.stream(getRowOrColumn(rowOrColumn, num)).forEach(marble -> resources.add(Utility.colorResourceMap.
@@ -73,6 +94,13 @@ public class Market {
         return resources;
     }
 
+    /**
+     * Converts a row/column of the market into a resource list, adding resources instead of null when the marble color is white.
+     * @param whiteResource the resource to add instead of null
+     * @param rowOrColumn the row/column decision value
+     * @param num the position
+     * @return a list with the resources represented by the marbles
+     */
     public List<Resource> marbleArrayToResourceList(Resource whiteResource, char rowOrColumn, int num) {
         List<Resource> resources = new ArrayList<>();
         Arrays.stream(getRowOrColumn(rowOrColumn, num)).forEach(

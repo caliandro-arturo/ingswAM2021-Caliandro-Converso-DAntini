@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * Utility maps that links enums and strings represents the enum elements.
+ */
 public class Utility {
 
     public static HashMap<Color, CLIColor> colorMap = new HashMap<>() {{
@@ -52,10 +55,12 @@ public class Utility {
     public static ArrayList<Resource> storableResources = new ArrayList<>() {{
         addAll(Arrays.asList(Resource.STONE, Resource.SERF, Resource.COIN, Resource.SHIELD));
     }};
-    public static boolean isStorable(Resource resource){
+
+    public static boolean isStorable(Resource resource) {
         return storableResources.contains(resource);
     }
-    public static HashMap<Resource,Integer> mapStrongbox = new HashMap<>() {{
+
+    public static HashMap<Resource, Integer> mapStrongbox = new HashMap<>() {{
         put(Resource.COIN, 0);
         put(Resource.SERF, 1);
         put(Resource.SHIELD, 3);
@@ -68,13 +73,15 @@ public class Utility {
         put(CLIColor.ANSI_GREY + "■" + CLIColor.ANSI_RESET, Resource.STONE);
         put(CLIColor.ANSI_YELLOW + "■" + CLIColor.ANSI_RESET, Resource.COIN);
     }};
+
     /**
-     * can be used to get the card image for giving the cardId as a parameter
+     * Returns the card image.
+     *
      * @param cardId the id of the card
-     * @return the png that correspond to the ID
+     * @return the png that corresponds to the ID
      */
-    public static Image getCardPng(int cardId){
-        return new Image(Objects.requireNonNull(Utility.class.getResourceAsStream("/png/cards/"+cardId+".png")));
+    public static Image getCardPng(int cardId) {
+        return new Image(Objects.requireNonNull(Utility.class.getResourceAsStream("/png/cards/" + cardId + ".png")));
     }
 
 }

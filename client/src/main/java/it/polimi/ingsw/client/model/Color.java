@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.commonFiles.utility.CLIColor;
 
+/**
+ * Represents resources in CLI.
+ */
 public enum Color {
     BLUE(CLIColor.ANSI_BLUE + "█" + CLIColor.ANSI_RESET),
     GREY(CLIColor.ANSI_GREY + "█" + CLIColor.ANSI_RESET),

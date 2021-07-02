@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.model;
 
+/**
+ * Leader card representation for client.
+ */
 public class LeaderCard {
     private final int ID;
     private final int victoryPoints;

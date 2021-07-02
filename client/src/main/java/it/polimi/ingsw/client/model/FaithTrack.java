@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * light version of FaithTrack class for representation purposes
+ * Faith Track representation for client.
  */
 public class FaithTrack {
     private final IntegerProperty position = new SimpleIntegerProperty(0);

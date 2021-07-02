@@ -3,6 +3,9 @@ package it.polimi.ingsw.client.model;
 import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
+/**
+ * Representation of the white marble conversion power of leader cards for client.
+ */
 public class WhiteMarbleConversion implements LeaderPower{
     private final Resource resource;
 

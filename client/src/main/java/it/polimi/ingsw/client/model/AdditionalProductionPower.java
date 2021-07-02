@@ -5,6 +5,9 @@ import it.polimi.ingsw.commonFiles.model.Resource;
 import it.polimi.ingsw.commonFiles.model.UtilityProductionAndCost;
 import it.polimi.ingsw.commonFiles.utility.StringUtility;
 
+/**
+ * Represents the production power of leaders.
+ */
 public class AdditionalProductionPower implements LeaderPower, Production {
     private final Resource cost;
 
@@ -12,6 +15,10 @@ public class AdditionalProductionPower implements LeaderPower, Production {
         this.cost = cost;
     }
 
+    /**
+     * Adds a production power in the board.
+     * @param board
+     */
     @Override
     public void activatePower(Board board) {
         board.setPowerProd(cost);
@@ -33,7 +40,6 @@ public class AdditionalProductionPower implements LeaderPower, Production {
 
     @Override
     public void setProductionCanBeActivate(boolean setProductionCanBeActivate) {
-
     }
 
     @Override

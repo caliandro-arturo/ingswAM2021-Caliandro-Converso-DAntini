@@ -18,12 +18,12 @@ import java.util.List;
 public class Board {
     private final DevelopmentPlace developmentPlace;
     private final FaithTrack faithTrack;
-    private final Strongbox strongbox ;
+    private final Strongbox strongbox;
     private final WarehouseStore warehouseStore;
     private final ObservableList<LeaderCard> leaderCards = FXCollections.observableArrayList();
-    private final ResourceHand resHand  = new ResourceHand();
+    private final ResourceHand resHand = new ResourceHand();
     private final ArrayList<ArrayList<Resource>> powers;
-    private final ObservableList<Boolean> isProductionAlreadyUsed = FXCollections.observableArrayList(Arrays.asList(null,null,null,null,null,null));
+    private final ObservableList<Boolean> isProductionAlreadyUsed = FXCollections.observableArrayList(Arrays.asList(null, null, null, null, null, null));
 
 
     public Board() {
@@ -31,7 +31,7 @@ public class Board {
         this.faithTrack = new FaithTrack();
         this.strongbox = new Strongbox();
         this.warehouseStore = new WarehouseStore();
-        this.powers = new ArrayList<>(){{
+        this.powers = new ArrayList<>() {{
             add(new ArrayList<>());
             add(new ArrayList<>());
             add(new ArrayList<>());
@@ -54,11 +54,11 @@ public class Board {
         this.powers.get(0).add(whiteMarble);
     }
 
-    public void setPowerSale(Resource sale){
+    public void setPowerSale(Resource sale) {
         this.powers.get(1).add(sale);
     }
 
-    public void setPowerProd(Resource prod){
+    public void setPowerProd(Resource prod) {
         this.powers.get(2).add(prod);
     }
 
@@ -73,7 +73,7 @@ public class Board {
     public void addResourcesToHand(List<Resource> resources) {
         resHand.addResources(resources);
     }
-    
+
     public void addResourceToHand(Resource resource) {
         resHand.addResource(resource);
     }
@@ -81,7 +81,7 @@ public class Board {
     public void removeResourcesFromHand(List<Resource> resources) {
         resHand.removeResources(resources);
     }
-    
+
     public void removeResourceFromHand(Resource resource) {
         resHand.removeResource(resource);
     }
@@ -99,14 +99,14 @@ public class Board {
     }
 
     public void setIsProductionAlreadyUsed(boolean flag, int ID) {
-        this.isProductionAlreadyUsed.set(ID,flag);
+        this.isProductionAlreadyUsed.set(ID, flag);
     }
 
     public Strongbox getStrongbox() {
         return strongbox;
     }
 
-    public ObservableList<Integer> getStrongboxObject(){
+    public ObservableList<Integer> getStrongboxObject() {
         return strongbox.getStrongboxList();
     }
 
@@ -118,17 +118,28 @@ public class Board {
         return warehouseStore;
     }
 
-    public void setProductionInterface(boolean flag){
-        for (int i = 0; i <isProductionAlreadyUsed.size() ; i++) {
-            if (isProductionAlreadyUsed.get(i)!=null){
-                isProductionAlreadyUsed.set(i,flag);
+    /**
+     * Enables or disables productions
+     *
+     * @param flag the control boolean: if true, productions are disabled
+     */
+    public void setProductionInterface(boolean flag) {
+        for (int i = 0; i < isProductionAlreadyUsed.size(); i++) {
+            if (isProductionAlreadyUsed.get(i) != null) {
+                isProductionAlreadyUsed.set(i, flag);
             }
         }
     }
 
-    public void removeResource(int[] store, ArrayList<Resource> resources){
-        for (int i=0; i<store.length; i++){
-            if (store[i]==0){
+    /**
+     * Removes resource from the indicated stores. Each cell in the store array is linked to a resource in the list.
+     *
+     * @param store     the depot from which to remove a resource
+     * @param resources the list of resource to remove
+     */
+    public void removeResource(int[] store, ArrayList<Resource> resources) {
+        for (int i = 0; i < store.length; i++) {
+            if (store[i] == 0) {
                 strongbox.removeResources(resources.get(i));
             } else {
                 warehouseStore.removeRes(store[i], resources.get(i));
@@ -137,17 +148,18 @@ public class Board {
     }
 
     /**
-     * representation method for Board (CLI)
+     * Representation method for Board (CLI).
+     *
      * @return String with the representation
      */
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder boardArt = new StringBuilder();
         String[] wareArt = warehouseStore.toString().split("\n");
         String[] boxArt = strongbox.toString().split("\n");
         String[] faithArt = faithTrack.toString().split("\n");
         String[] devPlaceArt = developmentPlace.toString().split("\n");
-        String b = "\u001B[40m"+"?"+ CLIColor.ANSI_RESET;
+        String b = "\u001B[40m" + "?" + CLIColor.ANSI_RESET;
         boardArt.append("┌─────────────────────────────────────────────────────────────────────────────────────" +
                 "──────────────────────────────────────────────────────────────┐\n");
         String emptyCard =
@@ -170,15 +182,15 @@ public class Board {
             case (2) -> tempArt.append(leaderCards.get(0).toString()).append(leaderCards.get(1).toString());
         }
         String[] leaderArt = tempArt.toString().split("\n");
-        for(int k=0; k<4; k++){
+        for (int k = 0; k < 4; k++) {
             boardArt.append("│");
-            boardArt.append(StringUtility.center(faithArt[k],127)).append(leaderArt[k]);
+            boardArt.append(StringUtility.center(faithArt[k], 127)).append(leaderArt[k]);
             boardArt.append(" │\n");
         }
         boardArt.append("│").append(faithArt[4]).append(leaderArt[4]).append(" │\n");
 
-        for(int i = 0; i<9;i++){
-            boardArt.append(wareArt[i].concat("                        "+devPlaceArt[i])).append("      ").append(leaderArt[i+5]);
+        for (int i = 0; i < 9; i++) {
+            boardArt.append(wareArt[i].concat("                        " + devPlaceArt[i])).append("      ").append(leaderArt[i + 5]);
             boardArt.append(" │\n");
         }
         boardArt.append(boxArt[0]).append("     ╦══════════╦       ").append(devPlaceArt[9]).append("      ").append(leaderArt[14]).append(" │\n");
