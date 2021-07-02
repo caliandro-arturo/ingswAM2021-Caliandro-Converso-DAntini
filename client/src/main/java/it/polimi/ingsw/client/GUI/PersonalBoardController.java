@@ -322,11 +322,16 @@ public class PersonalBoardController extends BoardController {
         }
     }
 
+    /**
+     * Clears the depot buffer and resets the depots.
+     */
     public void clearBuffer(){
         for (ArrayList<ResourceAndDepot> depot: resourceAndDepotBuffer){
             depot.clear();
         }
+        refundResource();
     }
+
     /**
      * start drag & drop from HAND
      */
@@ -495,6 +500,9 @@ public class PersonalBoardController extends BoardController {
         }
     }
 
+    /**
+     * Handles the production activated by the user
+     */
     public void production(ActionEvent actionEvent) {
         HashMap<Button,Integer> prodMap = new HashMap<>(){{
             put(prodBaseButton,0);
@@ -518,7 +526,7 @@ public class PersonalBoardController extends BoardController {
                 view.process(cmd.toString());
                 return;
             } else {
-                refundResource(ID);
+                refundResource();
             }
             return;
         }
@@ -536,7 +544,7 @@ public class PersonalBoardController extends BoardController {
                 cmd.append(cost);
                 view.process(cmd.toString());
             } else {
-                refundResource(ID);
+                refundResource();
             }
         } else {
             if (checkIfTheConditionsForTheProdAreMet(ID)){
@@ -550,7 +558,7 @@ public class PersonalBoardController extends BoardController {
                 view.process(cmd.toString());
                 clearBuffer();
             } else {
-                refundResource(ID);
+                refundResource();
             }
         }
     }
@@ -561,6 +569,10 @@ public class PersonalBoardController extends BoardController {
         prodImageView.get(2).set(1,leadProd2.getSelectionModel().getSelectedItem());
     }
 
+
+    /**
+     * Handles the activation of the production interface
+     */
     public void updateProductionInterface(){
         ObservableList<Boolean> productionUsage = view.getModel().getBoard().getIsProductionAlreadyUsed();
         for (int i = 0; i < productionsPane.size(); i++) {
@@ -568,8 +580,7 @@ public class PersonalBoardController extends BoardController {
                 if (productionUsage.get(i)){
                     productionsPane.get(i).setDisable(true);
                     productionsPane.get(i).setOpacity(0);
-                    setImageAfterProduction(i);
-
+                    refundResource();
                 } else {
                     if (i == 4 && !isAProductionCard(getBoard().getLeaderCards().get(0).getID())){
                         i = 5;
@@ -584,14 +595,20 @@ public class PersonalBoardController extends BoardController {
         }
     }
 
+    /**
+     * Resets the image and label for the productions.
+     * @param ID identifier for the production
+     */
     public void setImageAfterProduction(int ID){
         for (ImageView spot : productionsImageView.get(ID)) {
             if (ID == 0 || ID>3) {
                 spot.setImage(null);
             } else {
-                for (UtilityProductionAndCost cost: getBoard().getDevelopmentPlace().getTopCard(ID).getProduction().getCost()) {
-                    paymentLabels.get(ID-1).get(cost.getResource()).setText(String.valueOf(cost.getQuantity()));
-                }
+                try {
+                    for (UtilityProductionAndCost cost : getBoard().getDevelopmentPlace().getTopCard(ID).getProduction().getCost()) {
+                        paymentLabels.get(ID - 1).get(cost.getResource()).setText(String.valueOf(cost.getQuantity()));
+                    }
+                }catch (IndexOutOfBoundsException ignore){}
             }
         }
     }
@@ -628,11 +645,18 @@ public class PersonalBoardController extends BoardController {
         return null;
     }
 
-    public void refundResource(int ID){
-        for (ResourceAndDepot resourceAndDepot: resourceAndDepotBuffer.get(ID)){
-            incrementDepotQuantity(resourceAndDepot.getDepot(),GamePanel.resourceImageMap.get(resourceAndDepot.getResource()));
+    /**
+     * Resets the condition for the productions that are not used in case of a success and in case of failing
+     */
+    public void refundResource(){
+        for (ArrayList<ResourceAndDepot> resourceAndDepot: resourceAndDepotBuffer){
+            resourceAndDepot.clear();
         }
-        resourceAndDepotBuffer.set(ID, new ArrayList<>());
+        for (int i = 0; i < productionsImageView.size() ; i++) {
+            setImageAfterProduction(i);
+        }
+        updateWarehouse();
+        updateStrongbox();
     }
 
     @Override
@@ -650,6 +674,10 @@ public class PersonalBoardController extends BoardController {
         return ID >52 && ID<57;
     }
 
+    /**
+     * Checks if the preliminary condition for a specific production are met
+     * @param ID production identifier
+     */
     private boolean checkIfTheConditionsForTheProdAreMet(int ID){
         switch (ID) {
             case 1 -> {
@@ -682,6 +710,9 @@ public class PersonalBoardController extends BoardController {
 
     }
 
+    /**
+     * Handles the GUI update of the development places
+     */
     @Override
     public void updateDevPlace() {
         super.updateDevPlace();
