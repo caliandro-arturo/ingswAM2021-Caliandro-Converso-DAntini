@@ -646,6 +646,7 @@ public class PersonalBoardController extends BoardController {
                 spot.setImage(null);
             } else {
                 try {
+                    resetToZeroPaymentLabel(ID);
                     for (UtilityProductionAndCost cost : getBoard().getDevelopmentPlace().getTopCard(ID).getProduction().getCost()) {
                         paymentLabels.get(ID - 1).get(cost.getResource()).setText(String.valueOf(cost.getQuantity()));
                     }
@@ -653,6 +654,17 @@ public class PersonalBoardController extends BoardController {
                 }
             }
         }
+    }
+
+    /**
+     * Resets the payment information labels to 0
+     * @param ID identifier of the specific payment
+     */
+    private void resetToZeroPaymentLabel(int ID){
+        paymentLabels.get(ID - 1).get(Resource.STONE).setText("0");
+        paymentLabels.get(ID - 1).get(Resource.SERF).setText("0");
+        paymentLabels.get(ID - 1).get(Resource.COIN).setText("0");
+        paymentLabels.get(ID - 1).get(Resource.SHIELD).setText("0");
     }
 
     /**

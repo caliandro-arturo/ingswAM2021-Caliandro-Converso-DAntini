@@ -34,11 +34,14 @@ public class ColorCost implements Requirements {
                 }
             }
         }
-        boolean flag = false;
         for (Map.Entry<Color, Integer> entry: cost.entrySet()){
-            flag = checkColor.get(entry.getKey()) >= cost.get(entry.getKey());
+            if (entry.getValue()!=0) {
+                if (checkColor.get(entry.getKey()) - entry.getValue() < 0){
+                    return false;
+                }
+            }
         }
-        return flag;
+        return true;
     }
 
     @Override

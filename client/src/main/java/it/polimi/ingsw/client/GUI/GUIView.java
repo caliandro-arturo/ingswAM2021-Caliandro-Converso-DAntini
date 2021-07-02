@@ -102,8 +102,8 @@ public class GUIView extends View {
      */
     @Override
     public void joinGame(String[] commandSlice) {
-        Platform.runLater(() -> App.out.setText("Joining " + commandSlice[0] + "..."));
-        getController().sendMessage(new JoinGame(commandSlice[0]));
+        Platform.runLater(() -> App.out.setText("Joining " + commandSlice[1] + "..."));
+        getController().sendMessage(new JoinGame(commandSlice[1]));
     }
 
     /**
@@ -111,7 +111,7 @@ public class GUIView extends View {
      */
     @Override
     public void setGame(String[] commandSlice) {
-        getController().sendMessage(new SetGame(Integer.parseInt(commandSlice[0])));
+        getController().sendMessage(new SetGame(Integer.parseInt(commandSlice[1])));
     }
 
     /**
