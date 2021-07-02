@@ -162,6 +162,9 @@ public class ServerMessageVisitor implements ToServerMessageHandler {
         } catch (IllegalArgumentException | GameException.IllegalMove e){
             denyMove(discardLeader,e.getMessage());
             return;
+        } catch (IndexOutOfBoundsException e) {
+            denyMove(discardLeader, "The selected leader is not present.");
+            return;
         }
         confirmMove(discardLeader);
     }
