@@ -7,6 +7,9 @@ import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Implemented by utilized scenes. Contains a reference to {@link GUI} instance.
+ */
 public abstract class SceneHandler implements Initializable {
     private GUI gui;
 

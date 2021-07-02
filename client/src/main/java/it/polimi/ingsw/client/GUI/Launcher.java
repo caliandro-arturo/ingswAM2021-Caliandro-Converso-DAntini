@@ -147,7 +147,6 @@ public class Launcher extends SceneHandler {
         setCurrentPane(createGamePane);
     }
 
-
     //game list scene
 
     public void refreshGamesList(ActionEvent actionEvent) {
@@ -156,16 +155,13 @@ public class Launcher extends SceneHandler {
     }
 
     public void joinSelectedGame(ActionEvent actionEvent) {
-        String lobby = gamesListTable.getSelectionModel().getSelectedItem().getLobbyName();
-        App.out.setText("Joining " + lobby + "...");
-        getGui().getView().getController().sendMessage(new JoinGame(lobby));
+        getGui().getView().process("joingame: " + gamesListTable.getSelectionModel().getSelectedItem().getLobbyName());
     }
 
     //create game
 
     public void setGame(ActionEvent e) {
-        int playersNum = Integer.parseInt(((Button) e.getSource()).getText());
-        getGui().getView().getController().sendMessage(new SetGame(playersNum));
+        getGui().getView().process("setgame: " + Integer.parseInt(((Button) e.getSource()).getText()));
     }
 
     //back button

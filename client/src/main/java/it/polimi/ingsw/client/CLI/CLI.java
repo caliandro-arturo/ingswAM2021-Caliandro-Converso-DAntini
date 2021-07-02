@@ -11,8 +11,10 @@ import java.io.InputStreamReader;
  */
 public class CLI extends UI {
     private final BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+
     /**
-     *
+     * Shows the title of the game, sets the view, asks to the player the hostname and the port of the server and
+     * initializes the connection.
      */
     public void run() {
         setView(new CLIView());
@@ -67,6 +69,9 @@ public class CLI extends UI {
         inputReader();
     }
 
+    /**
+     * Reads the user input, while the game is running.
+     */
     private void inputReader() {
         do {
             try {

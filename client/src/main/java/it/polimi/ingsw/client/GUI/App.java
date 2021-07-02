@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Starts the GUI interface. It also contains static fields that are granted to be reachable everywhere in the code.
+ */
 public class App extends Application {
     public static Stage stage;
     private static GUI gui;
@@ -38,11 +41,19 @@ public class App extends Application {
         App.error = error;
     }
 
+    /**
+     * Launches the application.
+     */
     public static void run() {
         gui.setView(new GUIView());
         launch();
     }
 
+    /**
+     * Loads the stage and starts the launcher.
+     *
+     * @param stage the stage created by JavaFX
+     */
     @Override
     public void start(Stage stage) {
         App.stage = stage;
@@ -51,6 +62,12 @@ public class App extends Application {
         setScene("launcher", "Masters of Renaissance");
     }
 
+    /**
+     * Loads and sets a scene.
+     *
+     * @param fxmlFile   the name of the fxml file to load as a scene
+     * @param sceneTitle the title to put on the stage
+     */
     public static void setScene(String fxmlFile, String sceneTitle) {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/" + fxmlFile + ".fxml"));
         Scene scene;
@@ -62,9 +79,9 @@ public class App extends Application {
         }
         controller = fxmlLoader.getController();
         controller.setGui(gui);
-        if(stage==null) {
+        if (stage == null) {
             stage = new Stage();
-        }else if(stage.getScene()!= null){
+        } else if (stage.getScene() != null) {
             stage.hide();
         }
         stage.setTitle(sceneTitle);

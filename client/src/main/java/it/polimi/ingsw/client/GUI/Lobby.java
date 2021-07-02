@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.GUI;
 
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * Represents the entries in the available games table view, in the launcher.
+ */
 public class Lobby {
     private final SimpleStringProperty lobbyName;
     private final SimpleStringProperty playersNum;

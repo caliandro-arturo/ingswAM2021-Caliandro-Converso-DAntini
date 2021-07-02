@@ -19,10 +19,13 @@ import javafx.scene.layout.HBox;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * Controls the boards and updates the graphic interface to match the model.
+ */
 public class BoardController implements Initializable {
 
-
     private Board board;
+
     /**
      * Cross
      */
@@ -95,7 +98,7 @@ public class BoardController implements Initializable {
     private ImageView devP13;
 
     /**
-     * strongbox
+     * Strongbox
      */
     @FXML
     private ImageView strongCoin;
@@ -140,7 +143,7 @@ public class BoardController implements Initializable {
     private Label tablePositionLabel;
 
     /**
-     * strongbox
+     * Collections that groups elements in strongbox, warehouse etc.
      */
     private ArrayList<ImageView> strongResources;
     private final ObservableList<ImageView> handListImg = FXCollections.observableArrayList();
@@ -151,6 +154,9 @@ public class BoardController implements Initializable {
     private ArrayList<ArrayList<ImageView>> storesList;
     private ArrayList<ImageView> tilesList;
 
+    /**
+     * Initializes collections and listeners.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         strongMap = new HashMap<>() {{
@@ -200,6 +206,11 @@ public class BoardController implements Initializable {
         return storesList;
     }
 
+    /**
+     * Sets boards. This is separated by {@link BoardController#initialize(URL, ResourceBundle)} because the initalization
+     * gap between boards and GUI launch is not deterministic.
+     * @param board the board to link to this controller
+     */
     public void setBoard(Board board) {
         this.board = board;
         if (board.getFaithTrack().getPosition() != 0) {
@@ -277,6 +288,9 @@ public class BoardController implements Initializable {
         }
     }
 
+    /**
+     * Loads images from {@link GamePanel}.
+     */
     public void setImage() {
         strongCoin.setImage(GamePanel.imgCoin);
         strongSerf.setImage(GamePanel.imgSerf);
@@ -345,9 +359,9 @@ public class BoardController implements Initializable {
     }
 
     /**
-     * increase the position of the cross in the GUI
+     * Increase the position of the cross.
      *
-     * @param position the initial position to increment
+     * @param position the actual position
      */
     @FXML
     void increasePos(ImageView cross, int position) {
@@ -368,12 +382,15 @@ public class BoardController implements Initializable {
             moveRight(cross);
     }
 
+    /**
+     * Equivalent of {@link BoardController#increasePos(ImageView, int)}.
+     */
     public void increasePos() {
         increasePos(cross, board.getFaithTrack().getPosition());
     }
 
     /**
-     * utility methods to move the cross in the faith track
+     * Move the cross up.
      *
      * @param cross the cross to move
      */
@@ -382,18 +399,28 @@ public class BoardController implements Initializable {
         cross.setLayoutY(cross.getLayoutY() - 46);
     }
 
+    /**
+     * Move the cross right.
+     *
+     * @param cross the cross to move
+     */
     @FXML
     private void moveRight(ImageView cross) {
         cross.setLayoutX(cross.getLayoutX() + 46);
     }
 
+    /**
+     * Move the cross down.
+     *
+     * @param cross the cross to move
+     */
     @FXML
     private void moveDown(ImageView cross) {
         cross.setLayoutY(cross.getLayoutY() + 46);
     }
 
     /**
-     * Updates the resource hand pagination
+     * Updates the resource hand pagination.
      */
     public void updateHandList(ListChangeListener.Change<? extends Resource> e) {
         if (e.wasAdded())
@@ -441,7 +468,7 @@ public class BoardController implements Initializable {
     }
 
     /**
-     * Updates the active leader cards
+     * Updates the active leader cards.
      */
     public void updateActiveLeaderCards() {
         ObservableList<LeaderCard> cards = board.getLeaderCards();
@@ -452,7 +479,7 @@ public class BoardController implements Initializable {
     }
 
     /**
-     * reads the model warehouse and updates the relative images
+     * Reads the model warehouse and updates the relative images.
      */
     public void updateWarehouse() {
         for (ArrayList<ImageView> imageViews : storesList) {
@@ -470,6 +497,9 @@ public class BoardController implements Initializable {
         }
     }
 
+    /**
+     * Updates the strongbox.
+     */
     public void updateStrongbox() {
         Strongbox strongbox = board.getStrongbox();
         for (Map.Entry<Resource, Label> entry : resourceLabelHashMap.entrySet()) {
@@ -477,6 +507,9 @@ public class BoardController implements Initializable {
         }
     }
 
+    /**
+     * Updates the development place.
+     */
     public void updateDevPlace() {
         ArrayList<ObservableList<DevelopmentCard>> devPlaces = board.getDevelopmentPlace().getDevStack();
         for (int i = 0; i < devPlaces.size(); i++) {
@@ -485,6 +518,11 @@ public class BoardController implements Initializable {
         }
     }
 
+    /**
+     * Updates faith track tales.
+     * @param reportNum the number of the vatican report
+     * @param val the result of the vatican report
+     */
     public void updateTale(int reportNum, Boolean val) {
         if (val == null) return;
         tilesList.get(reportNum - 1).setImage(

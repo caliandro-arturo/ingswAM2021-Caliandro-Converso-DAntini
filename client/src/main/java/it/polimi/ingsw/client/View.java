@@ -84,7 +84,6 @@ public abstract class View {
             case "nicknameset" -> showNicknameSet();
             case "gamejoined" -> showGameJoined();
             case "resume" -> showResume();
-            case "creategame" -> showCreateGame();
             case "gameset" -> showGameSet(Integer.parseInt(update[1]));
             case "waitgamestart" -> showWaitGameStart();
             case "gamestarted" -> showGameStarted();
@@ -113,8 +112,6 @@ public abstract class View {
     public abstract void showGameJoined();
 
     public abstract void showResume();
-
-    public abstract void showCreateGame();
 
     public abstract void showGameSet(int playersNum);
 

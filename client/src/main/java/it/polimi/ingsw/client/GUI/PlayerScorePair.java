@@ -5,6 +5,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * Represents the pair player - score in the ranking table view, at the end of a game.
+ */
 public class PlayerScorePair {
     private final StringProperty player = new SimpleStringProperty();
     private final IntegerProperty score = new SimpleIntegerProperty();

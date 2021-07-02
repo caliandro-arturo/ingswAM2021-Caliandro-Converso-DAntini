@@ -14,8 +14,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Prints on {@link System#out} ASCII characters representing the game, updates.
- * It also processes user commands with {@link CLIView#process(String input)}.
+ * Prints on {@link System#out} ASCII characters representing the game and updates. It also processes user commands with
+ * {@link CLIView#process(String input)}.
  */
 public class CLIView extends View {
     private String currentView = "";
@@ -26,7 +26,8 @@ public class CLIView extends View {
 
     /**
      * Adds, or replaces, an action that the player must do.
-     * @param id the id for the action, to use when the action must be deleted
+     *
+     * @param id   the id for the action, to use when the action must be deleted
      * @param toDo the action to do
      */
     @Override
@@ -123,8 +124,9 @@ public class CLIView extends View {
         System.err.println(error);
     }
 
-
-
+    /**
+     * Creates and sends a JoinGame message.
+     */
     @Override
     public void joinGame(String[] commandSlice) {
         String lobbyName;
@@ -141,6 +143,9 @@ public class CLIView extends View {
         getController().sendMessage(new JoinGame(lobbyName));
     }
 
+    /**
+     * Prints a list of available matches.
+     */
     @Override
     public void showGamesList(List<String> lobbiesName, List<Integer> currentPlayers, List<Integer> maxPlayersNum) {
         if (lobbiesName.isEmpty()) System.out.println("There are no open games.");
@@ -149,19 +154,22 @@ public class CLIView extends View {
             System.out.println(CLIColor.ANSI_BRIGHT_GREEN + "List of open games:" + CLIColor.ANSI_RESET);
             for (int i = 0; i < lobbiesName.size(); i++)
                 System.out.println(
-                    StringUtility
-                            .addPadToTheRight(CLIColor.ANSI_YELLOW + lobbiesName.get(i) + CLIColor.ANSI_RESET, maxSize + 2, ' ')
-                            + currentPlayers.get(i)
-                            + "/"
-                            + maxPlayersNum.get(i));
+                        StringUtility
+                                .addPadToTheRight(CLIColor.ANSI_YELLOW + lobbiesName.get(i) + CLIColor.ANSI_RESET, maxSize + 2, ' ')
+                                + currentPlayers.get(i)
+                                + "/"
+                                + maxPlayersNum.get(i));
 
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void showWhiteMarble() {
         setToDo("chooseleader", "You have to choose which leader to use to gain the resource from the " +
-                getModel().getWhiteMarbleQuantity()+ " white marble" +
+                getModel().getWhiteMarbleQuantity() + " white marble" +
                 (getModel().getWhiteMarbleQuantity() > 1 ? "s" : "") +
                 " of the market.");
     }
@@ -192,7 +200,7 @@ public class CLIView extends View {
     }
 
     @Override
-    public void showHandler(String[] commandSlice){
+    public void showHandler(String[] commandSlice) {
         String target;
         try {
             target = commandSlice[1].trim();
@@ -238,8 +246,8 @@ public class CLIView extends View {
             System.err.println("Wrong syntax: use the format \"DISCARDRES: <resource name>\".");
             return;
         }
-        if (Utility.mapResource.get(resource) != null){
-            if (Utility.isStorable(Utility.mapResource.get(commandSlice[1]))){
+        if (Utility.mapResource.get(resource) != null) {
+            if (Utility.isStorable(Utility.mapResource.get(commandSlice[1]))) {
                 getController().sendMessage(new DiscardRes(Utility.mapResource.get(commandSlice[1])));
             } else
                 System.err.println("You can't discard faith");
@@ -258,10 +266,11 @@ public class CLIView extends View {
 
     /**
      * this methods handles the calling for the player command setnick
+     *
      * @param commandSlice command by the player
      */
     @Override
-    public void setNick(String[] commandSlice){
+    public void setNick(String[] commandSlice) {
         String nickname;
         try {
             nickname = commandSlice[1].trim();
@@ -273,7 +282,7 @@ public class CLIView extends View {
             System.err.println("You have already chosen your nickname.");
             return;
         }
-        if (nickname.equals("")){
+        if (nickname.equals("")) {
             System.err.println("Empty nickname");
             return;
         }
@@ -282,10 +291,11 @@ public class CLIView extends View {
 
     /**
      * this methods handles the calling for the player command setgame
+     *
      * @param commandSlice command by the player
      */
     @Override
-    public void setGame(String[] commandSlice){
+    public void setGame(String[] commandSlice) {
         try {
             getController().sendMessage(new SetGame(Integer.parseInt(commandSlice[1])));
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
@@ -295,10 +305,11 @@ public class CLIView extends View {
 
     /**
      * this methods handles the calling for the player command choose
+     *
      * @param commandSlice command by the player
      */
     @Override
-    public void choose(String[] commandSlice){
+    public void choose(String[] commandSlice) {
         String turnPhase;
         try {
             turnPhase = commandSlice[1];
@@ -310,8 +321,8 @@ public class CLIView extends View {
     }
 
     /**
-     * this methods control if the command is write in a good way than
-     * handles the calling for the player command activeprod
+     * this methods control if the command is write in a good way than handles the calling for the player command
+     * activeprod
      *
      * @param commandSlice command by the player
      */
@@ -352,18 +363,19 @@ public class CLIView extends View {
             System.err.println("You must insert a number.");
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Wrong syntax: use the format \"ACTIVATEPRODUCTION: <id>, <arg1>, ...\".");
         }
     }
 
 
     /**
-     * this methods control if the command is write in a good way than
-     * handles the calling for the player command buydevcard
+     * this methods control if the command is write in a good way than handles the calling for the player command
+     * buydevcard
+     *
      * @param commandSlice command by the player
      */
-    public void buyDevCard(String[] commandSlice){
+    public void buyDevCard(String[] commandSlice) {
         String arg;
         try {
             arg = commandSlice[1];
@@ -386,17 +398,18 @@ public class CLIView extends View {
             getController().sendMessage(new BuyCard(level, color, space, stores));
         } catch (NumberFormatException e) {
             System.err.println("You must insert a number.");
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Wrong syntax: use the format \"BUYDEVCARD: <arg1>, <arg2>, ...\".");
         }
     }
 
     /**
      * this method handles the calling for the player command usemarket
+     *
      * @param commandSlice command by the player
      */
     @Override
-    public void useMarket(String[] commandSlice){
+    public void useMarket(String[] commandSlice) {
         String argument;
         try {
             argument = commandSlice[1];
@@ -422,17 +435,17 @@ public class CLIView extends View {
     public void chooseWhite(String[] commandSlice) {
         try {
             getController().sendMessage(new ChooseWhiteMarble(Integer.parseInt(commandSlice[1].trim())));
+            deleteToDo("chooseleader");
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             System.err.println("You must insert a leader position (1 or 2).");
         }
     }
 
     /**
-     * this methods handles the calling for the player command useleader
-     * @param commandSlice command by the player
+     * Handles the calling for the player command useleader.
      */
     @Override
-    public void useLeader(String[] commandSlice){
+    public void useLeader(String[] commandSlice) {
         int pos;
         String argument;
         try {
@@ -450,11 +463,12 @@ public class CLIView extends View {
     }
 
     /**
-     * this methods handles the calling for the player command deployRes
+     * Handles the calling for the player command deployRes.
+     *
      * @param commandSlice command by the player
      */
     @Override
-    public void deployRes(String[] commandSlice){
+    public void deployRes(String[] commandSlice) {
         String argument;
         try {
             argument = commandSlice[1];
@@ -469,18 +483,19 @@ public class CLIView extends View {
                 getController().sendMessage(new DeployRes(res, Integer.parseInt(args[1])));
             } catch (NumberFormatException e) {
                 System.err.println("Wrong parameter: you must insert the position in which you want to deploy the resource.");
-            } catch (ArrayIndexOutOfBoundsException e){
+            } catch (ArrayIndexOutOfBoundsException e) {
                 System.err.println("Wrong syntax: use the format \"DEPLOYRES: <resource name, depot position number>\".");
             }
-                }, () -> System.err.println("Wrong parameter: you must insert a resource name."));
+        }, () -> System.err.println("Wrong parameter: you must insert a resource name."));
     }
 
     /**
-     * this methods handles the calling for the player command discardleader
+     * Handles the calling for the player command discardleader.
+     *
      * @param commandSlice command by the player
      */
     @Override
-    public void discardLeader(String[] commandSlice){
+    public void discardLeader(String[] commandSlice) {
         int pos;
         try {
             pos = Integer.parseInt(commandSlice[1]);
@@ -491,16 +506,17 @@ public class CLIView extends View {
     }
 
     /**
-     * this methods handles the calling for the player command takeRes
+     * Handles the calling for the player command takeRes.
+     *
      * @param commandSlice command by the player
      */
     @Override
-    public void takeRes(String[] commandSlice){
+    public void takeRes(String[] commandSlice) {
         int depot;
-        try{
-            depot=Integer.parseInt(commandSlice[1]);
+        try {
+            depot = Integer.parseInt(commandSlice[1]);
             getController().sendMessage(new TakeRes(depot));
-        }catch(ArrayIndexOutOfBoundsException | NumberFormatException e){
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             System.err.println("you must insert a number");
         }
     }
@@ -527,7 +543,7 @@ public class CLIView extends View {
     /**
      * Clears the screen.
      */
-    private void clear(){
+    private void clear() {
         try {
             if (System.getProperty("os.name").contains("Windows"))
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -579,6 +595,12 @@ public class CLIView extends View {
         System.out.println();
     }
 
+    /**
+     * Prints out final player scores and ranking.
+     *
+     * @param scores  the scores of the player
+     * @param ranking the ranking with total points of all the players
+     */
     @Override
     public void displayEndingScore(int[] scores, LinkedHashMap<String, Integer> ranking) {
         BiFunction<String, CLIColor, String> stringPainter = (str, color) -> color + str + CLIColor.ANSI_RESET;
@@ -612,48 +634,73 @@ public class CLIView extends View {
         System.out.println("└" + StringUtility.center("", 21, '─') + "┘");
     }
 
+    /**
+     * Prints a confirm message when the nickname has been set.
+     */
     @Override
     public void showNicknameSet() {
         showUpdateText("Your nickname has been set. Now create a game or search for open games.");
     }
 
+    /**
+     * Prints a confirm message when the player is entered into a game.
+     */
     @Override
     public void showGameJoined() {
         showUpdateText("You entered the game.");
     }
 
+    /**
+     * Prints a confirm message when the player is re-entered into a game.
+     */
     @Override
     public void showResume() {
         show("hand");
         showUpdateText("Welcome back, " + getModel().getPlayerUsername() + ".");
     }
 
-    @Override
-    public void showCreateGame() {
-        showUpdateText("You are the first player: create a game by typing SETGAME: <number of players>.");
-    }
-
+    /**
+     * Prints a confirm message that the game has been set.
+     *
+     * @param playersNum the number of allowed players
+     */
     @Override
     public void showGameSet(int playersNum) {
         showUpdateText("The game has been set: " + playersNum + " allowed players.");
         showWaitGameStart();
     }
 
+    /**
+     * Prints a waiting message.
+     */
     @Override
     public void showWaitGameStart() {
         showUpdateText("Waiting other players...");
     }
 
+    /**
+     * Prints that the game is starting.
+     */
     @Override
     public void showGameStarted() {
         showUpdateText("The game is starting now...");
     }
 
+    /**
+     * Prints that a new player has entered the game.
+     *
+     * @param playerNick the nick of the new player
+     */
     @Override
     public void showNewPlayer(String playerNick) {
         showUpdateText(playerNick + " has entered the game.");
     }
 
+    /**
+     * Prints that a player has lost the connection.
+     *
+     * @param playerNick the nick of the player that has lost the connection
+     */
     @Override
     public void showPlayerLeft(String playerNick) {
         showUpdateText(playerNick + " has lost the connection.");
@@ -663,26 +710,46 @@ public class CLIView extends View {
     public void showGetInitialResource() {
     }
 
+    /**
+     * Prints that a resource has been added into the player's hand.
+     *
+     * @param resource the resource put in the player's hand
+     */
     @Override
     public void showGotResource(String resource) {
         showUpdateText("A " + resource + " has been added to your hand. Remember to deploy it!");
     }
 
+    /**
+     * Prints that a resource has been taken.
+     */
     @Override
     public void showResourceTaken() {
         showUpdateText("Resource taken.");
     }
 
+    /**
+     * Prints the confirm that a card has been bought.
+     */
     @Override
     public void showCardBought() {
         showUpdateText("Card bought successfully");
     }
 
+    /**
+     * Prints that the market has been used.
+     */
     @Override
     public void showMarketUsed() {
         showUpdateText("You have used the market: deploy or discard the resources in your hand.");
     }
 
+    /**
+     * Prints the vatican report result.
+     *
+     * @param reportNum the vatican report number
+     * @param isPassed  the result of the vatican report
+     */
     @Override
     public void showVaticanReport(int reportNum, boolean isPassed) {
         showUpdateText("You "
@@ -690,17 +757,30 @@ public class CLIView extends View {
                 + " the vatican report number " + reportNum + ".");
     }
 
+    /**
+     * Prints that someone has reached an end game condition, and the reason.
+     *
+     * @param reason the reached condition
+     */
     @Override
     public void showLastTurns(String reason) {
         showUpdateText("Last turns: " + reason);
     }
 
+    /**
+     * Shows that the connection has been lost.
+     */
     @Override
     public void showConnectionLost() {
         showError("Connection lost.");
         System.exit(0);
     }
 
+    /**
+     * Prints a pause message.
+     *
+     * @param timeIsUp boolean that controls if the game is paused or not
+     */
     @Override
     public void showTimeUp(boolean timeIsUp) {
         showUpdateText(timeIsUp ? "Readmitting a player..." : "Player readmitted.");
