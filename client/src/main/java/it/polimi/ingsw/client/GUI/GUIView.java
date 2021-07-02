@@ -38,11 +38,9 @@ public class GUIView extends View {
             }
         };
         Timer timer = new Timer();
-        error = "You can't do this";
-        String finalError = error;
         Platform.runLater(() -> {
             App.out.setStyle("-fx-background-color: #d03c3c");
-            App.out.setText(finalError);
+            App.out.setText(error);
         });
         timer.schedule(task, 4000);
     }

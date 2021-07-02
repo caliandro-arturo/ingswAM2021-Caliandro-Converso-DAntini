@@ -7,7 +7,6 @@ import it.polimi.ingsw.server.ServerMessageVisitor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 /**
  * methods of the it.polimi.ingsw.client.model that can be called by {@link ServerMessageVisitor}.
@@ -179,16 +178,6 @@ public class ControllerAdapter {
         if (!actual.equals(game.getCurrentTurnPhase()))
             throw new GameException.IllegalMove();
         player.getBoard().discardResource(resource);
-    }
-
-    /**
-     * Sends information about a turn phase to the player.
-     *
-     * @param player    the player who asked information about the turn phase
-     * @param turnPhase the turn phase for which information has been requested
-     */
-    public void givePlayerTurnPhaseInfo(Player player, String turnPhase) {
-        game.getViewAdapter().giveTurnPhaseInfo(game.getTurnPhase(turnPhase).getPhaseInfo());
     }
 
     /**

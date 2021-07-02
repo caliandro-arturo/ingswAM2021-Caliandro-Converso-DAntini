@@ -164,7 +164,7 @@ public class ClientModel {
         resourcesToGet--;
     }
 
-    public void updateResource(int[] cost, ArrayList<Resource> resource){
+    public void removeResource(int[] cost, ArrayList<Resource> resource){
         getBoard().removeResource(cost, resource);
     }
 

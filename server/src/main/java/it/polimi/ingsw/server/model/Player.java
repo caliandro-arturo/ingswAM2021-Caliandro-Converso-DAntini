@@ -139,9 +139,6 @@ public class Player {
         board.setGame(game);
         board.getFaithTrack().setGame(game);
     }
-    public void setWhiteMarbleChoices(int whiteMarbleChoices) {
-        this.whiteMarbleChoices = whiteMarbleChoices;
-    }
     public void setInitialResources(int initialResources) {
         this.initialResources = initialResources;
     }
@@ -173,7 +170,7 @@ public class Player {
                                     deployRes.setPlayer(getUsername());
                                     game.getViewAdapter().sendMessage(deployRes);
                                     break;
-                                } catch (IllegalArgumentException e) {
+                                } catch (IllegalArgumentException ignore) {
                                 }
                             }
                         //discard initial leader cards
@@ -182,8 +179,8 @@ public class Player {
                     }
                     //sets the player as ready
                     game.setPlayerReady(this);
-                // else if the player was the current player, his turn is forcibly ended and the turn is passed to the
-                // next player
+                    // else if the player was the current player, his turn is forcibly ended and the turn is passed to the
+                    // next player
                 } else if (this.equals(game.getCurrentPlayer())) {
                     if (!board.getResHand().isEmpty()) {
                         //tries to deploy resources from the hand
@@ -211,6 +208,7 @@ public class Player {
                                 } catch (Exception ignore) {
                                 }
                     }
+                    game.getCurrentTurnPhase().setFinished(false);
                     game.nextTurnPhase("EndTurn");
                 }
     }
@@ -241,7 +239,6 @@ public class Player {
         if (game.getCurrentTurnPhase() != null)
             game.getCurrentPlayer().getBoard().getFaithTrack().increasePosition();
     }
-
 
     /**
      * buying method of Development Cards

@@ -1000,6 +1000,10 @@
                 {
                     "resource": "coin",
                     "quantity": 3
+                },
+                {
+                    "resource": "stone",
+                    "quantity": 3
                 }
             ],
             "productionPower": {

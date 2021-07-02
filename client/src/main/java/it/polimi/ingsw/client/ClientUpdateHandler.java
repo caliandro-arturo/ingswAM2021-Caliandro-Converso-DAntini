@@ -103,8 +103,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
     @Override
     public void visit(UpdateLeaderCards msg) {
         if (!msg.getPlayer().equals(model.getPlayerUsername())) {
-            model.getBoard(msg.getPlayer()).getLeaderCards().add(translator(msg.getID(), msg.getVictoryPoints(),
-                    msg.getLeaderPower(), msg.getRequirements()));
+            model.getBoard(msg.getPlayer())
+                    .getLeaderCards()
+                    .add(translator(msg.getID(), msg.getVictoryPoints(), msg.getLeaderPower(), msg.getRequirements()));
         }
     }
 
@@ -464,12 +465,13 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
      */
     @Override
     public void visit(UseMarket msg) {
-        if (model.getBoard(msg.getPlayer()).getPowerWhite().size() == 1) {
-            model.getBoard(msg.getPlayer()).addResourcesToHand(model.getMarket().
-                    marbleArrayToResourceList(model.getBoard(msg.getPlayer()).getPowerWhite().get(0),
+        Board board = model.getBoard(msg.getPlayer());
+        if (board.getPowerWhite().size() == 1) {
+            board.addResourcesToHand(model.getMarket().
+                    marbleArrayToResourceList(board.getPowerWhite().get(0),
                             msg.getRowOrColumn(), msg.getNum()));
         } else
-            model.getBoard(msg.getPlayer()).addResourcesToHand(model.getMarket().
+            board.addResourcesToHand(model.getMarket().
                     marbleArrayToResourceList(msg.getRowOrColumn(), msg.getNum()));
         if (msg.getPlayer().equals(model.getPlayerUsername())) {
             deleteToDo("turnaction");
@@ -492,42 +494,45 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(StartProduction msg) {
+        Board board = model.getBoard(msg.getPlayer());
         ArrayList<Resource> resources = new ArrayList<>();
         if (msg.getID() == 0){
             for (String s : msg.getCostResource()) {
                 resources.add(Utility.mapResource.get(s.toLowerCase()));
             }
-            model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
-            model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
-                    get(msg.getProduction().toLowerCase()));
+            board.removeResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
+            board.getStrongbox().addResources(1,Utility.mapResource.get(msg.getProduction().toLowerCase()));
         } else if (msg.getID()<=3){
-            for (UtilityProductionAndCost cost: model.getBoard(msg.getPlayer()).
-                    getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getCost()){
+            for (UtilityProductionAndCost cost :
+                    board.getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getCost()){
                 for (int i=0; i < cost.getQuantity(); i++){
                     resources.add(cost.getResource());
                 }
             }
-            model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
-            UtilityProductionAndCost[] prod = model.getBoard(msg.getPlayer()).
-                    getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getProd();
+            board.removeResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
+            UtilityProductionAndCost[] prod = board
+                    .getDevelopmentPlace()
+                    .getTopCard(msg.getID())
+                    .getProduction()
+                    .getProd();
             for (int i = 0; i<prod.length; i++) {
                 if (Utility.isStorable(prod[i].getResource())) {
-                    model.getBoard(msg.getPlayer()).getStrongbox().addResources(prod[i].getQuantity(),
-                            prod[i].getResource());
+                    board.getStrongbox().addResources(prod[i].getQuantity(), prod[i].getResource());
                 }else {
                     for (int k=0; k<prod[i].getQuantity(); k++){
-                        model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
+                        board.getFaithTrack().addPosition();
                     }
                 }
             }
         } else {
-            model.updateResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Collections.singletonList(model.getBoard().getPowerProd().get(msg.getID() - 4))));
-            model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
-                    get(msg.getProduction().toLowerCase()));
-            model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
+            board.removeResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Collections.singletonList(model.getBoard().getPowerProd().get(msg.getID() - 4))));
+            board.getStrongbox().addResources(1,Utility.mapResource.get(msg.getProduction().toLowerCase()));
+            board.getFaithTrack().addPosition();
         }
         model.setFinished(true);
-        model.getBoard().setIsProductionAlreadyUsed(true,msg.getID());
+        if (msg.getPlayer().equals(model.getPlayerUsername())) {
+            model.getBoard().setIsProductionAlreadyUsed(true, msg.getID());
+        }
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
@@ -538,16 +543,16 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(BuyCard msg) {
-        DevelopmentCard card = model.getDevelopmentGrid().
-                getCard(msg.getLevel(), Utility.mapColor.get(msg.getColor()));
+        Board board = model.getBoard(msg.getPlayer());
+        DevelopmentCard card = model.getDevelopmentGrid().getCard(msg.getLevel(), Utility.mapColor.get(msg.getColor()));
         ArrayList<Resource> resources = new ArrayList<>();
         for (int i=0; i<card.getCosts().length; i++){
             for (int k=0; k<card.getCosts()[i].getQuantity(); k++) {
                 resources.add(card.getCosts()[i].getResource());
             }
         }
-        model.updateResource(msg.getStores(),resources);
-        model.getBoard(msg.getPlayer()).getDevelopmentPlace().setDevStack(card,msg.getSpace());
+        board.removeResource(msg.getStores(),resources);
+        board.getDevelopmentPlace().setDevStack(card,msg.getSpace());
         DevelopmentCard newCard;
         try {
             newCard = new DevelopmentCard(
@@ -562,10 +567,10 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             newCard = null;
         }
         model.getDevelopmentGrid().setCard(msg.getLevel(), msg.getColor(), newCard);
-        if (msg.getPlayer().equals(model.getCurrentPlayerInTheGame())) {
+        if (msg.getPlayer().equals(model.getPlayerUsername())) {
             model.getBoard().setIsProductionAlreadyUsed(true, msg.getSpace());
+            model.setFinished(true);
         }
-        model.setFinished(true);
         refresh("developmentgrid", msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
         if (msg.getPlayer().equals(model.getPlayerUsername()))
             showUpdate("cardbought");
@@ -573,8 +578,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(DeployRes msg) {
-        model.getBoard(msg.getPlayer()).removeResourceFromHand(msg.getResource());
-        model.getBoard(msg.getPlayer()).getWarehouseStore().setRes(msg.getResource(), msg.getDepot());
+        Board board = model.getBoard(msg.getPlayer());
+        board.removeResourceFromHand(msg.getResource());
+        board.getWarehouseStore().setRes(msg.getResource(), msg.getDepot());
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
     }
 
@@ -599,8 +605,9 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
 
     @Override
     public void visit(TakeRes msg) {
-        Resource res = model.getBoard(msg.getPlayer()).getWarehouseStore().removeRes(msg.getDepot());
-        model.getBoard(msg.getPlayer()).addResourceToHand(res);
+        Board board = model.getBoard(msg.getPlayer());
+        Resource res = board.getWarehouseStore().removeRes(msg.getDepot());
+        board.addResourceToHand(res);
         refresh(msg.getPlayer().equals(model.getPlayerUsername()) ? "board" : "board, " + msg.getPlayer());
         if (model.getPlayerUsername().equals(msg.getPlayer()))
             showUpdate("resourcetaken");

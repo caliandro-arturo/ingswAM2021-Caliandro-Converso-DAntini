@@ -31,7 +31,7 @@ class ClientUpdateHandlerTest {
                     for (String s : msg.getCostResource()) {
                         resources.add(Utility.mapResource.get(s));
                     }
-                    model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
+                    model.removeResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
                     model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
                             get(msg.getProduction()));
                 } else if (msg.getID()<=3){
@@ -41,7 +41,7 @@ class ClientUpdateHandlerTest {
                             resources.add(cost.getResource());
                         }
                     }
-                    model.updateResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
+                    model.removeResource(msg.getCost().stream().mapToInt(i->i).toArray(),resources);
                     UtilityProductionAndCost[] prod = model.getBoard(msg.getPlayer()).
                             getDevelopmentPlace().getTopCard(msg.getID()).getProduction().getProd();
                     for (int i = 0; i<prod.length; i++) {
@@ -55,7 +55,7 @@ class ClientUpdateHandlerTest {
                         }
                     }
                 } else {
-                    model.updateResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Collections.singletonList(model.getBoard().getPowerProd().get(msg.getID() - 4))));
+                    model.removeResource(new int[]{msg.getCost().get(0)}, new ArrayList<>(Collections.singletonList(model.getBoard().getPowerProd().get(msg.getID() - 4))));
                     model.getBoard(msg.getPlayer()).getStrongbox().addResources(1,Utility.mapResource.
                             get(msg.getProduction()));
                     model.getBoard(msg.getPlayer()).getFaithTrack().addPosition();
@@ -72,7 +72,7 @@ class ClientUpdateHandlerTest {
                         resources.add(card.getCosts()[i].getResource());
                     }
                 }
-                model.updateResource(msg.getStores(),resources);
+                model.removeResource(msg.getStores(),resources);
                 model.getBoard(msg.getPlayer()).getDevelopmentPlace().setDevStack(card,msg.getSpace());
                 DevelopmentCard newCard;
                 try {

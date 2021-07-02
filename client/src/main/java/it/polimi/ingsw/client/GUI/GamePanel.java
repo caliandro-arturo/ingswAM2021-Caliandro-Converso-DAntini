@@ -1128,7 +1128,7 @@ public class GamePanel extends SceneHandler {
      * Shows the pop-up that communicate actual phase and subsequently hides them.
      * @param pane: the pane needs to be hidden.
      */
-    public void showOverAndThenHide(Pane pane) {
+    public synchronized void showOverAndThenHide(Pane pane) {
         DoubleProperty value = new SimpleDoubleProperty(0);
         GaussianBlur blur = new GaussianBlur();
         blur.radiusProperty().bind(value);
@@ -1140,7 +1140,7 @@ public class GamePanel extends SceneHandler {
         pane.setOpacity(1);
         paneFadeInTransition.setFromValue(0);
         paneFadeInTransition.setToValue(1);
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.1));
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.3));
         SequentialTransition trans = new SequentialTransition(blurring, paneFadeInTransition, pause);
         pane.setDisable(false);
         trans.setAutoReverse(true);

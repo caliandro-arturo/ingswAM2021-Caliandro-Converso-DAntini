@@ -21,9 +21,6 @@
 .tab-pane{
     -fx-background-color: transparent;
 }
-.tab{
-    -fx-background-color: transparent;
-}
 .table-view{
     -fx-background-color: transparent;
     -fx-font-size: 18;
