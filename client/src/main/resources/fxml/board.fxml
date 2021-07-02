@@ -66,7 +66,7 @@
                         <Image url="@../png/soloTokens/back.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="soloActionOkButton" layoutX="428.0" layoutY="467.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="30.0" prefWidth="71.0" text="OK" />
+                  <Button fx:id="soloActionOkButton" layoutX="428.0" layoutY="467.0" mnemonicParsing="false" onAction="#closeSoloAction" prefHeight="30.0" prefWidth="71.0" text="OK" />
                </children>
             </Pane>
             <Pane fx:id="chooseActionPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
@@ -442,6 +442,30 @@
                   <Button fx:id="deployLButton" layoutX="464.0" layoutY="531.0" mnemonicParsing="false" onAction="#deployLeaderCard" prefHeight="40.0" prefWidth="147.0" text="Deploy" />
                </children>
             </Pane>
+            <Pane fx:id="playerTurnAnnouncementPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
+               <children>
+                  <Rectangle arcHeight="1.0" arcWidth="5.0" fill="#3fe339" height="248.0" layoutX="262.0" layoutY="226.0" stroke="BLACK" strokeLineJoin="ROUND" strokeType="INSIDE" width="403.0" />
+                  <VBox alignment="CENTER" layoutX="274.0" layoutY="270.0" styleClass="label" stylesheets="@../css/gamepanel.css">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="54.0" prefWidth="111.0" text="It's ">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="newPlayerTurnLabel" alignment="CENTER" prefHeight="53.0" prefWidth="379.0">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="54.0" prefWidth="134.0" text="turn!">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
             <Pane fx:id="endGamePane" prefHeight="200.0" prefWidth="946.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c9b18c" height="685.0" layoutX="16.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="902.0" />
@@ -546,30 +570,6 @@
                      </children>
                   </GridPane>
                   <Button layoutX="422.0" layoutY="632.0" mnemonicParsing="false" onAction="#quit" prefHeight="32.0" prefWidth="84.0" text="Quit" />
-               </children>
-            </Pane>
-            <Pane fx:id="playerTurnAnnouncementPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/gamepanel.css">
-               <children>
-                  <Rectangle arcHeight="1.0" arcWidth="5.0" fill="#3fe339" height="248.0" layoutX="262.0" layoutY="226.0" stroke="BLACK" strokeLineJoin="ROUND" strokeType="INSIDE" width="403.0" />
-                  <VBox alignment="CENTER" layoutX="274.0" layoutY="270.0" styleClass="label" stylesheets="@../css/gamepanel.css">
-                     <children>
-                        <Label alignment="CENTER" prefHeight="54.0" prefWidth="111.0" text="It's ">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="newPlayerTurnLabel" alignment="CENTER" prefHeight="53.0" prefWidth="379.0">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="54.0" prefWidth="134.0" text="turn!">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
                </children>
             </Pane>
          </children>

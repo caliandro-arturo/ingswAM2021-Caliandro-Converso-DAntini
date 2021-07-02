@@ -870,6 +870,7 @@ public class GamePanel extends SceneHandler {
     @FXML
     public void deployLeaderCard(ActionEvent actionEvent) {
         getGui().getView().process("useleader: " + (leaderHand.indexOf(selectedLeader.get()) + 1));
+        selectedLeader.get().setEffect(null);
         selectedLeader.set(null);
     }
 
@@ -877,7 +878,7 @@ public class GamePanel extends SceneHandler {
      * Utility method to show in the front the pane gave as a parameter
      * and disable the other panes in the back.
      *
-     * @param pane
+     * @param pane the pane to show
      */
     public void goFront(Pane pane) {
         for (int i = 0; i < stackPane.getChildren().size(); i++) {
@@ -1027,6 +1028,7 @@ public class GamePanel extends SceneHandler {
      * @param tokenId: string that contains Lorenzo's action.
      */
     public void showSoloAction(String tokenId) {
+        personalBoardController.getCrossB().setOpacity(0);
         soloActionOut.setText("Reveal the action of Lorenzo");
         soloActionOkButton.setDisable(true);
         soloActionOkButton.setOpacity(0);
@@ -1034,6 +1036,8 @@ public class GamePanel extends SceneHandler {
         soloToken.setOnMouseClicked(e -> revealToken(tokenId));
         goFront(soloActionPane);
     }
+
+
 
     /**
      * Reveals Lorenzo's action in single player.
@@ -1045,9 +1049,18 @@ public class GamePanel extends SceneHandler {
             case "twopositions" -> soloActionOut.setText("Lorenzo goes two positions ahead");
             default -> soloActionOut.setText("Lorenzo removes two " + tokenId.replaceAll("del", "") + " cards");
         }
+        personalBoardController.getCrossB().setOpacity(1);
         soloToken.setImage(soloActionMap.get(tokenId));
         soloActionOkButton.setDisable(false);
         soloActionOkButton.setOpacity(1);
+    }
+
+    /**
+     * Closes the solo action pane.
+     */
+    public void closeSoloAction(ActionEvent event) {
+        closePopup(event);
+        next(event);
     }
 
     /**

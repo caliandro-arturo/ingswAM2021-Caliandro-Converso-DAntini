@@ -36,14 +36,14 @@
                 <DropShadow blurType="TWO_PASS_BOX" />
             </effect>
         </ImageView>
-      <Pane fx:id="storesPane" layoutX="74.0" layoutY="296.0">
+      <Pane fx:id="storesPane" layoutX="66.0" layoutY="285.0">
          <children>
-              <ImageView fx:id="res1" fitHeight="27.0" fitWidth="30.0" layoutX="38.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
-              <ImageView fx:id="res33" fitHeight="31.0" fitWidth="29.0" layoutX="68.0" layoutY="114.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
-              <ImageView fx:id="res32" fitHeight="32.0" fitWidth="30.0" layoutX="34.0" layoutY="114.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
-              <ImageView fx:id="res31" fitHeight="30.0" fitWidth="30.0" layoutY="116.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
-              <ImageView fx:id="res22" fitHeight="31.0" fitWidth="31.0" layoutX="50.0" layoutY="56.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
-              <ImageView fx:id="res21" fitHeight="32.0" fitWidth="29.0" layoutX="17.0" layoutY="55.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
+              <ImageView fx:id="res1" fitHeight="45.0" fitWidth="42.0" layoutX="40.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
+              <ImageView fx:id="res21" fitHeight="45.0" fitWidth="42.0" layoutX="17.0" layoutY="61.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
+              <ImageView fx:id="res22" fitHeight="45.0" fitWidth="42.0" layoutX="53.0" layoutY="61.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
+              <ImageView fx:id="res31" fitHeight="45.0" fitWidth="42.0" layoutY="119.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
+              <ImageView fx:id="res32" fitHeight="45.0" fitWidth="42.0" layoutX="35.0" layoutY="119.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
+              <ImageView fx:id="res33" fitHeight="45.0" fitWidth="42.0" layoutX="70.0" layoutY="119.0" onContextMenuRequested="#backToHand" onDragDetected="#moveResFromWar" onDragDone="#withdrawRes" onDragDropped="#dropResWar" onDragOver="#dragOverWarehouse" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
         <GridPane fx:id="strongBox" layoutX="32.0" layoutY="503.0" prefHeight="111.0" prefWidth="147.0" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="32.0">
@@ -67,11 +67,17 @@
                             <font>
                                 <Font size="18.0" />
                             </font>
+                     <effect>
+                        <DropShadow height="3.0" radius="1.0" spread="1.0" width="3.0" />
+                     </effect>
                         </Label>
                         <Label fx:id="boxSerf" alignment="BASELINE_CENTER" prefHeight="26.0" prefWidth="23.0" text="0" textFill="WHITE">
                             <font>
                                 <Font size="18.0" />
                             </font>
+                     <effect>
+                        <DropShadow height="3.0" radius="1.0" spread="1.0" width="3.0" />
+                     </effect>
                         </Label>
                     </children>
                 </HBox>
@@ -86,11 +92,17 @@
                             <font>
                                 <Font size="18.0" />
                             </font>
+                     <effect>
+                        <DropShadow height="3.0" radius="1.0" spread="1.0" width="3.0" />
+                     </effect>
                         </Label>
                         <Label fx:id="boxShield" alignment="BASELINE_CENTER" prefHeight="26.0" prefWidth="23.0" text="0" textFill="WHITE">
                             <font>
                                 <Font size="18.0" />
                             </font>
+                     <effect>
+                        <DropShadow height="3.0" radius="1.0" spread="1.0" width="3.0" />
+                     </effect>
                         </Label>
                     </children>
                 </HBox>
@@ -105,11 +117,17 @@
                             <font>
                                 <Font size="18.0" />
                             </font>
+                     <effect>
+                        <DropShadow height="3.0" radius="1.0" spread="1.0" width="3.0" />
+                     </effect>
                         </Label>
                         <Label fx:id="boxStone" alignment="BASELINE_CENTER" prefHeight="26.0" prefWidth="23.0" text="0" textFill="WHITE">
                             <font>
                                 <Font size="18.0" />
                             </font>
+                     <effect>
+                        <DropShadow height="3.0" radius="1.0" spread="1.0" width="3.0" />
+                     </effect>
                         </Label>
                     </children>
                 </HBox>
@@ -124,11 +142,17 @@
                             <font>
                                 <Font size="18.0" />
                             </font>
+                     <effect>
+                        <DropShadow height="3.0" radius="1.0" spread="1.0" width="3.0" />
+                     </effect>
                         </Label>
                         <Label fx:id="boxCoin" alignment="BASELINE_CENTER" prefHeight="26.0" prefWidth="23.0" text="0" textFill="WHITE">
                             <font>
                                 <Font size="18.0" />
                             </font>
+                     <effect>
+                        <DropShadow height="3.0" radius="1.0" spread="1.0" width="3.0" />
+                     </effect>
                         </Label>
                     </children>
                 </HBox>
@@ -141,14 +165,14 @@
               <Pagination fx:id="hand" layoutY="-3.0" maxPageIndicatorCount="0" onDragDetected="#moveFromResHand" pageCount="0" prefHeight="154.0" prefWidth="204.0" />
          </children>
       </AnchorPane>
-      <Pane fx:id="boardProdPane" layoutX="232.0" layoutY="470.0">
+      <Pane fx:id="boardProdPane" layoutX="232.0" layoutY="466.0" prefHeight="139.0" prefWidth="114.0">
          <children>
       
               <!--board production-->
-              <ComboBox fx:id="resBaseProd" layoutX="64.0" layoutY="7.0" prefHeight="45.0" prefWidth="45.0" />
-              <ImageView fx:id="baseProd1" fitHeight="41.0" fitWidth="47.0" layoutX="4.0" onDragDropped="#dropResProd" onDragOver="#dragOverProduction" pickOnBounds="true" preserveRatio="true" />
-              <ImageView fx:id="baseProd2" fitHeight="41.0" fitWidth="47.0" layoutY="40.0" onDragDropped="#dropResProd" onDragOver="#dragOverProduction" pickOnBounds="true" preserveRatio="true" />
-              <Button fx:id="prodBaseButton" layoutX="7.0" layoutY="91.0" mnemonicParsing="false" onAction="#production" text="Production" />
+              <ComboBox fx:id="resBaseProd" layoutX="62.0" layoutY="11.0" prefHeight="45.0" prefWidth="42.0" />
+              <ImageView fx:id="baseProd2" fitHeight="45.0" fitWidth="42.0" layoutX="10.0" layoutY="39.0" onDragDropped="#dropResProd" onDragOver="#dragOverProduction" pickOnBounds="true" preserveRatio="true" />
+              <ImageView fx:id="baseProd1" fitHeight="45.0" fitWidth="42.0" layoutX="10.0" layoutY="6.0" onDragDropped="#dropResProd" onDragOver="#dragOverProduction" pickOnBounds="true" preserveRatio="true" />
+              <Button fx:id="prodBaseButton" layoutX="6.0" layoutY="103.0" mnemonicParsing="false" onAction="#production" prefHeight="29.0" prefWidth="106.0" text="Production" />
          </children>
       </Pane>
       <HBox alignment="CENTER" layoutX="350.0" layoutY="241.0" prefHeight="378.0" prefWidth="552.0" spacing="6.0">
@@ -375,7 +399,7 @@
             </Pane>
          </children>
       </HBox>
-      <AnchorPane fx:id="leaderCard2" layoutX="22.0" layoutY="353.0" prefHeight="283.0" prefWidth="226.0">
+      <AnchorPane fx:id="leaderCard2" layoutX="314.0" layoutY="170.0" prefHeight="283.0" prefWidth="226.0">
          <children>
                 <ImageView fx:id="activeLeaderCard2" fitHeight="260.0" fitWidth="200.0" layoutX="14.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="39.90830993652344" AnchorPane.topAnchor="2.0" />
             <HBox fx:id="leaderDepot2" alignment="CENTER" layoutX="32.0" layoutY="183.0" prefHeight="78.0" prefWidth="137.0" spacing="8.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="57.0" AnchorPane.topAnchor="183.0">
@@ -393,7 +417,7 @@
             </Pane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="leaderCard1" layoutX="32.0" layoutY="363.0" prefHeight="283.0" prefWidth="226.0">
+      <AnchorPane fx:id="leaderCard1" layoutX="19.0" layoutY="161.0" prefHeight="283.0" prefWidth="226.0">
          <children>
             <ImageView fx:id="activeLeaderCard1" fitHeight="260.0" fitWidth="200.0" layoutX="14.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="39.90830993652344" AnchorPane.topAnchor="2.0" />
             <HBox fx:id="leaderDepot1" alignment="CENTER" layoutX="32.0" layoutY="183.0" prefHeight="78.0" prefWidth="137.0" spacing="8.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="57.0" AnchorPane.topAnchor="183.0">
