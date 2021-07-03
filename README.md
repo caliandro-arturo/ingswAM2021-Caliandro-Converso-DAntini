@@ -12,8 +12,10 @@
 | Local match                  |  X  |
 | Resilience to disconnections |  √  |
 
-### Run instructions
+### Requirement
+- JRE 16 or above
 
+### Run instructions
 - Server: type `java -jar server.jar [port]` (default port: 1234)
 - Client: JavaFX 16 libraries must be added as modules. RunClient batch contains
 the VM options to add them automatically.
