@@ -45,3 +45,9 @@ re-admitted to the game.
 [Vincenzo Converso (10625358)](https://github.com/ConversoVincenzo)
 
 [Marco D'Antini (10603556)](https://github.com/DantiniMarco)
+
+### License:
+
+This software is licensed under MIT license. The name "Masters of Renaissance" and game assets belong to Cranio Creations srl and his authors.
+
+[Masters of Renaissance official page](https://craniointernational.com/products/masters-of-renaissance/)
