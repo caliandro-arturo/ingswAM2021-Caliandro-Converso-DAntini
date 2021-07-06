@@ -92,13 +92,13 @@ public abstract class UI {
         messageReader = new Thread(() -> {
             try {
                 socketManager.receiveMessages();
-            } catch (SocketTimeoutException e) {
+            } catch (SocketTimeoutException | SocketException e) {
                 isConnected = false;
-            } catch (SocketException e) {
                 showUpdate("connectionlost");
-                isConnected = false;
             }
+
         });
+
         messageReader.start();
     }
 

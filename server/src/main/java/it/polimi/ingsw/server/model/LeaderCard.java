@@ -51,7 +51,7 @@ public class LeaderCard {
                     "requirements": [
                 """.formatted(ID));
         for (String r : requirements.identifier()) {
-            leadCardJson.append(r).append(",\n");
+            leadCardJson.append("\"").append(r).append("\"").append(",\n");
         }
         leadCardJson.deleteCharAt(leadCardJson.lastIndexOf(","));
         leadCardJson.append("""
@@ -59,7 +59,7 @@ public class LeaderCard {
                     "leaderPower": [
                 """);
         for (String r : leaderPower.identifier()) {
-            leadCardJson.append(r).append(",\n");
+            leadCardJson.append("\"").append(r).append("\"").append(",\n");
         }
         leadCardJson.deleteCharAt(leadCardJson.lastIndexOf(","));
         leadCardJson.append("""

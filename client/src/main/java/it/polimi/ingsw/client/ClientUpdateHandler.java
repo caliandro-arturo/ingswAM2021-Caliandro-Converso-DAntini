@@ -105,6 +105,8 @@ public class ClientUpdateHandler implements ToServerMessageHandler, UpdateHandle
             model.getBoard(msg.getPlayer())
                     .getLeaderCards()
                     .add(translator(msg.getID(), msg.getVictoryPoints(), msg.getLeaderPower(), msg.getRequirements()));
+            model.getBoard(msg.getPlayer()).getLeaderCards().get(model.getBoard(msg.getPlayer())
+                    .getLeaderCards().size()-1).getPower().activatePower(model.getBoard(msg.getPlayer()));
         }
     }
 

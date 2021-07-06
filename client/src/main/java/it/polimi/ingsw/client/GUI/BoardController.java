@@ -209,6 +209,7 @@ public class BoardController implements Initializable {
     /**
      * Sets boards. This is separated by {@link BoardController#initialize(URL, ResourceBundle)} because the initalization
      * gap between boards and GUI launch is not deterministic.
+     *
      * @param board the board to link to this controller
      */
     public void setBoard(Board board) {
@@ -286,6 +287,7 @@ public class BoardController implements Initializable {
         for (int i = 1; i <= 3; i++) {
             updateTale(i, board.getFaithTrack().getVaticanMap().get(i).get());
         }
+        updateActiveLeaderCards();
     }
 
     /**
@@ -520,8 +522,9 @@ public class BoardController implements Initializable {
 
     /**
      * Updates faith track tales.
+     *
      * @param reportNum the number of the vatican report
-     * @param val the result of the vatican report
+     * @param val       the result of the vatican report
      */
     public void updateTale(int reportNum, Boolean val) {
         if (val == null) return;

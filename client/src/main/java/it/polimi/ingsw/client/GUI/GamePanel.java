@@ -1131,6 +1131,7 @@ public class GamePanel extends SceneHandler {
             }
             case "Activate productions" -> {
                 getModel().setFinished(false);
+                chooseButton.setDisable(true);
                 backButton.setDisable(false);
                 getModel().getBoard().setProductionInterface(false);
             }
